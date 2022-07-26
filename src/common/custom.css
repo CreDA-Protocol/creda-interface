@@ -1,0 +1,62 @@
+@import '~antd/dist/antd.min.css';
+/*自定义字体*/
+
+@font-face {
+  font-family: 'DMSans';
+  src: url('../assets/font/DMSans-Regular.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins Bold';
+  src: url('../assets/font/Poppins-Bold.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins Light';
+  src: url('../assets/font/Poppins-Light.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins Medium';
+  src: url('../assets/font/Poppins-Medium.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins Regular';
+  src: url('../assets/font/Poppins-Regular.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins SemiBold';
+  src: url('../assets/font/Poppins-SemiBold.ttf') format('truetype');
+  font-style: normal;
+}
+
+/*body {*/
+/*    font-family: "poppinsMedium";*/
+/*}*/
+/*antdesign 样式修改*/
+.ant-btn-primary{
+    background:#4022F3;
+    border-color:#4022F3;
+}
+
+ .ant-btn-primary:hover, .ant-btn-primary:focus {
+     opacity: 0.8;
+     background:#4022F3;
+     border-color:#4022F3;
+ }
+.ant-btn {
+    border-radius: 5px;
+}
+
+/*modal*/
+[data-reach-dialog-content] {
+    border-radius: 20px;
+    overflow: hidden;
+}
