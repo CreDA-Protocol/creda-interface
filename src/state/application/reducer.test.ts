@@ -1,5 +1,5 @@
 import { ChainId } from '@lychees/uniscam-sdk'
-import { createStore, Store } from 'redux'
+import { legacy_createStore as createStore, Store } from 'redux'
 import { addPopup, ApplicationModal, removePopup, setOpenModal, updateBlockNumber } from './actions'
 import reducer, { ApplicationState } from './reducer'
 
@@ -13,7 +13,9 @@ describe('application reducer', () => {
         [ChainId.MAINNET]: 3
       },
       openModal: null,
-      outScale:0.01
+      outScale: 0.01,
+      openWarnning: false,
+      themeDark: false
     })
   })
 
