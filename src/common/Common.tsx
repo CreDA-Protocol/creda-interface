@@ -1,15 +1,15 @@
-import {formatUnits, parseUnits} from 'ethers/lib/utils'
-import {BigNumber, ethers, Signer} from 'ethers'
-import ImageCommon from '../assets/common/ImageCommon'
-import {TransactionDetails} from "../state/transactions/reducer";
-import ImageToken from "../assets/tokens/ImageToken";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import USDCIcon from '../assets/tokens/USD Coin (USDC).png'
-import USDTIcon from '../assets/tokens/Tether (USDT).png'
-import DAIIcon from '../assets/tokens/Dai (DAI).png'
-import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png'
-import ETHIcon from '../assets/tokens/Ethereum (ETH).png'
 import axios from 'axios';
+import { BigNumber, ethers } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import ImageCommon from '../assets/common/ImageCommon';
+import DAIIcon from '../assets/tokens/Dai (DAI).png';
+import ETHIcon from '../assets/tokens/Ethereum (ETH).png';
+import ImageToken from "../assets/tokens/ImageToken";
+import USDTIcon from '../assets/tokens/Tether (USDT).png';
+import USDCIcon from '../assets/tokens/USD Coin (USDC).png';
+import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png';
+import { TransactionDetails } from "../state/transactions/reducer";
 
 
 export const qERC20_ABI = require('../abiJson/qERC20.json');
@@ -1577,7 +1577,7 @@ export const MiningPool = ["CPUSDC","CPUSDT","CPWBTC","CPDAI"]
 // export const MiningPool = ["CREDA"]
 const rpcUrls = {
     // TODO: add others
-    20: "https://escrpc.elaphant.app",           // Elastos mainnet
+    20: "https://api.elastos.io/esc",           // Elastos mainnet
     21: "https://api-testnet.elastos.io/eth",       // Elastos testnet
     128: "https://heconode.ifoobar.com",             // HECO mainnet
     [ChainId.arbitrum]:"https://arb1.arbitrum.io/rpc",        // Arbitrum
@@ -1586,7 +1586,7 @@ const rpcUrls = {
 const walletConnect = {
     rpc: rpcUrls,
     //bridge: "http://192.168.31.114:5001"
-    bridge: "https://bridge.walletconnect.org",
+    bridge: "https://walletconnect.elastos.net/v2",
 
     // Good wallet integrations such as metamask mobile are able to detect if we don't send
     // a chainId manually and automatically return the network selected by users in the wallet.
