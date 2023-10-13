@@ -1,39 +1,38 @@
-import {useCallback, useContext, useEffect, useRef, useState} from 'react'
+import { MaxUint256 } from '@ethersproject/constants'
+import { TransactionResponse } from '@ethersproject/providers'
+import { BigNumber, ethers } from 'ethers'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
-    ApprovalState,
-    balanceToBigNumber,
-    bigNumberToBalance,
-    BSC_PROVIDER,
-    ChainId,
-    config,
-    enableNetwork,
-    formatBalance,
-    getBuildStatus,
-    getPriceByApi,
-    getPriceESC,
-    logError,
-    marketsConfig,
-    mathPriceTo8,
-    multiCallConfig,
-    packageInfoConfig,
-    SwapList,
-    walletInfo
+  ApprovalState,
+  BSC_PROVIDER,
+  ChainId,
+  SwapList,
+  balanceToBigNumber,
+  bigNumberToBalance,
+  config,
+  enableNetwork,
+  formatBalance,
+  getBuildStatus,
+  getPriceByApi,
+  getPriceESC,
+  logError,
+  marketsConfig,
+  mathPriceTo8,
+  multiCallConfig,
+  packageInfoConfig,
+  walletInfo
 } from '../common/Common'
-import {BigNumber, ethers} from 'ethers'
-import ContractConfig, {BankConfig, EarnConfig} from './ContractConfig'
-import {MaxUint256} from '@ethersproject/constants'
-import {TransactionResponse} from '@ethersproject/providers'
-import {NetworkTypeContext, WalletAddressContext} from "../context";
-import {useContract, useContractWithProvider, useTokenContract} from "../hooks/useContract";
-import {useHasPendingApproval, useTransactionAdder} from "../state/transactions/hooks";
+import { NetworkTypeContext, WalletAddressContext } from "../context"
+import { useContract, useContractWithProvider, useTokenContract } from "../hooks/useContract"
+import { useTransactionAdder } from "../state/transactions/hooks"
+import ContractConfig, { BankConfig, EarnConfig } from './ContractConfig'
 
-import {ContractCallContext, Multicall} from 'ethereum-multicall';
-import ERC20_ABI from '../abiJson/ERC20.json';
 import axios from 'axios'
-import {ProjectConfig} from "../pages/Profile";
-import {toUtf8String} from "ethers/lib/utils";
-import {LoadingContext, LoadingType} from "../provider/loadingProvider";
-import { getCoinPrice } from '../pages/MyBank/getPrice'
+import { ContractCallContext, Multicall } from 'ethereum-multicall'
+import { toUtf8String } from "ethers/lib/utils"
+import ERC20_ABI from '../abiJson/ERC20.json'
+import { ProjectConfig } from "../pages/Profile"
+import { LoadingContext, LoadingType } from "../provider/loadingProvider"
 
 /**
  * 获取是否授权过获取信用分数
@@ -44,24 +43,23 @@ export function useApproveCredit(): number {
     const network = ChainId[chainId];
     const [approve, setApprove] = useState(ApprovalState.PENDING);
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-    const getResult = () => {
-        if (!account || !credaContract || !enableNetwork(chainId)) {
-            return;
-        }
-        credaContract?.initialAccount(account)
-            .then((res: boolean) => {
-                if (res) {
-                    setApprove(ApprovalState.APPROVED)
-                } else {
-                    setApprove(ApprovalState.NOT_APPROVED);
-                }
-
-            })
-    }
     useEffect(() => {
+        const getResult = () => {
+            if (!account || !credaContract || !enableNetwork(chainId)) {
+                return;
+            }
+            credaContract?.initialAccount(account)
+                .then((res: boolean) => {
+                    if (res) {
+                        setApprove(ApprovalState.APPROVED)
+                    } else {
+                        setApprove(ApprovalState.NOT_APPROVED);
+                    }
+                })
+        }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, credaContract])
+    }, [chainId, account, credaContract])
     return approve;
 }
 
@@ -74,16 +72,16 @@ export function useCreditPoints(): string {
     const network = ChainId[chainId];
     const [points, setPoints] = useState("");
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-    const getResult = () => {
-        if (!account || !credaContract) {
-            return;
-        }
-        credaContract?.creditPoint(account)
-            .then((res: BigNumber) => {
-                setPoints(bigNumberToBalance(res));
-            })
-    }
     useEffect(() => {
+        const getResult = () => {
+            if (!account || !credaContract) {
+                return;
+            }
+            credaContract?.creditPoint(account)
+                .then((res: BigNumber) => {
+                    setPoints(bigNumberToBalance(res));
+                })
+        }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
     }, [account, credaContract])
@@ -100,17 +98,17 @@ export function useBalance(symbol: string): string {
     const [balance, setBlance] = useState("");
     const tokenContract = useTokenContract(ContractConfig[symbol][network]?.address);
 
-    const getResult = () => {
-        if (!account || !tokenContract) {
-            return;
-        }
-        // console.log(symbol,tokenContract,account,"++++++")
-        tokenContract?.balanceOf(account)
-            .then((res: BigNumber) => {
-                setBlance(bigNumberToBalance(res));
-            })
-    }
     useEffect(() => {
+        const getResult = () => {
+            if (!account || !tokenContract) {
+                return;
+            }
+            // console.log(symbol,tokenContract,account,"++++++")
+            tokenContract?.balanceOf(account)
+                .then((res: BigNumber) => {
+                    setBlance(bigNumberToBalance(res));
+                })
+        }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
     }, [account, tokenContract])
@@ -130,19 +128,19 @@ export function useBalanceV2(symbol: string): any {
     });
     const tokenContract = useTokenContract(ContractConfig[symbol][network]?.address);
 
-    const getResult = () => {
-        if (!account || !tokenContract) {
-            return;
-        }
-        tokenContract?.balanceOf(account)
-            .then((res: BigNumber) => {
-                setInfo({
-                    loading: false,
-                    balance: Number(bigNumberToBalance(res))
-                });
-            })
-    }
     useEffect(() => {
+        const getResult = () => {
+            if (!account || !tokenContract) {
+                return;
+            }
+            tokenContract?.balanceOf(account)
+                .then((res: BigNumber) => {
+                    setInfo({
+                        loading: false,
+                        balance: Number(bigNumberToBalance(res))
+                    });
+                })
+        }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
     }, [account, tokenContract])
@@ -176,7 +174,7 @@ export function useMiningInfo(): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, credaContract])
+    }, [account, credaContract, credaPlusContract])
 
     return info;
 }
@@ -238,7 +236,7 @@ export function useStakeV2(symbol: string): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, credaContract])
+    }, [account, credaContract, network, symbol])
     return info;
 }
 
@@ -247,7 +245,7 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
     const loading = useContext(LoadingContext)
     const tokenContract = useTokenContract(tokenAddress);
     const currentAllowance = useAllowance(tokenAddress, spender)
-    const pendingApproval = useHasPendingApproval(tokenContract?.address, spender)
+    // const pendingApproval = useHasPendingApproval(tokenContract?.address, spender)
     // check the current approval status
     // const approvalState: ApprovalState = useMemo(() => {
     //     // we might not have enough data to know whether or not we need to approve
@@ -302,7 +300,7 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
                 }
                 loading.show(LoadingType.error, err.reason || err.message)
               })
-    }, [approvalState, tokenContract, spender, addTransaction]);
+    }, [approvalState, tokenContract, spender, loading]);
     // console.log(approvalState,tokenAddress,spender,currentAllowance.toString(),MaxUint256.toString())
     return [approvalState, approve];
 }
@@ -311,21 +309,20 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
 const useAllowance = (tokenAddress: string, spender: string) => {
     const [allowance, setAllowance] = useState(BigNumber.from(0));
     const token = useTokenContract(tokenAddress);
-    const {chainId} = useContext(NetworkTypeContext);
+    // const {chainId} = useContext(NetworkTypeContext);
     const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
-
-    const getResult = () => {
-        if (!account || !token || !spender) {
-            return;
-        }
-        token?.allowance(account, spender)
-            .then((res: BigNumber) => {
-                setAllowance(res);
-            })
-    }
+    // const network = ChainId[chainId];
 
     useEffect(() => {
+        const getResult = () => {
+            if (!account || !token || !spender) {
+                return;
+            }
+            token?.allowance(account, spender)
+                .then((res: BigNumber) => {
+                    setAllowance(res);
+                })
+        }
         getResult();
     }, [account, spender, token]);
 
@@ -474,7 +471,7 @@ export function useMarketsResult() {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account,chainId, walletInfo.provider])
+    }, [account,chainId, contractCallContext, contractCallResult, network])
     return info;
 }
 
@@ -484,7 +481,7 @@ export function useMarketsResult() {
 export function useDaInfo(symbol: string, markets: any): any {
     const {chainId} = useContext(NetworkTypeContext);
     const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    // const network = ChainId[chainId];
     const [info, setInfo] = useState({
         loading: true
     });
@@ -535,7 +532,7 @@ export function useDaInfo(symbol: string, markets: any): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, markets])
+    }, [account, markets, blocksPerDay, symbol])
 
     return info;
 }
@@ -598,12 +595,12 @@ export function useEarnInfo(symbol: string, markets: any): any {
                 cTvl: cTokenTvlRes,
                 cFormatTvl: cTokenTvl * price
             }
-            // console.log(obj)
+
             setInfo(obj);
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, markets])
+    }, [account, markets, blocksPerDay, symbol])
 
     return info;
 }
@@ -714,7 +711,7 @@ export function useEarnResult() {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account,chainId, walletInfo.provider])
+    }, [account,chainId, contractCallContext, contractCallResult, network])
     return info;
 }
 
@@ -933,8 +930,7 @@ export function useWalletInfo(): any {
                 DAI: Number(bigNumberToBalance(DAI, dai_decimals)),
                 CREDA: Number(bigNumberToBalance(CREDA, creda_decimals)),
             })
-
-        }
+          }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
     }, [account, USDTContract, USDContract, DAIContract, CREDAContract, network])
@@ -1011,7 +1007,7 @@ export function useEarnedUSDTInfo(id: number): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, collectContract, id])
+    }, [account, collectContract, id, network])
     return info;
 }
 
@@ -1043,7 +1039,7 @@ export function useEarnedsCASHInfo(id: number): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, collectContract, id])
+    }, [account, collectContract, id, network])
     return info;
 }
 
@@ -1103,7 +1099,7 @@ export function useSwapBalance() {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, walletInfo.provider])
+    }, [account, network])
     return info;
 }
 
@@ -1206,7 +1202,7 @@ export function usePoolInfo(tokenA: string, tokenB: string) {
 
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, factoryContract])
+    }, [account, factoryContract, network, routerContract, tokenA, tokenB])
     return info;
 }
 
@@ -1408,7 +1404,7 @@ export function useOpretaBuildInfo(id: number): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, gameBuildContract])
+    }, [account, gameBuildContract, id])
     return info;
 }
 
@@ -1461,7 +1457,7 @@ export function useDataBaseBuildInfo(id: number): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, gameBuildContract])
+    }, [account, gameBuildContract, id])
     return info;
 }
 
@@ -1584,7 +1580,7 @@ export function useBuildTasking(): any {
         }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, walletInfo.provider])
+    }, [account, network])
     return info;
 }
 
@@ -1649,7 +1645,7 @@ export function useBoxWalletList(chainType: string): any {
     const {chainId} = useContext(NetworkTypeContext);
     const {account} = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    const network = ChainId[chainId];
+    // const network = ChainId[chainId];
     const chainRef = useRef(chainType)
     const initialState = {
         loading: true,
@@ -1693,7 +1689,7 @@ export function useBoxApproveList(chainType: string): any {
     const {chainId} = useContext(NetworkTypeContext);
     const {account} = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    const network = ChainId[chainId];
+    // const network = ChainId[chainId];
     const chainRef = useRef(chainType);
     const initialState = {
         loading: true,
@@ -1889,7 +1885,7 @@ export function useUnLockInfo(): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, chainId, INFTContract, INFTUnlockContract, INFTLpContract])
+    }, [account, chainId, INFTContract, INFTUnlockContract, INFTLpContract, network])
     return info;
 }
 
@@ -1996,7 +1992,6 @@ export function useCreditScore(): any {
                   try {
                     const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
                     let res:any = await axios.get(originUrl);
-                    // console.log(res)
                     res = res.data
                     if(res.code===200){
                         let str = res.data.score
@@ -2134,7 +2129,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, chainId, InitialMintContract, tokenContract, credaContract])
+    }, [account, chainId, InitialMintContract, tokenContract, credaContract, pid, symbol])
     return info;
 }
 
@@ -2174,7 +2169,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                 const decimals: number = await tokenContract.decimals()
                 let balance: BigNumber = BigNumber.from(0)
 
-                if (chainId === ChainId.esc && symbol == 'ELA'){
+                if (chainId === ChainId.esc && symbol === 'ELA'){
                   balance = await walletInfo.provider?.getBalance(account) as BigNumber
                 }else {
                   balance = await ctokenContract.balanceOf(account)
@@ -2213,7 +2208,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                 const dailyRes = poolInfo[4]
                 // console.log('dailyRes==',bigNumberToBalance(dailyRes));
 
-                const apr = tvl == 0? 0: Number(bigNumberToBalance(dailyRes)) * 365 * 86400 / tvl
+                const apr = tvl === 0? 0: Number(bigNumberToBalance(dailyRes)) * 365 * 86400 / tvl
                 // console.log('apr==',apr);
                 // console.log('===================================================');
 
@@ -2247,7 +2242,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, chainId, InitialMintContract, tokenContract, credaContract,ctokenContract])
+    }, [account, chainId, InitialMintContract, tokenContract, credaContract, ctokenContract, network, pid, symbol])
     return info;
 }
 
@@ -2386,7 +2381,7 @@ export function useSushiPrice(amount: number, path: string[]): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, chainId, contract])
+    }, [account, chainId, contract, amount, path])
     return info;
 }
 
@@ -2412,7 +2407,7 @@ export function useIconPrice(icon: string): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [])
+    }, [icon])
     return price;
 }
 
@@ -2505,6 +2500,6 @@ export function useWrapAmount(): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [contract,account])
+    }, [contract, account, chainId])
     return data;
 }

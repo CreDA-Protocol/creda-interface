@@ -1,65 +1,66 @@
 import styled from "styled-components";
 import ImageCommon from "../../assets/common/ImageCommon";
-import AppBody, {MainFullBody} from "../AppBody";
-import Row, {
-    CustomGrid,
-    FontPoppins,
-    GradientButton,
-    RowBetween,
-    RowCenter,
-    RowFixed,
-    SpaceHeight,
-    SpaceWidth,
-    TextEqure,
-} from "../../components/Row";
 import Column from "../../components/Column";
-import creditScore from '../../lottie/CreDa_creditScore_animation.json'
+import Row, {
+  CustomGrid,
+  FontPoppins,
+  GradientButton,
+  RowBetween,
+  RowCenter,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  TextEqure,
+} from "../../components/Row";
+import creditScore from '../../lottie/CreDa_creditScore_animation.json';
+import AppBody, { MainFullBody } from "../AppBody";
 
-import {isMobile} from "react-device-detect";
-import React, {useContext, useEffect, useState} from "react";
-import ETH from "../../assets/tokens/Ethereum (ETH).png";
-import BNB from "../../assets/tokens/Binance Coin (BNB).png";
-import HECO from "../../assets/tokens/HECO.png";
-import copy from "copy-to-clipboard";
-import {message, Tooltip} from "antd";
-import {
-    useApprove,
-    useBoxApproveList,
-    useBoxProjectAll,
-    useBoxWalletList,
-    useCNFTInfo,
-    useCreditInfo,
-    useCreditScore,
-} from "../../contract";
-import {
-    ApprovalState,
-    balanceToBigNumber,
-    ChainId,
-    ChainIdConfig, enableNetwork,
-    formatAccount,
-    formatBalance,
-    formatPercent,
-    GasInfo,
-    getNFTCardBgImage,
-    switchNetwork,
-    tipError,
-} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {BlueButton, CardPairOrigin, FlexView, ProfileLoading, WhiteButton} from "../../components/Common";
-import {useOpenWarnning, useTheme, useWalkThroughStep,} from "../../state/application/hooks";
-import {H4} from "../../components/ConnectWallet";
-import {useContract, useTokenContract} from "../../hooks/useContract";
-import ContractConfig from "../../contract/ContractConfig";
-import {TransactionResponse} from "@ethersproject/providers";
-import {useTransactionAdder} from "../../state/transactions/hooks";
-import {BigNumber} from "ethers";
+import { Lottie } from "@crello/react-lottie";
+import { TransactionResponse } from "@ethersproject/providers";
+import { Tooltip, message } from "antd";
 import axios from "axios";
-import {ThemeText, ThemeTextEqure} from "../../components/ThemeComponent";
-import CustomStakeModal from "../../components/CustomStakeModal";
-import {ToastStatus, useAddToast} from "../../state/toast";
+import copy from "copy-to-clipboard";
+import { BigNumber } from "ethers";
+import { useContext, useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+import BNB from "../../assets/tokens/Binance Coin (BNB).png";
+import ETH from "../../assets/tokens/Ethereum (ETH).png";
+import HECO from "../../assets/tokens/HECO.png";
+import {
+  ApprovalState,
+  ChainId,
+  ChainIdConfig,
+  GasInfo,
+  balanceToBigNumber,
+  enableNetwork,
+  formatAccount,
+  formatBalance,
+  formatPercent,
+  getNFTCardBgImage,
+  switchNetwork,
+  tipError,
+} from "../../common/Common";
+import { BlueButton, CardPairOrigin, FlexView, ProfileLoading, WhiteButton } from "../../components/Common";
 import ConnectToWalletModal from "../../components/ConnectToWalletModal";
-import {Lottie} from "@crello/react-lottie";
-import {LoadingContext, LoadingType} from "../../provider/loadingProvider";
+import { H4 } from "../../components/ConnectWallet";
+import CustomStakeModal from "../../components/CustomStakeModal";
+import { ThemeText, ThemeTextEqure } from "../../components/ThemeComponent";
+import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import {
+  useApprove,
+  useBoxApproveList,
+  useBoxProjectAll,
+  useBoxWalletList,
+  useCNFTInfo,
+  useCreditInfo,
+  useCreditScore,
+} from "../../contract";
+import ContractConfig from "../../contract/ContractConfig";
+import { useContract, useTokenContract } from "../../hooks/useContract";
+import { LoadingContext, LoadingType } from "../../provider/loadingProvider";
+import { useOpenWarnning, useTheme, useWalkThroughStep, } from "../../state/application/hooks";
+import { ToastStatus, useAddToast } from "../../state/toast";
+import { useTransactionAdder } from "../../state/transactions/hooks";
 
 const Parenter_icon_3 = styled.img`
   width: 130px;
@@ -1327,7 +1328,7 @@ function Profile(props: any) {
                                 <div
                                     style={{
                                         position: "absolute",
-                                        zIndex: walkThroughStep == 2 ? 700 : 0,
+                                        zIndex: walkThroughStep === 2 ? 700 : 0,
                                         left: isMobile ? "9%" : "50%",
                                         transform: isMobile
                                             ? "translate(-17%,-5px)"
@@ -1383,7 +1384,7 @@ function Profile(props: any) {
                                                        position: "absolute",
                                                        top: isMobile ? "-195px" : "-249px",
                                                        left: isMobile ? "175px" : "217px",
-                                                       zIndex: walkThroughStep == 2 ? 700 : 0,
+                                                       zIndex: walkThroughStep === 2 ? 700 : 0,
                                                    }}
                                                    onClick={approve}
                                                >
@@ -1441,7 +1442,7 @@ function Profile(props: any) {
                                         {cnftInfo.no <= 0 && (
                                             <div style={{position: "relative"}}>
                                                 <GradientButton
-                                                    style={{zIndex: walkThroughStep == 3 ? 700 : 0}}
+                                                    style={{zIndex: walkThroughStep === 3 ? 700 : 0}}
                                                     onClick={mintCNFT}
                                                 >
                                                     {enableNetwork(chainId) ? (approval === ApprovalState.APPROVED
@@ -1549,7 +1550,7 @@ function Profile(props: any) {
                     <RowCenter>
                         <Segment onSegmentSelect={onSegmentSelect}/>
                     </RowCenter>
-                    {segmentIndex == 0 ? (
+                    {segmentIndex === 0 ? (
                         <>
                             <Wrap
                                 onIndexChange={changChainIndex}
@@ -1756,7 +1757,7 @@ function Profile(props: any) {
                             )}
                             <WalletDiv data={walletList} chainTitle={wrapItems[chainIndex]}/>
                         </>
-                    ) : segmentIndex == 1 ? (
+                    ) : segmentIndex === 1 ? (
                         <>
                             <PortfolioItem/>
                         </>
@@ -1878,7 +1879,7 @@ function Segment({onSegmentSelect}: any) {
             }}
         >
             <SegmentItem
-                isChoose={selectIndex == 0}
+                isChoose={selectIndex === 0}
                 onClick={() => {
                     setSelectIndex(0);
                     onSegmentSelect(0);
@@ -1888,7 +1889,7 @@ function Segment({onSegmentSelect}: any) {
             </SegmentItem>
             {/*<Tooltip placement="top" title={"Coming soon..."}>*/}
             <SegmentItem
-                isChoose={selectIndex == 1}
+                isChoose={selectIndex === 1}
                 onClick={() => {
                     setSelectIndex(1);
                     onSegmentSelect(1);
@@ -1898,7 +1899,7 @@ function Segment({onSegmentSelect}: any) {
             </SegmentItem>
             {/*</Tooltip>*/}
             <SegmentItem
-                isChoose={selectIndex == 2}
+                isChoose={selectIndex === 2}
                 onClick={() => {
                     setSelectIndex(2);
                     onSegmentSelect(2);
@@ -1927,7 +1928,7 @@ function Wrap({onIndexChange, selectIndex}: any) {
                                         // color:selectIndex == index ? 'white' : (themeDark? 'white' : '#17181A')
                                     }
                                 }
-                                isChoose={selectIndex == index}
+                                isChoose={selectIndex === index}
                                 // onClick={()=>{
                                 //   onIndexChange(index)
                                 // }}
@@ -1948,7 +1949,7 @@ function Wrap({onIndexChange, selectIndex}: any) {
                                 // color:selectIndex == index ? 'white' : (themeDark? 'white' : '#17181A')
                             }
                         }
-                        isChoose={selectIndex == index}
+                        isChoose={selectIndex === index}
                         onClick={() => {
                             onIndexChange(index);
                         }}
@@ -2030,7 +2031,7 @@ function WalletDiv({data, chainTitle}: any) {
                                            coming soon~
                                         </ThemeTextEqure>
                 </RowCenter>
-                
+
                 {!data.loading &&
                 data.data.tokens.map((item: any, index: number) => {
                     const btcPrice = item.valueBTC / item.value;
@@ -2118,6 +2119,7 @@ function PortfolioItem() {
     const [defiProject, setDefiProject] = useState<Object>({});
     useEffect(() => {
         async function getResult() {
+          try {
             const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
             let res = await axios.get(originUrl);
             let obj: any = {};
@@ -2129,6 +2131,9 @@ function PortfolioItem() {
                 obj[item.chainName][item.name] = item;
             });
             setDefiProject(obj);
+          } catch (e) {
+              console.warn("PortfolioItem", e)
+          }
         }
 
         getResult();
@@ -2641,7 +2646,7 @@ function ActivityDiv({data}: any) {
                     (item, index) => {
                         return (
                             <ActivityDivTopItem
-                                isChoose={topIndex == index}
+                                isChoose={topIndex === index}
                                 onClick={() => {
                                     setTopIndex(index);
                                 }}
