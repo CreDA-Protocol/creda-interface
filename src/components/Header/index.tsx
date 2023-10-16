@@ -1,24 +1,24 @@
-import React, {useContext, useEffect, useState} from 'react'
+import { message } from "antd"
+import { useContext, useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import I18nSwitch from '../I18nSwitch'
-import ConnectWallet from '../ConnectWallet'
-import ThemeIcon, {DarkBtn, fullMoonSvg, halfMoonSvg, LightBtn} from '../ThemeIcon'
-import TopMenu from '../TopMenu'
-import {isMobile} from 'react-device-detect';
 import ImageCommon from '../../assets/common/ImageCommon'
+import { ChainId } from "../../common/Common"
+import { getWarnningText } from "../../common/GlobalValue"
 import Column from '../../components/Column'
-import {FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure} from '../../components/Row'
-import {message} from "antd";
+import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '../../components/Row'
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
 import {
   useChangeTemeDark,
   useOpenWarnning,
   useTheme,
   useWalkThroughStep,
   useWarnning,
-} from "../../state/application/hooks";
-import {getWarnningText} from "../../common/GlobalValue";
-import {ChainId} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
+} from "../../state/application/hooks"
+import ConnectWallet from '../ConnectWallet'
+import I18nSwitch from '../I18nSwitch'
+import ThemeIcon, { DarkBtn, LightBtn, fullMoonSvg, halfMoonSvg } from '../ThemeIcon'
+import TopMenu from '../TopMenu'
 
 const MenuToggleWrap = styled.div`
   display: flex;
@@ -407,15 +407,15 @@ function MenuList({ history,setShowModal }: any) {
     if(account && [ChainId.arbitrum, ChainId.ropsten,ChainId.esc].indexOf(chainId) < 0){
       setWrongNetwork(true)
     }
-  }, [account])
+  }, [account, chainId])
   useEffect(()=>{
-    if (selectIndex != 3){
-      if (subIndex != 0){
+    if (selectIndex !== 3){
+      if (subIndex !== 0){
         setSubIndex(0)
         subSelect = 0
       }
     }
-  }, [selectIndex]);
+  }, [selectIndex, subIndex]);
   function changeNav(data: string) {
     // console.log(chainId,data)
     if(chainId!==ChainId.arbitrum && chainId!==ChainId.esc && !["home","profile","aboutus","news&media","doc","bridge"].includes(data)){
@@ -436,7 +436,7 @@ function MenuList({ history,setShowModal }: any) {
         history.push("./about-us");
         break;
       case "myBank":
-        if (chainId==ChainId.esc){
+        if (chainId===ChainId.esc){
           message.warn('coming soon~')
         }else {
           history.push("./myBank");
@@ -473,18 +473,18 @@ function MenuList({ history,setShowModal }: any) {
   return (
     <div>
       {menus.map((item: any, index: number) => {
-        if (chainId == ChainId.esc && item.title == 'My Bank'){
+        if (chainId === ChainId.esc && item.title === 'My Bank'){
           return
         }
         return (
           <StyledNavLink
             style={{
-              backgroundColor: selectIndex == index ? "#4E55FF" : "transparent",
+              backgroundColor: selectIndex === index ? "#4E55FF" : "transparent",
             }}
             key={"item_" + index}
             onClick={() => {
               setSelectIndex(index)
-              if (index != 3){
+              if (index !== 3){
                 changeNav(item.key)
                 select = index
               }
@@ -503,7 +503,7 @@ function MenuList({ history,setShowModal }: any) {
                 }}
                   style={{alignItems:"center"}}
                 >
-                  {selectIndex == index ? (
+                  {selectIndex === index ? (
                     <ArrowIcon src={item.image} themeDark={true} />
                   ) : (
                     item.key === 'aboutus' ?
@@ -511,7 +511,7 @@ function MenuList({ history,setShowModal }: any) {
                     :
                     <>
                     {
-                      item.key == "profile"
+                      item.key === "profile"
                       ?
                       <div style={{position:'relative'}}>
                       <ArrowIcon src={item.image} themeDark={themeDark} />
@@ -524,7 +524,7 @@ function MenuList({ history,setShowModal }: any) {
                   {item.title}
                 </RowFixed>
                 {
-                chainId !== ChainId.esc && index == 4  &&
+                chainId !== ChainId.esc && index === 4  &&
                 (
                   <Column style={{ marginLeft: 30 }}>
                     <SubItemButton onClick={(e:any) => {
@@ -539,7 +539,7 @@ function MenuList({ history,setShowModal }: any) {
                     }}>
                       <Text
                         fontSize={24}
-                        fontColor={subIndex == 1 ? "#fff" :isDark?"#fff": "#000"}
+                        fontColor={subIndex === 1 ? "#fff" :isDark?"#fff": "#000"}
                       >
                         Earn
                       </Text>
@@ -560,7 +560,7 @@ function MenuList({ history,setShowModal }: any) {
 
                       <Text
                         fontSize={24}
-                        fontColor={subIndex == 2 ? "#fff" :isDark?"#fff": "#000"}
+                        fontColor={subIndex === 2 ? "#fff" :isDark?"#fff": "#000"}
                       >
                         Farming
                       </Text>
@@ -569,7 +569,7 @@ function MenuList({ history,setShowModal }: any) {
                     <SubItemButton >
                       <Text
                         fontSize={24}
-                        fontColor={subIndex == 2 ? "#ffffff4f" :isDark?"#fff": "#000"}
+                        fontColor={subIndex === 2 ? "#ffffff4f" :isDark?"#fff": "#000"}
                       >
                         Farming
                       </Text>
@@ -584,7 +584,7 @@ function MenuList({ history,setShowModal }: any) {
                       }>
                       <Text
                         fontSize={24}
-                        fontColor={subIndex == 3 ? "#fff" :isDark?"#fff": "#000"}
+                        fontColor={subIndex === 3 ? "#fff" :isDark?"#fff": "#000"}
                       >
                         Asset Price
                       </Text>
@@ -593,7 +593,7 @@ function MenuList({ history,setShowModal }: any) {
                     <SubItemButton onClick={() => setSubIndex(3)}>
                       <Text
                         fontSize={24}
-                        fontColor={subIndex == 3 ? "#ffffff4f" :isDark?"#fff": "#000"}
+                        fontColor={subIndex === 3 ? "#ffffff4f" :isDark?"#fff": "#000"}
                       >
                         Asset Price
                       </Text>

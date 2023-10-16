@@ -1,15 +1,15 @@
-import React, {useContext, useMemo, useState} from "react";
+import { Dropdown } from "antd";
+import { useContext, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useStore } from "react-redux";
 import styled from "styled-components";
-import {base_type} from "../Common";
-import {ChainId, formatAccount, globalObj, newTransactionsFirst,} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import { RowCenter} from "../../components/Row";
-import {useTranslation} from "react-i18next";
-import {isTransactionRecent, useAllTransactions,} from "../../state/transactions/hooks";
+import { ChainId, formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
+import { RowCenter } from "../../components/Row";
+import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { useWalkThroughStep } from "../../state/application/hooks";
+import { isTransactionRecent, useAllTransactions, } from "../../state/transactions/hooks";
+import { base_type } from "../Common";
 import Loader from "../Loader";
-import {useStore} from "react-redux";
-import {useWalkThroughStep} from "../../state/application/hooks";
-import {Dropdown, Menu} from "antd";
 
 const StepModalWrap = styled.div<{
   isMobile: boolean | null;
@@ -107,16 +107,15 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
     //     logError("connectWallet",e)
     // }
   }
-  const menu = (
-      <Menu
-          onClick={disconnect}
-      >
-        <Menu.Item>
-          Disconnect
-        </Menu.Item>
-      </Menu>
-  );
-  if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.bsc,ChainId.heco,ChainId.ethereum,ChainId.esc].indexOf(chainId) < 0) {
+  const items = [{
+    label: 'Disconnect',
+    key: '1',
+    onClick: disconnect,
+  }];
+  const menuProps = {
+    items,
+  };
+  if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.bsc,ChainId.heco,ChainId.ethereum,ChainId.esc,ChainId.celo].indexOf(chainId) < 0) {
     return (
       <>
       {/* <WrongNetworkWrapper isMobile={isMobile}> */}
@@ -132,7 +131,7 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
     <>
       {account ? (
               <Dropdown
-                  overlay={menu}
+                  menu={menuProps}
                   trigger={["hover","click"]}
               >
         <HeaderView>
@@ -194,7 +193,7 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   );
 }
 export const BaseView = styled.div<base_type>`
-   margin-left:${props => props.marginLeft};
+    margin-left:${props => props.marginLeft};
     margin-right:${props => props.marginRight};
     margin-top:${props => props.marginTop};
     margin-bottom:${props => props.marginBottom};
