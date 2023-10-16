@@ -360,7 +360,8 @@ export enum ChainId {
     arbitrum=42161,
     kovan=42,
     rinkeby=4,
-    goerli=5
+    goerli=5,
+    celo=42220
 }
 
 // chainId
@@ -373,7 +374,8 @@ export const chainIdConfig: any = {
     [ChainId.local]: "local",
     [ChainId.polygon]: "polygon",
     [ChainId.arbitrum]: "arbitrum",
-    [ChainId.kovan]: "kovan"
+    [ChainId.kovan]: "kovan",
+    [ChainId.celo]: "celo",
 }
 
 export enum ApprovalState {
@@ -1566,7 +1568,7 @@ export function switchNetwork(chainId:string) {
 }
 
 export function enableNetwork(chainId:number) {
-    if(chainId===ChainId.arbitrum || chainId===ChainId.esc){
+    if(chainId===ChainId.arbitrum || chainId===ChainId.esc || chainId === ChainId.celo){
         return true
     }
     return false
@@ -1580,8 +1582,9 @@ const rpcUrls = {
     20: "https://api.elastos.io/esc",           // Elastos mainnet
     21: "https://api-testnet.elastos.io/eth",       // Elastos testnet
     128: "https://heconode.ifoobar.com",             // HECO mainnet
-    [ChainId.arbitrum]:"https://arb1.arbitrum.io/rpc",        // Arbitrum
-    56:"https://bsc-dataseed1.binance.org/",        // BSC
+    [ChainId.arbitrum]: "https://arb1.arbitrum.io/rpc",        // Arbitrum
+    56: "https://bsc-dataseed1.binance.org/",        // BSC
+    42220: "https://forno.celo.org",        // Celo
 }
 const walletConnect = {
     rpc: rpcUrls,
@@ -1621,31 +1624,25 @@ export function getNFTCardBgImage(type: string) {
   switch (type) {
       case '1': {
           return ImageCommon.NFT_LV1
-          break
       }
       case '2': {
         return ImageCommon.NFT_LV2
-        break
       }
       case '3': {
           return ImageCommon.NFT_LV3
-          break
       }
       case '4': {
           return ImageCommon.NFT_LV4
-          break
       }
       case '5': {
           return ImageCommon.NFT_LV5
-          break
       }
       default:{
         return ImageCommon.NFT_LV1
-        break
       }
-
   }
 }
+
 export function getRandom(num:number) {
     return Math.floor(Math.random()*num);
 }

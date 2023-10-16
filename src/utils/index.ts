@@ -1,9 +1,9 @@
-import { Contract } from '@ethersproject/contracts'
 import { getAddress } from '@ethersproject/address'
-import { AddressZero } from '@ethersproject/constants'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import {ChainId} from "../common/Common";
+import { AddressZero } from '@ethersproject/constants'
+import { Contract } from '@ethersproject/contracts'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { ChainId } from "../common/Common"
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -27,7 +27,8 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.arbitrum]: 'arbiscan.io',
   [ChainId.kovan]: 'kovan.etherscan.io',
   [ChainId.rinkeby]: 'rinkeby.etherscan.io',
-  [ChainId.goerli]: 'goerli.etherscan.io'
+  [ChainId.goerli]: 'goerli.etherscan.io',
+  [ChainId.celo]: 'celoscan.io',
 }
 
 export function getScanLink(
@@ -67,7 +68,8 @@ const SCAN_NAMES: { [chainId in ChainId]: string } = {
   [ChainId.arbitrum]: 'ArbitrumScan',
   [ChainId.kovan]: 'KovanScan',
   [ChainId.rinkeby]: 'RinkebyScan',
-  [ChainId.goerli]: 'GoerliScan'
+  [ChainId.goerli]: 'GoerliScan',
+  [ChainId.celo]: 'CeloScan',
 }
 
 export function getScanName(chainId: ChainId): string {
