@@ -1,12 +1,13 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import Modal from '../NormalModal'
-import { RowCenter } from '../../components/Row'
-import {ChainId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
+import message from "antd/lib/message";
+import { BigNumber, ethers } from "ethers";
+import { useContext } from 'react';
+import styled from 'styled-components';
 import ImageCommon from "../../assets/common/ImageCommon";
-import {BaseView, CenterView, FlexViewBetween, FlexViewCenterColumn} from "../Common";
-import {BigNumber, ethers} from "ethers";
+import { ChainId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
+import { RowCenter } from '../../components/Row';
+import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
+import Modal from '../NormalModal';
 const Container = styled(FlexViewCenterColumn)`
   width:500px;
   padding:30px;
@@ -17,7 +18,7 @@ const Container = styled(FlexViewCenterColumn)`
     padding:15px;
     width:90%;
   };
- 
+
 `
 const Logo = styled.img`
     width:280px;
@@ -110,26 +111,27 @@ export default function WalletConnectModal({
                     changeChainId(connectProvider.chainId)
                 })
             }else {
-                console.log("MetaMaskLogin")
+                if (!ethereum?.isMetaMask) {
+                    message.warn("Please install MetaMask!");
+                    return;
+                }
                 if ([ChainId.arbitrum,ChainId.ropsten,ChainId.esc].indexOf(chainId)>=0) {
-                    console.log("ifMetaMask")
                     ethereum.request({method: 'eth_requestAccounts'});
                     window.location.reload()
                 } else {
-                    console.log("elseMetaMask")
                     ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [
                             {
-                                            chainId: BigNumber.from(ChainId.arbitrum).toHexString(),
-                                            chainName: 'Arbitrum',
-                                            nativeCurrency: {
-                                                name: 'ETH',
-                                                symbol: 'ETH', // 2-6 characters long
-                                                decimals: 18
-                                            },
-                                            rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-                                            blockExplorerUrls: ['https://arbiscan.io/']
+                                chainId: BigNumber.from(ChainId.arbitrum).toHexString(),
+                                chainName: 'Arbitrum',
+                                nativeCurrency: {
+                                    name: 'ETH',
+                                    symbol: 'ETH', // 2-6 characters long
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+                                blockExplorerUrls: ['https://arbiscan.io/']
                             }
                         ]
                     }).then((res: any) => {
