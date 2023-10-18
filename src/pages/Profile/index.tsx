@@ -1080,7 +1080,6 @@ function Profile(props: any) {
         setConnectToModal(true);
     }, []);
     const {chainId} = useContext(NetworkTypeContext);
-    const testScore = 100.00
     const network = ChainId[chainId];
     const [chainIndex, setChainIndex] = useState(0);
     const [segmentIndex, setSegmentIndex] = useState(0);
@@ -1091,15 +1090,10 @@ function Profile(props: any) {
     const showWarning = useOpenWarnning(true);
     const creditInfo = useCreditInfo();
     const scoreInfo = useCreditScore()
-    // console.log(creditInfo,"creditInfo")
     const addTransaction = useTransactionAdder();
     const addToast = useAddToast();
     const loading = useContext(LoadingContext)
 
-    // const CredaContract = useContract(
-    //     ContractConfig.InitialMint[network]?.address,
-    //     ContractConfig.InitialMint.abi
-    // );
     const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
 
     const APIContract = useContract(
@@ -1122,7 +1116,7 @@ function Profile(props: any) {
 
     useEffect(() => {
         showWarning();
-    }, [account]);
+    }, [showWarning]);
 
     function approve() {
       loading.show(LoadingType.confirm, `Sync`)
@@ -1140,7 +1134,6 @@ function Profile(props: any) {
                 addToast(ToastStatus.error, err.data?.message);
                 tipError(err);
                 loading.show(LoadingType.error, err.reason || err.message)
-
             });
     }
 
@@ -1344,7 +1337,7 @@ function Profile(props: any) {
                                     }}
                                 >
                                     <Lottie
-                                        // playingState={stopAnimation?'paused':'playing'}
+                                        playingState={stopAnimation?'paused':'playing'}
                                         config={{
                                             loop: true,
                                             autoplay: true,
@@ -2739,7 +2732,6 @@ function ApprovalItem() {
 
 function ApprovalPhoneDiv({data, netType}: any) {
     const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     function cancel(cancelApprove: any) {
@@ -2862,7 +2854,6 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
 
 function ApprovalDiv({data, netType}: any) {
     const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const themeDark = useTheme();
 
