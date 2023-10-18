@@ -31,7 +31,8 @@ import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
 import ERC20_ABI from '../abiJson/ERC20.json'
-import { ProjectConfig } from "../pages/Profile"
+import { Covalent_enableNetwork, Covalent_fetchTokenBalances, WalletToken } from '../common/covalent.helper'
+import { ChainType2Id, ProjectConfig } from "../pages/Profile"
 import { LoadingContext, LoadingType } from "../provider/loadingProvider"
 
 /**
@@ -1649,8 +1650,10 @@ export function useBoxWalletList(chainType: string): any {
     const chainRef = useRef(chainType)
     const initialState = {
         loading: true,
+        support: false,
         data: {
-            tokens: []
+            total: 0,
+            tokens: [] as WalletToken[]
         }
     }
     const [info, setInfo] = useState(initialState);
@@ -1664,14 +1667,17 @@ export function useBoxWalletList(chainType: string): any {
                 if (chainRef.current !== chainType) {
                     setInfo(initialState)
                 }
-                // const originUrl = `https://defi-app.whatscoin.com/asset/token/heco?address=0xd2050719ea37325bdb6c18a85f6c442221811fac&lang=cn`;
-                const originUrl = `https://defi-app.whatscoin.com/asset/token/${chainType}?address=${account}&lang=cn`;
-                let res = await axios.get(originUrl)
-                // console.log(res)
-                setInfo({
-                    loading: false,
-                    data: res.data.data
-                })
+                const networkChainId = ChainType2Id[chainType]
+                if (networkChainId && Covalent_enableNetwork(networkChainId)) {
+                    const data = await Covalent_fetchTokenBalances(account, networkChainId)
+                    setInfo({
+                        loading: false,
+                        support: true,
+                        data: data
+                    })
+                } else {
+                  // TODO: other chains
+                }
             } catch (e) {
                 logError("useBoxWalletList", e)
                 setInfo(initialState)
