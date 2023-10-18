@@ -421,6 +421,14 @@ const ChainType: any = {
     Polygon: "polygon",
     BSC: "bsc",
 };
+
+export const ChainType2Id: any = {
+  "eth": 1,
+  "heco": 128,
+  "polygon": 137,
+  "bsc": 56,
+};
+
 export const ProjectConfig: any = {
     basisdollar: {
         title1: "Balance",
@@ -2026,16 +2034,17 @@ function WalletDiv({data, chainTitle}: any) {
             </RowBetween>
             <Column style={{width:'100%'}}>
                 {/* <ProfileLoading loading={data.loading}></ProfileLoading> */}
-                <RowCenter>
-                <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
-                                           coming soon~
-                                        </ThemeTextEqure>
-                </RowCenter>
+                {!data.support &&
+                  <RowCenter>
+                    <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
+                        coming soon~
+                    </ThemeTextEqure>
+                  </RowCenter>
+                }
 
                 {!data.loading &&
                 data.data.tokens.map((item: any, index: number) => {
-                    const btcPrice = item.valueBTC / item.value;
-                    if(hidden && item.value<100){
+                    if (hidden && item.value<1){
                         return null
                     }
                     return (
@@ -2058,9 +2067,9 @@ function WalletDiv({data, chainTitle}: any) {
                                         <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
                                             ${formatBalance(item.price)}
                                         </ThemeTextEqure>
-                                        <TextEqure fontColor={"#777E90"} fontSize={14}>
+                                        {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                                             {formatBalance(item.priceChangePercentage24h)}%
-                                        </TextEqure>
+                                        </TextEqure> */}
                                     </Column>
                                 )}
                                 {!isMobile && (
@@ -2097,7 +2106,7 @@ function WalletDiv({data, chainTitle}: any) {
             <SpaceHeight height={40} heightApp={20}/>
             <RowCenter>
                 <TextEqure fontColor={"#777E90"} fontSize={12}>
-                    {`Tokens with value <$100 are hidden`}
+                    {`Tokens with value <$1 are hidden`}
                 </TextEqure>
                 <TextEqure
                     style={{cursor: "pointer", marginLeft: 15}}
