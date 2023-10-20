@@ -115,7 +115,7 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   const menuProps = {
     items,
   };
-  if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.bsc,ChainId.heco,ChainId.ethereum,ChainId.esc,ChainId.celo].indexOf(chainId) < 0) {
+  if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.bsc,ChainId.heco,ChainId.ethereum,ChainId.esc,ChainId.celo, ChainId.celotest].indexOf(chainId) < 0) {
     return (
       <>
       {/* <WrongNetworkWrapper isMobile={isMobile}> */}

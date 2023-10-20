@@ -361,7 +361,8 @@ export enum ChainId {
     kovan=42,
     rinkeby=4,
     goerli=5,
-    celo=42220
+    celo=42220,
+    celotest=44787,
 }
 
 // chainId
@@ -376,6 +377,7 @@ export const chainIdConfig: any = {
     [ChainId.arbitrum]: "arbitrum",
     [ChainId.kovan]: "kovan",
     [ChainId.celo]: "celo",
+    [ChainId.celotest]: "celotest",
 }
 
 export enum ApprovalState {
@@ -1568,7 +1570,7 @@ export function switchNetwork(chainId:string) {
 }
 
 export function enableNetwork(chainId:number) {
-    if(chainId===ChainId.arbitrum || chainId===ChainId.esc || chainId === ChainId.celo){
+    if(chainId===ChainId.arbitrum || chainId===ChainId.esc || chainId === ChainId.celo || chainId === ChainId.celotest){
         return true
     }
     return false
@@ -1585,6 +1587,7 @@ const rpcUrls = {
     [ChainId.arbitrum]: "https://arb1.arbitrum.io/rpc",        // Arbitrum
     56: "https://bsc-dataseed1.binance.org/",        // BSC
     42220: "https://forno.celo.org",        // Celo
+    44787: "https://alfajores-forno.celo-testnet.org",        // Celo testnet
 }
 const walletConnect = {
     rpc: rpcUrls,
