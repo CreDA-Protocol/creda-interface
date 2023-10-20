@@ -29,6 +29,7 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   [ChainId.rinkeby]: 'rinkeby.etherscan.io',
   [ChainId.goerli]: 'goerli.etherscan.io',
   [ChainId.celo]: 'celoscan.io',
+  [ChainId.celotest]: 'alfajores.celoscan.io',
 }
 
 export function getScanLink(
@@ -59,7 +60,7 @@ const SCAN_NAMES: { [chainId in ChainId]: string } = {
   [ChainId.ethereum]: 'EthersScan',
   [ChainId.heco]: 'HecoScan',
   [ChainId.hecotest]: 'HecoScan',
-  [ChainId.elatest]: 'EthersScan',
+  [ChainId.elatest]: 'Elastos Explore',
   [ChainId.esc]: 'Elastos Explore',
   [ChainId.bsc]: 'BscScan',
   [ChainId.local]: 'LocalScan',
@@ -70,6 +71,7 @@ const SCAN_NAMES: { [chainId in ChainId]: string } = {
   [ChainId.rinkeby]: 'RinkebyScan',
   [ChainId.goerli]: 'GoerliScan',
   [ChainId.celo]: 'CeloScan',
+  [ChainId.celotest]: 'CeloScan',
 }
 
 export function getScanName(chainId: ChainId): string {
