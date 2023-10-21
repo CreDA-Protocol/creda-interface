@@ -1,22 +1,21 @@
+import { useContext, useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
-import AppBody, {MainFullBody} from '../AppBody'
-import {RowBetween, RowFixed, SpaceHeight} from '../../components/Row'
-import Column from '../../components/Column'
-import {isMobile} from 'react-device-detect';
-import React, {useContext, useEffect, useState} from 'react'
-import {ChainId, formatBalance, MyBankAssetPriceIcons, MyBankAssetPriceIconsESC} from "../../common/Common";
-import {useTheme} from '../../state/application/hooks'
-import {ThemeText, ThemeTextEqure} from '../../components/ThemeComponent'
-import {BankTopInfo} from './index'
-import {useSushiPrice} from '../../contract'
-import ContractConfig from '../../contract/ContractConfig'
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import CREDAIcon from '../../assets/tokens/creda.png'
-import {Skeleton} from "antd";
-import {BaseView} from "../../components/Common";
-import { getCoinPrice } from './getPrice'
 import ImageToken from '../../assets/tokens/ImageToken'
+import CREDAIcon from '../../assets/tokens/creda.png'
+import { ChainId, MyBankAssetPriceIcons, MyBankAssetPriceIconsESC, formatBalance } from "../../common/Common"
+import Column from '../../components/Column'
+import { RowBetween, RowFixed, SpaceHeight } from '../../components/Row'
+import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { useSushiPrice } from '../../contract'
+import ContractConfig from '../../contract/ContractConfig'
+import { GlidePrice } from '../../model/wallet'
+import { useTheme } from '../../state/application/hooks'
+import AppBody, { MainFullBody } from '../AppBody'
+import { getCoinPrice } from './getPrice'
+import { BankTopInfo } from './index'
 
 const Body = styled(Column)`
   width:100%;
@@ -175,14 +174,14 @@ function Earn(){
         coinList.push(ContractConfig[item.name][network]?.address.toLowerCase())
       })
 
-      getCoinPrice(JSON.stringify(coinList),(prices:any)=>{
+      getCoinPrice(JSON.stringify(coinList),(prices:GlidePrice[])=>{
         let result:any = []
 
         prices.map((item:any,index:number)=>{
           let upper = item.id.toLowerCase()
           let temp =  coinList.indexOf(upper)
           if (temp >-1){
-            if (earnPool[temp].name == 'CREDA'){
+            if (earnPool[temp].name === 'CREDA'){
               result.unshift({
                 name:earnPool[temp].name,
                 price:formatBalance(item.derivedUSD,4),
@@ -201,7 +200,7 @@ function Earn(){
         setIconList(result)
       })
     }
-  },[earnPool])
+  },[earnPool, chainId])
 
   return <BGDiv style={{
     backgroundColor:themeDark? '#17181A' : 'white',

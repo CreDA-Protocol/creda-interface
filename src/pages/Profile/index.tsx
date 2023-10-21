@@ -24,8 +24,9 @@ import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import BNB from "../../assets/tokens/Binance Coin (BNB).png";
+import ESC from "../../assets/tokens/ELA.png";
 import ETH from "../../assets/tokens/Ethereum (ETH).png";
-import HECO from "../../assets/tokens/HECO.png";
+
 import {
   ApprovalState,
   ChainId,
@@ -36,6 +37,7 @@ import {
   formatAccount,
   formatBalance,
   formatPercent,
+  formatPositiveNumber,
   getNFTCardBgImage,
   switchNetwork,
   tipError,
@@ -410,16 +412,17 @@ const Arrow = styled.img`
 const wrapItems = [
     "Ethereum",
     "BSC",
+    "Elastos ESC",
     "HECO",
     "Polygon",
     "Arbitrum",
-    "Elastos ESC",
 ];
 const ChainType: any = {
     Ethereum: "eth",
     HECO: "heco",
     Polygon: "polygon",
     BSC: "bsc",
+    "Elastos ESC": "esc"
 };
 
 export const ChainType2Id: any = {
@@ -427,6 +430,7 @@ export const ChainType2Id: any = {
   "heco": 128,
   "polygon": 137,
   "bsc": 56,
+  "esc": 20,
 };
 
 export const ProjectConfig: any = {
@@ -1086,7 +1090,7 @@ function Profile(props: any) {
     const walletList = useBoxWalletList(ChainType[wrapItems[chainIndex]]);
     const walletListEth = useBoxWalletList(ChainType[wrapItems[0]]);
     const walletListBsc = useBoxWalletList(ChainType[wrapItems[1]]);
-    const walletListHeco = useBoxWalletList(ChainType[wrapItems[2]]);
+    const walletListEsc = useBoxWalletList(ChainType[wrapItems[2]]);
     const showWarning = useOpenWarnning(true);
     const creditInfo = useCreditInfo();
     const scoreInfo = useCreditScore()
@@ -1533,7 +1537,7 @@ function Profile(props: any) {
                                     {formatBalance(
                                         walletListEth.data?.total +
                                         walletListBsc.data?.total +
-                                        walletListHeco.data?.total,
+                                        walletListEsc.data?.total,
                                         2
                                     )}
                                 </ThemeTextEqure>
@@ -1623,14 +1627,14 @@ function Profile(props: any) {
                                         }
                                     >
                                         <RowFixed>
-                                            <IconIcon src={HECO}/>
+                                            <IconIcon src={ESC}/>
                                             <Column>
                                                 <TextEqure fontColor={"#777E90"} fontSize={16}>
-                                                    Assets on HECO
+                                                    Assets on ESC
                                                 </TextEqure>
                                                 <RowFixed>
                                                     <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
-                                                        ${formatBalance(walletListHeco.data?.total)}
+                                                        ${formatBalance(walletListEsc.data?.total)}
                                                     </ThemeTextEqure>
                                                     {/*<TextEqure style={{marginTop:10,marginLeft:10}} fontColor={'#4E55FF'} fontSize={12}>10%</TextEqure>*/}
                                                 </RowFixed>
@@ -2058,7 +2062,7 @@ function WalletDiv({data, chainTitle}: any) {
                                 {!isMobile && (
                                     <Column style={{alignItems: "flex-end", flex: 1}}>
                                         <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            ${formatBalance(item.price)}
+                                            ${formatPositiveNumber(item.price)}
                                         </ThemeTextEqure>
                                         {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                                             {formatBalance(item.priceChangePercentage24h)}%
@@ -2078,7 +2082,7 @@ function WalletDiv({data, chainTitle}: any) {
                                 <Row style={{alignItems: "flex-start", flex: 1}}>
                                     <Column style={{alignItems: "flex-end", flex: 1}}>
                                         <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            ${formatBalance(item.value)}
+                                            ${formatPositiveNumber(item.value)}
                                         </ThemeTextEqure>
                                         <TextEqure fontColor={"#777E90"} fontSize={14}>
                                             {/*{formatBalance(item.valueBTC)} BTC*/}
