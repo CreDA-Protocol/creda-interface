@@ -31,7 +31,9 @@ import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
 import ERC20_ABI from '../abiJson/ERC20.json'
-import { Covalent_enableNetwork, Covalent_fetchTokenBalances, WalletToken } from '../common/covalent.helper'
+import { Covalent_enableNetwork, Covalent_fetchTokenBalances } from '../common/covalent.helper'
+import { Esc_enableNetwork, Esc_fetchTokenBalances } from '../common/esc.helper'
+import { WalletToken } from '../model/wallet'
 import { ChainType2Id, ProjectConfig } from "../pages/Profile"
 import { LoadingContext, LoadingType } from "../provider/loadingProvider"
 
@@ -1632,7 +1634,7 @@ export function getPrice(markets: any, symbol: string) {
         return 0
     }
     const priceRes = BigNumber.from(markets[symbol + '.priceOracle.getUnderlyingPrice'][0].hex)
-    const usdtPrice = BigNumber.from(markets['USDT' + '.priceOracle.getUnderlyingPrice'][0].hex)
+    const usdtPrice = BigNumber.from(markets['USDT.priceOracle.getUnderlyingPrice'][0].hex)
     const price = Number(bigNumberToBalance(priceRes)) / Number(bigNumberToBalance(usdtPrice))
     console.log(`${symbol} priceInUsdt: ${price}`)
     return price;
@@ -1668,15 +1670,26 @@ export function useBoxWalletList(chainType: string): any {
                     setInfo(initialState)
                 }
                 const networkChainId = ChainType2Id[chainType]
-                if (networkChainId && Covalent_enableNetwork(networkChainId)) {
+                if (networkChainId) {
+                  if (Covalent_enableNetwork(networkChainId)) {
                     const data = await Covalent_fetchTokenBalances(account, networkChainId)
                     setInfo({
                         loading: false,
                         support: true,
                         data: data
                     })
+                  } else if (Esc_enableNetwork(networkChainId)) {
+                    const data = await Esc_fetchTokenBalances(account, networkChainId)
+                    setInfo({
+                        loading: false,
+                        support: true,
+                        data: data
+                    })
+                  } else {
+                    // TODO: other chains
+                  }
                 } else {
-                  // TODO: other chains
+                    // Not support
                 }
             } catch (e) {
                 logError("useBoxWalletList", e)
@@ -2199,24 +2212,19 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                 let price:any = ''
                 if (chainId===ChainId.esc){
                   const priceInfo = await getPriceESC(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
-                  price = Number( formatBalance(priceInfo[0].derivedUSD,4))
+                  if (priceInfo && priceInfo[0])
+                    price = Number( formatBalance(priceInfo[0].derivedUSD,4))
                 }else {
                   price = await getPriceByApi(symbol)
                 }
-                // console.log('symbol==',symbol);
 
-                // console.log('totalSupply==',bigNumberToBalance(totalSupply, decimals));
                 console.log('price==',symbol,price);
 
                 const tvl = Number(bigNumberToBalance(totalSupply, decimals)) * price * 2
-                // console.log('tvl==',tvl);
 
                 const dailyRes = poolInfo[4]
-                // console.log('dailyRes==',bigNumberToBalance(dailyRes));
 
                 const apr = tvl === 0? 0: Number(bigNumberToBalance(dailyRes)) * 365 * 86400 / tvl
-                // console.log('apr==',apr);
-                // console.log('===================================================');
 
                 let pointRes: BigNumber = BigNumber.from(0)
                 try{

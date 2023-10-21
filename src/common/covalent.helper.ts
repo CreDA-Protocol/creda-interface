@@ -1,5 +1,6 @@
 import { BigNumber } from "ethers";
 import { ChainId, bigNumberToBalance } from "./Common";
+import { WalletList } from "../model/wallet";
 
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
@@ -124,20 +125,6 @@ export type BlockTransactionWithContractTransfers = {
   transfers: CovalentTransfer[]; // Transfer items.
 }
 
-// TODO: move to model
-export type WalletToken = {
-  valueBTC: number;
-  value: number;
-  icon: string; // token http image
-  symbol: string;
-  price: number;
-  priceChangePercentage24h?: number;
-  amount: string;
-}
-export type WalletList = {
-  total: number;
-  tokens: WalletToken[];
-}
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
@@ -205,6 +192,5 @@ export function Covalent_enableNetwork(chainId: number) {
       return true;
     default:
       return false;
-
   }
 }

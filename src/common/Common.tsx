@@ -9,6 +9,7 @@ import ImageToken from "../assets/tokens/ImageToken";
 import USDTIcon from '../assets/tokens/Tether (USDT).png';
 import USDCIcon from '../assets/tokens/USD Coin (USDC).png';
 import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png';
+import { GlidePrice } from "../model/wallet";
 import { TransactionDetails } from "../state/transactions/reducer";
 
 
@@ -258,6 +259,14 @@ export function formatBalance(s: string|number, decimals = 2): string {
         return a.toFixed(decimals)
     }
     return s ? Number(s).toFixed(decimals) : a.toFixed(decimals)
+}
+
+// if the number < 0, it indicates that we can't get the right data. eg. token price.
+export function formatPositiveNumber(s: string|number, decimals = 2): string {
+    if (Number(s) < 0) {
+        return '--'
+    }
+    return formatBalance(s, decimals)
 }
 
 export function mathPriceTo8(value:any) {
@@ -1762,7 +1771,8 @@ export function getPriceByApi(symbol:string): Promise<number>{
     })
 
 }
-export function getPriceESC(symbol:string): Promise<any>{
+
+export function getPriceESC(symbol:any): Promise<GlidePrice[]>{
   return new Promise((resolve, reject) => {
     const url = `https://api.glidefinance.io/subgraphs/name/glide/exchange`;
     const params ={
@@ -1789,12 +1799,10 @@ export function getPriceESC(symbol:string): Promise<any>{
     axios.post(url,params).then((res:any)=>{
           resolve(res.data.data.now)
         }).catch((e:any)=>{
-          console.log('getPriceESC==',e);
-          resolve(0)
-
+          console.warn('getPriceESC error:',e);
+          resolve([])
         })
   })
-
 }
 
 export const GasInfo = {
