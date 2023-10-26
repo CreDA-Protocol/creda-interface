@@ -2,27 +2,8 @@ import axios from "axios";
 import { BigNumber } from "ethers";
 import ESC from "../assets/tokens/ELA.png";
 
-import { WalletList } from "../model/wallet";
+import { TokenInfo, TokenType, WalletList } from "../model/wallet";
 import { ChainId, bigNumberToBalance, formatBalance, getPriceESC } from "./Common";
-
-export enum TokenType {
-  ELA = "ELA",
-  ERC_20 = "ERC-20",
-  ERC_721 = "ERC-721",
-  ERC_1155 = "ERC-1155",
-}
-
-/**
- * Information about Token
- */
-export type TokenInfo = {
-  type: TokenType;
-  symbol: string;
-  name: string;
-  decimals: string;
-  contractAddress: string;
-  balance: string;
-}
 
 /**
  * Fetches ELA, ERC20/721/1155 token balances for an EVM (0x) address.

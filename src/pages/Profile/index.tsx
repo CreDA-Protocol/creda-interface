@@ -413,6 +413,7 @@ const wrapItems = [
     "Ethereum",
     "BSC",
     "Elastos ESC",
+    "CELO",
     "HECO",
     "Polygon",
     "Arbitrum",
@@ -422,6 +423,7 @@ const ChainType: any = {
     HECO: "heco",
     Polygon: "polygon",
     BSC: "bsc",
+    CELO: 'celo',
     "Elastos ESC": "esc"
 };
 
@@ -431,6 +433,7 @@ export const ChainType2Id: any = {
   "polygon": 137,
   "bsc": 56,
   "esc": 20,
+  "celo": 42220,
 };
 
 export const ProjectConfig: any = {

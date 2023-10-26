@@ -31,9 +31,10 @@ import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
 import ERC20_ABI from '../abiJson/ERC20.json'
+import { Celo_fetchTokenBalances } from '../common/celo.helper'
 import { Covalent_enableNetwork, Covalent_fetchTokenBalances } from '../common/covalent.helper'
-import { Esc_enableNetwork, Esc_fetchTokenBalances } from '../common/esc.helper'
-import { WalletToken } from '../model/wallet'
+import { Esc_fetchTokenBalances } from '../common/esc.helper'
+import { WalletList, WalletToken } from '../model/wallet'
 import { ChainType2Id, ProjectConfig } from "../pages/Profile"
 import { LoadingContext, LoadingType } from "../provider/loadingProvider"
 
@@ -1669,28 +1670,37 @@ export function useBoxWalletList(chainType: string): any {
                 if (chainRef.current !== chainType) {
                     setInfo(initialState)
                 }
+
+                let support = true;
+                let data: WalletList = {
+                  total: 0,
+                  tokens: [] as WalletToken[]
+                };
                 const networkChainId = ChainType2Id[chainType]
-                if (networkChainId) {
-                  if (Covalent_enableNetwork(networkChainId)) {
-                    const data = await Covalent_fetchTokenBalances(account, networkChainId)
-                    setInfo({
-                        loading: false,
-                        support: true,
-                        data: data
-                    })
-                  } else if (Esc_enableNetwork(networkChainId)) {
-                    const data = await Esc_fetchTokenBalances(account, networkChainId)
-                    setInfo({
-                        loading: false,
-                        support: true,
-                        data: data
-                    })
-                  } else {
-                    // TODO: other chains
-                  }
-                } else {
-                    // Not support
+
+                switch (networkChainId) {
+                  case ChainId.celo:
+                  case ChainId.celotest:
+                    data = await Celo_fetchTokenBalances(account, networkChainId)
+                  break;
+                  case ChainId.esc:
+                  case ChainId.elatest:
+                    data = await Esc_fetchTokenBalances(account, networkChainId)
+                  break;
+                  default:
+                    if (Covalent_enableNetwork(networkChainId)) {
+                      data = await Covalent_fetchTokenBalances(account, networkChainId)
+                    } else {
+                      support = false;
+                    }
+                  break;
                 }
+                if (support)
+                  setInfo({
+                    loading: false,
+                    support: support,
+                    data: data
+                  })
             } catch (e) {
                 logError("useBoxWalletList", e)
                 setInfo(initialState)
