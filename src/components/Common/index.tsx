@@ -1,45 +1,45 @@
-import React, {HTMLProps, useCallback, useEffect, useState} from 'react'
-import styled, {keyframes} from 'styled-components'
-import {colors, formatBalance, panelPairs} from '../../common/Common'
-import {animated, config, useSpring} from 'react-spring'
+import React, { HTMLProps, useCallback, useEffect, useState } from 'react'
+import styled, { keyframes } from 'styled-components'
+import { colors, formatBalance, panelPairs } from '../../common/Common'
+import { animated, config, useSpring } from 'react-spring'
 import ImageCommon from '../../assets/common/ImageCommon'
 import ContractConfig from '../../contract/ContractConfig'
-import {useBalanceV2} from '../../contract'
-import {isMobile} from 'react-device-detect'
+import { useBalanceV2 } from '../../contract'
+import { isMobile } from 'react-device-detect'
 import Circle from '../../assets/svg/lightcircle.svg'
 import ReactGA from 'react-ga'
-import {Lottie} from "@crello/react-lottie";
+import { Lottie } from "@crello/react-lottie";
 import ImageToken from '../../assets/tokens/ImageToken'
-import {useTheme} from "../../state/application/hooks";
+import { useTheme } from "../../state/application/hooks";
 import { useHistory } from 'react-router-dom'
-import {Skeleton} from "antd";
-const lottie_loading = require('../../lottie/lf30_editor_zt6iytgw.json')
+import { Skeleton } from "antd";
+import lottie_loading from '@assets/lottie/lf30_editor_zt6iytgw.json';
 
 export const Content = styled.div`
   width:100%;
 `
 
 export interface base_type {
-    marginLeft?: string,
-    marginRight?: string,
-    marginTop?: string,
-    marginBottom?: string,
-    height?: string,
-    width?: string,
-    onClick?: any,
-    textAlign?: string,
-    backgroundColor?: string,
-    maxWidth?: string,
-    minWidth?: string,
-    paddingLeft?: string,
-    paddingRight?: string,
-    paddingTop?: string,
-    paddingBottom?: string,
-    opacity?:number,
-    pointerEvents?:string,
-    disabled?:boolean,
-    position?:string,
-    cursor?:string
+  marginLeft?: string,
+  marginRight?: string,
+  marginTop?: string,
+  marginBottom?: string,
+  height?: string,
+  width?: string,
+  onClick?: any,
+  textAlign?: string,
+  backgroundColor?: string,
+  maxWidth?: string,
+  minWidth?: string,
+  paddingLeft?: string,
+  paddingRight?: string,
+  paddingTop?: string,
+  paddingBottom?: string,
+  opacity?: number,
+  pointerEvents?: string,
+  disabled?: boolean,
+  position?: string,
+  cursor?: string
 }
 
 export const BaseView = styled.div<base_type>`
@@ -57,16 +57,16 @@ export const BaseView = styled.div<base_type>`
     background-color:${props => props.backgroundColor};
     max-width:${props => props.maxWidth};
     min-width:${props => props.minWidth};
-    opacity:${props=>props.disabled?0.6:1};
-    pointer-events:${props=>props.disabled?"none":"auto"};
-    position:${props=>props.position};
-    cursor:${props=>props.cursor};
+    opacity:${props => props.disabled ? 0.6 : 1};
+    pointer-events:${props => props.disabled ? "none" : "auto"};
+    position:${props => props.position};
+    cursor:${props => props.cursor};
     position:relative;
 `
 export const WinView = styled(BaseView)`
      @media (max-width: 768px) {
        display:none;
-     };  
+     };
 `
 export const MobileView = styled(BaseView)`
      display:none;
@@ -127,21 +127,21 @@ export const ButtonViewSamll = styled(ButtonView)`
  max-width:100px;
  color: ${colors.white};
 `
-export const Button = React.memo(({icon, title, style, size}: any) => {
-    let Warp = ButtonView
-    if (size === 'sm') {
-        Warp = ButtonViewSamll
-    }
-    return (
-        <Warp
-            {...style}
-        >
-            {icon && <ButtonIcon
-                src={icon}
-            ></ButtonIcon>}
-            {title}
-        </Warp>
-    )
+export const Button = React.memo(({ icon, title, style, size }: any) => {
+  let Warp = ButtonView
+  if (size === 'sm') {
+    Warp = ButtonViewSamll
+  }
+  return (
+    <Warp
+      {...style}
+    >
+      {icon && <ButtonIcon
+        src={icon}
+      ></ButtonIcon>}
+      {title}
+    </Warp>
+  )
 })
 
 export const CardView = styled(BaseView)`
@@ -190,80 +190,80 @@ export const CardPairTitle = styled(BaseView)`
   };
   margin-left:10px;
 `
-export const CardPair = React.memo(({pair1, pair2, style,showTitle}: any) => {
-    return (
-        <FlexView
-            {...style}
-        >
-            <CardPairIcon src={ImageToken[pair1]}></CardPairIcon>
-            {pair2 && <CardPairIcon2 src={ImageToken[pair2]}></CardPairIcon2>}
-            {
-              showTitle && <CardPairTitle>
-              {
-                pair2 ? (pair1 + '/' + pair2) : pair1
-              }
-            </CardPairTitle>
-            }
-        </FlexView>
-    )
-})
-export const CardPairCustom = React.memo(({pair1, pair2, style,showTitle}: any) => {
+export const CardPair = React.memo(({ pair1, pair2, style, showTitle }: any) => {
   return (
-      <FlexView
-          {...style}
-      >
-          <CardPairIcon src={pair1}></CardPairIcon>
-          {pair2 && <CardPairIcon2 src={pair2}></CardPairIcon2>}
+    <FlexView
+      {...style}
+    >
+      <CardPairIcon src={ImageToken[pair1]}></CardPairIcon>
+      {pair2 && <CardPairIcon2 src={ImageToken[pair2]}></CardPairIcon2>}
+      {
+        showTitle && <CardPairTitle>
           {
-            showTitle && <CardPairTitle>
-            {
-              pair2 ? (pair1 + '/' + pair2) : pair1
-            }
-          </CardPairTitle>
+            pair2 ? (pair1 + '/' + pair2) : pair1
           }
-      </FlexView>
+        </CardPairTitle>
+      }
+    </FlexView>
   )
 })
-export const CardPairOrigin = React.memo(({pairs,icons,style,showTitle}: any) => {
-    if(!pairs || !icons){
-        return null
-    }
-    return (
-        <FlexView
-            {...style}
-        >
-
-            {
-                icons.map((item:any,index:number)=>{
-                    if(index===0){
-                        return <CardPairIcon src={item}></CardPairIcon>
-                    }
-                    return <CardPairIcon2
-                        src={item}
-                    ></CardPairIcon2>
-                })
-            }
-            {
-                showTitle && <CardPairTitle>
-                    {
-                        pairs.join("+")
-                    }
-                </CardPairTitle>
-            }
-        </FlexView>
-    )
+export const CardPairCustom = React.memo(({ pair1, pair2, style, showTitle }: any) => {
+  return (
+    <FlexView
+      {...style}
+    >
+      <CardPairIcon src={pair1}></CardPairIcon>
+      {pair2 && <CardPairIcon2 src={pair2}></CardPairIcon2>}
+      {
+        showTitle && <CardPairTitle>
+          {
+            pair2 ? (pair1 + '/' + pair2) : pair1
+          }
+        </CardPairTitle>
+      }
+    </FlexView>
+  )
 })
-export function AnimatedNumber({to, view}: any) {
-    const AnimatedView = animated(view)
-    const {number} = useSpring({
-        reset: true,
-        from: {number: 0},
-        number: Number(to),
-        delay: 50,
-        config: config.default
-    })
+export const CardPairOrigin = React.memo(({ pairs, icons, style, showTitle }: any) => {
+  if (!pairs || !icons) {
+    return null
+  }
+  return (
+    <FlexView
+      {...style}
+    >
 
-    return <AnimatedView>{number}</AnimatedView>
+      {
+        icons.map((item: any, index: number) => {
+          if (index === 0) {
+            return <CardPairIcon src={item}></CardPairIcon>
+          }
+          return <CardPairIcon2
+            src={item}
+          ></CardPairIcon2>
+        })
+      }
+      {
+        showTitle && <CardPairTitle>
+          {
+            pairs.join("+")
+          }
+        </CardPairTitle>
+      }
+    </FlexView>
+  )
+})
+export function AnimatedNumber({ to, view }: any) {
+  const AnimatedView = animated(view)
+  const { number } = useSpring({
+    reset: true,
+    from: { number: 0 },
+    number: Number(to),
+    delay: 50,
+    config: config.default
+  })
+
+  return <AnimatedView>{number}</AnimatedView>
 }
 
 export const ModalView = styled(FlexViewCenter)`
@@ -277,22 +277,22 @@ export const ModalView = styled(FlexViewCenter)`
 `
 
 export interface modal_type {
-    onCancel: () => void,
-    show: boolean,
-    children?: any
+  onCancel: () => void,
+  show: boolean,
+  children?: any
 }
 
-export function Modal({onCancel, show, children}: modal_type) {
-    if (!show) {
-        return null
-    }
-    return (
-        <ModalView
-            onClick={onCancel}
-        >
-            {children}
-        </ModalView>
-    )
+export function Modal({ onCancel, show, children }: modal_type) {
+  if (!show) {
+    return null
+  }
+  return (
+    <ModalView
+      onClick={onCancel}
+    >
+      {children}
+    </ModalView>
+  )
 }
 
 const PanelView = styled(FlexView)`
@@ -313,8 +313,8 @@ const PanelValue = styled.input`
   font-size: 26px;
   flex:1;
   outline: none;
-  background:none;  
-  outline:none;  
+  background:none;
+  outline:none;
   border:none;
   font-weight: 500;
   width: 100%;
@@ -341,74 +341,74 @@ const MaxButton = styled(FlexViewCenter)`
 `
 
 // 下拉列表组件
-export const InputPanel = ({onChangeValue, onChangeSymbol}: any) => {
-    const [show, setShow] = useState(false);
-    const [item, setItem] = useState<any>({});
-    const [value, setValue] = useState("");
-    useEffect(() => {
-        changeSymbol(panelPairs[1], "0")
-    }, [])
+export const InputPanel = ({ onChangeValue, onChangeSymbol }: any) => {
+  const [show, setShow] = useState(false);
+  const [item, setItem] = useState<any>({});
+  const [value, setValue] = useState("");
+  useEffect(() => {
+    changeSymbol(panelPairs[1], "0")
+  }, [])
 
-    function changeValue(value: string) {
-        setValue(value)
-        onChangeValue && onChangeValue(value);
-    }
+  function changeValue(value: string) {
+    setValue(value)
+    onChangeValue && onChangeValue(value);
+  }
 
-    function changeSymbol(symbol: string, balance: string) {
-        setItem({
-            symbol: symbol,
-            balance: balance
-        })
-        setShow(false)
-        onChangeSymbol && onChangeSymbol(symbol);
-    }
+  function changeSymbol(symbol: string, balance: string) {
+    setItem({
+      symbol: symbol,
+      balance: balance
+    })
+    setShow(false)
+    onChangeSymbol && onChangeSymbol(symbol);
+  }
 
-    return (
-        <PanelView>
-            <PanelValue
-                placeholder={'0.0000'}
-                value={value}
-                onChange={(e) => changeValue(e.target.value)}
-            ></PanelValue>
-            {item.symbol ? <>
-                <MaxButton
-                    onClick={() => changeValue(item.balance)}
-                >
-                    MAX
-                </MaxButton>
-                <TokenInfo
-                    symbol={item.symbol}
-                ></TokenInfo>
-            </> : <TokenTitle>Select token</TokenTitle>}
-            <CustomIcon
-                src={ImageCommon.icon_down}
-                size={isMobile ? 12 : 25}
-                onClick={() => setShow(!show)}
-            ></CustomIcon>
-            {show && <PanelList
-                onChangeItem={(data: any) => {
-                    changeSymbol(data.symbol, data.balance);
-                }}
-            ></PanelList>}
-        </PanelView>
-    )
+  return (
+    <PanelView>
+      <PanelValue
+        placeholder={'0.0000'}
+        value={value}
+        onChange={(e) => changeValue(e.target.value)}
+      ></PanelValue>
+      {item.symbol ? <>
+        <MaxButton
+          onClick={() => changeValue(item.balance)}
+        >
+          MAX
+        </MaxButton>
+        <TokenInfo
+          symbol={item.symbol}
+        ></TokenInfo>
+      </> : <TokenTitle>Select token</TokenTitle>}
+      <CustomIcon
+        src={ImageCommon.icon_down}
+        size={isMobile ? 12 : 25}
+        onClick={() => setShow(!show)}
+      ></CustomIcon>
+      {show && <PanelList
+        onChangeItem={(data: any) => {
+          changeSymbol(data.symbol, data.balance);
+        }}
+      ></PanelList>}
+    </PanelView>
+  )
 }
-const PanelList = ({onChangeItem}: any) => {
-    // useEffect(()=>{
-    //   onChangeItem && onChangeItem(panelPairs[0])
-    // },[])
-    return (
-        <PanelItemView>
-            {panelPairs.map((item, index) => {
-                return (<PanelItem
-                    symbol={item}
-                    onSelect={(data: any) => {
-                        onChangeItem && onChangeItem(data)
-                    }}
-                ></PanelItem>)
-            })}
-        </PanelItemView>
-    )
+const PanelList = ({ onChangeItem }: any) => {
+  // useEffect(()=>{
+  //   onChangeItem && onChangeItem(panelPairs[0])
+  // },[])
+  return (
+    <PanelItemView>
+      {panelPairs.map((item, index) => {
+        return (<PanelItem
+          symbol={item}
+          onSelect={(data: any) => {
+            onChangeItem && onChangeItem(data)
+          }}
+        ></PanelItem>)
+      })}
+    </PanelItemView>
+  )
 }
 const PanelItemView = styled(BaseView)`
   position:absolute;
@@ -427,22 +427,22 @@ const PanelItemList = styled(FlexViewBetween)`
     background:${colors.grey};
   }
 `
-const PanelItem = ({symbol, onSelect}: any) => {
-    const info = useBalanceV2(symbol);
-    return (
-        <PanelItemList
-            onClick={() => {
-                onSelect && onSelect({symbol, balance: info.balance})
-            }}
-        >
-            <TokenInfoItem
-                symbol={symbol}
-            ></TokenInfoItem>
-            {info.loading ? <CustomLightSpinner src={Circle} alt="loader" size={'20px'}/> :
-                <PanelItemTitle>{formatBalance(info.balance)}</PanelItemTitle>}
+const PanelItem = ({ symbol, onSelect }: any) => {
+  const info = useBalanceV2(symbol);
+  return (
+    <PanelItemList
+      onClick={() => {
+        onSelect && onSelect({ symbol, balance: info.balance })
+      }}
+    >
+      <TokenInfoItem
+        symbol={symbol}
+      ></TokenInfoItem>
+      {info.loading ? <CustomLightSpinner src={Circle} alt="loader" size={'20px'} /> :
+        <PanelItemTitle>{formatBalance(info.balance)}</PanelItemTitle>}
 
-        </PanelItemList>
-    )
+    </PanelItemList>
+  )
 }
 
 const PanelItemTitle = styled(BaseView)`
@@ -451,12 +451,12 @@ const PanelItemTitle = styled(BaseView)`
   color: ${colors.title};
   @media (max-width: 768px) {
     font-size: 9px;
-  };  
+  };
 `
 
 interface icon_type {
-    size?: number,
-    mSize?:number
+  size?: number,
+  mSize?: number
 }
 
 export const CustomIcon = styled.img<icon_type>`
@@ -464,7 +464,7 @@ export const CustomIcon = styled.img<icon_type>`
   height: auto;
   cursor:pointer;
   @media (max-width: 768px) {
-    width: ${props =>( (props.mSize || props.size) + "px") || "36px"};
+    width: ${props => ((props.mSize || props.size) + "px") || "36px"};
   };
 `
 export const TokenTitle = styled(BaseView)`
@@ -477,38 +477,38 @@ export const TokenTitle = styled(BaseView)`
     font-size: 12px;
     margin-left:5px;
     margin-right:5px;
-  };  
+  };
 `
 export const TokenTitleItem = styled(TokenTitle)`
  font-size: 16px;
  @media (max-width: 768px) {
   font-size: 8px;
-};  
- 
+};
+
 `
-export const TokenInfo = ({symbol}: any) => {
-    return (
-        <FlexView>
-            <CustomIcon
-                size={isMobile ? 18 : 36}
-                src={ContractConfig[symbol]?.icon}
-            ></CustomIcon>
-            <TokenTitle>{symbol}</TokenTitle>
-        </FlexView>
-    )
+export const TokenInfo = ({ symbol }: any) => {
+  return (
+    <FlexView>
+      <CustomIcon
+        size={isMobile ? 18 : 36}
+        src={ContractConfig[symbol]?.icon}
+      ></CustomIcon>
+      <TokenTitle>{symbol}</TokenTitle>
+    </FlexView>
+  )
 }
-export const TokenInfoItem = ({symbol}: any) => {
-    return (
-        <FlexView
-            minWidth={isMobile ? "30px" : "85px"}
-        >
-            <CustomIcon
-                src={ContractConfig[symbol].icon}
-                size={isMobile ? 10 : 20}
-            ></CustomIcon>
-            <TokenTitleItem>{symbol}</TokenTitleItem>
-        </FlexView>
-    )
+export const TokenInfoItem = ({ symbol }: any) => {
+  return (
+    <FlexView
+      minWidth={isMobile ? "30px" : "85px"}
+    >
+      <CustomIcon
+        src={ContractConfig[symbol].icon}
+        size={isMobile ? 10 : 20}
+      ></CustomIcon>
+      <TokenTitleItem>{symbol}</TokenTitleItem>
+    </FlexView>
+  )
 }
 export const ModalBg = styled(BaseView)`
     position:absolute;
@@ -520,9 +520,9 @@ export const ModalBg = styled(BaseView)`
 `
 
 export function LoadingCircle() {
-    return (
-        <CustomLightSpinner src={Circle} alt="loader" size={'20px'} marginLeft={10}/>
-    )
+  return (
+    <CustomLightSpinner src={Circle} alt="loader" size={'20px'} marginLeft={10} />
+  )
 }
 
 const rotate = keyframes`
@@ -539,10 +539,10 @@ export const Spinner = styled.img`
   height: 16px;
 `
 // 动画loading
-export const CustomLightSpinner = styled(Spinner)<{ size: string, marginLeft?: number }>`
-  height: ${({size}) => size};
-  width: ${({size}) => size};
-  margin-left:${({marginLeft}) => marginLeft + 'px'};
+export const CustomLightSpinner = styled(Spinner) <{ size: string, marginLeft?: number }>`
+  height: ${({ size }) => size};
+  width: ${({ size }) => size};
+  margin-left:${({ marginLeft }) => marginLeft + 'px'};
 `
 export const Body = styled.div`
   display:flex;
@@ -570,51 +570,51 @@ const LoadingView = styled(FlexViewCenter)`
 `
 
 export function BgLoading() {
-    return (
-        <LoadingView
-            onClick={(e:any)=>{
-                e.stopPropagation()
-            }}
-        >
-            <Lottie config={{
-                loop: true,
-                autoplay: true,
-                animationData: lottie_loading,
-                rendererSettings: {
-                    preserveAspectRatio: 'xMidYMid slice'
-                }
-            }}
-            width={"60%"}
-                    height={"auto"}
-            />
-        </LoadingView>
-    )
+  return (
+    <LoadingView
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
+    >
+      <Lottie config={{
+        loop: true,
+        autoplay: true,
+        animationData: lottie_loading,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        }
+      }}
+        width={"60%"}
+        height={"auto"}
+      />
+    </LoadingView>
+  )
 }
 
 
-export function ProfileLoading({loading=true}) {
-    if(!loading){
-        return null
-    }
-    return (
-        <FlexViewCenter
-            onClick={(e:any)=>{
-                e.stopPropagation()
-            }}
-        >
-            <Lottie config={{
-                loop: true,
-                autoplay: true,
-                animationData: ImageCommon.profileLoading,
-                rendererSettings: {
-                    preserveAspectRatio: 'xMidYMid slice'
-                }
-            }}
-                    width={"30%"}
-                    height={"auto"}
-            />
-        </FlexViewCenter>
-    )
+export function ProfileLoading({ loading = true }) {
+  if (!loading) {
+    return null
+  }
+  return (
+    <FlexViewCenter
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
+    >
+      <Lottie config={{
+        loop: true,
+        autoplay: true,
+        animationData: ImageCommon.profileLoading,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        }
+      }}
+        width={"30%"}
+        height={"auto"}
+      />
+    </FlexViewCenter>
+  )
 }
 
 export const BlueButton = styled(CenterView)`
@@ -637,7 +637,7 @@ export const BlueButton = styled(CenterView)`
     }
 `
 export const WhiteButton = styled(BlueButton)`
-   background: #FFFFFF; 
+   background: #FFFFFF;
    color: #4E55FF;
    &:hover {
         background: #4fa2ff;
@@ -674,10 +674,10 @@ export const LgWhiteButton = styled.button`
     height: 48px;
     //min-width: 146px;
   }
-  
-  
-  
-   background: #FFFFFF; 
+
+
+
+   background: #FFFFFF;
    color: #4E55FF;
    &:hover {
         background: #4fa2ff;
@@ -729,9 +729,9 @@ interface active_item {
 
 export const ActiveBar = React.memo(({
   data, initSelect = 0, onItemChange = () => {
-}
+  }
 }: active_item) => {
-    const themeDark = useTheme()
+  const themeDark = useTheme()
   const [select, setSelect] = React.useState(initSelect);
 
   function changeTab(index: number) {
@@ -742,16 +742,16 @@ export const ActiveBar = React.memo(({
   return (
     <ActiveWrap>
       {data.map((item, index) => {
-      return select === index ? <ActiveItem
+        return select === index ? <ActiveItem
           themeDark={Boolean(themeDark)}
-      >
-      {item.title}
-      </ActiveItem> : <ActiveItemUn
+        >
+          {item.title}
+        </ActiveItem> : <ActiveItemUn
           themeDark={Boolean(themeDark)}
-      onClick={() => changeTab(index)}
-      >
-      {item.title}
-      </ActiveItemUn>
+          onClick={() => changeTab(index)}
+        >
+          {item.title}
+        </ActiveItemUn>
       })}
     </ActiveWrap>
   )
@@ -769,49 +769,49 @@ const ActiveWrap = styled(FlexViewCenter)`
         height: 30px;
     };
 `
-const ActiveItem = styled(FlexViewCenter)<{
-    themeDark:boolean
+const ActiveItem = styled(FlexViewCenter) <{
+  themeDark: boolean
 }>`
     background-color:${colors.main};
     font-size: 24px;
     font-weight: bold;
-    color: ${props=>props.themeDark?colors.black:colors.white};
+    color: ${props => props.themeDark ? colors.black : colors.white};
     flex:1;
     height:100%;
      @media (max-width: 768px) {
         font-size: 14px;
     };
 `
-const ActiveItemUn = styled(ActiveItem)<{
-    themeDark:boolean
+const ActiveItemUn = styled(ActiveItem) <{
+  themeDark: boolean
 }>`
-     color: ${props=>props.themeDark?colors.white:colors.black};
+     color: ${props => props.themeDark ? colors.white : colors.black};
     background-color:${colors.transparent};
 `
 let scrollY = 0;
-export function ScrollToTop(props:any) {
-    const history = useHistory();
-    // const location = useLocation()
-    useEffect(()=>{
+export function ScrollToTop(props: any) {
+  const history = useHistory();
+  // const location = useLocation()
+  useEffect(() => {
 
-        history.listen((locationState, action) => {
-            if(action==="PUSH"){
-                scrollY = window.scrollY
-                window.scrollTo({left:0,top:0})
-            }
-            if(action==="POP"){
-                window.scrollTo({left:0,top:scrollY})
-            }
-            // console.log(action,location,locationState)
-        })
-    },[])
-    return props.children
+    history.listen((locationState, action) => {
+      if (action === "PUSH") {
+        scrollY = window.scrollY
+        window.scrollTo({ left: 0, top: 0 })
+      }
+      if (action === "POP") {
+        window.scrollTo({ left: 0, top: scrollY })
+      }
+      // console.log(action,location,locationState)
+    })
+  }, [])
+  return props.children
 }
 
-export function LoadingRow({width="100px"}) {
-    return <BaseView
-        width={width}
-    >
-        <Skeleton active paragraph={false}/>
-    </BaseView>
+export function LoadingRow({ width = "100px" }) {
+  return <BaseView
+    width={width}
+  >
+    <Skeleton active paragraph={false} />
+  </BaseView>
 }

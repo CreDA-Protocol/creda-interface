@@ -1,9 +1,12 @@
-const { addWebpackPlugin, override, fixBabelImports } = require("customize-cra");
+const path = require('path');
+const { addWebpackPlugin, override, fixBabelImports, addWebpackAlias } = require("customize-cra");
 const webpack = require('webpack');
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 const isEnvProduction = process.env.NODE_ENV === "production";
 
 //生产环境去除console.* functions
@@ -54,11 +57,21 @@ const webpackOverride = () => config => {
     config.resolve.fallback = fallback;
 
     config.plugins = (config.plugins || []).concat([
-        new webpack.ProvidePlugin({
-            process: 'process/browser',
-            Buffer: ['buffer', 'Buffer']
-        })
+        new webpack.ProvidePlugin({ process: 'process/browser', Buffer: ['buffer', 'Buffer'] }),
     ]);
+
+    // Remove source map generation logs from the terminal during build.
+    // https://github.com/facebook/create-react-app/pull/11752#issuecomment-1345231546
+    config.ignoreWarnings = [
+        function ignoreSourcemapsloaderWarnings(warning) {
+            return (
+                warning.module &&
+                warning.module.resource.includes('node_modules') &&
+                warning.details &&
+                warning.details.includes('source-map-loader')
+            )
+        },
+    ];
 
     return config;
 }
@@ -73,6 +86,14 @@ const addAnalyzer = () => config => {
 };
 
 module.exports = override(
+    addWebpackAlias({
+        '@abi': path.resolve(__dirname, 'src/assets/abi'),
+        '@assets': path.resolve(__dirname, 'src/assets'),
+        '@common': path.resolve(__dirname, 'src/common'),
+        '@components': path.resolve(__dirname, 'src/components'),
+        '@hooks': path.resolve(__dirname, 'src/hooks'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+    }),
     fixBabelImports('antd', {
         "libraryName": "antd",
         "libraryDirectory": "es",
@@ -82,6 +103,7 @@ module.exports = override(
     // BPI commented out because terserOptions seems undefined on newer react scripts - dropConsole(),
     addAnalyzer(),
     addWebpackPlugin(
+        //new TsconfigPathsPlugin({ configFile: "./tsconfig.json" }), // Import @xxxx/ from source
         // 终端进度条显示
         new ProgressBarPlugin(),
         new UglifyJsPlugin({

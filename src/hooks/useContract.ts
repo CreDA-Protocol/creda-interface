@@ -1,12 +1,12 @@
-import {Contract, ethers} from "ethers"
-import {useContext, useMemo} from "react";
-import {ERC20_ABI, provider, signer, walletInfo} from "../common/Common";
-import {WalletAddressContext} from "../context";
-export function getContract(address: string, abi: any,other?:any) {
+import ERC20_ABI from "@abi/ERC20.json";
+import { Contract, ethers } from "ethers";
+import { useMemo } from "react";
+import { walletInfo } from "../common/Common";
+export function getContract(address: string, abi: any, other?: any) {
     if (!address || !abi) {
         return null;
     }
-// 使用Provider 连接合约，将只有对合约的可读权限
+    // 使用Provider 连接合约，将只有对合约的可读权限
     return new ethers.Contract(address, abi, other);
 }
 
@@ -16,8 +16,6 @@ export function getTokenContract(address: string) {
 
 // returns null on errors
 export function useContract(address: string, ABI: any, withSignerIfPossible = true): Contract | null {
-    const account = useContext(WalletAddressContext);
-
     return useMemo(() => {
         if (!address || !ABI) return null
         try {
@@ -26,7 +24,7 @@ export function useContract(address: string, ABI: any, withSignerIfPossible = tr
             console.error('Failed to useContract', error)
             return null
         }
-    }, [address, ABI, withSignerIfPossible, account])
+    }, [address, ABI, withSignerIfPossible])
 }
 
 export function useTokenContract(tokenAddress: string, withSignerIfPossible?: boolean): Contract | null {
@@ -34,9 +32,7 @@ export function useTokenContract(tokenAddress: string, withSignerIfPossible?: bo
 }
 
 // returns null on errors
-export function useContractWithProvider(address: string, ABI: any, provider:any): Contract | null {
-    const account = useContext(WalletAddressContext);
-
+export function useContractWithProvider(address: string, ABI: any, provider: any): Contract | null {
     return useMemo(() => {
         if (!address || !ABI) return null
         try {
@@ -45,6 +41,6 @@ export function useContractWithProvider(address: string, ABI: any, provider:any)
             console.error('Failed to useContractWithProvider', error)
             return null
         }
-    }, [address, ABI, provider, account])
+    }, [address, ABI, provider])
 }
 

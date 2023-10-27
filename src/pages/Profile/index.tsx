@@ -2,17 +2,17 @@ import styled from "styled-components";
 import ImageCommon from "../../assets/common/ImageCommon";
 import Column from "../../components/Column";
 import Row, {
-  CustomGrid,
-  FontPoppins,
-  GradientButton,
-  RowBetween,
-  RowCenter,
-  RowFixed,
-  SpaceHeight,
-  SpaceWidth,
-  TextEqure,
+    CustomGrid,
+    FontPoppins,
+    GradientButton,
+    RowBetween,
+    RowCenter,
+    RowFixed,
+    SpaceHeight,
+    SpaceWidth,
+    TextEqure,
 } from "../../components/Row";
-import creditScore from '../../lottie/CreDa_creditScore_animation.json';
+import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import AppBody, { MainFullBody } from "../AppBody";
 
 import { Lottie } from "@crello/react-lottie";
@@ -28,19 +28,19 @@ import ESC from "../../assets/tokens/ELA.png";
 import ETH from "../../assets/tokens/Ethereum (ETH).png";
 
 import {
-  ApprovalState,
-  ChainId,
-  ChainIdConfig,
-  GasInfo,
-  balanceToBigNumber,
-  enableNetwork,
-  formatAccount,
-  formatBalance,
-  formatPercent,
-  formatPositiveNumber,
-  getNFTCardBgImage,
-  switchNetwork,
-  tipError,
+    ApprovalState,
+    ChainId,
+    ChainIdConfig,
+    GasInfo,
+    balanceToBigNumber,
+    enableNetwork,
+    formatAccount,
+    formatBalance,
+    formatPercent,
+    formatPositiveNumber,
+    getNFTCardBgImage,
+    switchNetwork,
+    tipError,
 } from "../../common/Common";
 import { BlueButton, CardPairOrigin, FlexView, ProfileLoading, WhiteButton } from "../../components/Common";
 import ConnectToWalletModal from "../../components/ConnectToWalletModal";
@@ -49,13 +49,13 @@ import CustomStakeModal from "../../components/CustomStakeModal";
 import { ThemeText, ThemeTextEqure } from "../../components/ThemeComponent";
 import { NetworkTypeContext, WalletAddressContext } from "../../context";
 import {
-  useApprove,
-  useBoxApproveList,
-  useBoxProjectAll,
-  useBoxWalletList,
-  useCNFTInfo,
-  useCreditInfo,
-  useCreditScore,
+    useApprove,
+    useBoxApproveList,
+    useBoxProjectAll,
+    useBoxWalletList,
+    useCNFTInfo,
+    useCreditInfo,
+    useCreditScore,
 } from "../../contract";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract, useTokenContract } from "../../hooks/useContract";
@@ -166,14 +166,14 @@ const SegmentDiv = styled(RowFixed)`
     margin: 15px 15px;
   };
 `;
-const SegmentItem = styled(RowCenter)<{
+const SegmentItem = styled(RowCenter) <{
     isChoose?: boolean;
 }>`
   width: 338px;
-  background: ${({isChoose}) =>
-    isChoose ? "linear-gradient(90deg, #4a1ee1, #1890ff)" : "transparent"};
+  background: ${({ isChoose }) =>
+        isChoose ? "linear-gradient(90deg, #4a1ee1, #1890ff)" : "transparent"};
   height: 100%;
-  color: ${({isChoose}) => (isChoose ? "white" : "#777E90")};
+  color: ${({ isChoose }) => (isChoose ? "white" : "#777E90")};
   align-items: center;
   border-radius: 20px;
   font-size: 22px;
@@ -193,26 +193,26 @@ const WrapDiv = styled(RowBetween)`
   }
   justify-content: flex-start;
 `;
-const WrapItem = styled(RowCenter)<{
+const WrapItem = styled(RowCenter) <{
     isChoose?: boolean;
     disabled?: boolean;
     themeDark?: boolean | null;
 }>`
-    //background-color:${({isChoose}) => (isChoose ? "#4E55FF" : "#17181A")};
-  background: ${({themeDark}) => (themeDark ? "#17181a" : "#FFF")};
+    //background-color:${({ isChoose }) => (isChoose ? "#4E55FF" : "#17181A")};
+  background: ${({ themeDark }) => (themeDark ? "#17181a" : "#FFF")};
   //background: #FFF;
   font-size: 16px;
   font-weight: bold;
   align-items: center;
   width: 142px;
   cursor: pointer;
-  color: ${({themeDark}) => (themeDark ? "#FFF" : "#17181a")};
+  color: ${({ themeDark }) => (themeDark ? "#FFF" : "#17181a")};
   height: 40px;
   border-radius: 20px;
   margin-right: 20px;
   margin-bottom: 18px;
-  opacity: ${({disabled}) => (disabled ? 0.6 : 1)};
-    // pointer-events:${({disabled}) => (disabled ? "none" : "auto")};
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+    // pointer-events:${({ disabled }) => (disabled ? "none" : "auto")};
   &.active {
     background: linear-gradient(90deg, #4a1ee1, #1890ff);
     color: #fff;
@@ -231,14 +231,14 @@ const WrapItem = styled(RowCenter)<{
   @media (max-width: 768px) {
     width: fit-content;
     padding: 5px 10px;
-    background: ${({themeDark}) => (themeDark ? "#17181a" : "#FFF")};
+    background: ${({ themeDark }) => (themeDark ? "#17181a" : "#FFF")};
 
-    border-bottom: ${({isChoose}) =>
-    isChoose ? "1px solid #4E55FF" : "none"};
+    border-bottom: ${({ isChoose }) =>
+        isChoose ? "1px solid #4E55FF" : "none"};
     border-radius: 10px;
     margin-right: 10px;
     font-size: 14px;
-    color: ${({isChoose}) => (isChoose ? "#4E55FF" : "#777E90")};
+    color: ${({ isChoose }) => (isChoose ? "#4E55FF" : "#777E90")};
   };
 `;
 
@@ -246,8 +246,8 @@ const StepTwoModalWrap = styled.div<{
     isMobile: boolean | null;
 }>`
   .walk-through-modal-wrapper {
-    top: ${({isMobile}) => (isMobile ? "337px" : "124px")};
-    left: ${({isMobile}) => (isMobile ? "48%" : "50%")};
+    top: ${({ isMobile }) => (isMobile ? "337px" : "124px")};
+    left: ${({ isMobile }) => (isMobile ? "48%" : "50%")};
     @media (min-width: 768px) and (max-width: 1700px) {
       top: 336px;
       left: 25%;
@@ -263,7 +263,7 @@ const StepThreeModalWrap = styled.div<{
     isMobile: boolean | null;
 }>`
   .walk-through-modal-wrapper {
-    top: ${({isMobile}) => (isMobile ? "124px" : "124px")};
+    top: ${({ isMobile }) => (isMobile ? "124px" : "124px")};
     left: -57%;
     @media (min-width: 768px) and (max-width: 1700px) {
       top: 127px;
@@ -280,7 +280,7 @@ const StepFourthModalWrap = styled.div<{
     isMobile: boolean | null;
 }>`
   .walk-through-modal-wrapper {
-    top: ${({isMobile}) => (isMobile ? "171px" : "124px")};
+    top: ${({ isMobile }) => (isMobile ? "171px" : "124px")};
     left: 124px;
     @media (min-width: 768px) and (max-width: 1700px) {
       top: 172px;
@@ -332,7 +332,7 @@ const LineV = styled.div<{
   height: 50px;
   background-color: #2e313a;
   width: 1px;
-  margin: ${({width}) => (width ? `0px  ${width}px` : " 0px  30px")};
+  margin: ${({ width }) => (width ? `0px  ${width}px` : " 0px  30px")};
 `;
 const LineH = styled.div<{
     height?: number;
@@ -340,7 +340,7 @@ const LineH = styled.div<{
   height: 1px;
   background-color: #2e313a;
   width: 100%;
-  margin: ${({height}) => (height ? `${height}px 0px` : "30px 0px")};
+  margin: ${({ height }) => (height ? `${height}px 0px` : "30px 0px")};
 `;
 const LineHNor = styled.div`
   height: 1px;
@@ -428,12 +428,12 @@ const ChainType: any = {
 };
 
 export const ChainType2Id: any = {
-  "eth": 1,
-  "heco": 128,
-  "polygon": 137,
-  "bsc": 56,
-  "esc": 20,
-  "celo": 42220,
+    "eth": 1,
+    "heco": 128,
+    "polygon": 137,
+    "bsc": 56,
+    "esc": 20,
+    "celo": 42220,
 };
 
 export const ProjectConfig: any = {
@@ -1072,7 +1072,7 @@ function Profile(props: any) {
         }, 1800);
     }, [stopAnimation])
 
-    const {account, isaccountLoading} = useContext(WalletAddressContext);
+    const { account, isaccountLoading } = useContext(WalletAddressContext);
     useEffect(() => {
         // if(props.location.props==='fromConnectWallet'){
         //   console.log("if")
@@ -1086,7 +1086,7 @@ function Profile(props: any) {
         // }
         setConnectToModal(true);
     }, []);
-    const {chainId} = useContext(NetworkTypeContext);
+    const { chainId } = useContext(NetworkTypeContext);
     const network = ChainId[chainId];
     const [chainIndex, setChainIndex] = useState(0);
     const [segmentIndex, setSegmentIndex] = useState(0);
@@ -1126,7 +1126,7 @@ function Profile(props: any) {
     }, [showWarning]);
 
     function approve() {
-      loading.show(LoadingType.confirm, `Sync`)
+        loading.show(LoadingType.confirm, `Sync`)
         // console.log("CredaC_func", CredaContract?.creditUpdate())
         CredaContract?.creditUpdate(GasInfo)
             .then(async (response: TransactionResponse) => {
@@ -1134,7 +1134,7 @@ function Profile(props: any) {
                     summary: "Sync",
                 });
                 await response.wait();
-                loading.show(LoadingType.success,response.hash)
+                loading.show(LoadingType.success, response.hash)
 
             })
             .catch((err: any) => {
@@ -1277,21 +1277,21 @@ function Profile(props: any) {
                             <ThemeTextEqure fontSize={32} fontWeight={"bold"}>
                                 Profile
                             </ThemeTextEqure>
-                            <SpaceWidth width={30} widthApp={15}/>
+                            <SpaceWidth width={30} widthApp={15} />
                             {creditInfo.did ? (
                                 <CopyAccount
                                     account={
                                         creditInfo.did.length >= 32
                                             ? formatAccount(creditInfo.did)
                                             : creditInfo.did.slice(
-                                            creditInfo.did.lastIndexOf(":") + 1
+                                                creditInfo.did.lastIndexOf(":") + 1
                                             )
                                     }
                                     originAccount={
                                         creditInfo.did.length >= 32
                                             ? creditInfo.did
                                             : creditInfo.did.slice(
-                                            creditInfo.did.lastIndexOf(":") + 1
+                                                creditInfo.did.lastIndexOf(":") + 1
                                             )
                                     }
                                 ></CopyAccount>
@@ -1300,14 +1300,14 @@ function Profile(props: any) {
                             )}
                         </FlexView>
                         <CustomGrid
-                            style={{marginRight: "unset", textAlign: "right"}}
+                            style={{ marginRight: "unset", textAlign: "right" }}
                             templateColumns={"1fr 1fr"}
                             mobTemplateColumns={"1fr 1fr"}
                             columnGap={15}
                             mobColumnGap={15}
                         >
                             {!isMobile && <FontPoppins>
-                                <ThemeText fontSize={22} style={{fontWeight: 800}}>
+                                <ThemeText fontSize={22} style={{ fontWeight: 800 }}>
                                     Network
                                 </ThemeText>
                             </FontPoppins>}
@@ -1322,7 +1322,7 @@ function Profile(props: any) {
                             </GradientButton>
                         </CustomGrid>
                     </RowBetween>
-                    <section style={{position: "relative"}}>
+                    <section style={{ position: "relative" }}>
                         <TopItemDiv
                             style={{
                                 display: "flex",
@@ -1344,7 +1344,7 @@ function Profile(props: any) {
                                     }}
                                 >
                                     <Lottie
-                                        playingState={stopAnimation?'paused':'playing'}
+                                        playingState={stopAnimation ? 'paused' : 'playing'}
                                         config={{
                                             loop: true,
                                             autoplay: true,
@@ -1354,7 +1354,7 @@ function Profile(props: any) {
                                             }
                                         }}
                                         width={isMobile ? "416px" : "534px"}
-                                        height={"auto"}/>
+                                        height={"auto"} />
                                     <div
                                         style={{
                                             position: "absolute",
@@ -1375,30 +1375,30 @@ function Profile(props: any) {
                                         {scoreInfo.data > 0 && <TextEqure
                                             fontColor={themeDark ? "white" : "black"}
                                             fontSize={20}
-                                            style={{marginLeft: isMobile ? "-30px" : "-25px"}}
-                                            // fontWeight={"bold"}
+                                            style={{ marginLeft: isMobile ? "-30px" : "-25px" }}
+                                        // fontWeight={"bold"}
                                         >
                                             Credit Score
                                         </TextEqure>}
 
                                     </div>
 
-                                    {chainId === ChainId.esc &&<div>
-                                       {scoreInfo.data <= 0 && (
-                                           <div style={{position: "relative"}}>
+                                    {chainId === ChainId.esc && <div>
+                                        {scoreInfo.data <= 0 && (
+                                            <div style={{ position: "relative" }}>
 
-                                               <WhiteButton
-                                                   style={{
-                                                       position: "absolute",
-                                                       top: isMobile ? "-195px" : "-249px",
-                                                       left: isMobile ? "175px" : "217px",
-                                                       zIndex: walkThroughStep === 2 ? 700 : 0,
-                                                   }}
-                                                   onClick={approve}
-                                               >
-                                                   Sync
-                                               </WhiteButton>
-                                           </div>)}
+                                                <WhiteButton
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: isMobile ? "-195px" : "-249px",
+                                                        left: isMobile ? "175px" : "217px",
+                                                        zIndex: walkThroughStep === 2 ? 700 : 0,
+                                                    }}
+                                                    onClick={approve}
+                                                >
+                                                    Sync
+                                                </WhiteButton>
+                                            </div>)}
                                     </div>}
                                 </div>
                                 {/* <StepTwoModalWrap isMobile={isMobile}>
@@ -1418,12 +1418,12 @@ function Profile(props: any) {
                                     marginRight: !isMobile ? "137px" : "",
                                 }}
                             >
-                                <NFTBgImage src={getNFTCardBgImage(cnftInfo.lv)}/>
-                                <Column style={{zIndex: 1}}>
+                                <NFTBgImage src={getNFTCardBgImage(cnftInfo.lv)} />
+                                <Column style={{ zIndex: 1 }}>
                                     <TextEqure fontSize={18}>
-                                        Credit NFT {enableNetwork(chainId)?(`CREDA:
+                                        Credit NFT {enableNetwork(chainId) ? (`CREDA:
                                                                                     ${cnftInfo.loading ? "-" : formatBalance(cnftInfo.amount, 2)}
-                                    `):""}
+                                    `) : ""}
                                         {/* <Tooltip
                       color="#3e3b3b"
                       placement="right"
@@ -1435,12 +1435,12 @@ function Profile(props: any) {
                       ></img>
                     </Tooltip> */}
                                     </TextEqure>
-                                    <SpaceHeight height={20} heightApp={10}/>
+                                    <SpaceHeight height={20} heightApp={10} />
                                     <RowBetween>
                                         <FlexView>
                                             <TextEqure fontSize={12}>Level</TextEqure>
                                             <ThemeTextEqure
-                                                style={{marginLeft: 20, color: "#FFF"}}
+                                                style={{ marginLeft: 20, color: "#FFF" }}
                                                 fontSize={24}
                                                 fontWeight={"bold"}
                                             >
@@ -1448,9 +1448,9 @@ function Profile(props: any) {
                                             </ThemeTextEqure>
                                         </FlexView>
                                         {cnftInfo.no <= 0 && (
-                                            <div style={{position: "relative"}}>
+                                            <div style={{ position: "relative" }}>
                                                 <GradientButton
-                                                    style={{zIndex: walkThroughStep === 3 ? 700 : 0}}
+                                                    style={{ zIndex: walkThroughStep === 3 ? 700 : 0 }}
                                                     onClick={mintCNFT}
                                                 >
                                                     {enableNetwork(chainId) ? (approval === ApprovalState.APPROVED
@@ -1472,14 +1472,14 @@ function Profile(props: any) {
                                         <FlexView>
                                             <TextEqure fontSize={12}>NO.</TextEqure>
                                             <ThemeTextEqure
-                                                style={{marginLeft: 20, color: "#FFF"}}
+                                                style={{ marginLeft: 20, color: "#FFF" }}
                                                 fontSize={24}
                                                 fontWeight={"bold"}
                                             >
                                                 {cnftInfo.loading ? "-" : cnftInfo.no}
                                             </ThemeTextEqure>
                                         </FlexView>
-                                        {cnftInfo.no > 0  && (
+                                        {cnftInfo.no > 0 && (
                                             <BlueButton
                                                 onClick={() => setModalType(StakeType.upgrade)}
                                             >
@@ -1556,7 +1556,7 @@ function Profile(props: any) {
                     </section>
 
                     <RowCenter>
-                        <Segment onSegmentSelect={onSegmentSelect}/>
+                        <Segment onSegmentSelect={onSegmentSelect} />
                     </RowCenter>
                     {segmentIndex === 0 ? (
                         <>
@@ -1572,17 +1572,17 @@ function Profile(props: any) {
                                 <ThemeTextEqure fontSize={28} fontWeight={"bold"}>
                                     Asset Overview
                                 </ThemeTextEqure>
-                                <SpaceHeight height={36} heightApp={18}/>
+                                <SpaceHeight height={36} heightApp={18} />
                                 <CenterItemDiv>
                                     <RowFixed
                                         style={
                                             isMobile
-                                                ? {width: "100%", justifyContent: "space-between"}
+                                                ? { width: "100%", justifyContent: "space-between" }
                                                 : {}
                                         }
                                     >
                                         <RowFixed>
-                                            <IconIcon src={ETH}/>
+                                            <IconIcon src={ETH} />
                                             <Column>
                                                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                     Assets on Ethereum
@@ -1595,18 +1595,18 @@ function Profile(props: any) {
                                                 </RowFixed>
                                             </Column>
                                         </RowFixed>
-                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon}/>}
+                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon} />}
                                     </RowFixed>
-                                    {isMobile ? <LineH/> : <LineV/>}
+                                    {isMobile ? <LineH /> : <LineV />}
                                     <RowFixed
                                         style={
                                             isMobile
-                                                ? {width: "100%", justifyContent: "space-between"}
+                                                ? { width: "100%", justifyContent: "space-between" }
                                                 : {}
                                         }
                                     >
                                         <RowFixed>
-                                            <IconIcon src={BNB}/>
+                                            <IconIcon src={BNB} />
                                             <Column>
                                                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                     Assets on BSC
@@ -1619,18 +1619,18 @@ function Profile(props: any) {
                                                 </RowFixed>
                                             </Column>
                                         </RowFixed>
-                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon}/>}
+                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon} />}
                                     </RowFixed>
-                                    {isMobile ? <LineH/> : <LineV/>}
+                                    {isMobile ? <LineH /> : <LineV />}
                                     <RowFixed
                                         style={
                                             isMobile
-                                                ? {width: "100%", justifyContent: "space-between"}
+                                                ? { width: "100%", justifyContent: "space-between" }
                                                 : {}
                                         }
                                     >
                                         <RowFixed>
-                                            <IconIcon src={ESC}/>
+                                            <IconIcon src={ESC} />
                                             <Column>
                                                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                     Assets on ESC
@@ -1643,7 +1643,7 @@ function Profile(props: any) {
                                                 </RowFixed>
                                             </Column>
                                         </RowFixed>
-                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon}/>}
+                                        {isMobile && <MoreIcon src={ImageCommon.icon_more_icon} />}
                                     </RowFixed>
                                 </CenterItemDiv>
                             </BGDiv>
@@ -1656,18 +1656,18 @@ function Profile(props: any) {
                                     <ThemeTextEqure fontSize={28} fontWeight={"bold"}>
                                         Asset Details
                                     </ThemeTextEqure>
-                                    <SpaceHeight height={36} heightApp={18}/>
+                                    <SpaceHeight height={36} heightApp={18} />
                                     <CenterItemDiv>
-                                        {!isMobile && <SpaceWidth width={60} widthApp={40}/>}
+                                        {!isMobile && <SpaceWidth width={60} widthApp={40} />}
                                         <RowFixed
                                             style={
                                                 isMobile
-                                                    ? {width: "100%", justifyContent: "space-between"}
+                                                    ? { width: "100%", justifyContent: "space-between" }
                                                     : {}
                                             }
                                         >
                                             <RowFixed>
-                                                {isMobile && <IconIconBlue/>}
+                                                {isMobile && <IconIconBlue />}
                                                 <Column>
                                                     <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                         Wallet Total
@@ -1678,7 +1678,7 @@ function Profile(props: any) {
                                                         </ThemeTextEqure>
                                                         {isMobile && (
                                                             <TextEqure
-                                                                style={{marginTop: 10, marginLeft: 10}}
+                                                                style={{ marginTop: 10, marginLeft: 10 }}
                                                                 fontColor={"#4E55FF"}
                                                                 fontSize={12}
                                                             >
@@ -1689,19 +1689,19 @@ function Profile(props: any) {
                                                 </Column>
                                             </RowFixed>
                                             {isMobile && (
-                                                <MoreIcon src={ImageCommon.icon_more_icon}/>
+                                                <MoreIcon src={ImageCommon.icon_more_icon} />
                                             )}
                                         </RowFixed>
-                                        {isMobile ? <LineH/> : <LineV width={100}/>}
+                                        {isMobile ? <LineH /> : <LineV width={100} />}
                                         <RowFixed
                                             style={
                                                 isMobile
-                                                    ? {width: "100%", justifyContent: "space-between"}
+                                                    ? { width: "100%", justifyContent: "space-between" }
                                                     : {}
                                             }
                                         >
                                             <RowFixed>
-                                                {isMobile && <IconIconBlue/>}
+                                                {isMobile && <IconIconBlue />}
                                                 <Column>
                                                     <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                         Wallet Balance
@@ -1712,7 +1712,7 @@ function Profile(props: any) {
                                                         </ThemeTextEqure>
                                                         {isMobile && (
                                                             <TextEqure
-                                                                style={{marginTop: 10, marginLeft: 10}}
+                                                                style={{ marginTop: 10, marginLeft: 10 }}
                                                                 fontColor={"#4E55FF"}
                                                                 fontSize={12}
                                                             >
@@ -1723,19 +1723,19 @@ function Profile(props: any) {
                                                 </Column>
                                             </RowFixed>
                                             {isMobile && (
-                                                <MoreIcon src={ImageCommon.icon_more_icon}/>
+                                                <MoreIcon src={ImageCommon.icon_more_icon} />
                                             )}
                                         </RowFixed>
-                                        {isMobile ? <LineH/> : <LineV width={100}/>}
+                                        {isMobile ? <LineH /> : <LineV width={100} />}
                                         <RowFixed
                                             style={
                                                 isMobile
-                                                    ? {width: "100%", justifyContent: "space-between"}
+                                                    ? { width: "100%", justifyContent: "space-between" }
                                                     : {}
                                             }
                                         >
                                             <RowFixed>
-                                                {isMobile && <IconIconBlue/>}
+                                                {isMobile && <IconIconBlue />}
                                                 <Column>
                                                     <TextEqure fontColor={"#777E90"} fontSize={16}>
                                                         Invested Balance
@@ -1746,7 +1746,7 @@ function Profile(props: any) {
                                                         </ThemeTextEqure>
                                                         {isMobile && (
                                                             <TextEqure
-                                                                style={{marginTop: 10, marginLeft: 10}}
+                                                                style={{ marginTop: 10, marginLeft: 10 }}
                                                                 fontColor={"#4E55FF"}
                                                                 fontSize={12}
                                                             >
@@ -1757,21 +1757,21 @@ function Profile(props: any) {
                                                 </Column>
                                             </RowFixed>
                                             {isMobile && (
-                                                <MoreIcon src={ImageCommon.icon_more_icon}/>
+                                                <MoreIcon src={ImageCommon.icon_more_icon} />
                                             )}
                                         </RowFixed>
                                     </CenterItemDiv>
                                 </BGDiv>
                             )}
-                            <WalletDiv data={walletList} chainTitle={wrapItems[chainIndex]}/>
+                            <WalletDiv data={walletList} chainTitle={wrapItems[chainIndex]} />
                         </>
                     ) : segmentIndex === 1 ? (
                         <>
-                            <PortfolioItem/>
+                            <PortfolioItem />
                         </>
                     ) : (
                         <>
-                            <ApprovalItem/>
+                            <ApprovalItem />
                         </>
                     )}
                 </Body>
@@ -1788,7 +1788,7 @@ function Profile(props: any) {
 }
 
 //bind input
-function BindInput({bindDID}: any) {
+function BindInput({ bindDID }: any) {
     const [edit, setEdit] = useState(false);
     const [input, setInput] = useState("");
     const themeDark = useTheme();
@@ -1826,7 +1826,7 @@ const EditIcon = styled.img`
 `;
 
 // copy账号
-function CopyAccount({account, originAccount}: any) {
+function CopyAccount({ account, originAccount }: any) {
     return (
         <FlexView>
             <AddressText fontColor={"#777E90"} fontSize={14} fontWeight={"bold"}>
@@ -1853,7 +1853,7 @@ const BInput = styled.input<{
   border: none;
   font-size: 18px;
   font-weight: bold;
-  color: ${({themeDark}) => `${themeDark ? "#FFFFFF" : "#17181A"}`};
+  color: ${({ themeDark }) => `${themeDark ? "#FFFFFF" : "#17181A"}`};
   line-height: 70px;
   @media (max-width: 768px) {
     width: 100%;
@@ -1877,7 +1877,7 @@ const BBtn = styled(RowCenter)`
   };
 `;
 
-function Segment({onSegmentSelect}: any) {
+function Segment({ onSegmentSelect }: any) {
     const [selectIndex, setSelectIndex] = useState(0);
     const themeDark = useTheme();
     return (
@@ -1919,7 +1919,7 @@ function Segment({onSegmentSelect}: any) {
     );
 }
 
-function Wrap({onIndexChange, selectIndex}: any) {
+function Wrap({ onIndexChange, selectIndex }: any) {
     const themeDark = useTheme();
     return (
         <WrapDiv>
@@ -1971,11 +1971,11 @@ function Wrap({onIndexChange, selectIndex}: any) {
     );
 }
 
-function WalletDiv({data, chainTitle}: any) {
+function WalletDiv({ data, chainTitle }: any) {
     // console.log(data)
     const [input, setInput] = useState("");
     const themeDark = useTheme();
-    const [hidden,setHidden] = useState(true)
+    const [hidden, setHidden] = useState(true)
     return (
         <BGDiv
             style={{
@@ -1993,15 +1993,15 @@ function WalletDiv({data, chainTitle}: any) {
                             placeholder={"Search coin"}
                             onChange={(e) => setInput(e.target.value)}
                         />
-                        <SearchIcon src={ImageCommon.search_icon}/>
+                        <SearchIcon src={ImageCommon.search_icon} />
                     </SearchDiv>
                 )}
             </RowBetween>
-            <SpaceHeight height={40} heightApp={20}/>
+            <SpaceHeight height={40} heightApp={20} />
             <RowBetween>
-                <Column style={{justifyContent: "flex-start", flex: 0.5}}>
+                <Column style={{ justifyContent: "flex-start", flex: 0.5 }}>
                     <ThemeTextEqure
-                        style={{marginLeft: 50}}
+                        style={{ marginLeft: 50 }}
                         fontWeight={"600"}
                         fontSize={20}
                     >
@@ -2009,22 +2009,22 @@ function WalletDiv({data, chainTitle}: any) {
                     </ThemeTextEqure>
                 </Column>
                 {!isMobile && (
-                    <Column style={{flex: 1, alignItems: "flex-end"}}>
+                    <Column style={{ flex: 1, alignItems: "flex-end" }}>
                         <ThemeTextEqure fontWeight={"600"} fontSize={20}>
                             Price
                         </ThemeTextEqure>
                     </Column>
                 )}
                 {!isMobile && (
-                    <Column style={{flex: 1, alignItems: "flex-end"}}>
+                    <Column style={{ flex: 1, alignItems: "flex-end" }}>
                         <ThemeTextEqure fontWeight={"600"} fontSize={20}>
                             Balance
                         </ThemeTextEqure>
                     </Column>
                 )}
-                <Column style={{flex: 1, alignItems: "flex-end"}}>
+                <Column style={{ flex: 1, alignItems: "flex-end" }}>
                     <ThemeTextEqure
-                        style={isMobile ? {marginRight: 30} : {}}
+                        style={isMobile ? { marginRight: 30 } : {}}
                         fontWeight={"600"}
                         fontSize={20}
                     >
@@ -2032,84 +2032,84 @@ function WalletDiv({data, chainTitle}: any) {
                     </ThemeTextEqure>
                 </Column>
             </RowBetween>
-            <Column style={{width:'100%'}}>
+            <Column style={{ width: '100%' }}>
                 {/* <ProfileLoading loading={data.loading}></ProfileLoading> */}
                 {!data.support &&
-                  <RowCenter>
-                    <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
-                        coming soon~
-                    </ThemeTextEqure>
-                  </RowCenter>
+                    <RowCenter>
+                        <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
+                            coming soon~
+                        </ThemeTextEqure>
+                    </RowCenter>
                 }
 
                 {!data.loading &&
-                data.data.tokens.map((item: any, index: number) => {
-                    if (hidden && item.value<1){
-                        return null
-                    }
-                    return (
-                        <>
-                            <LineH/>
-                            <RowBetween>
-                                <RowFixed style={{flex: 0.5}}>
-                                    <SmallIconIcon src={item.icon}/>
-                                    <Column>
-                                        <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            {item.symbol}
-                                        </ThemeTextEqure>
-                                        <TextEqure fontColor={"#777E90"} fontSize={14}>
-                                            {chainTitle}
-                                        </TextEqure>
-                                    </Column>
-                                </RowFixed>
-                                {!isMobile && (
-                                    <Column style={{alignItems: "flex-end", flex: 1}}>
-                                        <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            ${formatPositiveNumber(item.price)}
-                                        </ThemeTextEqure>
-                                        {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
+                    data.data.tokens.map((item: any, index: number) => {
+                        if (hidden && item.value < 1) {
+                            return null
+                        }
+                        return (
+                            <>
+                                <LineH />
+                                <RowBetween>
+                                    <RowFixed style={{ flex: 0.5 }}>
+                                        <SmallIconIcon src={item.icon} />
+                                        <Column>
+                                            <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                                                {item.symbol}
+                                            </ThemeTextEqure>
+                                            <TextEqure fontColor={"#777E90"} fontSize={14}>
+                                                {chainTitle}
+                                            </TextEqure>
+                                        </Column>
+                                    </RowFixed>
+                                    {!isMobile && (
+                                        <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                                            <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                                                ${formatPositiveNumber(item.price)}
+                                            </ThemeTextEqure>
+                                            {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                                             {formatBalance(item.priceChangePercentage24h)}%
                                         </TextEqure> */}
-                                    </Column>
-                                )}
-                                {!isMobile && (
-                                    <Column style={{alignItems: "flex-end", flex: 1}}>
-                                        <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            {formatBalance(item.amount)} {item.symbol}
-                                        </ThemeTextEqure>
-                                        <TextEqure fontColor={"#777E90"} fontSize={14}>
-                                            &nbsp;
-                                        </TextEqure>
-                                    </Column>
-                                )}
-                                <Row style={{alignItems: "flex-start", flex: 1}}>
-                                    <Column style={{alignItems: "flex-end", flex: 1}}>
-                                        <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                                            ${formatPositiveNumber(item.value)}
-                                        </ThemeTextEqure>
-                                        <TextEqure fontColor={"#777E90"} fontSize={14}>
-                                            {/*{formatBalance(item.valueBTC)} BTC*/}
-                                        </TextEqure>
-                                    </Column>
-                                    {isMobile && (
-                                        <MoreIcon
-                                            style={{marginLeft: 10}}
-                                            src={ImageCommon.icon_more_icon}
-                                        />
+                                        </Column>
                                     )}
-                                </Row>
-                            </RowBetween>
-                        </>
-                    );
-                })}
+                                    {!isMobile && (
+                                        <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                                            <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                                                {formatBalance(item.amount)} {item.symbol}
+                                            </ThemeTextEqure>
+                                            <TextEqure fontColor={"#777E90"} fontSize={14}>
+                                                &nbsp;
+                                            </TextEqure>
+                                        </Column>
+                                    )}
+                                    <Row style={{ alignItems: "flex-start", flex: 1 }}>
+                                        <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                                            <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                                                ${formatPositiveNumber(item.value)}
+                                            </ThemeTextEqure>
+                                            <TextEqure fontColor={"#777E90"} fontSize={14}>
+                                                {/*{formatBalance(item.valueBTC)} BTC*/}
+                                            </TextEqure>
+                                        </Column>
+                                        {isMobile && (
+                                            <MoreIcon
+                                                style={{ marginLeft: 10 }}
+                                                src={ImageCommon.icon_more_icon}
+                                            />
+                                        )}
+                                    </Row>
+                                </RowBetween>
+                            </>
+                        );
+                    })}
             </Column>
-            <SpaceHeight height={40} heightApp={20}/>
+            <SpaceHeight height={40} heightApp={20} />
             <RowCenter>
                 <TextEqure fontColor={"#777E90"} fontSize={12}>
                     {`Tokens with value <$1 are hidden`}
                 </TextEqure>
                 <TextEqure
-                    style={{cursor: "pointer", marginLeft: 15}}
+                    style={{ cursor: "pointer", marginLeft: 15 }}
                     onClick={() => {
                         setHidden(false)
                     }}
@@ -2128,21 +2128,21 @@ function PortfolioItem() {
     const [defiProject, setDefiProject] = useState<Object>({});
     useEffect(() => {
         async function getResult() {
-          try {
-            const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
-            let res = await axios.get(originUrl);
-            let obj: any = {};
-            res.data.data.forEach((item: any, index: number) => {
-                // console.log(item)
-                if (!obj[item.chainName]) {
-                    obj[item.chainName] = {};
-                }
-                obj[item.chainName][item.name] = item;
-            });
-            setDefiProject(obj);
-          } catch (e) {
-              console.warn("PortfolioItem", e)
-          }
+            try {
+                const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
+                let res = await axios.get(originUrl);
+                let obj: any = {};
+                res.data.data.forEach((item: any, index: number) => {
+                    // console.log(item)
+                    if (!obj[item.chainName]) {
+                        obj[item.chainName] = {};
+                    }
+                    obj[item.chainName][item.name] = item;
+                });
+                setDefiProject(obj);
+            } catch (e) {
+                console.warn("PortfolioItem", e)
+            }
         }
 
         getResult();
@@ -2153,21 +2153,21 @@ function PortfolioItem() {
     }
 
     return (
-        <Column style={{width: "100%"}}>
-            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex}/>
+        <Column style={{ width: "100%" }}>
+            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex} />
             {isMobile ? (
                 <PortfolioPhoneDiv
                     project={defiProject}
                     chainType={wrapItems[chainIndex]}
                 />
             ) : (
-                <PortfolioDiv project={defiProject} chainType={wrapItems[chainIndex]}/>
+                <PortfolioDiv project={defiProject} chainType={wrapItems[chainIndex]} />
             )}
         </Column>
     );
 }
 
-function PortfolioPhoneDiv({project, chainType}: any) {
+function PortfolioPhoneDiv({ project, chainType }: any) {
     const data = Object.values(project[chainType] || {});
 
     const projectNames = data.map((item: any, index: number) => {
@@ -2187,7 +2187,7 @@ function PortfolioPhoneDiv({project, chainType}: any) {
         return <ProfileLoading loading={allProject.loading}></ProfileLoading>;
     }
     return (
-        <Column style={{width: "100%", marginTop: 15}}>
+        <Column style={{ width: "100%", marginTop: 15 }}>
             {projectsFilterRes.map((item: any, index: number) => {
                 return <PortfolioPhoneItemDiv item={item}></PortfolioPhoneItemDiv>;
             })}
@@ -2195,15 +2195,15 @@ function PortfolioPhoneDiv({project, chainType}: any) {
     );
 }
 
-function PortfolioPhoneItemDiv({item}: any) {
+function PortfolioPhoneItemDiv({ item }: any) {
     const [showMore, setShowMore] = useState(false);
     const themeDark = useTheme();
     return (
-        <Column style={{width: "100%"}}>
-            <LineH height={10}/>
+        <Column style={{ width: "100%" }}>
+            <LineH height={10} />
             <RowBetween>
                 <RowFixed>
-                    <SmallIconIcon src={item.icon}/>
+                    <SmallIconIcon src={item.icon} />
                     <ThemeTextEqure fontSize={17} fontWeight={"bold"}>
                         {item.desc}
                     </ThemeTextEqure>
@@ -2217,7 +2217,7 @@ function PortfolioPhoneItemDiv({item}: any) {
                             ${formatBalance(item.farmingValue)}
                         </ThemeTextEqure>
                     </Column>
-                    <Arrow src={ImageCommon.ArrowDownIcon_white}/>
+                    <Arrow src={ImageCommon.ArrowDownIcon_white} />
                 </RowFixed>
             </RowBetween>
             {showMore && (
@@ -2240,7 +2240,7 @@ function PortfolioPhoneItemDiv({item}: any) {
     );
 }
 
-function ProjectBankItemMobile({title, data, name, tokensKey}: any) {
+function ProjectBankItemMobile({ title, data, name, tokensKey }: any) {
     const themeDark = useTheme();
     if (!data.length) {
         return null;
@@ -2254,10 +2254,10 @@ function ProjectBankItemMobile({title, data, name, tokensKey}: any) {
             }}
         >
             <PortfolioTopBg>{title}</PortfolioTopBg>
-            <SpaceHeight height={0} heightApp={15}/>
+            <SpaceHeight height={0} heightApp={15} />
             <RowBetween>
                 <TextEqure
-                    style={{marginLeft: 10}}
+                    style={{ marginLeft: 10 }}
                     fontWeight={"600"}
                     fontColor={"#4F56FF"}
                     fontSize={15}
@@ -2265,7 +2265,7 @@ function ProjectBankItemMobile({title, data, name, tokensKey}: any) {
                     Pooled funds
                 </TextEqure>
                 <TextEqure
-                    style={{marginRight: 10}}
+                    style={{ marginRight: 10 }}
                     fontWeight={"600"}
                     fontColor={"#4F56FF"}
                     fontSize={15}
@@ -2286,7 +2286,7 @@ function ProjectBankItemMobile({title, data, name, tokensKey}: any) {
     );
 }
 
-function ProjectBankListMobile({item, name, tokensKey}: any) {
+function ProjectBankListMobile({ item, name, tokensKey }: any) {
     const tokens = item[tokensKey] || [];
     const unclaimToken =
         item[ProjectConfig[name]?.unclaimKey]?.[0] ||
@@ -2311,7 +2311,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
         const pairs = [item.symbol];
 
         return (
-            <Column style={{padding: 10}}>
+            <Column style={{ padding: 10 }}>
                 <div
                     style={{
                         height: 1,
@@ -2322,7 +2322,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
                 ></div>
                 <RowBetween>
                     <RowFixed>
-                        <CardPairOrigin pairs={pairs} icons={icons} showTitle={false}/>
+                        <CardPairOrigin pairs={pairs} icons={icons} showTitle={false} />
                         <Column>
                             <ThemeTextEqure fontWeight={"600"} fontSize={15}>
                                 {formatBalance(item.amount)} {item.symbol}
@@ -2332,7 +2332,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
                             </ThemeTextEqure>
                         </Column>
                     </RowFixed>
-                    <Column style={{alignItems: "flex-end"}}>
+                    <Column style={{ alignItems: "flex-end" }}>
                         <ThemeTextEqure fontWeight={"600"} fontSize={15}>
                             {formatBalance(unclaimToken.amount)} {unclaimToken.symbol}($
                             {formatBalance(unclaimToken.value)})
@@ -2358,7 +2358,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
         );
     });
     return (
-        <Column style={{padding: 10}}>
+        <Column style={{ padding: 10 }}>
             <div
                 style={{
                     height: 1,
@@ -2369,7 +2369,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
             ></div>
             <RowBetween>
                 <RowFixed>
-                    <CardPairOrigin pairs={pairs} icons={icons} showTitle={false}/>
+                    <CardPairOrigin pairs={pairs} icons={icons} showTitle={false} />
                     <Column>
                         <ThemeTextEqure fontWeight={"600"} fontSize={15}>
                             {balance.join("+")}
@@ -2379,7 +2379,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
                         </ThemeTextEqure>
                     </Column>
                 </RowFixed>
-                <Column style={{alignItems: "flex-end"}}>
+                <Column style={{ alignItems: "flex-end" }}>
                     <ThemeTextEqure fontWeight={"600"} fontSize={15}>
                         {formatBalance(unclaimToken.amount)} {unclaimToken.symbol}($
                         {formatBalance(unclaimToken.value)})
@@ -2393,7 +2393,7 @@ function ProjectBankListMobile({item, name, tokensKey}: any) {
     );
 }
 
-function PortfolioDiv({project, chainType}: any) {
+function PortfolioDiv({ project, chainType }: any) {
     const data = Object.values(project[chainType] || {});
 
     const projectNames = data.map((item: any, index: number) => {
@@ -2413,7 +2413,7 @@ function PortfolioDiv({project, chainType}: any) {
         return <ProfileLoading loading={allProject.loading}></ProfileLoading>;
     }
     return (
-        <Column style={{width: "100%", marginTop: 30}}>
+        <Column style={{ width: "100%", marginTop: 30 }}>
             {projectsFilterRes.map((item: any, index: number) => {
                 return <ProjectItem item={item}></ProjectItem>;
             })}
@@ -2421,12 +2421,12 @@ function PortfolioDiv({project, chainType}: any) {
     );
 }
 
-function ProjectItem({item}: any) {
+function ProjectItem({ item }: any) {
     return (
-        <Column style={{width: "100%"}}>
+        <Column style={{ width: "100%" }}>
             <RowBetween>
                 <RowFixed>
-                    <SmallIconIcon src={item.icon}/>
+                    <SmallIconIcon src={item.icon} />
                     <TextEqure fontSize={34} fontColor={"#4F56FF"} fontWeight={"bold"}>
                         {item.desc}
                     </TextEqure>
@@ -2435,15 +2435,15 @@ function ProjectItem({item}: any) {
                     <TextEqure fontSize={18} fontColor={"#777E90"} fontWeight={"bold"}>
                         Mining assets
                     </TextEqure>
-                    <SpaceWidth width={20} widthApp={0}/>
+                    <SpaceWidth width={20} widthApp={0} />
                     <ThemeTextEqure fontSize={18} fontWeight={"bold"}>
                         ${formatBalance(item.asset)}
                     </ThemeTextEqure>
-                    <SpaceWidth width={50} widthApp={0}/>
+                    <SpaceWidth width={50} widthApp={0} />
                     <TextEqure fontSize={18} fontColor={"#777E90"} fontWeight={"bold"}>
                         To be claimed
                     </TextEqure>
-                    <SpaceWidth width={20} widthApp={0}/>
+                    <SpaceWidth width={20} widthApp={0} />
                     <TextEqure fontSize={18} fontColor={"#4F56FF"} fontWeight={"bold"}>
                         ${formatBalance(item.farmingValue)}
                     </TextEqure>
@@ -2465,7 +2465,7 @@ function ProjectItem({item}: any) {
     );
 }
 
-function ProjectBankItem({title, data, name, tokensKey}: any) {
+function ProjectBankItem({ title, data, name, tokensKey }: any) {
     const themeDark = useTheme();
     if (!data.length) {
         return null;
@@ -2477,35 +2477,35 @@ function ProjectBankItem({title, data, name, tokensKey}: any) {
             }}
         >
             <PortfolioTopBg>{title}</PortfolioTopBg>
-            <SpaceHeight height={30} heightApp={20}/>
+            <SpaceHeight height={30} heightApp={20} />
             <RowBetween>
-                <Column style={{flex: 1.5}}>
+                <Column style={{ flex: 1.5 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={18}>
                         Pooled funds
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 2}}>
+                <Column style={{ flex: 2 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={18}>
                         Balance
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={18}>
                         Value
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1.5}}>
+                <Column style={{ flex: 1.5 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={18}>
                         To be claimed
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1, alignItems: "flex-end"}}>
+                <Column style={{ flex: 1, alignItems: "flex-end" }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={18}>
                         APY
                     </TextEqure>
                 </Column>
             </RowBetween>
-            <LineH style={{marginTop: 10, marginBottom: 20}}/>
+            <LineH style={{ marginTop: 10, marginBottom: 20 }} />
             {data.map((subItem: any, subIndex: number) => {
                 return (
                     <ProjectBankList
@@ -2519,7 +2519,7 @@ function ProjectBankItem({title, data, name, tokensKey}: any) {
     );
 }
 
-function ProjectBankList({item, name, tokensKey}: any) {
+function ProjectBankList({ item, name, tokensKey }: any) {
     const tokens = item[tokensKey] || [];
     const unclaimToken =
         item[ProjectConfig[name]?.unclaimKey]?.[0] ||
@@ -2544,32 +2544,32 @@ function ProjectBankList({item, name, tokensKey}: any) {
         const pairs = [item.symbol];
 
         return (
-            <RowBetween style={{height: 50}}>
-                <Column style={{flex: 1.5}}>
+            <RowBetween style={{ height: 50 }}>
+                <Column style={{ flex: 1.5 }}>
                     <RowFixed>
-                        <CardPairOrigin pairs={pairs} icons={icons} showTitle={false}/>
+                        <CardPairOrigin pairs={pairs} icons={icons} showTitle={false} />
                         <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                             {pairs.join("+")}
                         </ThemeTextEqure>
                     </RowFixed>
                 </Column>
-                <Column style={{flex: 2}}>
+                <Column style={{ flex: 2 }}>
                     <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                         {formatBalance(item.amount)} {item.symbol}
                     </ThemeTextEqure>
                 </Column>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                         ${formatBalance(item.value)}
                     </ThemeTextEqure>
                 </Column>
-                <Column style={{flex: 1.5}}>
+                <Column style={{ flex: 1.5 }}>
                     <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                         {formatBalance(unclaimToken.amount)} {unclaimToken.symbol}($
                         {formatBalance(unclaimToken.value)})
                     </ThemeTextEqure>
                 </Column>
-                <Column style={{flex: 1, alignItems: "flex-end"}}>
+                <Column style={{ flex: 1, alignItems: "flex-end" }}>
                     <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                         {formatPercent(item.apy)}
                     </ThemeTextEqure>
@@ -2590,32 +2590,32 @@ function ProjectBankList({item, name, tokensKey}: any) {
         );
     });
     return (
-        <RowBetween style={{height: 50}}>
-            <Column style={{flex: 1.5}}>
+        <RowBetween style={{ height: 50 }}>
+            <Column style={{ flex: 1.5 }}>
                 <RowFixed>
-                    <CardPairOrigin pairs={pairs} icons={icons} showTitle={false}/>
+                    <CardPairOrigin pairs={pairs} icons={icons} showTitle={false} />
                     <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                         {pairs.join("+")}
                     </ThemeTextEqure>
                 </RowFixed>
             </Column>
-            <Column style={{flex: 2}}>
+            <Column style={{ flex: 2 }}>
                 <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                     {balance.join("+")}
                 </ThemeTextEqure>
             </Column>
-            <Column style={{flex: 1}}>
+            <Column style={{ flex: 1 }}>
                 <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                     ${formatBalance(item.value)}
                 </ThemeTextEqure>
             </Column>
-            <Column style={{flex: 1.5}}>
+            <Column style={{ flex: 1.5 }}>
                 <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                     {formatBalance(unclaimToken.amount)} {unclaimToken.symbol}($
                     {formatBalance(unclaimToken.value)})
                 </ThemeTextEqure>
             </Column>
-            <Column style={{flex: 1, alignItems: "flex-end"}}>
+            <Column style={{ flex: 1, alignItems: "flex-end" }}>
                 <ThemeTextEqure fontWeight={"600"} fontSize={18}>
                     {formatPercent(item.apy)}
                 </ThemeTextEqure>
@@ -2632,14 +2632,14 @@ function ActivityItem() {
     }
 
     return (
-        <Column style={{width: "100%"}}>
-            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex}/>
-            <ActivityDiv/>
+        <Column style={{ width: "100%" }}>
+            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex} />
+            <ActivityDiv />
         </Column>
     );
 }
 
-function ActivityDiv({data}: any) {
+function ActivityDiv({ data }: any) {
     const [topIndex, setTopIndex] = useState(0);
     const themeDark = useTheme();
     return (
@@ -2649,7 +2649,7 @@ function ActivityDiv({data}: any) {
             }}
         >
             <WrapDiv
-                style={{justifyContent: "flex-start", marginLeft: 0, marginRight: 0}}
+                style={{ justifyContent: "flex-start", marginLeft: 0, marginRight: 0 }}
             >
                 {["All types", "Withdrawals", "Deposit", "Transfer"].map(
                     (item, index) => {
@@ -2666,49 +2666,49 @@ function ActivityDiv({data}: any) {
                     }
                 )}
             </WrapDiv>
-            <LineH/>
+            <LineH />
             <ThemeTextEqure fontSize={28} fontWeight={"bold"}>
                 Activity
             </ThemeTextEqure>
-            <SpaceHeight height={40} heightApp={20}/>
+            <SpaceHeight height={40} heightApp={20} />
             <RowBetween>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={12}>
                         Coin
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={12}>
                         Amount
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={12}>
                         Address
                     </TextEqure>
                 </Column>
-                <Column style={{flex: 1}}>
+                <Column style={{ flex: 1 }}>
                     <TextEqure fontColor={"#777E90"} fontWeight={"600"} fontSize={12}>
                         Transaction ID
                     </TextEqure>
                 </Column>
-              </RowBetween>
-      <SpaceHeight height={40} heightApp={20} />
-      <RowCenter>
-        <TextEqure fontColor={"#777E90"} fontSize={12}>
-        {`Tokens with value <$100 are hidden`}
-        </TextEqure>
-        <ThemeTextEqure
-          style={{ cursor: "pointer", marginLeft: 15 }}
-          onClick={() => {}}
-          fontColor={"#4E55FF"}
-          fontSize={12}
-        >
-          Show all
-        </ThemeTextEqure>
-      </RowCenter>
-    </BGDiv>
-  );
+            </RowBetween>
+            <SpaceHeight height={40} heightApp={20} />
+            <RowCenter>
+                <TextEqure fontColor={"#777E90"} fontSize={12}>
+                    {`Tokens with value <$100 are hidden`}
+                </TextEqure>
+                <ThemeTextEqure
+                    style={{ cursor: "pointer", marginLeft: 15 }}
+                    onClick={() => { }}
+                    fontColor={"#4E55FF"}
+                    fontSize={12}
+                >
+                    Show all
+                </ThemeTextEqure>
+            </RowCenter>
+        </BGDiv>
+    );
 }
 
 function ApprovalItem() {
@@ -2720,8 +2720,8 @@ function ApprovalItem() {
     }
 
     return (
-        <Column style={{width: "100%"}}>
-            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex}/>
+        <Column style={{ width: "100%" }}>
+            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex} />
             {isMobile ? (
                 <ApprovalPhoneDiv
                     data={approveList}
@@ -2737,8 +2737,8 @@ function ApprovalItem() {
     );
 }
 
-function ApprovalPhoneDiv({data, netType}: any) {
-    const {chainId} = useContext(NetworkTypeContext);
+function ApprovalPhoneDiv({ data, netType }: any) {
+    const { chainId } = useContext(NetworkTypeContext);
     const network = ChainId[chainId];
 
     function cancel(cancelApprove: any) {
@@ -2752,14 +2752,14 @@ function ApprovalPhoneDiv({data, netType}: any) {
     return (
         <>
             {!data.loading &&
-            data.data.authorizations.map((item: any, index: number) => {
-                return <ApprovalPhoneItemDiv item={item} cancel={cancel}/>;
-            })}
+                data.data.authorizations.map((item: any, index: number) => {
+                    return <ApprovalPhoneItemDiv item={item} cancel={cancel} />;
+                })}
         </>
     );
 }
 
-function ApprovalPhoneItemDiv({item, cancel}: any) {
+function ApprovalPhoneItemDiv({ item, cancel }: any) {
     const [showMore, setShowMore] = useState(false);
     const tokenContract = useTokenContract(item.address);
     const addTransaction = useTransactionAdder();
@@ -2782,7 +2782,7 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
         <Column>
             <RowBetween>
                 <RowFixed>
-                    <SmallIconIcon/>
+                    <SmallIconIcon />
                     <Column>
                         <TextEqure fontColor={"#777E90"} fontSize={18}>
                             {item.symbol}
@@ -2800,7 +2800,7 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
                     <ThemeTextEqure fontSize={20}>
                         ${formatBalance(item.sumExposureUsd)}
                     </ThemeTextEqure>
-                    <Arrow src={ImageCommon.ArrowDownIcon_white}/>
+                    <Arrow src={ImageCommon.ArrowDownIcon_white} />
                 </RowFixed>
             </RowBetween>
             {showMore && (
@@ -2811,10 +2811,10 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
                 >
                     {item.projects.map((subItem: any, subIndex: number) => {
                         return (
-                            <Column style={{marginTop: 15}}>
+                            <Column style={{ marginTop: 15 }}>
                                 <RowBetween>
                                     <RowFixed>
-                                        <SmallIconIcon src={subItem.icon}/>
+                                        <SmallIconIcon src={subItem.icon} />
                                         <ThemeTextEqure fontSize={15}>
                                             {subItem.name ? subItem.name : "Unknown project"}
                                         </ThemeTextEqure>
@@ -2841,11 +2841,11 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
                                     </TextEqure>
                                     <ThemeTextEqure fontSize={18}>All</ThemeTextEqure>
                                 </RowBetween>
-                                <RowBetween style={{overflow: "hidden"}}>
+                                <RowBetween style={{ overflow: "hidden" }}>
                                     <TextEqure fontColor={"#777E90"} fontSize={10}>
                                         Project/Contract
                                     </TextEqure>
-                                    <ThemeTextEqure style={{width: 100}} fontSize={10}>
+                                    <ThemeTextEqure style={{ width: 100 }} fontSize={10}>
                                         {subItem.address}
                                     </ThemeTextEqure>
                                 </RowBetween>
@@ -2854,13 +2854,13 @@ function ApprovalPhoneItemDiv({item, cancel}: any) {
                     })}
                 </BGDiv>
             )}
-            <LineH height={15}/>
+            <LineH height={15} />
         </Column>
     );
 }
 
-function ApprovalDiv({data, netType}: any) {
-    const {chainId} = useContext(NetworkTypeContext);
+function ApprovalDiv({ data, netType }: any) {
+    const { chainId } = useContext(NetworkTypeContext);
     const network = ChainId[chainId];
     const themeDark = useTheme();
 
@@ -2879,7 +2879,7 @@ function ApprovalDiv({data, netType}: any) {
             }}
         >
             <RowBetween>
-                <RowBetween style={{flex: 1, marginRight: 24}}>
+                <RowBetween style={{ flex: 1, marginRight: 24 }}>
                     <TextEqure fontColor={"#777E90"} fontSize={18}>
                         Token/Balance
                     </TextEqure>
@@ -2887,10 +2887,10 @@ function ApprovalDiv({data, netType}: any) {
                         Token exposure
                     </TextEqure>
                 </RowBetween>
-                <RowBetween style={{flex: 2}}>
-                    <RowBetween style={{flex: 2}}>
+                <RowBetween style={{ flex: 2 }}>
+                    <RowBetween style={{ flex: 2 }}>
                         <TextEqure
-                            style={{marginLeft: 24}}
+                            style={{ marginLeft: 24 }}
                             fontColor={"#777E90"}
                             fontSize={18}
                         >
@@ -2901,7 +2901,7 @@ function ApprovalDiv({data, netType}: any) {
                         </TextEqure>
                     </RowBetween>
                     <TextEqure
-                        style={{flex: 1, marginLeft: 30}}
+                        style={{ flex: 1, marginLeft: 30 }}
                         fontColor={"#777E90"}
                         fontSize={18}
                     >
@@ -2909,17 +2909,17 @@ function ApprovalDiv({data, netType}: any) {
                     </TextEqure>
                 </RowBetween>
             </RowBetween>
-            <SpaceHeight height={30} heightApp={15}/>
+            <SpaceHeight height={30} heightApp={15} />
             <ProfileLoading loading={data.loading}></ProfileLoading>
             {!data.loading &&
-            data.data.authorizations.map((item: any, index: number) => {
-                return <ApproveItem item={item} cancel={cancel}></ApproveItem>;
-            })}
+                data.data.authorizations.map((item: any, index: number) => {
+                    return <ApproveItem item={item} cancel={cancel}></ApproveItem>;
+                })}
         </BGDiv>
     );
 }
 
-function ApproveItem({item, cancel}: any) {
+function ApproveItem({ item, cancel }: any) {
     const tokenContract = useTokenContract(item.address);
     const addTransaction = useTransactionAdder();
 
@@ -2938,11 +2938,11 @@ function ApproveItem({item, cancel}: any) {
 
     return (
         <>
-            <LineHNor/>
-            <RowBetween style={{alignItems: "flex-start"}}>
-                <RowBetween style={{flex: 1, marginRight: 24, marginTop: 10}}>
+            <LineHNor />
+            <RowBetween style={{ alignItems: "flex-start" }}>
+                <RowBetween style={{ flex: 1, marginRight: 24, marginTop: 10 }}>
                     <RowFixed>
-                        <SmallIconIcon src={item.icon}/>
+                        <SmallIconIcon src={item.icon} />
                         <Column>
                             <TextEqure fontColor={"#777E90"} fontSize={18}>
                                 {item.symbol}
@@ -2956,19 +2956,19 @@ function ApproveItem({item, cancel}: any) {
                         ${formatBalance(item.sumExposureUsd)}
                     </ThemeTextEqure>
                 </RowBetween>
-                <Column style={{flex: 2}}>
+                <Column style={{ flex: 2 }}>
                     {item.projects.map((subItem: any, subIndex: number) => {
                         return (
                             <BottomRight>
-                                <RowBetween style={{flex: 2}}>
+                                <RowBetween style={{ flex: 2 }}>
                                     <RowFixed>
-                                        <SmallIconIcon src={subItem.icon}/>
+                                        <SmallIconIcon src={subItem.icon} />
                                         <Column>
                                             <ThemeTextEqure fontSize={20}>
                                                 {subItem.name ? subItem.name : "Unknown project"}
                                             </ThemeTextEqure>
                                             <AddressShowText
-                                                style={{width: 250}}
+                                                style={{ width: 250 }}
                                                 fontColor={"#777E90"}
                                                 fontSize={16}
                                             >
@@ -2978,12 +2978,12 @@ function ApproveItem({item, cancel}: any) {
                                     </RowFixed>
                                     <ThemeTextEqure fontSize={20}>All</ThemeTextEqure>
                                 </RowBetween>
-                                <RowFixed style={{flex: 1, marginLeft: 30}}>
-                                    <SpaceWidth width={30} widthApp={35}/>
+                                <RowFixed style={{ flex: 1, marginLeft: 30 }}>
+                                    <SpaceWidth width={30} widthApp={35} />
                                     <ThemeTextEqure fontSize={20}>
                                         ${formatBalance(subItem.exposureUsd)}
                                     </ThemeTextEqure>
-                                    <SpaceWidth width={30} widthApp={35}/>
+                                    <SpaceWidth width={30} widthApp={35} />
                                     <CancelButton
                                         onClick={() => {
                                             cancel(() => cancelApprove(subItem.address));
@@ -3013,15 +3013,15 @@ const AddressShowText = styled(TextEqure)`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-const ActivityDivTopItem = styled(RowCenter)<{
+const ActivityDivTopItem = styled(RowCenter) <{
     isChoose: boolean;
 }>`
   align-items: center;
   cursor: pointer;
-  background-color: ${({isChoose}) => (isChoose ? "#353945" : "transparent")};
+  background-color: ${({ isChoose }) => (isChoose ? "#353945" : "transparent")};
   height: 30px;
   border-radius: 15px;
-  color: ${({isChoose}) => (isChoose ? "#FBFCFC" : "#777E90")};
+  color: ${({ isChoose }) => (isChoose ? "#FBFCFC" : "#777E90")};
   font-size: 14px;
   font-weight: bold;
   padding: 10px 15px;

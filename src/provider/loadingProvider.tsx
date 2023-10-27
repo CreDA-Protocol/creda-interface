@@ -1,46 +1,46 @@
 import styled from "styled-components";
-import loadingJson from "../lottie/creda_action_loading.json";
-import errorJson from "../lottie/creda_action_error.json";
-import successJson from "../lottie/creda_action_success.json";
-import {Lottie} from "@crello/react-lottie";
-import {colors, formatAccount} from "../common/Common";
-import {CloseOutlined} from "@ant-design/icons";
-import {RowEnd} from "../components/Row";
-import {createContext, useContext, useState} from "react";
-import {NetworkTypeContext} from "../context";
-import {getScanLink, getScanName} from "../utils";
-import {useTheme} from "../state/application/hooks";
-import {isMobile} from "react-device-detect";
+import loadingJson from "@assets/lottie/creda_action_loading.json";
+import errorJson from "@assets/lottie/creda_action_error.json";
+import successJson from "@assets/lottie/creda_action_success.json";
+import { Lottie } from "@crello/react-lottie";
+import { colors, formatAccount } from "../common/Common";
+import { CloseOutlined } from "@ant-design/icons";
+import { RowEnd } from "../components/Row";
+import { createContext, useContext, useState } from "react";
+import { NetworkTypeContext } from "../context";
+import { getScanLink, getScanName } from "../utils";
+import { useTheme } from "../state/application/hooks";
+import { isMobile } from "react-device-detect";
 export enum LoadingType {
-    confirm=0,
-    pending=1,
-    error=2,
-    success=3
+    confirm = 0,
+    pending = 1,
+    error = 2,
+    success = 3
 }
 export const LoadingContext = createContext({
-    show: (type:LoadingType,message:string) => {
+    show: (type: LoadingType, message: string) => {
 
     },
-    hide:()=>{}
+    hide: () => { }
 })
 export function useLoadingContext() {
     const loadingContext = useContext(LoadingContext)
     return loadingContext
 }
-export default function LoadingProvider({children}:any) {
+export default function LoadingProvider({ children }: any) {
 
-    const [visible,setVisible] = useState(false)
-    const [type,setType] = useState(LoadingType.confirm)
-    const [message,setMessage] = useState("")
-    return(
+    const [visible, setVisible] = useState(false)
+    const [type, setType] = useState(LoadingType.confirm)
+    const [message, setMessage] = useState("")
+    return (
         <LoadingContext.Provider
             value={{
-                show:(type, message) => {
+                show: (type, message) => {
                     setType(type)
                     setMessage(message)
                     setVisible(true)
                 },
-                hide:()=>{
+                hide: () => {
                     setVisible(false)
                 }
             }}
@@ -50,53 +50,53 @@ export default function LoadingProvider({children}:any) {
                 visible={visible}
                 type={type}
                 message={message}
-                onClose={()=>setVisible(false)}
+                onClose={() => setVisible(false)}
             ></Loading>
         </LoadingContext.Provider>
     )
 }
 
-function Loading({visible,type,message,onClose}:any) {
-    const {chainId} = useContext(NetworkTypeContext);
+function Loading({ visible, type, message, onClose }: any) {
+    const { chainId } = useContext(NetworkTypeContext);
     const themeDark = useTheme()
-    if(!visible){
+    if (!visible) {
         return null;
     }
-    return(
+    return (
         <LoadingContainer>
             <LoadingContent
                 dark={Boolean(themeDark)}
             >
                 <RowEnd>
                     <CloseOutlined
-                        style={{color:themeDark?colors.white:colors.black,fontSize:isMobile?"16px":"22px",cursor:"pointer"}}
+                        style={{ color: themeDark ? colors.white : colors.black, fontSize: isMobile ? "16px" : "22px", cursor: "pointer" }}
                         onClick={onClose}
                     />
                 </RowEnd>
                 <LottieView>
-                    {[LoadingType.confirm,LoadingType.pending].includes(type) && <Lottie
+                    {[LoadingType.confirm, LoadingType.pending].includes(type) && <Lottie
                         speed={0.5}
                         config={{
                             loop: true,
                             autoplay: true,
                             animationData: loadingJson,
-                        }}/>}
-                    {type===LoadingType.error && <Lottie
+                        }} />}
+                    {type === LoadingType.error && <Lottie
                         // speed={0.5}
                         config={{
                             loop: true,
                             autoplay: true,
                             animationData: errorJson,
-                        }}/>}
-                    {type===LoadingType.success && <Lottie
+                        }} />}
+                    {type === LoadingType.success && <Lottie
                         // speed={0.5}
                         config={{
                             loop: true,
                             autoplay: true,
                             animationData: successJson,
-                        }}/>}
+                        }} />}
                 </LottieView>
-                {type===LoadingType.confirm && <>
+                {type === LoadingType.confirm && <>
                     <LoadingTitle
                         dark={Boolean(themeDark)}
                     >
@@ -113,7 +113,7 @@ function Loading({visible,type,message,onClose}:any) {
                         Confirm this transaction in your wallet
                     </LoadingTips>
                 </>}
-                {type===LoadingType.pending && <>
+                {type === LoadingType.pending && <>
                     <LoadingTitle
                         dark={Boolean(themeDark)}
                     >
@@ -126,14 +126,14 @@ function Loading({visible,type,message,onClose}:any) {
                     </LoadingDesc>
                     <LoadingHashView
                         dark={Boolean(themeDark)}
-                        onClick={()=>{
-                            window.open(getScanLink(chainId,message,"transaction"))
+                        onClick={() => {
+                            window.open(getScanLink(chainId, message, "transaction"))
                         }}
                     >
                         View On {getScanName(chainId)}
                     </LoadingHashView>
                 </>}
-                {type===LoadingType.error && <>
+                {type === LoadingType.error && <>
                     <LoadingTitle
                         dark={Boolean(themeDark)}
                     >
@@ -144,9 +144,9 @@ function Loading({visible,type,message,onClose}:any) {
                     >
                         {message}
                     </LoadingDesc>
-                    
+
                 </>}
-                {type===LoadingType.success && <>
+                {type === LoadingType.success && <>
                     <LoadingTitle
                         dark={Boolean(themeDark)}
                     >
@@ -159,8 +159,8 @@ function Loading({visible,type,message,onClose}:any) {
                     </LoadingDesc>
                     <LoadingHashView
                         dark={Boolean(themeDark)}
-                        onClick={()=>{
-                            window.open(getScanLink(chainId,message,"transaction"))
+                        onClick={() => {
+                            window.open(getScanLink(chainId, message, "transaction"))
                         }}
                     >
                         View On {getScanName(chainId)}
@@ -182,8 +182,8 @@ const LoadingContainer = styled.div`
     z-index:999999;
     background-color:rgba(0,0,0,0.2);
 `
-const LoadingContent = styled.div<{dark:boolean}>`
-    background-color:${props=>props.dark?colors.dark_background:colors.white};
+const LoadingContent = styled.div<{ dark: boolean }>`
+    background-color:${props => props.dark ? colors.dark_background : colors.white};
     padding:20px;
     display:flex;
     flex-direction:column;
@@ -202,33 +202,33 @@ const LottieView = styled.div`
          width:70px;
     }
 `
-const LoadingTitle = styled.div<{dark:boolean}>`
+const LoadingTitle = styled.div<{ dark: boolean }>`
     font-size:24px;
     font-weight:bold;
-    color:${props=>props.dark?colors.white:colors.black};
+    color:${props => props.dark ? colors.white : colors.black};
     @media (max-width: 768px) {
         font-size:20px;
     }
 `
-const LoadingDesc = styled.div<{dark:boolean}>`
+const LoadingDesc = styled.div<{ dark: boolean }>`
     font-size:16px;
-    color:${props=>props.dark?"#BFBFBF":colors.title};
+    color:${props => props.dark ? "#BFBFBF" : colors.title};
     text-align:center;
     @media (max-width: 768px) {
         font-size:14px;
     }
 `
-const LoadingTips = styled.div<{dark:boolean}>`
+const LoadingTips = styled.div<{ dark: boolean }>`
     font-size:14px;
-    color:${props=>props.dark?"#7F7F7F":colors.title};
+    color:${props => props.dark ? "#7F7F7F" : colors.title};
     margin-top:20px;
     @media (max-width: 768px) {
         font-size:12px;
     }
 `
-const LoadingHashView = styled.div<{dark:boolean}>`
+const LoadingHashView = styled.div<{ dark: boolean }>`
     font-size:14px;
-    color:${props=>props.dark?"#7F7F7F":colors.title};
+    color:${props => props.dark ? "#7F7F7F" : colors.title};
     margin-top:20px;
     cursor:pointer;
     text-decoration:underline;

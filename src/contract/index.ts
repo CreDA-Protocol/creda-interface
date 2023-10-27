@@ -3,35 +3,35 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
-  ApprovalState,
-  BSC_PROVIDER,
-  ChainId,
-  SwapList,
-  balanceToBigNumber,
-  bigNumberToBalance,
-  config,
-  enableNetwork,
-  formatBalance,
-  getBuildStatus,
-  getPriceByApi,
-  getPriceESC,
-  logError,
-  marketsConfig,
-  mathPriceTo8,
-  multiCallConfig,
-  packageInfoConfig,
-  walletInfo
+    ApprovalState,
+    BSC_PROVIDER,
+    ChainId,
+    SwapList,
+    balanceToBigNumber,
+    bigNumberToBalance,
+    config,
+    enableNetwork,
+    formatBalance,
+    getBuildStatus,
+    getPriceByApi,
+    getPriceESC,
+    logError,
+    marketsConfig,
+    mathPriceTo8,
+    multiCallConfig,
+    packageInfoConfig,
+    walletInfo
 } from '../common/Common'
 import { NetworkTypeContext, WalletAddressContext } from "../context"
 import { useContract, useContractWithProvider, useTokenContract } from "../hooks/useContract"
 import { useTransactionAdder } from "../state/transactions/hooks"
 import ContractConfig, { BankConfig, EarnConfig } from './ContractConfig'
 
+import ERC20_ABI from '@abi/ERC20.json'
+import { Celo_fetchTokenBalances } from '@common/celo.helper'
 import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
-import ERC20_ABI from '../abiJson/ERC20.json'
-import { Celo_fetchTokenBalances } from '../common/celo.helper'
 import { Covalent_enableNetwork, Covalent_fetchTokenBalances } from '../common/covalent.helper'
 import { Esc_fetchTokenBalances } from '../common/esc.helper'
 import { WalletList, WalletToken } from '../model/wallet'
@@ -42,8 +42,8 @@ import { LoadingContext, LoadingType } from "../provider/loadingProvider"
  * 获取是否授权过获取信用分数
  */
 export function useApproveCredit(): number {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [approve, setApprove] = useState(ApprovalState.PENDING);
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
@@ -71,8 +71,8 @@ export function useApproveCredit(): number {
  * 获取信用分数
  */
 export function useCreditPoints(): string {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [points, setPoints] = useState("");
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
@@ -96,8 +96,8 @@ export function useCreditPoints(): string {
  * 获取余额
  */
 export function useBalance(symbol: string): string {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [balance, setBlance] = useState("");
     const tokenContract = useTokenContract(ContractConfig[symbol][network]?.address);
@@ -123,8 +123,8 @@ export function useBalance(symbol: string): string {
  * 获取余额
  */
 export function useBalanceV2(symbol: string): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({
         loading: true,
@@ -155,8 +155,8 @@ export function useBalanceV2(symbol: string): any {
  * 获取收益信息
  */
 export function useMiningInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({});
@@ -213,8 +213,8 @@ export function useMiningInfo(): any {
  * 获取质押
  */
 export function useStakeV2(symbol: string): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -303,7 +303,7 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
                     return
                 }
                 loading.show(LoadingType.error, err.reason || err.message)
-              })
+            })
     }, [approvalState, tokenContract, spender, loading]);
     // console.log(approvalState,tokenAddress,spender,currentAllowance.toString(),MaxUint256.toString())
     return [approvalState, approve];
@@ -314,7 +314,7 @@ const useAllowance = (tokenAddress: string, spender: string) => {
     const [allowance, setAllowance] = useState(BigNumber.from(0));
     const token = useTokenContract(tokenAddress);
     // const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { account } = useContext(WalletAddressContext);
     // const network = ChainId[chainId];
 
     useEffect(() => {
@@ -338,8 +338,8 @@ const useAllowance = (tokenAddress: string, spender: string) => {
  * 获取卡片信息
  */
 export function useCardInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({});
     const nftContract = useContract(ContractConfig.CreditNFT[network]?.address, ContractConfig.CreditNFT.abi);
@@ -368,8 +368,8 @@ export function useCardInfo(): any {
  * Banking  获取市场借贷信息
  */
 export function useMarketsResult() {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({});
     let markets: any = Object.values(BankConfig);
@@ -428,10 +428,10 @@ export function useMarketsResult() {
                     methodName: 'balanceOf',
                     methodParameters: [account]
                 }, {
-                    reference: itemInfo.symbol + '.token.decimals.' + account,
-                    methodName: 'decimals',
-                    methodParameters: []
-                }
+                reference: itemInfo.symbol + '.token.decimals.' + account,
+                methodName: 'decimals',
+                methodParameters: []
+            }
             )
         }
         contractCallContext.push(callContext)
@@ -475,7 +475,7 @@ export function useMarketsResult() {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account,chainId, contractCallContext, contractCallResult, network])
+    }, [account, chainId, contractCallContext, contractCallResult, network])
     return info;
 }
 
@@ -483,8 +483,8 @@ export function useMarketsResult() {
  * 获取币种借贷信息
  */
 export function useDaInfo(symbol: string, markets: any): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const network = ChainId[chainId];
     const [info, setInfo] = useState({
         loading: true
@@ -545,8 +545,8 @@ export function useDaInfo(symbol: string, markets: any): any {
  * 获取币种借贷信息
  */
 export function useEarnInfo(symbol: string, markets: any): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({
         loading: true
@@ -613,8 +613,8 @@ export function useEarnInfo(symbol: string, markets: any): any {
  * Earn  获取钱包信息
  */
 export function useEarnResult() {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({});
     let markets: any = Object.values(EarnConfig);
@@ -673,10 +673,10 @@ export function useEarnResult() {
                     methodName: 'balanceOf',
                     methodParameters: [account]
                 }, {
-                    reference: itemInfo.symbol + '.token.decimals.' + account,
-                    methodName: 'decimals',
-                    methodParameters: []
-                }
+                reference: itemInfo.symbol + '.token.decimals.' + account,
+                methodName: 'decimals',
+                methodParameters: []
+            }
             )
         }
         contractCallContext.push(callContext)
@@ -715,7 +715,7 @@ export function useEarnResult() {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account,chainId, contractCallContext, contractCallResult, network])
+    }, [account, chainId, contractCallContext, contractCallResult, network])
     return info;
 }
 
@@ -830,8 +830,8 @@ function isNativeToken(symbol: string) {
  * 获取加入星球信息
  */
 export function useMyStar(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -864,8 +864,8 @@ export function useMyStar(): any {
  * 获取星球总人数
  */
 export function useStarInfo(pid: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -895,8 +895,8 @@ export function useStarInfo(pid: number): any {
  * 获取钱包余额
  */
 export function useWalletInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState({
         loading: true,
@@ -904,7 +904,7 @@ export function useWalletInfo(): any {
         USDT: 0,
         USDC: 0,
         DAI: 0,
-        CREDA:0,
+        CREDA: 0,
     });
     const USDTContract = useTokenContract(ContractConfig.USDT[network]?.address);
     const USDContract = useTokenContract(ContractConfig.USDC[network]?.address);
@@ -913,7 +913,7 @@ export function useWalletInfo(): any {
 
     useEffect(() => {
         const getResult = async () => {
-            if (!account || !USDTContract || !USDContract || !DAIContract ||!CREDAContract) {
+            if (!account || !USDTContract || !USDContract || !DAIContract || !CREDAContract) {
                 return;
             }
             const usdc_decimals: number = await USDContract.decimals()
@@ -934,7 +934,7 @@ export function useWalletInfo(): any {
                 DAI: Number(bigNumberToBalance(DAI, dai_decimals)),
                 CREDA: Number(bigNumberToBalance(CREDA, creda_decimals)),
             })
-          }
+        }
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
     }, [account, USDTContract, USDContract, DAIContract, CREDAContract, network])
@@ -945,8 +945,8 @@ export function useWalletInfo(): any {
  * 获取礼包信息
  */
 export function useGiftInfo(tid: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -988,8 +988,8 @@ export function useGiftInfo(tid: number): any {
  * 获取采集信息- USDT
  */
 export function useEarnedUSDTInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1020,8 +1020,8 @@ export function useEarnedUSDTInfo(id: number): any {
  * 获取采集信息- sCASH
  */
 export function useEarnedsCASHInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1049,8 +1049,8 @@ export function useEarnedsCASHInfo(id: number): any {
 
 // 获取自己所有币种的钱包余额
 export function useSwapBalance() {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState<any>({
         loading: true,
@@ -1108,8 +1108,8 @@ export function useSwapBalance() {
 }
 
 export function useSwapPrice(amount: number, tokens: string[]) {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const routerContract = useContract(ContractConfig.MdexRouter[network]?.address, ContractConfig.MdexRouter.abi);
     const [info, setInfo] = useState<any>({
@@ -1170,8 +1170,8 @@ export async function getSwapPrice(amount: number, path: string[], routerContrac
 
 // 获取pool信息
 export function usePoolInfo(tokenA: string, tokenB: string) {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const routerContract = useContract(ContractConfig.MdexRouter[network]?.address, ContractConfig.MdexRouter.abi);
     const factoryContract = useContract(ContractConfig.MdexFactory[network]?.address, ContractConfig.MdexFactory.abi);
@@ -1214,8 +1214,8 @@ export function usePoolInfo(tokenA: string, tokenB: string) {
  * 获取战舰状态
  */
 export function useWarShipBuildInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1273,8 +1273,8 @@ export function useWarShipBuildInfo(): any {
  * 获取战舰状态
  */
 export function useMyShip(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1310,8 +1310,8 @@ export function useMyShip(): any {
  * 获取战舰状态
  */
 export function useShipInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1364,8 +1364,8 @@ export function useShipInfo(id: number): any {
  * 获取制造状态
  */
 export function useOpretaBuildInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1416,8 +1416,8 @@ export function useOpretaBuildInfo(id: number): any {
  * 获取制造中心 信息
  */
 export function useDataBaseBuildInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1469,8 +1469,8 @@ export function useDataBaseBuildInfo(id: number): any {
  * 获取探索信息
  */
 export function useExploreInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1512,8 +1512,8 @@ export function useExploreInfo(): any {
 
 // 获取自己所有建筑生产任务的信息
 export function useBuildTasking(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const [info, setInfo] = useState<any>({
         loading: true,
@@ -1646,8 +1646,8 @@ export function getPrice(markets: any, symbol: string) {
  */
 // 获取DeFiBox钱包列表
 export function useBoxWalletList(chainType: string): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
     // const network = ChainId[chainId];
     const chainRef = useRef(chainType)
@@ -1673,34 +1673,34 @@ export function useBoxWalletList(chainType: string): any {
 
                 let support = true;
                 let data: WalletList = {
-                  total: 0,
-                  tokens: [] as WalletToken[]
+                    total: 0,
+                    tokens: [] as WalletToken[]
                 };
                 const networkChainId = ChainType2Id[chainType]
 
                 switch (networkChainId) {
-                  case ChainId.celo:
-                  case ChainId.celotest:
-                    data = await Celo_fetchTokenBalances(account, networkChainId)
-                  break;
-                  case ChainId.esc:
-                  case ChainId.elatest:
-                    data = await Esc_fetchTokenBalances(account, networkChainId)
-                  break;
-                  default:
-                    if (Covalent_enableNetwork(networkChainId)) {
-                      data = await Covalent_fetchTokenBalances(account, networkChainId)
-                    } else {
-                      support = false;
-                    }
-                  break;
+                    case ChainId.celo:
+                    case ChainId.celotest:
+                        data = await Celo_fetchTokenBalances(account, networkChainId)
+                        break;
+                    case ChainId.esc:
+                    case ChainId.elatest:
+                        data = await Esc_fetchTokenBalances(account, networkChainId)
+                        break;
+                    default:
+                        if (Covalent_enableNetwork(networkChainId)) {
+                            data = await Covalent_fetchTokenBalances(account, networkChainId)
+                        } else {
+                            support = false;
+                        }
+                        break;
                 }
                 if (support)
-                  setInfo({
-                    loading: false,
-                    support: support,
-                    data: data
-                  })
+                    setInfo({
+                        loading: false,
+                        support: support,
+                        data: data
+                    })
             } catch (e) {
                 logError("useBoxWalletList", e)
                 setInfo(initialState)
@@ -1715,8 +1715,8 @@ export function useBoxWalletList(chainType: string): any {
 
 // 获取DeFiBox授权列表
 export function useBoxApproveList(chainType: string): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
     // const network = ChainId[chainId];
     const chainRef = useRef(chainType);
@@ -1756,8 +1756,8 @@ export function useBoxApproveList(chainType: string): any {
 
 // 获取DeFiBox参与的项目列表
 export function useBoxProjectList(chainType: string, projectName: string): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account = "0xd2050719ea37325bdb6c18a85f6c442221811fac"
     const network = ChainId[chainId];
 
@@ -1798,8 +1798,8 @@ export function useBoxProjectList(chainType: string, projectName: string): any {
 
 // 获取DeFiBox参与的项目列表
 export function useBoxProjectAll(chainType: string, projectNames: string[]): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
     const network = ChainId[chainId];
     const chainRef = useRef(chainType)
@@ -1855,8 +1855,8 @@ export function useBoxProjectAll(chainType: string, projectNames: string[]): any
  * 获取解锁信息
  */
 export function useUnLockInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1883,22 +1883,22 @@ export function useUnLockInfo(): any {
             const staked: BigNumber = await INFTUnlockContract?.getStaked(ContractConfig.ETH_CREDA_LP[network]?.address);
             // console.log(account,ContractConfig.IFNT_USDT_LP[network]?.address)
 
-            let speed:BigNumber = BigNumber.from(0)
-            let unlock:BigNumber = BigNumber.from(0)
-            let lpBalance:BigNumber = BigNumber.from(0)
-            try{
+            let speed: BigNumber = BigNumber.from(0)
+            let unlock: BigNumber = BigNumber.from(0)
+            let lpBalance: BigNumber = BigNumber.from(0)
+            try {
                 speed = await INFTUnlockContract?.getUnlockSpeed(account, ContractConfig.ETH_CREDA_LP[network]?.address);
-            }catch{
+            } catch {
             }
 
-            try{
+            try {
                 unlock = await INFTUnlockContract?.claimableUnlocked(ContractConfig.ETH_CREDA_LP[network]?.address);
-            }catch{
+            } catch {
             }
 
-            try{
-              lpBalance = await INFTLpContract?.balanceOf(account);
-            }catch{
+            try {
+                lpBalance = await INFTLpContract?.balanceOf(account);
+            } catch {
             }
 
             setInfo({
@@ -1922,8 +1922,8 @@ export function useUnLockInfo(): any {
  * 获取Credit Score
  */
 export function useCreditInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -1944,43 +1944,43 @@ export function useCreditInfo(): any {
                 }
 
                 let earn: BigNumber = BigNumber.from(0)
-                try{
+                try {
                     earn = await CredaContract.claimable(account)
-                }catch{}
+                } catch { }
 
                 let did: string = ''
-                try{
-                  did = await APIContract.getDidByAddress(account)
-                }catch{}
+                try {
+                    did = await APIContract.getDidByAddress(account)
+                } catch { }
 
-                if (chainId===ChainId.esc){
-                  const creditScore = await CredaContract.creditScore(account)
-                  setInfo({
-                    loading: false,
-                    score: Number(formatBalance(creditScore.toString(),2)),
-                    earn: Number(bigNumberToBalance(earn)),
-                    did: did.length === 66 ? btoa(did) :(!did ? did :  toUtf8String(did))
-                  })
-                }else {
-                  let score = 0;
-                  try{
-                      const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
-                      let res:any = await axios.get(originUrl);
-                      // console.log(res)
-                      res = res.data
-                      if(res.code===200){
-                          let str = res.data.score
-                          // console.log(Number(str.slice(2,6)),Number(str.slice(6,10)),Number(str.slice(10,14)),Number(str.slice(14,18)))
-                          score = Number(str.slice(2,6))+Number(str.slice(6,10))+Number(str.slice(10,14))+Number(str.slice(14,18))
-                      }
-                  }catch (e) {
-                  }
-                  setInfo({
-                    loading: false,
-                    score:score<=0?calcScore(account):score,
-                    earn: Number(bigNumberToBalance(earn)),
-                    did: did.length === 66 ? btoa(did) :(!did ? did :  toUtf8String(did))
-                  })
+                if (chainId === ChainId.esc) {
+                    const creditScore = await CredaContract.creditScore(account)
+                    setInfo({
+                        loading: false,
+                        score: Number(formatBalance(creditScore.toString(), 2)),
+                        earn: Number(bigNumberToBalance(earn)),
+                        did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
+                    })
+                } else {
+                    let score = 0;
+                    try {
+                        const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
+                        let res: any = await axios.get(originUrl);
+                        // console.log(res)
+                        res = res.data
+                        if (res.code === 200) {
+                            let str = res.data.score
+                            // console.log(Number(str.slice(2,6)),Number(str.slice(6,10)),Number(str.slice(10,14)),Number(str.slice(14,18)))
+                            score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
+                        }
+                    } catch (e) {
+                    }
+                    setInfo({
+                        loading: false,
+                        score: score <= 0 ? calcScore(account) : score,
+                        earn: Number(bigNumberToBalance(earn)),
+                        did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
+                    })
                 }
             } catch (e) {
                 logError("useCreditInfo", e)
@@ -1996,8 +1996,8 @@ export function useCreditInfo(): any {
  * 获取Credit Score
  */
 export function useCreditScore(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const credaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
     const [info, setInfo] = useState({
@@ -2007,32 +2007,32 @@ export function useCreditScore(): any {
     useEffect(() => {
         const getResult = async () => {
             try {
-                if (!account ||!credaContract) {
+                if (!account || !credaContract) {
                     return;
                 }
                 let score = 0;
-                if (chainId===ChainId.esc){
-                  const creditScore = await credaContract.creditScore(account)
-                  setInfo({
-                    loading: false,
-                    data: Number(formatBalance(creditScore.toString(),2))
-                  })
-                }else {
-                  try {
-                    const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
-                    let res:any = await axios.get(originUrl);
-                    res = res.data
-                    if(res.code===200){
-                        let str = res.data.score
-                        score = Number(str.slice(2,6))+Number(str.slice(6,10))+Number(str.slice(10,14))+Number(str.slice(14,18))
-                    }
-                    }catch (e) {
+                if (chainId === ChainId.esc) {
+                    const creditScore = await credaContract.creditScore(account)
+                    setInfo({
+                        loading: false,
+                        data: Number(formatBalance(creditScore.toString(), 2))
+                    })
+                } else {
+                    try {
+                        const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
+                        let res: any = await axios.get(originUrl);
+                        res = res.data
+                        if (res.code === 200) {
+                            let str = res.data.score
+                            score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
+                        }
+                    } catch (e) {
 
                     }
                     setInfo({
-                      loading: false,
-                      data: score<=0?calcScore(account):score
-                  })
+                        loading: false,
+                        data: score <= 0 ? calcScore(account) : score
+                    })
                 }
             } catch (e) {
                 logError("useCreditScore", e)
@@ -2041,19 +2041,19 @@ export function useCreditScore(): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account,credaContract,chainId])
+    }, [account, credaContract, chainId])
     return info;
 }
-function calcScore(account:string):number{
-    const res = Number(account).toFixed(2).slice(2,4)
-    return Number(res)+150
+function calcScore(account: string): number {
+    const res = Number(account).toFixed(2).slice(2, 4)
+    return Number(res) + 150
 }
 /**
  * 获取CREDA info
  */
 export function useCredaInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -2095,8 +2095,8 @@ export function useCredaInfo(): any {
  * 获取softlaunch信息
  */
 export function useMiningPoolInfo(symbol: string, pid: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account = "0xa3d41a68dbf6427aeF1eAD570763eDdb01D3E022"
     const network = ChainId[chainId];
 
@@ -2112,7 +2112,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
     });
     const arbContract = useContract(ContractConfig.PersonalDataMinePoolPlus[network]?.address, ContractConfig.PersonalDataMinePoolPlus.abi)
     const escContract = useContract(ContractConfig.PersonalDataMinePoolV2[network]?.address, ContractConfig.PersonalDataMinePoolV2[network]?.abi)
-    const InitialMintContract = chainId===ChainId.esc?escContract:arbContract
+    const InitialMintContract = chainId === ChainId.esc ? escContract : arbContract
     const tokenContract = useContract(ContractConfig[symbol][network]?.address, ERC20_ABI)
     const credaContract = useContract(ContractConfig.PersonalDataMinePoolFix[network]?.address, ContractConfig.PersonalDataMinePoolFix.abi);
 
@@ -2125,7 +2125,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
                 const decimals: number = await tokenContract.decimals()
                 const balance: BigNumber = await tokenContract.balanceOf(account)
                 const staked: BigNumber = await InitialMintContract?.balanceOf(account, BigNumber.from(pid));
-                const claimable: BigNumber = await (chainId===ChainId.esc?InitialMintContract?.earned(account):InitialMintContract?.earned(account, BigNumber.from(pid)))
+                const claimable: BigNumber = await (chainId === ChainId.esc ? InitialMintContract?.earned(account) : InitialMintContract?.earned(account, BigNumber.from(pid)))
                 const poolInfo: any = await InitialMintContract?.poolInfo(BigNumber.from(pid))
                 const totalSupply: BigNumber = await InitialMintContract.totalSupply(BigNumber.from(pid))
                 const priceConfig: any = {
@@ -2167,8 +2167,8 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
  */
 export function useHardPoolInfo(symbol: string, pid: number): any {
     // console.log(symbol,pid)
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     // const account = "0xa3d41a68dbf6427aeF1eAD570763eDdb01D3E022"
     const network = ChainId[chainId];
 
@@ -2198,19 +2198,19 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                 const decimals: number = await tokenContract.decimals()
                 let balance: BigNumber = BigNumber.from(0)
 
-                if (chainId === ChainId.esc && symbol === 'ELA'){
-                  balance = await walletInfo.provider?.getBalance(account) as BigNumber
-                }else {
-                  balance = await ctokenContract.balanceOf(account)
+                if (chainId === ChainId.esc && symbol === 'ELA') {
+                    balance = await walletInfo.provider?.getBalance(account) as BigNumber
+                } else {
+                    balance = await ctokenContract.balanceOf(account)
                 }
 
                 const staked: BigNumber = await InitialMintContract?.balanceOf(account, BigNumber.from(pid));
                 let claimable: BigNumber = BigNumber.from(0)
 
-                try{
+                try {
                     claimable = await InitialMintContract?.earned(account);
 
-                }catch{}
+                } catch { }
                 const poolInfo: any = await InitialMintContract?.poolInfo(BigNumber.from(pid))
                 const totalSupply: BigNumber = await InitialMintContract.totalSupply(BigNumber.from(pid))
                 const priceConfig: any = {
@@ -2219,34 +2219,34 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                     CPWBTC: 54880,
                     CPDAI: 1.001
                 }
-                let price:any = ''
-                if (chainId===ChainId.esc){
-                  const priceInfo = await getPriceESC(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
-                  if (priceInfo && priceInfo[0])
-                    price = Number( formatBalance(priceInfo[0].derivedUSD,4))
-                }else {
-                  price = await getPriceByApi(symbol)
+                let price: any = ''
+                if (chainId === ChainId.esc) {
+                    const priceInfo = await getPriceESC(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
+                    if (priceInfo && priceInfo[0])
+                        price = Number(formatBalance(priceInfo[0].derivedUSD, 4))
+                } else {
+                    price = await getPriceByApi(symbol)
                 }
 
-                console.log('price==',symbol,price);
+                console.log('price==', symbol, price);
 
                 const tvl = Number(bigNumberToBalance(totalSupply, decimals)) * price * 2
 
                 const dailyRes = poolInfo[4]
 
-                const apr = tvl === 0? 0: Number(bigNumberToBalance(dailyRes)) * 365 * 86400 / tvl
+                const apr = tvl === 0 ? 0 : Number(bigNumberToBalance(dailyRes)) * 365 * 86400 / tvl
 
                 let pointRes: BigNumber = BigNumber.from(0)
-                try{
+                try {
                     pointRes = await credaContract?.creditScore(account)
 
-                }catch{}
+                } catch { }
 
                 let claimed: BigNumber = BigNumber.from(0)
-                try{
+                try {
                     claimed = await credaContract?.credaClaimed(account)
 
-                }catch{}
+                } catch { }
                 setInfo({
                     loading: false,
                     staked: Number(mathPriceTo8(bigNumberToBalance(staked, decimals))),
@@ -2274,8 +2274,8 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
  * 获取CNFT info
  */
 export function useCNFTInfo(): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -2321,8 +2321,8 @@ export function useCNFTInfo(): any {
  * 获取CnetWork info
  */
 export function useCnetWorkInfo(id: number): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -2374,8 +2374,8 @@ export function useCnetWorkInfo(id: number): any {
 
 
 export function useSushiPrice(amount: number, path: string[]): any {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
 
     const [info, setInfo] = useState({
@@ -2464,9 +2464,9 @@ export function usePositionInfo(): any {
 
 // 获取bsc usdt余额
 export function useBscUsdt(): any {
-    const contract = useContractWithProvider(ContractConfig.USDT.bsc.address,ERC20_ABI,BSC_PROVIDER)
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const contract = useContractWithProvider(ContractConfig.USDT.bsc.address, ERC20_ABI, BSC_PROVIDER)
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const [data, setData] = useState({
         loading: true,
         data: 0,
@@ -2474,7 +2474,7 @@ export function useBscUsdt(): any {
 
     useEffect(() => {
         const getResult = async () => {
-            if(!contract || !account){
+            if (!contract || !account) {
                 return
             }
             try {
@@ -2490,16 +2490,16 @@ export function useBscUsdt(): any {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [contract,account])
+    }, [contract, account])
     return data;
 }
 // 获取跨链数量
 export function useWrapAmount(): any {
 
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
-    const contract = useContract(ContractConfig.Router[network]?.address,ContractConfig.Router.abi)
+    const contract = useContract(ContractConfig.Router[network]?.address, ContractConfig.Router.abi)
     const [data, setData] = useState({
         loading: true,
         data: 0,
@@ -2507,10 +2507,10 @@ export function useWrapAmount(): any {
 
     useEffect(() => {
         const getResult = async () => {
-            if(!contract || !account){
+            if (!contract || !account) {
                 return
             }
-            const wrapChainId = chainId===ChainId.esc?0:1
+            const wrapChainId = chainId === ChainId.esc ? 0 : 1
             try {
                 const res: any = await contract.wrapAmount(BigNumber.from(wrapChainId))
                 setData({

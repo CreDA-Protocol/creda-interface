@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import Column from '../Column'
-import Row, {Text,Image, RowBetween, SpaceHeight, RowCenter, SpaceWidth} from '../Row'
+import Row, { Text, Image, RowBetween, SpaceHeight, RowCenter, SpaceWidth } from '../Row'
 
 const HeaderFrame = styled.div`
   align-items: center;
@@ -25,7 +25,7 @@ const UniIcon = styled.img`
     margin-bottom:19px
   };
 `
-const ConnetImage = styled(Image)`
+const ConnectImage = styled(Image)`
   margin-right:28px;
   @media (max-width: 768px) {
     margin-right:0px;
@@ -43,34 +43,34 @@ export default function Bottom() {
     <>
       {
         isMobile ? <RowCenter>
-          <ConnetImage src={ImageCommon.facebook}/>
-          <SpaceWidth width={0} widthApp={14}/>
-          <ConnetImage src={ImageCommon.twitter}/>
-          <SpaceWidth width={0} widthApp={14}/>
-          <ConnetImage src={ImageCommon.linkedin}/>
-          <SpaceWidth width={0} widthApp={14}/>
-          <ConnetImage src={ImageCommon.instagram}/>
-          <SpaceWidth width={0} widthApp={14}/>
-          <ConnetImage src={ImageCommon.telegram}/>
+          <ConnectImage src={ImageCommon.facebook} />
+          <SpaceWidth width={0} widthApp={14} />
+          <ConnectImage src={ImageCommon.twitter} />
+          <SpaceWidth width={0} widthApp={14} />
+          <ConnectImage src={ImageCommon.linkedin} />
+          <SpaceWidth width={0} widthApp={14} />
+          <ConnectImage src={ImageCommon.instagram} />
+          <SpaceWidth width={0} widthApp={14} />
+          <ConnectImage src={ImageCommon.telegram} />
         </RowCenter> : <HeaderFrame>
-      <RowBetween style={{alignItems:'flex-end'}}>
-        <Row>
-          <ConnetImage src={ImageCommon.facebook}/>
-          <ConnetImage src={ImageCommon.twitter}/>
-          <ConnetImage src={ImageCommon.linkedin}/>
-          <ConnetImage src={ImageCommon.instagram}/>
-          <ConnetImage src={ImageCommon.telegram}/>
-        </Row>
-        <UniIcon src={ImageCommon.whitelogo}/>
-      </RowBetween>
-      <SpaceHeight height={38} heightApp={19}/>
-      <RowBetween>
-        <Text fontSize={16}>Terms of Use · Privacy Policy · Cookie Policy</Text>
-        <Text fontSize={18}>Copyright © 2021 CreDA</Text>
-      </RowBetween>
-    </HeaderFrame>
+          <RowBetween style={{ alignItems: 'flex-end' }}>
+            <Row>
+              <ConnectImage src={ImageCommon.facebook} />
+              <ConnectImage src={ImageCommon.twitter} />
+              <ConnectImage src={ImageCommon.linkedin} />
+              <ConnectImage src={ImageCommon.instagram} />
+              <ConnectImage src={ImageCommon.telegram} />
+            </Row>
+            <UniIcon src={ImageCommon.whitelogo} />
+          </RowBetween>
+          <SpaceHeight height={38} heightApp={19} />
+          <RowBetween>
+            <Text fontSize={16}>Terms of Use · Privacy Policy · Cookie Policy</Text>
+            <Text fontSize={18}>Copyright © 2021 CreDA</Text>
+          </RowBetween>
+        </HeaderFrame>
       }
     </>
-    
+
   )
 }
