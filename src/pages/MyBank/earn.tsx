@@ -1,30 +1,31 @@
+import { TransactionResponse } from "@ethersproject/providers"
+import { useContext, useState } from 'react'
+import Countdown from 'react-countdown'
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
-import AppBody, {MainFullBody} from '../AppBody'
-import Row, {RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure} from '../../components/Row'
-import Column, {ColumnCenter} from '../../components/Column'
-import {isMobile} from 'react-device-detect';
-import React, {useContext, useState} from 'react'
 import {
   ApprovalState,
-  balanceToBigNumber,
   ChainId,
+  MyBankAssetPriceIcons,
+  balanceToBigNumber,
   formatBalance,
   formatPercent,
-  MyBankAssetPriceIcons, tipError
-} from "../../common/Common";
-import {useTheme} from '../../state/application/hooks'
-import {ThemeTextEqure} from '../../components/ThemeComponent'
-import {BankTopInfo} from './index'
-import Countdown from 'react-countdown'
-import {useApprove, useEarnInfo, useEarnResult} from "../../contract";
-import ContractConfig, {BankConfig, EarnConfig} from "../../contract/ContractConfig";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {LoadingContext, LoadingType} from "../../provider/loadingProvider";
-import {TransactionResponse} from "@ethersproject/providers";
-import CustomStakeModal from "../../components/CustomStakeModal";
-import {useContract} from "../../hooks/useContract";
-import {LgWhiteButton, LoadingRow} from "../../components/Common";
+  tipError
+} from "../../common/Common"
+import Column, { ColumnCenter } from '../../components/Column'
+import { LoadingRow } from "../../components/Common"
+import CustomStakeModal from "../../components/CustomStakeModal"
+import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '../../components/Row'
+import { ThemeTextEqure } from '../../components/ThemeComponent'
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { useApprove, useEarnInfo, useEarnResult } from "../../contract"
+import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
+import { useContract } from "../../hooks/useContract"
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
+import { useTheme } from '../../state/application/hooks'
+import AppBody, { MainFullBody } from '../AppBody'
+import { BankTopInfo } from './index'
 
 const Body = styled(Column)`
   width:100%;
@@ -82,8 +83,8 @@ function MyBankEarn(props: any) {
     <MainFullBody history={props.history}>
       <AppBody history={props.history}>
         <Body>
-          <BankTopInfo/>
-          <Earn/>
+          <BankTopInfo />
+          <Earn />
         </Body>
       </AppBody>
     </MainFullBody>
@@ -133,45 +134,45 @@ const DownSubView = styled(Row)`
     align-items:flex-start
   }
 `
-export function Earn(){
+export function Earn() {
   const themeDark = useTheme()
   const earnRes = useEarnResult()
-  const [info,setInfo] = useState<any>({})
-  const [showModal,setShowModal] = useState(false)
-  function onAction(info:any) {
+  const [info, setInfo] = useState<any>({})
+  const [showModal, setShowModal] = useState(false)
+  function onAction(info: any) {
     setInfo(info)
     setShowModal(true)
   }
 
   return <BGDiv style={{
-    backgroundColor:themeDark? '#17181A' : 'white',
-    padding:isMobile?15:30
+    backgroundColor: themeDark ? '#17181A' : 'white',
+    padding: isMobile ? 15 : 30
   }}>
-        {/*<CountDown/>*/}
+    {/*<CountDown/>*/}
 
     <RowFixed>
-      <LeftIcon src={ImageCommon.myBank_earn}/>
+      <LeftIcon src={ImageCommon.myBank_earn} />
       <ThemeTextEqure fontSize={24} fontWeight={'bold'}>Earn</ThemeTextEqure>
-      <TextEqure style={{marginLeft:10}} fontColor={'#777E90'} fontSize={12} fontWeight={'500'}>(5 Assets)</TextEqure>
+      <TextEqure style={{ marginLeft: 10 }} fontColor={'#777E90'} fontSize={12} fontWeight={'500'}>(5 Assets)</TextEqure>
     </RowFixed>
-    <SpaceHeight height={30} heightApp={0}/>
+    <SpaceHeight height={30} heightApp={0} />
     {
       !isMobile && <RowBetween>
-        <TextEqure style={{flex:1}} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}></TextEqure>
-        <TextEqure style={{flex:1}} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>APY</TextEqure>
-        <ColumnCenter style={{flex:1,alignItems:'flex-start'}}>
+        <TextEqure style={{ flex: 1 }} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}></TextEqure>
+        <TextEqure style={{ flex: 1 }} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>APY</TextEqure>
+        <ColumnCenter style={{ flex: 1, alignItems: 'flex-start' }}>
           <TextEqure fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Total Supply</TextEqure>
         </ColumnCenter>
-        <ColumnCenter style={{flex:1 ,alignItems:'flex-start'}}>
+        <ColumnCenter style={{ flex: 1, alignItems: 'flex-start' }}>
           <TextEqure fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Total Borrow</TextEqure>
         </ColumnCenter>
-        <TextEqure style={{flex:1}} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Utilization</TextEqure>
-        <TextEqure style={{flex:1}} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Balance</TextEqure>
-        <TextEqure style={{flex:1}} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}></TextEqure>
+        <TextEqure style={{ flex: 1 }} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Utilization</TextEqure>
+        <TextEqure style={{ flex: 1 }} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}>Balance</TextEqure>
+        <TextEqure style={{ flex: 1 }} fontColor={'#777E90'} fontSize={18} fontWeight={'500'}></TextEqure>
       </RowBetween>
     }
     {
-      MyBankAssetPriceIcons.map((item:any,index:number)=>{
+      MyBankAssetPriceIcons.map((item: any, index: number) => {
         return <EarnItem
           item={item}
           themeDark={themeDark}
@@ -181,162 +182,162 @@ export function Earn(){
       })
     }
     <CustomStakeModal
-        show={showModal}
-        onDismiss={()=>setShowModal(false)}
-        title={(info.type===ButtonType.deposit?"Deposit ":"Withdraw ")+info.symbol}
-        balanceTitle={info.symbol}
-        maxNum={info.type===ButtonType.deposit?info.formatBalance:info.cFormatBalance}
-        onConfirm={info.type===ButtonType.deposit?info.onDeposit:info.onWithDraw}
+      show={showModal}
+      onDismiss={() => setShowModal(false)}
+      title={(info.type === ButtonType.deposit ? "Deposit " : "Withdraw ") + info.symbol}
+      balanceTitle={info.symbol}
+      maxNum={info.type === ButtonType.deposit ? info.formatBalance : info.cFormatBalance}
+      onConfirm={info.type === ButtonType.deposit ? info.onDeposit : info.onWithDraw}
     ></CustomStakeModal>
   </BGDiv>
 }
 
 export default MyBankEarn;
 enum ButtonType {
-  deposit=0,
-  withdraw=1
+  deposit = 0,
+  withdraw = 1
 }
-function EarnItem({item,themeDark,earnRes,onAction}:any) {
+function EarnItem({ item, themeDark, earnRes, onAction }: any) {
 
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
   const network = ChainId[chainId];
   const symbol = item.name
   const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, EarnConfig[symbol]?.[network]?.cToken?.address)
-  const info = useEarnInfo(item.name,earnRes)
+  const info = useEarnInfo(item.name, earnRes)
   const loading = useContext(LoadingContext)
-  const cTokenContract = useContract(EarnConfig[symbol]?.[network]?.cToken?.address,EarnConfig[symbol]?.[network]?.cToken?.abi)
+  const cTokenContract = useContract(EarnConfig[symbol]?.[network]?.cToken?.address, EarnConfig[symbol]?.[network]?.cToken?.abi)
 
-  function action(type:ButtonType) {
-    if(approval!==ApprovalState.APPROVED){
+  function action(type: ButtonType) {
+    if (approval !== ApprovalState.APPROVED) {
       approveCallback()
       return
     }
-    info.symbol=item.name
-    info.type=type
+    info.symbol = item.name
+    info.type = type
     info.onDeposit = deposit
     info.onWithDraw = withdraw
     onAction && onAction(info)
   }
-  function deposit(amount:string) {
+  function deposit(amount: string) {
     // console.log(amount,info.decimals)
     loading.show(LoadingType.confirm, `Deposit ${info.symbol}`)
-    cTokenContract?.deposit(balanceToBigNumber(amount,info.decimals))
-        .then(async (response: TransactionResponse) => {
-          loading.show(LoadingType.pending, response.hash)
-          // addTransaction(response, {
-          //   summary: `Deposit ${daiInfo.symbol}`,
-          // })
-          await response.wait();
-          loading.show(LoadingType.success, response.hash)
-        })
-        .catch((err: any) => {
-          if(err.code===4001){
-            loading.show(LoadingType.error, err.reason || err.message)
-            // addToast(ToastStatus.error,err.message)
-            return
-          }
+    cTokenContract?.deposit(balanceToBigNumber(amount, info.decimals))
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        // addTransaction(response, {
+        //   summary: `Deposit ${daiInfo.symbol}`,
+        // })
+        await response.wait();
+        loading.show(LoadingType.success, response.hash)
+      })
+      .catch((err: any) => {
+        if (err.code === 4001) {
           loading.show(LoadingType.error, err.reason || err.message)
-          // addToast(ToastStatus.error,err.data?.message)
-          tipError(err)
-        })
+          // addToast(ToastStatus.error,err.message)
+          return
+        }
+        loading.show(LoadingType.error, err.reason || err.message)
+        // addToast(ToastStatus.error,err.data?.message)
+        tipError(err)
+      })
   }
-  function withdraw(amount:string) {
+  function withdraw(amount: string) {
     loading.show(LoadingType.confirm, `Withdraw ${info.symbol}`)
-    cTokenContract?.withdraw(balanceToBigNumber(amount,info.decimals))
-        .then(async (response: TransactionResponse) => {
-          loading.show(LoadingType.pending, response.hash)
-          // addTransaction(response, {
-          //   summary: `Withdraw ${daiInfo.symbol}`,
-          // })
-          await response.wait();
-          loading.show(LoadingType.success, response.hash)
-        })
-        .catch((err: any) => {
+    cTokenContract?.withdraw(balanceToBigNumber(amount, info.decimals))
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        // addTransaction(response, {
+        //   summary: `Withdraw ${daiInfo.symbol}`,
+        // })
+        await response.wait();
+        loading.show(LoadingType.success, response.hash)
+      })
+      .catch((err: any) => {
 
-          if(err.code===4001){
-            loading.show(LoadingType.error, err.reason || err.message)
-            // addToast(ToastStatus.error,err.message)
-            return
-          }
+        if (err.code === 4001) {
           loading.show(LoadingType.error, err.reason || err.message)
-          // addToast(ToastStatus.error,err.data?.message)
-          tipError(err)
-        })
+          // addToast(ToastStatus.error,err.message)
+          return
+        }
+        loading.show(LoadingType.error, err.reason || err.message)
+        // addToast(ToastStatus.error,err.data?.message)
+        tipError(err)
+      })
   }
-  if(info.loading){
+  if (info.loading) {
     return <LoadingRow width={"auto"}></LoadingRow>
   }
   return <Column>
-    <DownLine/>
+    <DownLine />
     <SubView>
-      <RowFixed style={{flex:1,marginBottom:isMobile?10:0}}>
-        <IconIcon src={item.icon}/>
+      <RowFixed style={{ flex: 1, marginBottom: isMobile ? 10 : 0 }}>
+        <IconIcon src={item.icon} />
         <ThemeTextEqure fontSize={20} fontWeight={'400'}>c{item.name}</ThemeTextEqure>
       </RowFixed>
-      <DownSubView style={{flex:1}}>
+      <DownSubView style={{ flex: 1 }}>
         {
-          isMobile && <TextEqure style={{width:100}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>APY</TextEqure>
+          isMobile && <TextEqure style={{ width: 100 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>APY</TextEqure>
         }
-        <ThemeTextEqure fontSize={22} fontWeight={'400'}>{info.loading?"-":formatPercent(info.savingsApy)}</ThemeTextEqure>
+        <ThemeTextEqure fontSize={22} fontWeight={'400'}>{info.loading ? "-" : formatPercent(info.savingsApy)}</ThemeTextEqure>
       </DownSubView>
-      <DownSubView style={{flex:1}}>
+      <DownSubView style={{ flex: 1 }}>
         {
-          isMobile && <TextEqure style={{width:100}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Total Supply</TextEqure>
+          isMobile && <TextEqure style={{ width: 100 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Total Supply</TextEqure>
         }
-        <ColumnCenter style={{alignItems:isMobile ? 'flex-end' : 'flex-start'}}>
+        <ColumnCenter style={{ alignItems: isMobile ? 'flex-end' : 'flex-start' }}>
           <DownCenterView>
-            <ThemeTextEqure fontSize={22} fontWeight={'400'}>${info.loading?"-":formatBalance(info.cFormatTvl)}</ThemeTextEqure>
+            <ThemeTextEqure fontSize={22} fontWeight={'400'}>${info.loading ? "-" : formatBalance(info.cFormatTvl)}</ThemeTextEqure>
             {/*<TextEqure fontColor={'#777E90'} fontSize={20}>-</TextEqure>*/}
           </DownCenterView>
         </ColumnCenter>
       </DownSubView>
-      <DownSubView style={{flex:1}}>
+      <DownSubView style={{ flex: 1 }}>
         {
-          isMobile && <TextEqure style={{width:100}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Total Borrow</TextEqure>
+          isMobile && <TextEqure style={{ width: 100 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Total Borrow</TextEqure>
         }
-        <ColumnCenter style={{alignItems:isMobile ? 'flex-end' : 'flex-start'}}>
+        <ColumnCenter style={{ alignItems: isMobile ? 'flex-end' : 'flex-start' }}>
           <DownCenterView>
             <ThemeTextEqure fontSize={22} fontWeight={'400'}>$0</ThemeTextEqure>
             {/*<TextEqure fontColor={'#777E90'} fontSize={20}>-</TextEqure>*/}
           </DownCenterView>
         </ColumnCenter>
       </DownSubView>
-      <DownSubView style={{flex:1}}>
+      <DownSubView style={{ flex: 1 }}>
         {
-          isMobile && <TextEqure style={{width:100}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Utilization</TextEqure>
+          isMobile && <TextEqure style={{ width: 100 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Utilization</TextEqure>
         }
         <ThemeTextEqure fontSize={22} fontWeight={'400'}>0%</ThemeTextEqure>
       </DownSubView>
-      <DownSubView style={{flex:1}} >
+      <DownSubView style={{ flex: 1 }} >
         {
-          isMobile && <TextEqure style={{width:100}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Balance</TextEqure>
+          isMobile && <TextEqure style={{ width: 100 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Balance</TextEqure>
         }
-        <ThemeTextEqure fontSize={22} fontWeight={'400'}>{info.loading?"-":formatBalance(info.cFormatBalance)}</ThemeTextEqure>
+        <ThemeTextEqure fontSize={22} fontWeight={'400'}>{info.loading ? "-" : formatBalance(info.cFormatBalance)}</ThemeTextEqure>
       </DownSubView>
-      <DownButtonView style={{flex:1}}>
+      <DownButtonView style={{ flex: 1 }}>
         <DrawButton
-            style={{color: themeDark? 'white' : '#17181A'}}
-            onClick={()=>action(ButtonType.deposit)}
-        >{approval===ApprovalState.APPROVED?"SUPPLY":"Approve"}</DrawButton>
-        <SpaceHeight height={20} heightApp={0}/>
-        <SpaceWidth width={0} widthApp={20}/>
-        <DrawButton style={{color: themeDark? 'white' : '#17181A'}}
-                    onClick={()=>action(ButtonType.withdraw)}
+          style={{ color: themeDark ? 'white' : '#17181A' }}
+          onClick={() => action(ButtonType.deposit)}
+        >{approval === ApprovalState.APPROVED ? "SUPPLY" : "Approve"}</DrawButton>
+        <SpaceHeight height={20} heightApp={0} />
+        <SpaceWidth width={0} widthApp={20} />
+        <DrawButton style={{ color: themeDark ? 'white' : '#17181A' }}
+          onClick={() => action(ButtonType.withdraw)}
         >Withdraw</DrawButton>
       </DownButtonView>
     </SubView>
   </Column>
 }
 
-function CountDown(){
-  const renderer = ({ days,hours, minutes, seconds, completed }:any) => {
+function CountDown() {
+  const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
     return <ColumnCenter>
       <TextEqure fontColor={'#fff'} fontSize={20} fontWeight={'800'}>Countdown</TextEqure>
       <TextEqure fontColor={'#fff'} fontSize={34} fontWeight={'800'}>{days * 24 + hours} : {minutes} : {seconds}</TextEqure>
     </ColumnCenter>
   };
   return <CountDownView>
-    <Countdown date={1637834400000} renderer={renderer}/>
+    <Countdown date={1637834400000} renderer={renderer} />
   </CountDownView>
 }

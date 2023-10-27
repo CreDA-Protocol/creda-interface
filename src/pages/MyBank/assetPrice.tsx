@@ -11,10 +11,9 @@ import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
 import { NetworkTypeContext, WalletAddressContext } from "../../context"
 import { useSushiPrice } from '../../contract'
 import ContractConfig from '../../contract/ContractConfig'
-import { GlidePrice } from '../../model/wallet'
+import { GlidePrice, getCoinPrice } from '../../services/glidefinance.service'
 import { useTheme } from '../../state/application/hooks'
 import AppBody, { MainFullBody } from '../AppBody'
-import { getCoinPrice } from './getPrice'
 import { BankTopInfo } from './index'
 
 const Body = styled(Column)`
@@ -65,8 +64,8 @@ function MyBankAssetPrice(props: any) {
     <MainFullBody history={props.history}>
       <AppBody history={props.history}>
         <Body>
-          <BankTopInfo/>
-          <Earn/>
+          <BankTopInfo />
+          <Earn />
         </Body>
       </AppBody>
     </MainFullBody>
@@ -132,98 +131,98 @@ const WarpSubView = styled(RowBetween)`
 
 
 
-function Earn(){
+function Earn() {
   const themeDark = useTheme()
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
   const network = ChainId[chainId];
-  const sushiPrice = useSushiPrice(1,[ContractConfig.CREDA[network]?.address,ContractConfig.USDT[network]?.address])
+  const sushiPrice = useSushiPrice(1, [ContractConfig.CREDA[network]?.address, ContractConfig.USDT[network]?.address])
   // console.log('sushiPrice==',sushiPrice);
   let earnPool = MyBankAssetPriceIcons
-  if(chainId===ChainId.esc){
+  if (chainId === ChainId.esc) {
     earnPool = MyBankAssetPriceIconsESC
   }
-  const [iconList,setIconList] = useState(earnPool)
+  const [iconList, setIconList] = useState(earnPool)
 
-  useEffect(()=>{
-    if(chainId!==ChainId.esc){
+  useEffect(() => {
+    if (chainId !== ChainId.esc) {
       let iconStriing = ''
-      earnPool.map((item,index)=>{
-        iconStriing  = iconStriing + item.name + ','
+      earnPool.map((item, index) => {
+        iconStriing = iconStriing + item.name + ','
       })
-      iconStriing=iconStriing.substring(0,iconStriing.length - 1)
-      fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${iconStriing}&tsyms=USD`).then((response)=>response.json()).then((info)=>{
+      iconStriing = iconStriing.substring(0, iconStriing.length - 1)
+      fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${iconStriing}&tsyms=USD`).then((response) => response.json()).then((info) => {
         let temp = [...earnPool]
-        temp.map((item:any)=>{
-          if (info.DISPLAY[item.name]){
+        temp.map((item: any) => {
+          if (info.DISPLAY[item.name]) {
             item.price = info.DISPLAY[item.name]['USD'].PRICE
-          }else {
+          } else {
             item.price = '0'
           }
         })
         setIconList(temp)
       })
-    }else {
+    } else {
 
-      earnPool.push( {
-        name:'CREDA',
-        icon:ImageToken.CREDA,
+      earnPool.push({
+        name: 'CREDA',
+        icon: ImageToken.CREDA,
       })
-      let coinList:any = []
-      earnPool.map((item:any,index:number)=>{
+      let coinList: any = []
+      earnPool.forEach((item: any, index: number) => {
         coinList.push(ContractConfig[item.name][network]?.address.toLowerCase())
       })
 
-      getCoinPrice(JSON.stringify(coinList),(prices:GlidePrice[])=>{
-        let result:any = []
+      getCoinPrice(JSON.stringify(coinList)).then((prices: GlidePrice[]) => {
+        let result: any = []
 
-        prices.map((item:any,index:number)=>{
+        prices.forEach((item: any, index: number) => {
           let upper = item.id.toLowerCase()
-          let temp =  coinList.indexOf(upper)
-          if (temp >-1){
-            if (earnPool[temp].name === 'CREDA'){
+          let temp = coinList.indexOf(upper)
+          if (temp > -1) {
+            if (earnPool[temp].name === 'CREDA') {
               result.unshift({
-                name:earnPool[temp].name,
-                price:formatBalance(item.derivedUSD,4),
-                icon:ImageToken[earnPool[temp].name]
+                name: earnPool[temp].name,
+                price: formatBalance(item.derivedUSD, 4),
+                icon: ImageToken[earnPool[temp].name]
               })
-            }else {
+            } else {
               result.push({
-                name:earnPool[temp].name,
-                price:formatBalance(item.derivedUSD,4),
-                icon:ImageToken[earnPool[temp].name]
+                name: earnPool[temp].name,
+                price: formatBalance(item.derivedUSD, 4),
+                icon: ImageToken[earnPool[temp].name]
               })
             }
           }
         })
-        console.log('result==',result);
+        console.log('result==', result);
         setIconList(result)
       })
     }
-  },[earnPool, chainId])
+  }, [earnPool, chainId, network])
 
   return <BGDiv style={{
-    backgroundColor:themeDark? '#17181A' : 'white',
-    padding:isMobile?15:30
+    backgroundColor: themeDark ? '#17181A' : 'white',
+    padding: isMobile ? 15 : 30
   }}>
     <RowFixed>
-      <LeftIcon src={ImageCommon.myBank_asset}/>
+      <LeftIcon src={ImageCommon.myBank_asset} />
       <ThemeTextEqure fontSize={24} fontWeight={'bold'}>Asset Price</ThemeTextEqure>
     </RowFixed>
-    <SpaceHeight height={30} heightApp={15}/>
+    <SpaceHeight height={30} heightApp={15} />
     <WarpView>
-      {chainId!==ChainId.esc &&<WarpSubView>
+      {chainId !== ChainId.esc && <WarpSubView>
         <RowFixed>
-          <IconIcon src={CREDAIcon}/>
+          <IconIcon src={CREDAIcon} />
           <ThemeText fontSize={24}>CREDA</ThemeText>
         </RowFixed>
         <ThemeText fontSize={24}>${Number(sushiPrice.to).toFixed(2)}</ThemeText>
       </WarpSubView>}
       {
-        iconList.map((item:any,index:number)=>{
+        iconList.map((item: any, index: number) => {
           return <WarpSubView>
             <RowFixed>
-              <IconIcon src={item.icon}/>
+              <IconIcon src={item.icon} />
               <ThemeText fontSize={24}>{item.name}</ThemeText>
             </RowFixed>
             <ThemeText fontSize={24}>${item.price}</ThemeText>

@@ -1,25 +1,20 @@
-import React, {useCallback, useContext, useState} from 'react'
-import styled from 'styled-components'
-import Modal from '../../components/NormalModal'
+import { TransactionResponse } from '@ethersproject/providers';
+import { useContext, useState } from 'react';
+import styled from 'styled-components';
+import ImageCommon from '../../assets/common/ImageCommon';
 import {
   ChainId,
   colors
 } from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import ImageCommon from '../../assets/common/ImageCommon'
+import { ButtonNormal } from '../../components/Button';
 import Column, { ColumnCenter } from '../../components/Column';
-import Row,{RowCenter,RowBetween, SpaceHeight, Text, RowFixed, SpaceWidth,GradientButton} from '../../components/Row';
-import { CardPair } from '../../components/Common';
-import {ButtonNormal} from '../../components/Button'
-import {useBalanceV2} from '../../contract'
-import {LoadingContext, LoadingType} from "../../provider/loadingProvider";
-import {TransactionResponse} from '@ethersproject/providers'
-import {useContract} from "../../hooks/useContract";
+import Modal from '../../components/NormalModal';
+import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../../components/Row';
+import { NetworkTypeContext, WalletAddressContext } from "../../context";
 import ContractConfig from "../../contract/ContractConfig";
+import { useContract } from "../../hooks/useContract";
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 
-import {
-  useApprove,
-} from "../../contract";
 import ImageToken from '../../assets/tokens/ImageToken';
 
 const Container = styled.div`
@@ -117,56 +112,56 @@ export default function BorrowCollateralModal({
 }: {
   isOpen: boolean
   onDismiss: () => void,
-  type:string
+  type: string
 }) {
 
-  const [input,setInput] = useState('')
+  const [input, setInput] = useState('')
 
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
   const network = ChainId[chainId];
 
   // const [approval, approveCallback] = useApprove(ContractConfig.CREDA[network]?.address, ContractConfig.CreditNFT[network]?.address)
-  const homoraContract = useContract(ContractConfig.HomoraBank[network]?.address,ContractConfig.HomoraBank.abi)
+  const homoraContract = useContract(ContractConfig.HomoraBank[network]?.address, ContractConfig.HomoraBank.abi)
   const loading = useContext(LoadingContext)
 
   function execute() {
     loading.show(LoadingType.confirm, `Execute`)
-    homoraContract?.execute(0,'address',)
-        .then(async (response: TransactionResponse) => {
-          loading.show(LoadingType.pending,response.hash)
-          await response.wait();
-        })
-        .catch((err: any) => {
-          loading.show(LoadingType.error, err.reason || err.message)
-        })
+    homoraContract?.execute(0, 'address',)
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        await response.wait();
+      })
+      .catch((err: any) => {
+        loading.show(LoadingType.error, err.reason || err.message)
+      })
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={()=>{}}>
+    <Modal isOpen={isOpen} onDismiss={() => { }}>
       <RowCenter>
         <Container>
           <RowFixed>
             <BackButton onClick={onDismiss}>
-              <ArrowLeft src={ImageCommon.fanhui}/>
+              <ArrowLeft src={ImageCommon.fanhui} />
             </BackButton>
             <Text fontSize={28} fontWeight={'bold'}>{type == '0' ? 'Borrow' : 'Repay'}</Text>
           </RowFixed>
-          <SpaceHeight height={20} heightApp={10}/>
+          <SpaceHeight height={20} heightApp={10} />
           <InputView>
             <RowBetween>
               <Text fontSize={22}>Input</Text>
               <Text fontSize={22}>Balance:0.0</Text>
             </RowBetween>
             <RowBetween>
-              <PanelValue placeholder='0.0' value={input} onChange={e => setInput(e.target.value)}/>
+              <PanelValue placeholder='0.0' value={input} onChange={e => setInput(e.target.value)} />
               <MaxButton>MAX</MaxButton>
-              <IconIcon src={ImageToken.DAI}/>
+              <IconIcon src={ImageToken.DAI} />
               <Text fontSize={28} fontWeight={'bold'}>DAI</Text>
             </RowBetween>
           </InputView>
-          <Text fontSize={24}>{type == '0' ? des1 : des2 }</Text>
-          <SpaceHeight height={40} heightApp={20}/>
+          <Text fontSize={24}>{type == '0' ? des1 : des2}</Text>
+          <SpaceHeight height={40} heightApp={20} />
           <RowBetween>
             <ColumnCenter>
               <Text fontSize={28} fontWeight='bold'>0.00</Text>
@@ -181,12 +176,12 @@ export default function BorrowCollateralModal({
               <Text fontSize={20} >Total value</Text>
             </ColumnCenter>
           </RowBetween>
-          <SpaceHeight height={40} heightApp={20}/>
+          <SpaceHeight height={40} heightApp={20} />
           <RowCenter>
             <Text fontColor='#777E90' fontSize={30} >Health factor</Text>
-            <SpaceWidth width={20} widthApp={10}/>
+            <SpaceWidth width={20} widthApp={10} />
             <Text fontColor={colors.main} fontSize={30} >1.16</Text>
-            <ArrowRight src={ImageCommon.center_right_arrow}/>
+            <ArrowRight src={ImageCommon.center_right_arrow} />
             <Text fontColor={colors.main} fontSize={30} >1.16</Text>
           </RowCenter>
           <BottomButton>enter amount</BottomButton>

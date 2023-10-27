@@ -1,32 +1,36 @@
-import styled from "styled-components";
-import loadingJson from "@assets/lottie/creda_action_loading.json";
+import { CloseOutlined } from "@ant-design/icons";
 import errorJson from "@assets/lottie/creda_action_error.json";
+import loadingJson from "@assets/lottie/creda_action_loading.json";
 import successJson from "@assets/lottie/creda_action_success.json";
 import { Lottie } from "@crello/react-lottie";
-import { colors, formatAccount } from "../common/Common";
-import { CloseOutlined } from "@ant-design/icons";
-import { RowEnd } from "../components/Row";
 import { createContext, useContext, useState } from "react";
-import { NetworkTypeContext } from "../context";
-import { getScanLink, getScanName } from "../utils";
-import { useTheme } from "../state/application/hooks";
 import { isMobile } from "react-device-detect";
+import styled from "styled-components";
+import { colors, formatAccount } from "../common/Common";
+import { RowEnd } from "../components/Row";
+import { NetworkTypeContext } from "../context";
+import { useTheme } from "../state/application/hooks";
+import { getScanLink, getScanName } from "../utils";
+
 export enum LoadingType {
     confirm = 0,
     pending = 1,
     error = 2,
     success = 3
 }
+
 export const LoadingContext = createContext({
     show: (type: LoadingType, message: string) => {
 
     },
     hide: () => { }
 })
+
 export function useLoadingContext() {
     const loadingContext = useContext(LoadingContext)
     return loadingContext
 }
+
 export default function LoadingProvider({ children }: any) {
 
     const [visible, setVisible] = useState(false)

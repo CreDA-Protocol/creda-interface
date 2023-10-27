@@ -1,7 +1,6 @@
 import { BigNumber } from "ethers";
-import { ChainId, bigNumberToBalance } from "./Common";
+import { ChainId, bigNumberToBalance } from "../common/Common";
 import { WalletList } from "../model/wallet";
-
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
 const API_KEY = 'ckey_4d8058ee307e4d05bd2572d7a2f'; // https://www.covalenthq.com/
@@ -28,17 +27,17 @@ export type CovalentTransaction = {
 }
 
 export type CovalentTokenBalanceNFTItem = {
-    token_id: string;
-    token_balance: string;
-    token_url: string;
-    supports_erc?: string[]; // eg: ["erc20"]
-    token_price_wei: string; // eg: null
-    token_quote_rate_eth: string; // eg: null
-    original_owner: string;
-    external_data: string; // eg: null
-    owner: string;
-    owner_address: string; // eg: null
-    burned: string; // eg: null
+  token_id: string;
+  token_balance: string;
+  token_url: string;
+  supports_erc?: string[]; // eg: ["erc20"]
+  token_price_wei: string; // eg: null
+  token_quote_rate_eth: string; // eg: null
+  original_owner: string;
+  external_data: string; // eg: null
+  owner: string;
+  owner_address: string; // eg: null
+  burned: string; // eg: null
 }
 
 export type CovalentTokenBalanceItem = {
@@ -128,7 +127,7 @@ export type BlockTransactionWithContractTransfers = {
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function Covalent_fetchTokenBalances(accountAddress: string, chainId: number | string): Promise<WalletList> {
+export function covalentFetchTokenBalances(accountAddress: string, chainId: number | string): Promise<WalletList> {
   console.log('Covalent_fetchTokenBalances chainId:', chainId, ' accountAddress:', accountAddress)
   return new Promise((resolve, reject) => {
     let tokenBalancesUrl = covalentApiUrl;
@@ -143,8 +142,8 @@ export function Covalent_fetchTokenBalances(accountAddress: string, chainId: num
       tokens: []
     }
     fetch(tokenBalancesUrl)
-      .then((response)=>response.json())
-      .then((result)=>{
+      .then((response) => response.json())
+      .then((result) => {
         if (!result || !result.data || !result.data.items || result.data.items.length === 0) {
           console.log('No tokens from covalent')
           resolve(walletListEmpty)
@@ -153,17 +152,17 @@ export function Covalent_fetchTokenBalances(accountAddress: string, chainId: num
         const walletList = convertCovalentResult2WalletList(result.data.items);
         resolve(walletList);
       })
-      .catch(err=>{
+      .catch(err => {
         console.log("Covalent_fetchTokenBalances error:", err)
         resolve(walletListEmpty)
       })
-    })
+  })
 }
 
 function convertCovalentResult2WalletList(balanceItems: CovalentTokenBalanceItem[]) {
   let walletList: WalletList = {
     total: 0,
-    tokens:[]
+    tokens: []
   };
 
   for (let item of balanceItems) {

@@ -1,29 +1,23 @@
-import React, {useCallback, useContext, useState} from 'react'
+import { TransactionResponse } from '@ethersproject/providers'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import Modal from '../NormalModal'
-import { NavLink } from 'react-router-dom'
-import ImageCommon from '../../assets/common/ImageCommon'
-import Row, {
-    RowCenter,
-    RowEnd,
-    RowFixed,
-    SpaceHeight,
-    SpaceWidth,
-    Text,
-    RowBetween,
-    TextEqure,
-    GradientButton
+import { ChainId, GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "../../common/Common"
+import { ButtonClick } from '../../components/Button'
+import {
+  GradientButton,
+  RowCenter,
+  RowEnd,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  TextEqure
 } from '../../components/Row'
-import {ButtonClick} from '../../components/Button'
-import {ApprovalState, balanceToBigNumber, ChainId, formatBalance, GasInfo, stringReplaceSpace} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {useTransactionAdder} from "../../state/transactions/hooks";
-import {useContract} from "../../hooks/useContract";
-import ContractConfig from "../../contract/ContractConfig";
-import {useApprove} from "../../contract";
-import {TransactionResponse} from '@ethersproject/providers'
-import {message} from "antd";
-import {LoadingContext, LoadingType} from "../../provider/loadingProvider";
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import ContractConfig from "../../contract/ContractConfig"
+import { useContract } from "../../hooks/useContract"
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
+import { useTransactionAdder } from "../../state/transactions/hooks"
+import Modal from '../NormalModal'
 
 const Container = styled.div`
   width:400px;
@@ -92,76 +86,76 @@ export default function StakeModal({
   isOpen,
   onDismiss,
   title,
-    data
+  data
 }: {
   isOpen: boolean
   onDismiss: () => void,
-  title:string,
-  data:any
+  title: string,
+  data: any
 }) {
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
   const network = ChainId[chainId];
-  const maxNum = title==="Stake"?data.lpBalance:data.staked;
+  const maxNum = title === "Stake" ? data.lpBalance : data.staked;
   const addTransaction = useTransactionAdder();
-  const IFNTContract = useContract(ContractConfig.CREDA[network]?.address,ContractConfig.CREDA.abi);
-  const [input,setInput] = useState('')
+  const IFNTContract = useContract(ContractConfig.CREDA[network]?.address, ContractConfig.CREDA.abi);
+  const [input, setInput] = useState('')
   const loading = useContext(LoadingContext)
 
   const showTitle = chainId == ChainId.esc ? 'ELA_CREDA_GLIDE_LP' : 'ETH_CREDA_SUSHI_LP'
 
-  function onClick(){
+  function onClick() {
     let endString = stringReplaceSpace(input)
 
-    if (!endString){
+    if (!endString) {
       return
     }
 
 
-    if (title == 'Stake'){
+    if (title == 'Stake') {
       loading.show(LoadingType.confirm, 'Stake')
-      IFNTContract?.stake(ContractConfig.ETH_CREDA_LP[network]?.address,balanceToBigNumber(endString),GasInfo)
-          .then(async (response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: `Deposit ${showTitle}`,
-            })
-            loading.show(LoadingType.pending, response.hash)
-
-            await response.wait();
-            onDismiss();
-            loading.show(LoadingType.success, response.hash)
-            setInput('')
+      IFNTContract?.stake(ContractConfig.ETH_CREDA_LP[network]?.address, balanceToBigNumber(endString), GasInfo)
+        .then(async (response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: `Deposit ${showTitle}`,
           })
-          .catch((err: any) => {
-            console.log(err)
-            loading.show(LoadingType.error, err.reason || err.message)
+          loading.show(LoadingType.pending, response.hash)
 
-          })
-    }else {
+          await response.wait();
+          onDismiss();
+          loading.show(LoadingType.success, response.hash)
+          setInput('')
+        })
+        .catch((err: any) => {
+          console.log(err)
+          loading.show(LoadingType.error, err.reason || err.message)
+
+        })
+    } else {
       loading.show(LoadingType.confirm, 'unStake')
 
-      IFNTContract?.unstake(ContractConfig.ETH_CREDA_LP[network]?.address,balanceToBigNumber(endString))
-          .then(async (response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: `Unlock ${showTitle}`,
-            })
-            loading.show(LoadingType.pending, response.hash)
-
-            await response.wait();
-            loading.show(LoadingType.success, response.hash)
-            setInput('')
-            onDismiss();
+      IFNTContract?.unstake(ContractConfig.ETH_CREDA_LP[network]?.address, balanceToBigNumber(endString))
+        .then(async (response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: `Unlock ${showTitle}`,
           })
-          .catch((err: any) => {
-            loading.show(LoadingType.error, err.reason || err.message)
+          loading.show(LoadingType.pending, response.hash)
 
-            console.log(err)
-          })
+          await response.wait();
+          loading.show(LoadingType.success, response.hash)
+          setInput('')
+          onDismiss();
+        })
+        .catch((err: any) => {
+          loading.show(LoadingType.error, err.reason || err.message)
+
+          console.log(err)
+        })
     }
     onDismiss()
   }
   function onMax() {
-      setInput(maxNum+"")
+    setInput(maxNum + "")
   }
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} >
@@ -170,23 +164,23 @@ export default function StakeModal({
           <RowCenter>
             <TextEqure fontColor={'#0D0D11'} fontSize={20} fontWeight={'bold'}>{title}</TextEqure>
           </RowCenter>
-          <SpaceHeight height={30} heightApp={15}/>
+          <SpaceHeight height={30} heightApp={15} />
           <RowEnd>
-            <TextEqure fontColor={'#777E90'} fontSize={15} fontWeight={'bold'}>{formatBalance(maxNum,8)}LP</TextEqure>
+            <TextEqure fontColor={'#777E90'} fontSize={15} fontWeight={'bold'}>{formatBalance(maxNum, 8)}LP</TextEqure>
           </RowEnd>
           <SearchDiv>
             <InputDiv value={input}
               placeholder={''}
-              onChange={e => setInput(e.target.value)}/>
-              <SearchButton
-                onClick={onMax}
-              >Max</SearchButton>
+              onChange={e => setInput(e.target.value)} />
+            <SearchButton
+              onClick={onMax}
+            >Max</SearchButton>
           </SearchDiv>
-          <SpaceHeight height={30} heightApp={15}/>
+          <SpaceHeight height={30} heightApp={15} />
           <RowCenter>
             <CancelButton onClick={onDismiss}>Cancel</CancelButton>
-            <SpaceWidth width={30} widthApp={15}/>
-            <GradientButton style={{width:'100%', height:40}} onClick={onClick}>{title}</GradientButton>
+            <SpaceWidth width={30} widthApp={15} />
+            <GradientButton style={{ width: '100%', height: 40 }} onClick={onClick}>{title}</GradientButton>
           </RowCenter>
         </Container>
       </RowCenter>

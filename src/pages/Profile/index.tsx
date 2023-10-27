@@ -1,3 +1,4 @@
+import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import styled from "styled-components";
 import ImageCommon from "../../assets/common/ImageCommon";
 import Column from "../../components/Column";
@@ -12,7 +13,6 @@ import Row, {
     SpaceWidth,
     TextEqure,
 } from "../../components/Row";
-import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import AppBody, { MainFullBody } from "../AppBody";
 
 import { Lottie } from "@crello/react-lottie";
@@ -59,7 +59,7 @@ import {
 } from "../../contract";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract, useTokenContract } from "../../hooks/useContract";
-import { LoadingContext, LoadingType } from "../../provider/loadingProvider";
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useOpenWarnning, useTheme, useWalkThroughStep, } from "../../state/application/hooks";
 import { ToastStatus, useAddToast } from "../../state/toast";
 import { useTransactionAdder } from "../../state/transactions/hooks";

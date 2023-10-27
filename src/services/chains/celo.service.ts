@@ -1,14 +1,14 @@
+import CELO from "@assets/tokens/Celo (CELO).png";
 import { BigNumber } from "ethers";
-import CELO from "../assets/tokens/Celo (CELO).png";
 
-import { TokenInfo, TokenType, WalletList } from "../model/wallet";
-import { ChainId, bigNumberToBalance } from "./Common";
+import { ChainId, bigNumberToBalance } from "../../common/Common";
+import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
 
 
 /**
  * Fetches Celo, ERC20/721/1155 token balances for an EVM (0x) address.
  */
-export async function Celo_fetchTokenBalances(accountAddress: string, chainId: number): Promise<WalletList> {
+export async function celoFetchTokenBalances(accountAddress: string, chainId: number): Promise<WalletList> {
   return new Promise((resolve, reject) => {
     let rpcUrl = 'https://explorer.celo.org/mainnet/api/?module=account&action=tokenlist&address=';
     if (chainId === 44787) {
@@ -21,8 +21,8 @@ export async function Celo_fetchTokenBalances(accountAddress: string, chainId: n
     }
     let tokenBalancesUrl = rpcUrl + accountAddress;
     fetch(tokenBalancesUrl)
-      .then((response)=>response.json())
-      .then((result)=>{
+      .then((response) => response.json())
+      .then((result) => {
         if (!result || !result.result || result.result.length === 0) {
           console.log('No tokens from covalent')
           resolve(walletListEmpty)
@@ -31,22 +31,22 @@ export async function Celo_fetchTokenBalances(accountAddress: string, chainId: n
         const walletList = convertResult2WalletList(result.result);
         resolve(walletList);
       })
-      .catch(err=>{
+      .catch(err => {
         console.log("Celo_fetchTokenBalances error:", err)
         resolve(walletListEmpty)
       })
-    })
+  })
 }
 
 async function convertResult2WalletList(tokenInfos: TokenInfo[]) {
   let walletList: WalletList = {
     total: 0,
-    tokens:[]
+    tokens: []
   };
 
-  let tokenContracts = tokenInfos.map( t => {
-     return t.contractAddress;
-  }).filter( t => t!=null)
+  let tokenContracts = tokenInfos.map(t => {
+    return t.contractAddress;
+  }).filter(t => t != null)
 
   // TODO: get the token price
   // const priceInfo = [];
@@ -82,7 +82,7 @@ async function convertResult2WalletList(tokenInfos: TokenInfo[]) {
     walletList.tokens.push(walletToken);
   }
 
-  walletList.tokens.sort( (a, b) => {
+  walletList.tokens.sort((a, b) => {
     if (a.value > b.value)
       return -1;
     else if (a.value < b.value)
@@ -94,7 +94,7 @@ async function convertResult2WalletList(tokenInfos: TokenInfo[]) {
   return walletList;
 }
 
-export function Celo_enableNetwork(chainId: number) {
+export function celoEnableNetwork(chainId: number) {
   switch (chainId) {
     case ChainId.celo:
     case ChainId.celotest:

@@ -1,19 +1,19 @@
+import ESC from "@assets/tokens/ELA.png";
 import axios from "axios";
 import { BigNumber } from "ethers";
-import ESC from "../assets/tokens/ELA.png";
 
-import { TokenInfo, TokenType, WalletList } from "../model/wallet";
-import { ChainId, bigNumberToBalance, formatBalance, getPriceESC } from "./Common";
+import { ChainId, bigNumberToBalance, formatBalance, getPriceESC } from "../../common/Common";
+import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
 
 /**
  * Fetches ELA, ERC20/721/1155 token balances for an EVM (0x) address.
  */
-export async function Esc_fetchTokenBalances(accountAddress: string, chainId: number): Promise<WalletList> {
+export async function elastosESCFetchTokenBalances(accountAddress: string, chainId: number): Promise<WalletList> {
   let allTokenInfos: TokenInfo[] = [];
 
-  let elaToken = await Esc_fetchELABalances(accountAddress, chainId);
+  let elaToken = await elastosESCFetchELABalances(accountAddress, chainId);
   allTokenInfos.push(elaToken)
-  let ercTokens = await Esc_fetchERC20TokenBalances(accountAddress, chainId);
+  let ercTokens = await elastosESCFetchERC20TokenBalances(accountAddress, chainId);
   allTokenInfos = [...allTokenInfos, ...ercTokens];
 
   const walletList = await convertESCResult2WalletList(allTokenInfos);
@@ -23,7 +23,7 @@ export async function Esc_fetchTokenBalances(accountAddress: string, chainId: nu
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function Esc_fetchELABalances(address: string, chainId: number): Promise<TokenInfo> {
+export function elastosESCFetchELABalances(address: string, chainId: number): Promise<TokenInfo> {
   return new Promise((resolve, reject) => {
     let rpcUrl = 'https://api.elastos.io/esc';
     if (chainId === 21) {
@@ -42,25 +42,25 @@ export function Esc_fetchELABalances(address: string, chainId: number): Promise<
     const param = {
       method: 'eth_getBalance',
       params: [
-          address,
-          'latest'
+        address,
+        'latest'
       ],
       jsonrpc: "2.0",
       id: '1'
     };
-    axios.post(rpcUrl, param).then((res:any)=>{
-          elaToke.balance =  res.data.result;
-          resolve(elaToke)
-        }).catch((e:any)=>{
-          console.log('Esc_fetchELABalances error',e);
-          resolve(elaToke)
-        })
+    axios.post(rpcUrl, param).then((res: any) => {
+      elaToke.balance = res.data.result;
+      resolve(elaToke)
+    }).catch((e: any) => {
+      console.log('Esc_fetchELABalances error', e);
+      resolve(elaToke)
+    })
   })
 }
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function Esc_fetchERC20TokenBalances(accountAddress: string, chainId: number): Promise<TokenInfo[]> {
+export function elastosESCFetchERC20TokenBalances(accountAddress: string, chainId: number): Promise<TokenInfo[]> {
   return new Promise((resolve, reject) => {
     let browserApiUrl = 'https://esc.elastos.io/api';
     if (chainId === 21) {
@@ -69,31 +69,31 @@ export function Esc_fetchERC20TokenBalances(accountAddress: string, chainId: num
     const ethscgetTokenListUrl = browserApiUrl + '?module=account&action=tokenlist&address=' + accountAddress;
 
     fetch(ethscgetTokenListUrl)
-      .then((response)=>response.json())
-      .then(async (result)=>{
+      .then((response) => response.json())
+      .then(async (result) => {
         if (!result || !result.result || result.result.length === 0) {
           resolve([])
         }
 
-        let erc20Ttokens = (result.result as TokenInfo[]).filter( t => t.type === TokenType.ERC_20)
+        let erc20Ttokens = (result.result as TokenInfo[]).filter(t => t.type === TokenType.ERC_20)
         resolve(erc20Ttokens);
       })
-      .catch(err=>{
+      .catch(err => {
         console.log("Esc_fetchTokenBalances error:", err)
         resolve([])
       })
-    })
+  })
 }
 
 async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
   let walletList: WalletList = {
     total: 0,
-    tokens:[]
+    tokens: []
   };
 
-  let tokenContracts = tokenInfos.map( t => {
-     return t.contractAddress;
-  }).filter( t => t!=null)
+  let tokenContracts = tokenInfos.map(t => {
+    return t.contractAddress;
+  }).filter(t => t != null)
 
   const priceInfo = await getPriceESC(JSON.stringify(tokenContracts));
   for (let token of tokenInfos) {
@@ -106,9 +106,9 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
     }
 
     let price = -1;
-    const tokenPrice = priceInfo.find( p => p.id === token.contractAddress)
+    const tokenPrice = priceInfo.find(p => p.id === token.contractAddress)
     if (tokenPrice)
-      price = Number( formatBalance(tokenPrice.derivedUSD,4))
+      price = Number(formatBalance(tokenPrice.derivedUSD, 4))
 
     let amount = bigNumberToBalance(BigNumber.from(token.balance), parseInt(token.decimals));
     let value = price !== -1 ? parseFloat((price * parseFloat(amount)).toFixed(2)) : -1;
@@ -128,7 +128,7 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
     walletList.tokens.push(walletToken);
   }
 
-  walletList.tokens.sort( (a, b) => {
+  walletList.tokens.sort((a, b) => {
     if (a.value > b.value)
       return -1;
     else if (a.value < b.value)
@@ -140,7 +140,7 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
   return walletList;
 }
 
-export function Esc_enableNetwork(chainId: number) {
+export function elastosESCEnableNetwork(chainId: number) {
   switch (chainId) {
     case ChainId.esc:
     case ChainId.elatest:

@@ -1,46 +1,45 @@
+import { TransactionResponse } from "@ethersproject/providers"
+import { Badge, Skeleton } from 'antd'
+import React, { useContext, useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
-import AppBody, {MainFullBody} from '../AppBody'
-import Row, {
-    GradientButton,
-    RowBetween,
-    RowCenter,
-    RowEnd,
-    RowFixed,
-    SpaceHeight,
-    SpaceWidth,
-    Text,
-    TextEqure
-} from '../../components/Row'
-import Column,{ColumnFixed} from '../../components/Column'
-import {isMobile} from 'react-device-detect';
-import React, {useContext, useEffect, useState} from 'react'
-import {Badge, Skeleton, Tooltip} from 'antd';
-import ImageToken from '../../assets/tokens/ImageToken';
+import ImageToken from '../../assets/tokens/ImageToken'
 import {
-    ApprovalState,
-    balanceToBigNumber,
-    ChainId,
-    formatBalance,
-    formatPercent,
-    getNFTCardBgImage,
-    platforms,
-    tipError
-} from "../../common/Common";
-import {useOpenWarnning, useTheme} from '../../state/application/hooks'
-import {H4, HeaderView} from "../../components/ConnectWallet";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView} from '../../components/Common'
-import {ThemeText, ThemeTextEqure} from '../../components/ThemeComponent'
-import {useApprove, useCNFTInfo, useDaInfo, useMarketsResult} from "../../contract";
-import CustomStakeModal from "../../components/CustomStakeModal";
-import ContractConfig, {BankConfig, EarnConfig} from "../../contract/ContractConfig";
-import {useTransactionAdder} from "../../state/transactions/hooks";
-import {TransactionResponse} from "@ethersproject/providers";
-import {useContract} from "../../hooks/useContract";
-import {ToastStatus, useAddToast} from "../../state/toast";
-import {LoadingContext, LoadingType} from "../../provider/loadingProvider";
-import {Earn} from './earn'
+  ApprovalState,
+  ChainId,
+  balanceToBigNumber,
+  formatBalance,
+  formatPercent,
+  getNFTCardBgImage,
+  platforms,
+  tipError
+} from "../../common/Common"
+import Column from '../../components/Column'
+import { BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView } from '../../components/Common'
+import { H4, HeaderView } from "../../components/ConnectWallet"
+import CustomStakeModal from "../../components/CustomStakeModal"
+import {
+  GradientButton,
+  RowBetween,
+  RowCenter,
+  RowEnd,
+  RowFixed,
+  SpaceHeight,
+  Text,
+  TextEqure
+} from '../../components/Row'
+import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { useApprove, useCNFTInfo, useDaInfo, useMarketsResult } from "../../contract"
+import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
+import { useContract } from "../../hooks/useContract"
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
+import { useOpenWarnning, useTheme } from '../../state/application/hooks'
+import { useAddToast } from "../../state/toast"
+import { useTransactionAdder } from "../../state/transactions/hooks"
+import AppBody, { MainFullBody } from '../AppBody'
+import { Earn } from './earn'
 
 const Body = styled(Column)`
   width:100%;
@@ -114,12 +113,12 @@ const LinePH = styled.div`
   width:100%;
   margin:20px 0px;
 `
-const SegmentItem = styled(RowCenter)<{
-    isChoose?: boolean
+const SegmentItem = styled(RowCenter) <{
+  isChoose?: boolean
 }>`
-  background:${({isChoose}) => isChoose ? 'linear-gradient(90deg, #4a1ee1, #1890ff)' : 'transparent'};
+  background:${({ isChoose }) => isChoose ? 'linear-gradient(90deg, #4a1ee1, #1890ff)' : 'transparent'};
   height:100%;
-  color:${({isChoose}) => isChoose ? 'white' : '#777E90'};
+  color:${({ isChoose }) => isChoose ? 'white' : '#777E90'};
   align-items:center;
   border-radius:20px;
   font-size:22px;
@@ -219,125 +218,125 @@ const PositionButton = styled(GradientButton)`
 `
 
 enum ButtonType {
-    deposit = 0,
-    withdraw = 1
+  deposit = 0,
+  withdraw = 1
 }
 
 function MyBank(props: any) {
-    const showWarning = useOpenWarnning(true)
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
-    const bankInfo = useMarketsResult();
-    const [showModal, setShowModal] = useState(false)
-    const [info, setInfo] = useState<any>({})
-    useEffect(() => {
-        showWarning()
-    }, [])
+  const showWarning = useOpenWarnning(true)
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const bankInfo = useMarketsResult();
+  const [showModal, setShowModal] = useState(false)
+  const [info, setInfo] = useState<any>({})
+  useEffect(() => {
+    showWarning()
+  }, [])
 
-    function onAction(info: any) {
-        setInfo(info)
-        setShowModal(true)
-    }
+  function onAction(info: any) {
+    setInfo(info)
+    setShowModal(true)
+  }
 
-    return (
-        <MainFullBody history={props.history}>
-            <AppBody history={props.history}>
-                <Body>
-                    <BankTopInfo/>
-                    <MyPostion/>
-                    <Earn/>
-                    <BottomAction
-                        symbol={"USDT"}
-                        bankInfo={bankInfo}
-                        onAction={onAction}
-                    ></BottomAction>
-                    <BottomAction
-                        symbol={"USDC"}
-                        bankInfo={bankInfo}
-                        onAction={onAction}
-                    ></BottomAction>
-                    <BottomAction
-                        symbol={"WBTC"}
-                        bankInfo={bankInfo}
-                        onAction={onAction}
-                    ></BottomAction>
-                    <BottomAction
-                        symbol={"DAI"}
-                        bankInfo={bankInfo}
-                        onAction={onAction}
-                    ></BottomAction>
-                </Body>
-            </AppBody>
-            <CustomStakeModal
-                show={showModal}
-                onDismiss={() => setShowModal(false)}
-                title={(info.type === ButtonType.deposit ? "Deposit " : "Withdraw ") + info.symbol}
-                balanceTitle={info.symbol}
-                maxNum={info.type === ButtonType.deposit ? info.formatBalance : info.cFormatBalance}
-                onConfirm={info.type === ButtonType.deposit ? info.onDeposit : info.onWithDraw}
-            ></CustomStakeModal>
-        </MainFullBody>
-    )
+  return (
+    <MainFullBody history={props.history}>
+      <AppBody history={props.history}>
+        <Body>
+          <BankTopInfo />
+          <MyPostion />
+          <Earn />
+          <BottomAction
+            symbol={"USDT"}
+            bankInfo={bankInfo}
+            onAction={onAction}
+          ></BottomAction>
+          <BottomAction
+            symbol={"USDC"}
+            bankInfo={bankInfo}
+            onAction={onAction}
+          ></BottomAction>
+          <BottomAction
+            symbol={"WBTC"}
+            bankInfo={bankInfo}
+            onAction={onAction}
+          ></BottomAction>
+          <BottomAction
+            symbol={"DAI"}
+            bankInfo={bankInfo}
+            onAction={onAction}
+          ></BottomAction>
+        </Body>
+      </AppBody>
+      <CustomStakeModal
+        show={showModal}
+        onDismiss={() => setShowModal(false)}
+        title={(info.type === ButtonType.deposit ? "Deposit " : "Withdraw ") + info.symbol}
+        balanceTitle={info.symbol}
+        maxNum={info.type === ButtonType.deposit ? info.formatBalance : info.cFormatBalance}
+        onConfirm={info.type === ButtonType.deposit ? info.onDeposit : info.onWithDraw}
+      ></CustomStakeModal>
+    </MainFullBody>
+  )
 }
 
 export function BankTopInfo() {
-    const {chainId} = useContext(NetworkTypeContext);
-    const network = ChainId[chainId];
-    const themeDark = useTheme()
-    const cnftInfo = useCNFTInfo()
-    return <>
-        <RowBetween style={{
-            paddingLeft: isMobile ? 15 : 30,
-            paddingBottom: isMobile ? 20 : 40
-        }}>
-            <FlexView>
-                <ThemeTextEqure fontSize={32} fontWeight={'bold'}>Bank Overview</ThemeTextEqure>
-                {/*<SpaceWidth width={30} widthApp={15}/>*/}
-                {/*<AddressText fontColor={'#777E90'} fontSize={14} fontWeight={'bold'}>0x8769b23dg83d6e27724ae45b550j745e5b7858dc</AddressText>*/}
-                {/*<CopyIcon onClick={()=>{*/}
-                {/*  copy('0x8769b23dg83d6e27724ae45b550j745e5b7858dc')*/}
-                {/*  message.success('copy success')*/}
-                {/*}} src={ImageCommon.CopyIcon}/>*/}
-            </FlexView>
-            <HeaderView>
-                <H4>{network}</H4>
-            </HeaderView>
-        </RowBetween>
-        <TopDiv>
-            <TopLeftDiv>
-                <TextEqure fontColor={'#BBBDFF'} fontSize={18}>Total Supply</TextEqure>
-                <SpaceHeight height={20} heightApp={10}/>
-                <TextEqure fontColor={'white'} fontSize={40} fontWeight={'bold'}>${formatBalance(0)}</TextEqure>
-            </TopLeftDiv>
-            <TopLeftDiv style={{
-                backgroundColor: themeDark ? '#17181A' : 'white'
-            }}>
-                <TextEqure fontColor={'#BBBDFF'} fontSize={18}>Total Borrow</TextEqure>
-                <SpaceHeight height={20} heightApp={10}/>
-                <ThemeTextEqure fontSize={40} fontWeight={'bold'}>${formatBalance(0)}</ThemeTextEqure>
-            </TopLeftDiv>
-            <TopLeftDiv style={{
-                backgroundColor: 'transparent'
-            }}>
-                <NFTBgImage src={getNFTCardBgImage(cnftInfo.lv)}/>
-                {cnftInfo.loading ? <Column style={{zIndex: 1}}><Skeleton active paragraph={{rows: 2}}/></Column> :
-                    <Column style={{zIndex: 1}}>
-                        <TextEqure fontSize={18}>Credit NFT</TextEqure>
-                        <SpaceHeight height={20} heightApp={10}/>
-                        <RowFixed>
-                            <TextEqure fontSize={12}>Level</TextEqure>
-                            <ThemeTextEqure style={{marginLeft: 20}} fontSize={24}
-                                            fontWeight={'bold'}>{cnftInfo.loading ? "-" : cnftInfo.lv}</ThemeTextEqure>
-                        </RowFixed>
-                        <RowFixed>
-                            <TextEqure fontSize={12}>NO.</TextEqure>
-                            <ThemeTextEqure style={{marginLeft: 20}} fontSize={24}
-                                            fontWeight={'bold'}>{cnftInfo.loading ? "-" : cnftInfo.no}</ThemeTextEqure>
-                        </RowFixed>
-                    </Column>}
-            </TopLeftDiv>
-        </TopDiv>
-    </>
+  const { chainId } = useContext(NetworkTypeContext);
+  const network = ChainId[chainId];
+  const themeDark = useTheme()
+  const cnftInfo = useCNFTInfo()
+  return <>
+    <RowBetween style={{
+      paddingLeft: isMobile ? 15 : 30,
+      paddingBottom: isMobile ? 20 : 40
+    }}>
+      <FlexView>
+        <ThemeTextEqure fontSize={32} fontWeight={'bold'}>Bank Overview</ThemeTextEqure>
+        {/*<SpaceWidth width={30} widthApp={15}/>*/}
+        {/*<AddressText fontColor={'#777E90'} fontSize={14} fontWeight={'bold'}>0x8769b23dg83d6e27724ae45b550j745e5b7858dc</AddressText>*/}
+        {/*<CopyIcon onClick={()=>{*/}
+        {/*  copy('0x8769b23dg83d6e27724ae45b550j745e5b7858dc')*/}
+        {/*  message.success('copy success')*/}
+        {/*}} src={ImageCommon.CopyIcon}/>*/}
+      </FlexView>
+      <HeaderView>
+        <H4>{network}</H4>
+      </HeaderView>
+    </RowBetween>
+    <TopDiv>
+      <TopLeftDiv>
+        <TextEqure fontColor={'#BBBDFF'} fontSize={18}>Total Supply</TextEqure>
+        <SpaceHeight height={20} heightApp={10} />
+        <TextEqure fontColor={'white'} fontSize={40} fontWeight={'bold'}>${formatBalance(0)}</TextEqure>
+      </TopLeftDiv>
+      <TopLeftDiv style={{
+        backgroundColor: themeDark ? '#17181A' : 'white'
+      }}>
+        <TextEqure fontColor={'#BBBDFF'} fontSize={18}>Total Borrow</TextEqure>
+        <SpaceHeight height={20} heightApp={10} />
+        <ThemeTextEqure fontSize={40} fontWeight={'bold'}>${formatBalance(0)}</ThemeTextEqure>
+      </TopLeftDiv>
+      <TopLeftDiv style={{
+        backgroundColor: 'transparent'
+      }}>
+        <NFTBgImage src={getNFTCardBgImage(cnftInfo.lv)} />
+        {cnftInfo.loading ? <Column style={{ zIndex: 1 }}><Skeleton active paragraph={{ rows: 2 }} /></Column> :
+          <Column style={{ zIndex: 1 }}>
+            <TextEqure fontSize={18}>Credit NFT</TextEqure>
+            <SpaceHeight height={20} heightApp={10} />
+            <RowFixed>
+              <TextEqure fontSize={12}>Level</TextEqure>
+              <ThemeTextEqure style={{ marginLeft: 20 }} fontSize={24}
+                fontWeight={'bold'}>{cnftInfo.loading ? "-" : cnftInfo.lv}</ThemeTextEqure>
+            </RowFixed>
+            <RowFixed>
+              <TextEqure fontSize={12}>NO.</TextEqure>
+              <ThemeTextEqure style={{ marginLeft: 20 }} fontSize={24}
+                fontWeight={'bold'}>{cnftInfo.loading ? "-" : cnftInfo.no}</ThemeTextEqure>
+            </RowFixed>
+          </Column>}
+      </TopLeftDiv>
+    </TopDiv>
+  </>
 }
 const PositionItem = styled(RowBetween)`
   @media (max-width: 768px) {
@@ -365,7 +364,7 @@ const LeftIcon = styled.img`
   };
   margin-right:20px
 `
-const AccountSegment = React.memo(()=> {
+const AccountSegment = React.memo(() => {
   const [selectIndex, setSelectIndex] = useState(0)
   const themeDark = useTheme()
   return <RowCenter>
@@ -373,27 +372,27 @@ const AccountSegment = React.memo(()=> {
       backgroundColor: themeDark ? '#000' : 'white'
     }}>
       <SegmentItem isChoose={selectIndex == 0} onClick={() => {
-          setSelectIndex(0)
+        setSelectIndex(0)
       }}>Credit Account</SegmentItem>
-      <SegmentItem isChoose={selectIndex == 1} onClick={()=>{
+      <SegmentItem isChoose={selectIndex == 1} onClick={() => {
         setSelectIndex(1)
       }}>Wallet Account</SegmentItem>
     </SegmentDiv>
   </RowCenter>
-},()=>{return true})
+}, () => { return true })
 
 function MyPostion() {
   const themeDark = useTheme()
   return <BGDiv style={{
     backgroundColor: themeDark ? '#17181A' : 'white',
-    padding:isMobile?10:20
+    padding: isMobile ? 10 : 20
   }}>
     <RowFixed>
-      <LeftIcon src={ImageCommon.myposition}/>
+      <LeftIcon src={ImageCommon.myposition} />
       <ThemeTextEqure fontSize={24} fontWeight={'bold'}>Your Positions</ThemeTextEqure>
     </RowFixed>
-    <AccountSegment/>
-    <SpaceHeight height={20} heightApp={10}/>
+    <AccountSegment />
+    <SpaceHeight height={20} heightApp={10} />
     <RowCenter>
       <ThemeText fontSize={28} fontWeight={'400'}>You don't have any active positions</ThemeText>
     </RowCenter>
@@ -486,222 +485,222 @@ function MyPostion() {
     } */}
   </BGDiv>
 }
-function BottomAction({symbol, bankInfo, onAction}: any) {
+function BottomAction({ symbol, bankInfo, onAction }: any) {
 
-    const themeDark = useTheme()
-    return <BGDiv style={{
-        backgroundColor: themeDark ? '#17181A' : 'white'
-    }}>
-        <Badge.Ribbon text="InActive" color="grey">
-            <RowFixed style={{padding: isMobile ? 15 : 30}}>
-                <IconIconT src={ImageToken[symbol]}/>
-                <Column>
-                    <ThemeTextEqure fontSize={30} fontWeight={'400'}>{symbol} </ThemeTextEqure>
-                    <ThemeTextEqure fontSize={15} fontWeight={'400'}>(SoftLaunch Limit:$1000)</ThemeTextEqure>
-                </Column>
-            </RowFixed>
-            <LineH/>
-            <RowBetween style={{padding: isMobile ? 15 : 30, paddingTop: 0}}>
-                <Text style={{flex: 1}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Platform</Text>
-                {
-                    <Text style={{flex: 1}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Reward APR</Text>
-                }
-                {
-                    !isMobile &&
-                    <Text style={{flex: 1}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>TVL</Text>
-                }
-                {!isMobile &&
-                <Text style={{flex: 1}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Reward</Text>}
-                {
-                    <Text style={{flex: 1}} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Deposited</Text>
-                }
-                <Text style={{flex: 1.5, textAlign: 'right'}} fontColor={'#777E90'} fontSize={20}
-                      fontWeight={'500'}></Text>
-            </RowBetween>
-            {
-                Object.values(platforms).map((item: any, index: number) => {
-                    return <DaiItem
-                        item={item}
-                        symbol={symbol}
-                        bankInfo={bankInfo}
-                        onAction={onAction}
-                    ></DaiItem>
-                })
-            }
-        </Badge.Ribbon>
-    </BGDiv>
+  const themeDark = useTheme()
+  return <BGDiv style={{
+    backgroundColor: themeDark ? '#17181A' : 'white'
+  }}>
+    <Badge.Ribbon text="InActive" color="grey">
+      <RowFixed style={{ padding: isMobile ? 15 : 30 }}>
+        <IconIconT src={ImageToken[symbol]} />
+        <Column>
+          <ThemeTextEqure fontSize={30} fontWeight={'400'}>{symbol} </ThemeTextEqure>
+          <ThemeTextEqure fontSize={15} fontWeight={'400'}>(SoftLaunch Limit:$1000)</ThemeTextEqure>
+        </Column>
+      </RowFixed>
+      <LineH />
+      <RowBetween style={{ padding: isMobile ? 15 : 30, paddingTop: 0 }}>
+        <Text style={{ flex: 1 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Platform</Text>
+        {
+          <Text style={{ flex: 1 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Reward APR</Text>
+        }
+        {
+          !isMobile &&
+          <Text style={{ flex: 1 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>TVL</Text>
+        }
+        {!isMobile &&
+          <Text style={{ flex: 1 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Reward</Text>}
+        {
+          <Text style={{ flex: 1 }} fontColor={'#777E90'} fontSize={20} fontWeight={'500'}>Deposited</Text>
+        }
+        <Text style={{ flex: 1.5, textAlign: 'right' }} fontColor={'#777E90'} fontSize={20}
+          fontWeight={'500'}></Text>
+      </RowBetween>
+      {
+        Object.values(platforms).map((item: any, index: number) => {
+          return <DaiItem
+            item={item}
+            symbol={symbol}
+            bankInfo={bankInfo}
+            onAction={onAction}
+          ></DaiItem>
+        })
+      }
+    </Badge.Ribbon>
+  </BGDiv>
 }
 
-function DaiItem({item, symbol, bankInfo, onAction}: any) {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
-    const loading = useContext(LoadingContext)
-    const daiInfo = useDaInfo(symbol, bankInfo)
-    const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, BankConfig[symbol]?.[network]?.cToken?.address)
-    const [mapproval, mapproveCallback] = useApprove(BankConfig[symbol]?.[network]?.cToken?.address, EarnConfig[symbol]?.[network]?.cToken?.address)
-    const addTransaction = useTransactionAdder();
-    const addToast = useAddToast();
-    const cTokenContract = useContract(BankConfig[symbol]?.[network]?.cToken?.address, BankConfig[symbol]?.[network]?.cToken?.abi)
-    const migrateContract = useContract(EarnConfig[symbol]?.[network]?.cToken?.address, EarnConfig[symbol]?.[network]?.cToken?.abi)
-    const themeDark = useTheme()
+function DaiItem({ item, symbol, bankInfo, onAction }: any) {
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = ChainId[chainId];
+  const loading = useContext(LoadingContext)
+  const daiInfo = useDaInfo(symbol, bankInfo)
+  const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, BankConfig[symbol]?.[network]?.cToken?.address)
+  const [mapproval, mapproveCallback] = useApprove(BankConfig[symbol]?.[network]?.cToken?.address, EarnConfig[symbol]?.[network]?.cToken?.address)
+  const addTransaction = useTransactionAdder();
+  const addToast = useAddToast();
+  const cTokenContract = useContract(BankConfig[symbol]?.[network]?.cToken?.address, BankConfig[symbol]?.[network]?.cToken?.abi)
+  const migrateContract = useContract(EarnConfig[symbol]?.[network]?.cToken?.address, EarnConfig[symbol]?.[network]?.cToken?.abi)
+  const themeDark = useTheme()
 
-    function action(type: ButtonType) {
-        if (approval !== ApprovalState.APPROVED) {
-            approveCallback()
-            return
+  function action(type: ButtonType) {
+    if (approval !== ApprovalState.APPROVED) {
+      approveCallback()
+      return
+    }
+    daiInfo.symbol = symbol
+    daiInfo.type = type
+    daiInfo.onDeposit = deposit
+    daiInfo.onWithDraw = withdraw
+    onAction && onAction(daiInfo)
+  }
+
+  function migrate() {
+    if (mapproval !== ApprovalState.APPROVED) {
+      mapproveCallback()
+      return
+    }
+    loading.show(LoadingType.confirm, `Migrate`)
+    migrateContract?.migrate()
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        await response.wait();
+        loading.show(LoadingType.success, response.hash)
+      })
+      .catch((err: any) => {
+        if (err.code === 4001) {
+          loading.show(LoadingType.error, err.reason || err.message)
+          return
         }
-        daiInfo.symbol = symbol
-        daiInfo.type = type
-        daiInfo.onDeposit = deposit
-        daiInfo.onWithDraw = withdraw
-        onAction && onAction(daiInfo)
-    }
+        loading.show(LoadingType.error, err.reason || err.message)
+        tipError(err)
+      })
+  }
 
-    function migrate() {
-        if (mapproval !== ApprovalState.APPROVED) {
-            mapproveCallback()
-            return
+  function deposit(amount: string) {
+    loading.show(LoadingType.confirm, `Deposit ${daiInfo.symbol}`)
+    cTokenContract?.deposit(balanceToBigNumber(amount, daiInfo.decimals))
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        // addTransaction(response, {
+        //   summary: `Deposit ${daiInfo.symbol}`,
+        // })
+        await response.wait();
+        loading.show(LoadingType.success, response.hash)
+      })
+      .catch((err: any) => {
+        if (err.code === 4001) {
+          loading.show(LoadingType.error, err.reason || err.message)
+          // addToast(ToastStatus.error,err.message)
+          return
         }
-        loading.show(LoadingType.confirm, `Migrate`)
-        migrateContract?.migrate()
-            .then(async (response: TransactionResponse) => {
-                loading.show(LoadingType.pending, response.hash)
-                await response.wait();
-                loading.show(LoadingType.success, response.hash)
-            })
-            .catch((err: any) => {
-                if (err.code === 4001) {
-                  loading.show(LoadingType.error, err.reason || err.message)
-                  return
-                }
-                loading.show(LoadingType.error, err.reason || err.message)
-                tipError(err)
-            })
-    }
+        loading.show(LoadingType.error, err.reason || err.message)
+        // addToast(ToastStatus.error,err.data?.message)
+        tipError(err)
+      })
+  }
 
-    function deposit(amount: string) {
-        loading.show(LoadingType.confirm, `Deposit ${daiInfo.symbol}`)
-        cTokenContract?.deposit(balanceToBigNumber(amount, daiInfo.decimals))
-            .then(async (response: TransactionResponse) => {
-                loading.show(LoadingType.pending, response.hash)
-                // addTransaction(response, {
-                //   summary: `Deposit ${daiInfo.symbol}`,
-                // })
-                await response.wait();
-                loading.show(LoadingType.success, response.hash)
-            })
-            .catch((err: any) => {
-                if (err.code === 4001) {
-                  loading.show(LoadingType.error, err.reason || err.message)
-                  // addToast(ToastStatus.error,err.message)
-                    return
-                }
-                loading.show(LoadingType.error, err.reason || err.message)
-                // addToast(ToastStatus.error,err.data?.message)
-                tipError(err)
-            })
-    }
+  function withdraw(amount: string) {
+    loading.show(LoadingType.confirm, `Withdraw ${daiInfo.symbol}`)
+    cTokenContract?.withdraw(balanceToBigNumber(amount, daiInfo.decimals))
+      .then(async (response: TransactionResponse) => {
+        loading.show(LoadingType.pending, response.hash)
+        // addTransaction(response, {
+        //   summary: `Withdraw ${daiInfo.symbol}`,
+        // })
+        await response.wait();
+        loading.show(LoadingType.success, response.hash)
+      })
+      .catch((err: any) => {
 
-    function withdraw(amount: string) {
-        loading.show(LoadingType.confirm, `Withdraw ${daiInfo.symbol}`)
-        cTokenContract?.withdraw(balanceToBigNumber(amount, daiInfo.decimals))
-            .then(async (response: TransactionResponse) => {
-                loading.show(LoadingType.pending, response.hash)
-                // addTransaction(response, {
-                //   summary: `Withdraw ${daiInfo.symbol}`,
-                // })
-                await response.wait();
-                loading.show(LoadingType.success, response.hash)
-            })
-            .catch((err: any) => {
-
-                if (err.code === 4001) {
-                  loading.show(LoadingType.error, err.reason || err.message)
-                  // addToast(ToastStatus.error,err.message)
-                    return
-                }
-                loading.show(LoadingType.error, err.reason || err.message)
-                // addToast(ToastStatus.error,err.data?.message)
-                tipError(err)
-            })
-    }
-    if(daiInfo.loading){
-      return <BaseView
-          style={{padding: isMobile ? 15 : 30, paddingTop: 0}}
+        if (err.code === 4001) {
+          loading.show(LoadingType.error, err.reason || err.message)
+          // addToast(ToastStatus.error,err.message)
+          return
+        }
+        loading.show(LoadingType.error, err.reason || err.message)
+        // addToast(ToastStatus.error,err.data?.message)
+        tipError(err)
+      })
+  }
+  if (daiInfo.loading) {
+    return <BaseView
+      style={{ padding: isMobile ? 15 : 30, paddingTop: 0 }}
+    >
+      <LoadingRow width={"auto"}></LoadingRow>
+    </BaseView>
+  }
+  return (
+    <>
+      <RowBetween style={{ padding: isMobile ? 15 : 30, paddingTop: 0 }}>
+        <RowFixed style={{ flex: 1 }}>
+          <IconIcon src={item.icon} />
+          <ThemeText fontSize={14} fontWeight={'400'}>{item.title}</ThemeText>
+        </RowFixed>
+        {
+          <ThemeText style={{ flex: 1 }} fontSize={26}
+            fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : formatPercent(daiInfo.savingsApy / 100)}</ThemeText>
+        }
+        {
+          !isMobile && <ThemeText style={{ flex: 1 }} fontSize={26}
+            fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : '$' + formatBalance(daiInfo.cFormatTvl, 2)}</ThemeText>
+        }
+        {/*<ThemeText style={{flex:1}} fontSize={26} fontWeight={'400'}></ThemeText>*/}
+        {!isMobile && <RowFixed style={{ flex: 1 }}>
+          <CardPair
+            pair1={"CREDA"}
+            pair2={symbol}
+          ></CardPair>
+        </RowFixed>}
+        {
+          <ThemeText style={{ flex: 1 }} fontSize={26}
+            fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : formatBalance(daiInfo.cFormatBalance)}</ThemeText>
+        }
+        <WinView
+          style={{ flex: 1.5 }}
+        >
+          {item.title === platforms.Wepiggy.title ? <RowEnd>
+            <ApproveBtn>
+              <GradientButton
+                onClick={migrate}
+              >{mapproval === ApprovalState.APPROVED ? "Migrate" : "Approve"}</GradientButton>
+            </ApproveBtn>
+            <LgWhiteButton
+              onClick={() => action(ButtonType.withdraw)} style={{
+                marginLeft: '10px',
+                background: themeDark ? "#FFFFFF" : "#1890ff",
+                color: themeDark ? "#4E55FF" : "#FFFFFF"
+              }}
+            >Withdraw</LgWhiteButton>
+          </RowEnd> : <RowEnd>
+            <GradientButton style={{ padding: '0 10px', fontSize: 14 }}>Coming Soon</GradientButton>
+          </RowEnd>}
+        </WinView>
+      </RowBetween>
+      <MobileView
+        style={{ marginBottom: "20px" }}
       >
-        <LoadingRow width={"auto"}></LoadingRow>
-      </BaseView>
-    }
-    return (
-        <>
-            <RowBetween style={{padding: isMobile ? 15 : 30, paddingTop: 0}}>
-                <RowFixed style={{flex: 1}}>
-                    <IconIcon src={item.icon}/>
-                    <ThemeText fontSize={14} fontWeight={'400'}>{item.title}</ThemeText>
-                </RowFixed>
-                {
-                    <ThemeText style={{flex: 1}} fontSize={26}
-                               fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : formatPercent(daiInfo.savingsApy / 100)}</ThemeText>
-                }
-                {
-                    !isMobile && <ThemeText style={{flex: 1}} fontSize={26}
-                                            fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : '$' + formatBalance(daiInfo.cFormatTvl, 2)}</ThemeText>
-                }
-                {/*<ThemeText style={{flex:1}} fontSize={26} fontWeight={'400'}></ThemeText>*/}
-                {!isMobile && <RowFixed style={{flex: 1}}>
-                    <CardPair
-                        pair1={"CREDA"}
-                        pair2={symbol}
-                    ></CardPair>
-                </RowFixed>}
-                {
-                    <ThemeText style={{flex: 1}} fontSize={26}
-                               fontWeight={'400'}>{item.title !== platforms.Wepiggy.title ? "-" : daiInfo.loading ? "-" : formatBalance(daiInfo.cFormatBalance)}</ThemeText>
-                }
-                <WinView
-                    style={{flex: 1.5}}
-                >
-                    {item.title === platforms.Wepiggy.title ? <RowEnd>
-                        <ApproveBtn>
-                            <GradientButton
-                                onClick={migrate}
-                            >{mapproval === ApprovalState.APPROVED ? "Migrate" : "Approve"}</GradientButton>
-                        </ApproveBtn>
-                        <LgWhiteButton
-                            onClick={() => action(ButtonType.withdraw)} style={{
-                            marginLeft: '10px',
-                            background: themeDark ? "#FFFFFF" : "#1890ff",
-                            color: themeDark ? "#4E55FF" : "#FFFFFF"
-                        }}
-                        >Withdraw</LgWhiteButton>
-                    </RowEnd> : <RowEnd>
-                        <GradientButton style={{padding: '0 10px', fontSize: 14}}>Coming Soon</GradientButton>
-                    </RowEnd>}
-                </WinView>
-            </RowBetween>
-            <MobileView
-                style={{marginBottom: "20px"}}
-            >
-                {item.title === platforms.Wepiggy.title ? <RowCenter style={{flex: 1.5}}>
-                    <ApproveBtn>
-                        <GradientButton
-                            onClick={migrate}
-                        >{mapproval === ApprovalState.APPROVED ? "Migrate" : "Approve"}</GradientButton>
-                    </ApproveBtn>
-                    <LgWhiteButton
-                        onClick={() => action(ButtonType.withdraw)} style={{
-                        marginLeft: '10px',
-                        background: themeDark ? "#FFFFFF" : "#1890ff",
-                        color: themeDark ? "#4E55FF" : "#FFFFFF"
-                    }}
-                    >Withdraw</LgWhiteButton>
-                </RowCenter> : <RowCenter style={{flex: 1.5}}>
-                    <GradientButton style={{padding: '0 10px', fontSize: 14}}>Coming Soon</GradientButton>
-                </RowCenter>}
-            </MobileView>
-        </>
-    )
+        {item.title === platforms.Wepiggy.title ? <RowCenter style={{ flex: 1.5 }}>
+          <ApproveBtn>
+            <GradientButton
+              onClick={migrate}
+            >{mapproval === ApprovalState.APPROVED ? "Migrate" : "Approve"}</GradientButton>
+          </ApproveBtn>
+          <LgWhiteButton
+            onClick={() => action(ButtonType.withdraw)} style={{
+              marginLeft: '10px',
+              background: themeDark ? "#FFFFFF" : "#1890ff",
+              color: themeDark ? "#4E55FF" : "#FFFFFF"
+            }}
+          >Withdraw</LgWhiteButton>
+        </RowCenter> : <RowCenter style={{ flex: 1.5 }}>
+          <GradientButton style={{ padding: '0 10px', fontSize: 14 }}>Coming Soon</GradientButton>
+        </RowCenter>}
+      </MobileView>
+    </>
+  )
 }
 
 export default MyBank;

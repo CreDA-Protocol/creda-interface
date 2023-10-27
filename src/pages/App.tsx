@@ -1,70 +1,68 @@
-import React, {Suspense, useEffect, useState} from "react";
-import {Route, Switch, BrowserRouter} from 'react-router-dom';
-import styled from 'styled-components'
-import {Provider} from 'react-redux'
+import { Suspense, useEffect, useState } from "react";
 import Loadable from 'react-loadable';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 
 
 
 
-import {useSpring, animated} from 'react-spring'
-import {NetworkTypeContext, WalletAddressContext} from "../context";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import { animated, useSpring } from 'react-spring';
+import ImageCommon from "../assets/common/ImageCommon";
 import {
   ChainId,
-  chainIdConfig,
   createWalletConnectWeb3Provider,
   ethereum,
   globalObj,
-  globalObject,
-  provider,
-  signer, walletInfo,
+  walletInfo
 } from "../common/Common";
 import { ButtonClick } from "../components/Button";
-import store from "../state";
-import Popups from "../components/Popups";
-import ThemeProvider from "../theme";
-import ApplicationUpdater from "../state/application/updater";
-import TransactionUpdater from "../state/transactions/updater";
-import { RedirectPathToHomeOnly } from "./Home/redirects";
 import Column, { ColumnNormal } from "../components/Column";
-import "../i18n";
-import { useTranslation } from "react-i18next";
-import ImageCommon from "../assets/common/ImageCommon";
-import {isMobile} from "react-device-detect";
+import { ColumnBetween } from "../components/Column/index";
+import Loading from "../components/Loading";
+import Popups from "../components/Popups";
 import {
-  RowBetween,
-  Text,
-  RowCenter,
-  SpaceHeight,
-  RowFixed,
-  SpaceWidth,
   CustomGrid,
+  RowBetween,
+  RowCenter,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  Text,
   WrapMaxWidth,
 } from "../components/Row";
-import { ColumnBetween, ColumnEnd } from "../components/Column/index";
-import { useTheme } from "../state/application/hooks";
 import { ThemeText } from "../components/ThemeComponent";
-import WalletConnectModal from "../components/WalletConnectModal";
 import Toasts from "../components/Toasts";
-import Test from "./test";
-import Press from "./Press";
+import WalletConnectModal from "../components/WalletConnectModal";
+import { NetworkTypeContext, WalletAddressContext } from "../context";
+import "../i18n";
+import LoadingProvider from "../provider/LoadingProvider";
+import store from "../state";
+import { useTheme } from "../state/application/hooks";
+import ApplicationUpdater from "../state/application/updater";
+import TransactionUpdater from "../state/transactions/updater";
+import ThemeProvider from "../theme";
 import AboutUs from "./AboutUs";
+import { RedirectPathToHomeOnly } from "./Home/redirects";
+import Press from "./Press";
 import News from "./Press/News";
-import LoadingProvider from "../provider/loadingProvider";
-import Loading from "../components/Loading";
+import Test from "./test";
 
-require("../common/custom.css");
+import "@assets/css/custom.css";
+
 const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
 `;
 const BodyWrapper = styled.div`
   width: 100%;
   //display: flex;
   //flex-direction: column;
-  
+
   //padding-top: 0px;
   //flex: 1;
   //z-index: 1;
@@ -188,10 +186,10 @@ export default function App() {
 
 
   // const themeDark = useTheme()
-// useEffect(() => {
+  // useEffect(() => {
 
-//   globalObject.showConnectToModal = () => setConnectToModal(true);
-// }, []);
+  //   globalObject.showConnectToModal = () => setConnectToModal(true);
+  // }, []);
 
   useEffect(() => {
     globalObj.showConnectModal = () => setConnectModal(true);
@@ -241,11 +239,11 @@ export default function App() {
 
   async function loadData() {
     try {
-       setIsAccountLoading(true)
+      setIsAccountLoading(true)
       // console.log(signer,provider)
-       setTimeout(() => {
+      setTimeout(() => {
         setIsAccountLoading(false)
-       }, 1000);
+      }, 1000);
       if (!walletInfo.signer || !walletInfo.provider) {
         return;
       }
@@ -296,7 +294,7 @@ export default function App() {
       duration: 1000,
     },
   });
-  function disconnect(){
+  function disconnect() {
     // console.info(walletInfo.provider)
     // @ts-ignore
     walletInfo.provider.provider.disconnect && walletInfo.provider.provider.disconnect()
@@ -308,100 +306,100 @@ export default function App() {
     <Suspense fallback={<Loading></Loading>}>
       {/* <DownBackground/> */}
       <NetworkTypeContext.Provider value={{ chainId }}>
-        <WalletAddressContext.Provider value={{ account: address,isaccountLoading:isAccountLoading, disconnect:disconnect}}>
+        <WalletAddressContext.Provider value={{ account: address, isaccountLoading: isAccountLoading, disconnect: disconnect }}>
           <Provider store={store}>
             <Updaters />
             <ThemeProvider>
               <LoadingProvider>
-              <AppWrapper>
-                <BodyWrapper
-                  style={
-                    {
-                      // backgroundColor:themeDark?'#121316':'#F1F4F6'
+                <AppWrapper>
+                  <BodyWrapper
+                    style={
+                      {
+                        // backgroundColor:themeDark?'#121316':'#F1F4F6'
+                      }
                     }
-                  }
-                >
-                  <BrowserRouter>
-                    {/* <Header /> */}
-                    <Switch>
-                      <Route exact strict path="/home" component={Home} />
-                      <Route exact strict path="/home2" component={Home} />
-                      <Route exact strict path="/profile" component={Profile} />
-                      <Route exact strict path="/vault" component={Valut} />
-                      <Route exact strict path="/myBank" component={MyBank} />
-                      <Route exact strict path="/bridge" component={Bridge} />
-                      <Route
-                        exact
-                        strict
-                        path="/governance"
-                        component={Governance}
-                      />
-                      <Route exact strict path="/doc" component={Doc} />
-                      <Route exact strict path="/test" component={Test} />
-                      <Route exact strict path="/press" component={Press} />
-                      <Route exact strict path="/myBankEarn" component={MyBankEarn}/>
-                      <Route exact strict path="/myBankFarming"
-                              component={MyBankFarming}/>
-                      <Route exact strict path="/myBankAssetPrice"
-                              component={MyBankAssetPrice}/>
-                      <Route
-                        exact
-                        strict
-                        path="/news-and-media"
-                        component={Press}
-                      />
-                      <Route
-                        exact
-                        strict
-                        path="/about-us"
-                        component={AboutUs}
-                      />
-                      <Route
-                        exact
-                        strict
-                        path="/new-defi-platform-looks-to-de-risk-the-world-of-crypto"
-                        component={News}
-                      />
-                      <Route
-                        exact
-                        strict
-                        path="/crypto-credit-scoring-protocol-creda-partners-with-filda-to-offer-leveraged-and-low-collateral-lending"
-                        component={News}
-                      />
-                      <Route
-                        exact
-                        strict
-                        path="/former-morgan-stanley-executive-named-as-new-creda-ceo"
-                        component={News}
-                      />
-                      <Route
-                        exact
-                        strict
-                        path="/creda-partners-with-cyberconnect-to-include-social-data-in-crypto-credit-scores"
-                        component={News}
-                      />
-                      <Route component={RedirectPathToHomeOnly} />
-                    </Switch>
-                  </BrowserRouter>
-                  <Popups />
-                  <Toasts />
-                  <BottomInfo />
-                  <WalletConnectModal
-                    show={connectModal}
-                    onDismiss={() => {
-                      setConnectModal(false);
-                    }}
-                    changeChainId={changeChainId}
-                    changeAccount={changeAccount}
-                  ></WalletConnectModal>
-                  {/* <ConnectToWalletModal
+                  >
+                    <BrowserRouter>
+                      {/* <Header /> */}
+                      <Switch>
+                        <Route exact strict path="/home" component={Home} />
+                        <Route exact strict path="/home2" component={Home} />
+                        <Route exact strict path="/profile" component={Profile} />
+                        <Route exact strict path="/vault" component={Valut} />
+                        <Route exact strict path="/myBank" component={MyBank} />
+                        <Route exact strict path="/bridge" component={Bridge} />
+                        <Route
+                          exact
+                          strict
+                          path="/governance"
+                          component={Governance}
+                        />
+                        <Route exact strict path="/doc" component={Doc} />
+                        <Route exact strict path="/test" component={Test} />
+                        <Route exact strict path="/press" component={Press} />
+                        <Route exact strict path="/myBankEarn" component={MyBankEarn} />
+                        <Route exact strict path="/myBankFarming"
+                          component={MyBankFarming} />
+                        <Route exact strict path="/myBankAssetPrice"
+                          component={MyBankAssetPrice} />
+                        <Route
+                          exact
+                          strict
+                          path="/news-and-media"
+                          component={Press}
+                        />
+                        <Route
+                          exact
+                          strict
+                          path="/about-us"
+                          component={AboutUs}
+                        />
+                        <Route
+                          exact
+                          strict
+                          path="/new-defi-platform-looks-to-de-risk-the-world-of-crypto"
+                          component={News}
+                        />
+                        <Route
+                          exact
+                          strict
+                          path="/crypto-credit-scoring-protocol-creda-partners-with-filda-to-offer-leveraged-and-low-collateral-lending"
+                          component={News}
+                        />
+                        <Route
+                          exact
+                          strict
+                          path="/former-morgan-stanley-executive-named-as-new-creda-ceo"
+                          component={News}
+                        />
+                        <Route
+                          exact
+                          strict
+                          path="/creda-partners-with-cyberconnect-to-include-social-data-in-crypto-credit-scores"
+                          component={News}
+                        />
+                        <Route component={RedirectPathToHomeOnly} />
+                      </Switch>
+                    </BrowserRouter>
+                    <Popups />
+                    <Toasts />
+                    <BottomInfo />
+                    <WalletConnectModal
+                      show={connectModal}
+                      onDismiss={() => {
+                        setConnectModal(false);
+                      }}
+                      changeChainId={changeChainId}
+                      changeAccount={changeAccount}
+                    ></WalletConnectModal>
+                    {/* <ConnectToWalletModal
                     show={connectToModal}
                     onDismiss={() => {
                       setConnectToModal(false);
                     }}
                   ></ConnectToWalletModal> */}
-                </BodyWrapper>
-              </AppWrapper>
+                  </BodyWrapper>
+                </AppWrapper>
               </LoadingProvider>
             </ThemeProvider>
           </Provider>
@@ -1188,7 +1186,7 @@ function BottomInfoWeb() {
                 window.open("https://discord.com/invite/eSvTm6a6kb");
               }}
             >
-              <BottomDiscordIcon  src={ImageCommon.Discord_new} />
+              <BottomDiscordIcon src={ImageCommon.Discord_new} />
             </ButtonClick>
             <SpaceWidth width={60} widthApp={30} />
             <ButtonClick

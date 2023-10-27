@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import { ChainId } from "../../common/Common"
-import { getWarnningText } from "../../common/GlobalValue"
 import Column from '../../components/Column'
 import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '../../components/Row'
 import { NetworkTypeContext, WalletAddressContext } from "../../context"
@@ -116,10 +115,10 @@ const ConnectWalletHeader = styled.div`
 `;
 
 const StepModalWrap = styled.div<{
-  isMobile:boolean|null
+  isMobile: boolean | null
 }>`
   .walk-through-modal-wrapper {
-    top:${({ isMobile }) =>isMobile?'97px':'145px' };
+    top:${({ isMobile }) => isMobile ? '97px' : '145px'};
     left:53px;
     @media (min-width: 768px) and (max-width: 1700px) {
       top:139px;
@@ -149,8 +148,8 @@ const menus = [
     image: ImageCommon.left_menu_vault_white,
   },
   {
-    title:'Bridge',
-    key:'bridge',
+    title: 'Bridge',
+    key: 'bridge',
     image: ImageCommon.Bridge_white,
   },
   {
@@ -220,6 +219,10 @@ export default function Header({ history }: any) {
   // },[warnning])
 
   const toggleIsDark = useChangeTemeDark();
+
+  const getWarningText = () => {
+    return 'Please note the CreDA Protocol is in Beta phase: Use at your own risk.'
+  }
 
   const themeDark = useTheme();
   return (
@@ -380,7 +383,7 @@ export default function Header({ history }: any) {
         <WarnningView>
           <WarnningIcon src={ImageCommon.warnning_icon} />
           <TextEqure fontSize={isMobile ? 12 : 22}>
-            {getWarnningText()}
+            {getWarningText()}
           </TextEqure>
         </WarnningView>
       )}
@@ -390,27 +393,27 @@ export default function Header({ history }: any) {
 let select = 0;
 let subSelect = 0;
 
-function MenuList({ history,setShowModal }: any) {
+function MenuList({ history, setShowModal }: any) {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const [subIndex,setSubIndex] = useState(subSelect)
+  const [subIndex, setSubIndex] = useState(subSelect)
   const [selectIndex, setSelectIndex] = useState(select);
   const themeDark = useTheme();
-  const walkThroughStep=useWalkThroughStep()
-  const titleColor = themeDark?"#FFFFFF":"#000000"
+  const walkThroughStep = useWalkThroughStep()
+  const titleColor = themeDark ? "#FFFFFF" : "#000000"
   const isDark = useTheme();
   const [wrongNetwork, setWrongNetwork] = useState(false)
 
 
 
   useEffect(() => {
-    if(account && [ChainId.arbitrum, ChainId.ropsten,ChainId.esc].indexOf(chainId) < 0){
+    if (account && [ChainId.arbitrum, ChainId.ropsten, ChainId.esc].indexOf(chainId) < 0) {
       setWrongNetwork(true)
     }
   }, [account, chainId])
-  useEffect(()=>{
-    if (selectIndex !== 3){
-      if (subIndex !== 0){
+  useEffect(() => {
+    if (selectIndex !== 3) {
+      if (subIndex !== 0) {
         setSubIndex(0)
         subSelect = 0
       }
@@ -418,7 +421,7 @@ function MenuList({ history,setShowModal }: any) {
   }, [selectIndex, subIndex]);
   function changeNav(data: string) {
     // console.log(chainId,data)
-    if(chainId!==ChainId.arbitrum && chainId!==ChainId.esc && !["home","profile","aboutus","news&media","doc","bridge"].includes(data)){
+    if (chainId !== ChainId.arbitrum && chainId !== ChainId.esc && !["home", "profile", "aboutus", "news&media", "doc", "bridge"].includes(data)) {
       message.warn("Coming Soon!")
       return
     }
@@ -436,9 +439,9 @@ function MenuList({ history,setShowModal }: any) {
         history.push("./about-us");
         break;
       case "myBank":
-        if (chainId===ChainId.esc){
+        if (chainId === ChainId.esc) {
           message.warn('coming soon~')
-        }else {
+        } else {
           history.push("./myBank");
         }
         break;
@@ -462,9 +465,9 @@ function MenuList({ history,setShowModal }: any) {
         history.push("./myBankAssetPrice");
         break;
       case "doc":
-                window.open(
-                  "https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper"
-                );
+        window.open(
+          "https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper"
+        );
         break;
       default:
         history.push("./home");
@@ -473,7 +476,7 @@ function MenuList({ history,setShowModal }: any) {
   return (
     <div>
       {menus.map((item: any, index: number) => {
-        if (chainId === ChainId.esc && item.title === 'My Bank'){
+        if (chainId === ChainId.esc && item.title === 'My Bank') {
           return
         }
         return (
@@ -484,123 +487,123 @@ function MenuList({ history,setShowModal }: any) {
             key={"item_" + index}
             onClick={() => {
               setSelectIndex(index)
-              if (index !== 3){
+              if (index !== 3) {
                 changeNav(item.key)
                 select = index
               }
             }}
-        >
+          >
             <RowFixed style={{
-              width:'100%',
-              color:titleColor, justifyContent:'flex-start',fontSize:16,marginLeft:100
+              width: '100%',
+              color: titleColor, justifyContent: 'flex-start', fontSize: 16, marginLeft: 100
             }}>
               <Column>
-                <RowFixed onClick={()=>{
+                <RowFixed onClick={() => {
                   changeNav(item.key)
                   select = index
                   setSubIndex(0)
                   subSelect = 0
                 }}
-                  style={{alignItems:"center"}}
+                  style={{ alignItems: "center" }}
                 >
                   {selectIndex === index ? (
                     <ArrowIcon src={item.image} themeDark={true} />
                   ) : (
                     item.key === 'aboutus' ?
-                    <ArrowIcon className="custom-about-us-icon" src={item.image} themeDark={themeDark} />
-                    :
-                    <>
-                    {
-                      item.key === "profile"
-                      ?
-                      <div style={{position:'relative'}}>
-                      <ArrowIcon src={item.image} themeDark={themeDark} />
-                      </div>
+                      <ArrowIcon className="custom-about-us-icon" src={item.image} themeDark={themeDark} />
                       :
-                      <ArrowIcon src={item.image} themeDark={themeDark} />
-                    }
-                    </>
+                      <>
+                        {
+                          item.key === "profile"
+                            ?
+                            <div style={{ position: 'relative' }}>
+                              <ArrowIcon src={item.image} themeDark={themeDark} />
+                            </div>
+                            :
+                            <ArrowIcon src={item.image} themeDark={themeDark} />
+                        }
+                      </>
                   )}
                   {item.title}
                 </RowFixed>
                 {
-                chainId !== ChainId.esc && index === 4  &&
-                (
-                  <Column style={{ marginLeft: 30 }}>
-                    <SubItemButton onClick={(e:any) => {
-                      // if(chainId===ChainId.esc){
-                      //   message.warn('coming soon~')
-                      //   return
-                      // }
-                      e.stopPropagation()
-                      setSubIndex(1)
-                      changeNav("myBankEarn")
-
-                    }}>
-                      <Text
-                        fontSize={24}
-                        fontColor={subIndex === 1 ? "#fff" :isDark?"#fff": "#000"}
-                      >
-                        Earn
-                      </Text>
-                    </SubItemButton>
-                    {
-                    !wrongNetwork
-                    ?
-                    <SubItemButton
-                    onClick={(e:any) =>{
-                      // if(chainId===ChainId.esc){
-                      //   message.warn('coming soon~')
-                      //   return
-                      // }
-                      e.stopPropagation()
-                      setSubIndex(2)
-                      changeNav("myBankFarming")
-                    }}>
-
-                      <Text
-                        fontSize={24}
-                        fontColor={subIndex === 2 ? "#fff" :isDark?"#fff": "#000"}
-                      >
-                        Farming
-                      </Text>
-                    </SubItemButton>
-                    :
-                    <SubItemButton >
-                      <Text
-                        fontSize={24}
-                        fontColor={subIndex === 2 ? "#ffffff4f" :isDark?"#fff": "#000"}
-                      >
-                        Farming
-                      </Text>
-                    </SubItemButton>
-                    }
-                    {!wrongNetwork?
-                      <SubItemButton onClick={(e:any) => {
+                  chainId !== ChainId.esc && index === 4 &&
+                  (
+                    <Column style={{ marginLeft: 30 }}>
+                      <SubItemButton onClick={(e: any) => {
+                        // if(chainId===ChainId.esc){
+                        //   message.warn('coming soon~')
+                        //   return
+                        // }
                         e.stopPropagation()
-                        setSubIndex(3)
-                        changeNav("myBankAssetPrice")
+                        setSubIndex(1)
+                        changeNav("myBankEarn")
+
+                      }}>
+                        <Text
+                          fontSize={24}
+                          fontColor={subIndex === 1 ? "#fff" : isDark ? "#fff" : "#000"}
+                        >
+                          Earn
+                        </Text>
+                      </SubItemButton>
+                      {
+                        !wrongNetwork
+                          ?
+                          <SubItemButton
+                            onClick={(e: any) => {
+                              // if(chainId===ChainId.esc){
+                              //   message.warn('coming soon~')
+                              //   return
+                              // }
+                              e.stopPropagation()
+                              setSubIndex(2)
+                              changeNav("myBankFarming")
+                            }}>
+
+                            <Text
+                              fontSize={24}
+                              fontColor={subIndex === 2 ? "#fff" : isDark ? "#fff" : "#000"}
+                            >
+                              Farming
+                            </Text>
+                          </SubItemButton>
+                          :
+                          <SubItemButton >
+                            <Text
+                              fontSize={24}
+                              fontColor={subIndex === 2 ? "#ffffff4f" : isDark ? "#fff" : "#000"}
+                            >
+                              Farming
+                            </Text>
+                          </SubItemButton>
                       }
-                      }>
-                      <Text
-                        fontSize={24}
-                        fontColor={subIndex === 3 ? "#fff" :isDark?"#fff": "#000"}
-                      >
-                        Asset Price
-                      </Text>
-                    </SubItemButton>
-                    :
-                    <SubItemButton onClick={() => setSubIndex(3)}>
-                      <Text
-                        fontSize={24}
-                        fontColor={subIndex === 3 ? "#ffffff4f" :isDark?"#fff": "#000"}
-                      >
-                        Asset Price
-                      </Text>
-                    </SubItemButton>
-                    }
-                  </Column>
-                )
+                      {!wrongNetwork ?
+                        <SubItemButton onClick={(e: any) => {
+                          e.stopPropagation()
+                          setSubIndex(3)
+                          changeNav("myBankAssetPrice")
+                        }
+                        }>
+                          <Text
+                            fontSize={24}
+                            fontColor={subIndex === 3 ? "#fff" : isDark ? "#fff" : "#000"}
+                          >
+                            Asset Price
+                          </Text>
+                        </SubItemButton>
+                        :
+                        <SubItemButton onClick={() => setSubIndex(3)}>
+                          <Text
+                            fontSize={24}
+                            fontColor={subIndex === 3 ? "#ffffff4f" : isDark ? "#fff" : "#000"}
+                          >
+                            Asset Price
+                          </Text>
+                        </SubItemButton>
+                      }
+                    </Column>
+                  )
                 }
               </Column>
             </RowFixed>

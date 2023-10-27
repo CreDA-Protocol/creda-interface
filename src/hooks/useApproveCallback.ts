@@ -1,9 +1,5 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { TransactionResponse } from '@ethersproject/providers'
 import { useCallback, useMemo } from 'react'
-import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
-import { calculateGasMargin } from '../utils'
-import { useTokenContract } from './useContract'
+import { useTransactionAdder } from '../state/transactions/hooks'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -17,10 +13,10 @@ export function useApproveCallback(
   amountToApprove?: any,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
- 
+
   const approvalState: ApprovalState = useMemo(() => {
     return ApprovalState.APPROVED
-  }, [amountToApprove, spender])
+  }, [])
 
   const addTransaction = useTransactionAdder()
 
@@ -35,7 +31,7 @@ export function useApproveCallback(
       return
     }
 
-  }, [approvalState, amountToApprove, spender, addTransaction])
+  }, [amountToApprove, spender])
 
   return [approvalState, approve]
 }

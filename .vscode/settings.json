@@ -1,0 +1,9 @@
+{
+  "explorer.autoRevealExclude": {
+    "**/node_modules": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.addMissingImports": true
+  }
+}
