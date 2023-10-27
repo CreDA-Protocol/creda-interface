@@ -1,3 +1,4 @@
+import { GlidePrice } from "@services/glidefinance.service";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
@@ -9,23 +10,16 @@ import ImageToken from "../assets/tokens/ImageToken";
 import USDTIcon from '../assets/tokens/Tether (USDT).png';
 import USDCIcon from '../assets/tokens/USD Coin (USDC).png';
 import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png';
-import { GlidePrice } from "../model/wallet";
 import { TransactionDetails } from "../state/transactions/reducer";
 
-import qERC20_ABI from '@abi/qERC20.json';
 import ERC20_ABI from "@abi/ERC20.json";
+import qERC20_ABI from '@abi/qERC20.json';
 
-import Comptroller_ABI from "@abi/Comptroller.json";
 import CompoundLens_ABI from "@abi/CompoundLens.json";
+import Comptroller_ABI from "@abi/Comptroller.json";
 import PriceOracle_ABI from "@abi/PriceOracle.json";
 
-export {
-  qERC20_ABI,
-  ERC20_ABI,
-  Comptroller_ABI,
-  CompoundLens_ABI,
-  PriceOracle_ABI
-};
+export { CompoundLens_ABI, Comptroller_ABI, ERC20_ABI, PriceOracle_ABI, qERC20_ABI };
 
 export const ethereum = (window as any).ethereum;
 
@@ -1776,7 +1770,6 @@ export function getPriceByApi(symbol: string): Promise<number> {
         resolve(0)
       })
   })
-
 }
 
 export function getPriceESC(symbol: any): Promise<GlidePrice[]> {

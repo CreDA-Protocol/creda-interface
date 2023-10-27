@@ -1,8 +1,14 @@
 // import styled from 'styled-components'
 // import ImageCommon from '../../assets/common/ImageCommon'
-import AppBody, {MainFullBody} from '../AppBody'
-import {useTranslation} from "react-i18next";
-import React, {useCallback, useContext} from "react";
+import { TransactionResponse } from "@ethersproject/providers";
+import { BigNumber } from "ethers";
+import React, { useCallback, useContext } from "react";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import styled, { css } from "styled-components";
+import ImageCommon from "../../assets/common/ImageCommon";
+import ImageToken from "../../assets/tokens/ImageToken";
+import { ApprovalState, ChainId, GasInfo, balanceToBigNumber, colors, formatBalance } from "../../common/Common";
 import {
     CustomIcon,
     FlexView,
@@ -13,61 +19,54 @@ import {
     MobileView,
     WinView
 } from "../../components/Common";
-import styled, {css} from "styled-components";
-import ImageToken from "../../assets/tokens/ImageToken";
-import ImageCommon from "../../assets/common/ImageCommon";
-import {ApprovalState, balanceToBigNumber, ChainId, colors, formatBalance, GasInfo} from "../../common/Common";
-import arbitrum from "../../assets/common/arbitrum.svg";
-import {useApprove, useCredaInfo, useWrapAmount} from '../../contract';
+import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { useApprove, useCredaInfo, useWrapAmount } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {useContract} from "../../hooks/useContract";
-import {useTransactionAdder} from "../../state/transactions/hooks";
-import {useAddToast} from "../../state/toast";
-import {TransactionResponse} from "@ethersproject/providers";
-import {BigNumber} from "ethers";
-import {useTheme} from "../../state/application/hooks";
-import {LoadingType, useLoadingContext} from "../../provider/loadingProvider";
-import {isMobile} from "react-device-detect";
+import { useContract } from "../../hooks/useContract";
+import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
+import { useTheme } from "../../state/application/hooks";
+import { useAddToast } from "../../state/toast";
+import { useTransactionAdder } from "../../state/transactions/hooks";
+import AppBody, { MainFullBody } from '../AppBody';
 
 function Bridge(props: any) {
     const isDark = useTheme()
-  return (
-    <MainFullBody history={props.history}>
-      <AppBody history={props.history}>
-          <FlexViewCenterColumn>
-              <BridgeContent
-                  isDark={isDark}
-              ></BridgeContent>
-          </FlexViewCenterColumn>
+    return (
+        <MainFullBody history={props.history}>
+            <AppBody history={props.history}>
+                <FlexViewCenterColumn>
+                    <BridgeContent
+                        isDark={isDark}
+                    ></BridgeContent>
+                </FlexViewCenterColumn>
 
-      </AppBody>
-    </MainFullBody>
-  )
+            </AppBody>
+        </MainFullBody>
+    )
 }
 export default Bridge;
-const BridgeContent = React.memo(({isDark}:any) => {
-    const {t} = useTranslation();
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+const BridgeContent = React.memo(({ isDark }: any) => {
+    const { t } = useTranslation();
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const network = ChainId[chainId];
     const credaInfo = useCredaInfo()
 
     const [val, setVal] = React.useState('')
     const coinList: any[] = [
-        {symbol:"CREDA",title:"CREDA"}
+        { symbol: "CREDA", title: "CREDA" }
     ];
     const arb = {
-        symbol:"arbitrum",
-        title:"Arbitrum"
+        symbol: "arbitrum",
+        title: "Arbitrum"
     }
     const esc = {
-        symbol:"ela",
-        title:"ESC"
+        symbol: "ela",
+        title: "ESC"
     }
     let fromInfo = arb
     let toInfo = esc
-    if(chainId===ChainId.esc){
+    if (chainId === ChainId.esc) {
         fromInfo = esc
         toInfo = arb
     }
@@ -96,32 +95,32 @@ const BridgeContent = React.memo(({isDark}:any) => {
     const addTransaction = useTransactionAdder();
     const addToast = useAddToast();
     const wrapInfo = useWrapAmount()
-    const {show} = useLoadingContext()
-    const wrapChainId = chainId===ChainId.esc?0:1
+    const { show } = useLoadingContext()
+    const wrapChainId = chainId === ChainId.esc ? 0 : 1
     function onWrap() {
-        if(!RouterContract ||!val) return
+        if (!RouterContract || !val) return
         show(LoadingType.confirm, "WRAP & BRIDGE")
-        RouterContract.bridge(balanceToBigNumber(val),BigNumber.from(wrapChainId),GasInfo)
+        RouterContract.bridge(balanceToBigNumber(val), BigNumber.from(wrapChainId), GasInfo)
             .then(async (response: TransactionResponse) => {
                 show(LoadingType.pending, response.hash)
                 await response.wait();
                 show(LoadingType.success, response.hash)
             })
             .catch((err: any) => {
-              show(LoadingType.error, err.reason || err.message)
+                show(LoadingType.error, err.reason || err.message)
             });
     }
     function onReceive() {
-        if(!RouterContract ||!wrapInfo.data) return
+        if (!RouterContract || !wrapInfo.data) return
         show(LoadingType.confirm, "UNWRAP")
-        RouterContract.wrap(BigNumber.from(wrapChainId),GasInfo)
+        RouterContract.wrap(BigNumber.from(wrapChainId), GasInfo)
             .then(async (response: TransactionResponse) => {
                 show(LoadingType.pending, response.hash)
                 await response.wait();
                 show(LoadingType.success, response.hash)
             })
             .catch((err: any) => {
-              show(LoadingType.error, err.reason || err.message)
+                show(LoadingType.error, err.reason || err.message)
             });
     }
     return (
@@ -153,7 +152,7 @@ const BridgeContent = React.memo(({isDark}:any) => {
                 }}
             ></SelectCoin>
             <PlaceholderView
-                height={isMobile?"10px":"20px"}
+                height={isMobile ? "10px" : "20px"}
             ></PlaceholderView>
 
             <TitleH4
@@ -181,7 +180,7 @@ const BridgeContent = React.memo(({isDark}:any) => {
                 >MAX</MaxBtn>
             </InputView>
             <PlaceholderView
-                height={isMobile?"10px":"20px"}
+                height={isMobile ? "10px" : "20px"}
             ></PlaceholderView>
             <FlexView>
                 <TitleH4
@@ -196,7 +195,7 @@ const BridgeContent = React.memo(({isDark}:any) => {
                 ></CustomIcon>
             </FlexView>
             <PlaceholderView
-                height={isMobile?"10px":"20px"}
+                height={isMobile ? "10px" : "20px"}
             ></PlaceholderView>
             <ChainWrapView>
                 <ChainWrap>
@@ -254,7 +253,7 @@ const BridgeContent = React.memo(({isDark}:any) => {
             </ChainWrapView>
 
             <PlaceholderView
-                height={isMobile?"10px":"20px"}
+                height={isMobile ? "10px" : "20px"}
             ></PlaceholderView>
             {/*<FlexView>*/}
             {/*    <TitleH4*/}
@@ -292,26 +291,26 @@ const BridgeContent = React.memo(({isDark}:any) => {
                     mSize={20}
                 ></CustomIcon>
                 <Input
-                    value={`${formatBalance(val) + ' WCREDA'} on ${chainId===ChainId.esc?"ARB":"ESC"}`}
+                    value={`${formatBalance(val) + ' WCREDA'} on ${chainId === ChainId.esc ? "ARB" : "ESC"}`}
                     disabled={true}
                 ></Input>
             </InputView>
-            {approval!==ApprovalState.APPROVED?<MainButton
-                marginTop={isMobile?"10px":"30px"}
+            {approval !== ApprovalState.APPROVED ? <MainButton
+                marginTop={isMobile ? "10px" : "30px"}
                 onClick={approveCallback}
-            >APPROVE WRAP & BRIDGE</MainButton>:<MainButton
-                marginTop={isMobile?"10px":"30px"}
+            >APPROVE WRAP & BRIDGE</MainButton> : <MainButton
+                marginTop={isMobile ? "10px" : "30px"}
                 disabled={val == '' || Number(val) < 2}
                 onClick={onWrap}
             >WRAP & BRIDGE</MainButton>}
             <PlaceholderView
-                height={isMobile?"10px":"20px"}
+                height={isMobile ? "10px" : "20px"}
             ></PlaceholderView>
             <FlexView>
                 <TitleH4
                     isDark={isDark}
                 >
-                    WCREDA on {chainId===ChainId.esc?"ESC":"ARB"}：{formatBalance(wrapInfo.data)}&nbsp;
+                    WCREDA on {chainId === ChainId.esc ? "ESC" : "ARB"}：{formatBalance(wrapInfo.data)}&nbsp;
                 </TitleH4>
                 <CustomIcon
                     src={ImageToken.CREDA}
@@ -319,12 +318,12 @@ const BridgeContent = React.memo(({isDark}:any) => {
                     mSize={15}
                 ></CustomIcon>
             </FlexView>
-            {approvalWCREDA!==ApprovalState.APPROVED?<MainButton
-                marginTop={isMobile?"10px":"30px"}
+            {approvalWCREDA !== ApprovalState.APPROVED ? <MainButton
+                marginTop={isMobile ? "10px" : "30px"}
                 onClick={approveWCREDACallback}
-            >APPROVE UNWRAP</MainButton>:<MainButton
-                marginTop={isMobile?"10px":"30px"}
-                disabled={wrapInfo.data<=0}
+            >APPROVE UNWRAP</MainButton> : <MainButton
+                marginTop={isMobile ? "10px" : "30px"}
+                disabled={wrapInfo.data <= 0}
                 onClick={onReceive}
             >UNWRAP</MainButton>}
         </HoleContent>
@@ -339,12 +338,12 @@ type select_coin = {
     coins: coin,
     onSelect?: any,
     select: coin_info,
-    isDark:boolean
+    isDark: boolean
 }
 const SelectCoin = React.memo(({
-                                   coins, onSelect = () => {
-    },isDark
-                               }: select_coin) => {
+    coins, onSelect = () => {
+    }, isDark
+}: select_coin) => {
     const [dropShow, setDropShow] = React.useState(false);
     const [currentIndex, setCurrentIndex] = React.useState(0);
     return (
@@ -407,9 +406,9 @@ const SelectCoin = React.memo(({
     )
 })
 const SelectChain = React.memo(({
-                                    coins, onSelect = () => {
-    },isDark
-                                }: select_coin) => {
+    coins, onSelect = () => {
+    }, isDark
+}: select_coin) => {
     const [dropShow, setDropShow] = React.useState(false);
     return (
         <ChainView
@@ -470,7 +469,7 @@ const SelectChain = React.memo(({
     )
 })
 interface ITheme {
-    isDark:boolean;
+    isDark: boolean;
 }
 type placeholder_view = {
     height: string;
@@ -498,7 +497,7 @@ const HoleContent = styled.div<ITheme>`
     padding-left:70px;
     padding-right:70px;
     position:relative;
-  ${props=>props.isDark && css`
+  ${props => props.isDark && css`
     
     background: ${colors.dark_background};
   `}
@@ -523,11 +522,11 @@ const TabTitleActive = styled(TabTitle)`
     cursor:pointer;
 `
 
-const TitleH4 = styled(FlexView)<ITheme>`
+const TitleH4 = styled(FlexView) <ITheme>`
     font-size: 18px;
     font-weight: 400;
     color: ${colors.black};
-  ${props=>props.isDark && css`
+  ${props => props.isDark && css`
     color: ${colors.white};
   `}
      @media (max-width: 768px) {
@@ -538,7 +537,7 @@ const TitleWhite = styled.div<ITheme>`
     font-size: 16px;
     font-weight: 800;
     color: ${colors.black_7};
-  ${props=>props.isDark && css`
+  ${props => props.isDark && css`
     color: ${colors.white};
   `};
   @media (max-width: 768px){
@@ -554,7 +553,7 @@ const TitleH3 = styled.div`
         font-size: 14px;
     };
 `
-const InputView = styled(FlexViewBetween)<ITheme>`
+const InputView = styled(FlexViewBetween) <ITheme>`
     height: 60px;
   background: #eeeeee;
     border-radius: 10px;
@@ -563,7 +562,7 @@ const InputView = styled(FlexViewBetween)<ITheme>`
     width:100%;
     position:relative;
     cursor:pointer;
-  ${props=>props.isDark && css`
+  ${props => props.isDark && css`
     background: ${colors.white};
   `};
     @media (max-width: 768px) {
@@ -729,7 +728,7 @@ type main_button = {
     marginTop?: string,
     disabled?: boolean,
 }
-export const MainButton = styled(FlexViewCenter)<main_button>`
+export const MainButton = styled(FlexViewCenter) <main_button>`
     height: 60px;
     background: ${props => props.disabled ? colors.disabled : colors.main};
     border-radius: 10px;

@@ -1,46 +1,38 @@
-import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
-import AppBody, { MainFullBody } from '../AppBody'
-import Row, { RowBetween, RowCenter, GradientButton, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '../../components/Row'
-import Column, { ColumnCenter, ColumnFixed } from '../../components/Column'
-import { isMobile } from 'react-device-detect';
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import ImageToken from '../../assets/tokens/ImageToken';
-import {
-  bigNumberToBalance,
-  ChainId,
-  MyBankAssetFarmingIcon,
-  mathPriceTo4,
-  balanceToBigNumber,
-} from "../../common/Common";
-import ERC20_ABI from "@abi/ERC20.json";
-import { useTheme } from '../../state/application/hooks'
-import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
-import { BankTopInfo } from './index'
-import { CardPairCustom, CardPair, LoadingRow } from '../../components/Common'
-import { Download } from 'react-feather'
-import { message, Tooltip, Skeleton } from 'antd';
-import EarnFarmModal from './EarnFarmModal'
-import ContractConfig from "../../contract/ContractConfig";
-import {
-  useApprove,
-  usePositionInfo,
-  useIconPrice
-} from "../../contract";
-import {
-  ApprovalState,
-  walletInfo,
-  mathPriceTo8
-} from "../../common/Common";
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
-import { ButtonClick } from '../../components/Button'
-import { useContract, getContract } from "../../hooks/useContract";
-import { LoadingContext, LoadingType } from "../../provider/loadingProvider";
-import { ethers } from 'ethers'
+import ERC20_ABI from "@abi/ERC20.json"
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
+import { Tooltip } from 'antd'
+import { ethers } from 'ethers'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { isMobile } from 'react-device-detect'
+import styled from 'styled-components'
+import ImageCommon from '../../assets/common/ImageCommon'
+import {
+  ChainId,
+  MyBankAssetFarmingIcon,
+  balanceToBigNumber,
+  bigNumberToBalance,
+  mathPriceTo8,
+  walletInfo
+} from "../../common/Common"
+import Column from '../../components/Column'
+import { CardPair, CardPairCustom, LoadingRow } from '../../components/Common'
+import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '../../components/Row'
+import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
+import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import {
+  useIconPrice,
+  usePositionInfo
+} from "../../contract"
+import ContractConfig from "../../contract/ContractConfig"
+import { getContract, useContract } from "../../hooks/useContract"
+import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
+import { useTheme } from '../../state/application/hooks'
+import AppBody, { MainFullBody } from '../AppBody'
 import AddPositionModal from './AddPositionModal'
+import EarnFarmModal from './EarnFarmModal'
 import RemovePositionModal from './RemovePositionModal'
+import { BankTopInfo } from './index'
 
 
 const Body = styled(Column)`

@@ -16,7 +16,8 @@ export default function useIsWindowVisible(): boolean {
   }, [setFocused])
 
   useEffect(() => {
-    if (!VISIBILITY_STATE_SUPPORTED) return undefined
+    if (!VISIBILITY_STATE_SUPPORTED)
+      return undefined;
 
     document.addEventListener('visibilitychange', listener)
     return () => {

@@ -15,17 +15,6 @@ export type WalletList = {
   tokens: WalletToken[];
 }
 
-export type GlidePrice = {
-  derivedELA: string;
-  derivedUSD: string;
-  id: string;  // token contract address
-  name: string;
-  symbol: string;
-  totalLiquidity: string;
-  totalTransactions: string;
-  tradeVolumeUSD: string;
-}
-
 export enum TokenType {
   ELA = "ELA",
   ERC_20 = "ERC-20",

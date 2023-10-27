@@ -27,6 +27,9 @@
       "@assets/*": [
         "./src/assets/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
       "@hooks/*": [
         "./src/hooks/*"
       ],

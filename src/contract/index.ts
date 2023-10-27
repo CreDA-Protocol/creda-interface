@@ -28,15 +28,15 @@ import { useTransactionAdder } from "../state/transactions/hooks"
 import ContractConfig, { BankConfig, EarnConfig } from './ContractConfig'
 
 import ERC20_ABI from '@abi/ERC20.json'
-import { Celo_fetchTokenBalances } from '@common/celo.helper'
 import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
-import { Covalent_enableNetwork, Covalent_fetchTokenBalances } from '../common/covalent.helper'
-import { Esc_fetchTokenBalances } from '../common/esc.helper'
+import { celoFetchTokenBalances } from 'src/services/chains/celo.service'
 import { WalletList, WalletToken } from '../model/wallet'
 import { ChainType2Id, ProjectConfig } from "../pages/Profile"
-import { LoadingContext, LoadingType } from "../provider/loadingProvider"
+import { LoadingContext, LoadingType } from "../provider/LoadingProvider"
+import { elastosESCFetchTokenBalances } from '../services/chains/elastos-esc.service'
+import { Covalent_enableNetwork, covalentFetchTokenBalances } from '../services/covalent.service'
 
 /**
  * 获取是否授权过获取信用分数
@@ -375,6 +375,7 @@ export function useMarketsResult() {
     let markets: any = Object.values(BankConfig);
     let contractCallContext: ContractCallContext[] = []
     const contractCallResult: any = {}
+
     for (let item of markets) {
         const itemInfo = item[network];
         if (!itemInfo) {
@@ -475,7 +476,8 @@ export function useMarketsResult() {
         getResult()
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, chainId, contractCallContext, contractCallResult, network])
+    }, [account, chainId, contractCallContext, contractCallResult, network]);
+
     return info;
 }
 
@@ -618,8 +620,9 @@ export function useEarnResult() {
     const network = ChainId[chainId];
     const [info, setInfo] = useState({});
     let markets: any = Object.values(EarnConfig);
-    let contractCallContext: ContractCallContext[] = []
-    const contractCallResult: any = {}
+    let contractCallContext: ContractCallContext[] = [];
+    const contractCallResult: any = {};
+
     for (let item of markets) {
         const itemInfo = item[network];
         if (!itemInfo) {
@@ -1150,7 +1153,7 @@ export function useSwapPrice(amount: number, tokens: string[]) {
 
         const interval = setInterval(getResult, config.refreshInterval);
         return () => clearInterval(interval);
-    }, [account, routerContract, amount, tokens])
+    }, [account, routerContract, amount, tokens, path])
     return info;
 }
 
@@ -1681,15 +1684,15 @@ export function useBoxWalletList(chainType: string): any {
                 switch (networkChainId) {
                     case ChainId.celo:
                     case ChainId.celotest:
-                        data = await Celo_fetchTokenBalances(account, networkChainId)
+                        data = await celoFetchTokenBalances(account, networkChainId)
                         break;
                     case ChainId.esc:
                     case ChainId.elatest:
-                        data = await Esc_fetchTokenBalances(account, networkChainId)
+                        data = await elastosESCFetchTokenBalances(account, networkChainId)
                         break;
                     default:
                         if (Covalent_enableNetwork(networkChainId)) {
-                            data = await Covalent_fetchTokenBalances(account, networkChainId)
+                            data = await covalentFetchTokenBalances(account, networkChainId)
                         } else {
                             support = false;
                         }
@@ -1709,7 +1712,7 @@ export function useBoxWalletList(chainType: string): any {
         getResult()
         // const interval = setInterval(getResult, config.refreshInterval);
         // return () => clearInterval(interval);
-    }, [account, chainType])
+    }, [account, chainType, initialState])
     return info;
 }
 
@@ -1847,7 +1850,7 @@ export function useBoxProjectAll(chainType: string, projectNames: string[]): any
         getResult()
         // const interval = setInterval(getResult, config.refreshInterval);
         // return () => clearInterval(interval);
-    }, [account, chainType, projectNames.join(",")])
+    }, [account, chainType, projectNames.join(","), initialState])
     return info;
 }
 
@@ -2419,7 +2422,7 @@ export function useIconPrice(icon: string): any {
             try {
                 const info: any = await fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD`).then((response) => response.json())
                 if (info.DISPLAY[icon]) {
-                    let temp = info.DISPLAY[icon]['USD'].PRICE.split(' ')[1].replace(/\,/g, '')
+                    let temp = info.DISPLAY[icon]['USD'].PRICE.split(' ')[1].replace(/,/g, '')
                     setPrice(Number(temp))
                 } else {
                     setPrice(0)
