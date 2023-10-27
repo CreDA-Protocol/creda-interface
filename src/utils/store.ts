@@ -1,6 +1,6 @@
 import store from 'store'
 
-export default {
+const storeHelper = {
   get(key: string) {
     return store.get(key)
   },
@@ -15,6 +15,7 @@ export default {
   },
   clear() {
     const whitelist = ['']
-    store.each((value:any, key:any) => !whitelist.includes(key) && store.remove(key))
+    store.each((value: any, key: any) => !whitelist.includes(key) && store.remove(key))
   }
 }
+export default storeHelper;

@@ -1,15 +1,15 @@
-import { createReducer, nanoid } from '@reduxjs/toolkit'
+import { createReducer, nanoid } from '@reduxjs/toolkit';
 import {
-    addPopup,
-    PopupContent,
-    removePopup,
-    updateBlockNumber,
-    ApplicationModal,
-    setOpenModal,
-    updateOutScale,
-    setOpenWarnning,
-    changeThemeToDark
-} from './actions'
+  ApplicationModal,
+  PopupContent,
+  addPopup,
+  changeThemeToDark,
+  removePopup,
+  setOpenModal,
+  setOpenWarnning,
+  updateBlockNumber,
+  updateOutScale
+} from './actions';
 
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent; removeAfterMs: number | null }>
 
@@ -17,7 +17,7 @@ export interface ApplicationState {
   readonly blockNumber: { readonly [chainId: number]: number }
   readonly popupList: PopupList
   readonly openModal: ApplicationModal | null
-  readonly outScale:number
+  readonly outScale: number
   readonly openWarnning: boolean | null
   readonly themeDark: boolean | null
 
@@ -27,16 +27,16 @@ const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
   openModal: null,
-  outScale:0.001,
-  openWarnning:false,
-  themeDark:false
+  outScale: 0.001,
+  openWarnning: false,
+  themeDark: false
 }
 
 export default createReducer(initialState, builder =>
   builder
-      .addCase(updateOutScale, (state, action) => {
-          state.outScale = action.payload.outScale
-      })
+    .addCase(updateOutScale, (state, action) => {
+      state.outScale = action.payload.outScale
+    })
     .addCase(updateBlockNumber, (state, action) => {
       const { chainId, blockNumber } = action.payload
       if (typeof state.blockNumber[chainId] !== 'number') {

@@ -1,37 +1,38 @@
-import styled,{ThemeContext} from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import Row, {
-    RowCenter,
-    RowEnd,
-    RowFixed,
-    SpaceHeight,
-    SpaceWidth,
-    Text,
-    RowBetween,
-    CustomGrid,
-    ContentHeading, TheGradientOne, ContentParagraph, TheGradientTwo, FontPoppins, WrapMaxWidth, GradientButton
+  RowCenter,
+  RowEnd,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  Text,
+  RowBetween,
+  CustomGrid,
+  ContentHeading, TheGradientOne, ContentParagraph, TheGradientTwo, FontPoppins, WrapMaxWidth, GradientButton
 } from '../../components/Row'
 import Column, { ColumnCenter } from '../../components/Column'
-import AppBody,{MainFullBody} from '../AppBody'
+import AppBody, { MainFullBody } from '../AppBody'
 import { useTranslation } from 'react-i18next'
 import { Carousel } from 'antd';
-import {useEffect, useRef} from 'react'
+import { useEffect, useRef } from 'react'
 import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
-import {useOpenWarnning,useTheme} from "../../state/application/hooks";
-import { ThemeText, ThemeTextEqure} from '../../components/ThemeComponent'
-import {BgImages} from "../../assets/bgImages/bgImages";
-import {Lottie} from "@crello/react-lottie";
-import anim1 from '../../lottie/CreDa_website_animation1.json'
-import mobile_anim2 from '../../lottie/CreDa_website_animation2_resizeForMobile.json'
-import anim2 from '../../lottie/CreDa_website_animation2-wallets.json'
-import anim3 from '../../lottie/CreDa_website_animation3-hand.json'
-import mobile_anim3 from '../../lottie/CreDa_website_animation3_mobileview.json'
-import {WalletAddressContext} from "../../context";
-import {formatAccount} from "../../common/Common";
-import anim4 from '../../lottie/CreDa_website_animation4.json'
-import mobile_anim4 from '../../lottie/CreDa_website_animation4_mobileview.json'
-import {Base} from "../../components/Button";
+import { useOpenWarnning, useTheme } from "../../state/application/hooks";
+import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
+import { BgImages } from "../../assets/bgImages/bgImages";
+import { Lottie } from "@crello/react-lottie";
+import anim1 from '@assets/lottie/CreDa_website_animation1.json'
+import mobile_anim2 from '@assets/lottie/CreDa_website_animation2_resizeForMobile.json'
+import anim2 from '@assets/lottie/CreDa_website_animation2-wallets.json'
+import anim3 from '@assets/lottie/CreDa_website_animation3-hand.json'
+import mobile_anim3 from '@assets/lottie/CreDa_website_animation3_mobileview.json'
+import { WalletAddressContext } from "../../context";
+import { formatAccount } from "../../common/Common";
+import anim4 from '@assets/lottie/CreDa_website_animation4.json'
+import mobile_anim4 from '@assets/lottie/CreDa_website_animation4_mobileview.json'
+import { Base } from "../../components/Button";
+
 export const ButtonClick = styled(Base)`
   padding: 0;
   width: fit-content;
@@ -52,8 +53,8 @@ export const ButtonClick = styled(Base)`
   };
   background-color:transparent;
   flex-direction: row;
-  pointer-events:${props=>props.disabled?"none":"auto"};
-  opacity:${props=>props.disabled?0.5:1};
+  pointer-events:${props => props.disabled ? "none" : "auto"};
+  opacity:${props => props.disabled ? 0.5 : 1};
 `
 const TopImage = styled.img`
   height:1250px;
@@ -195,7 +196,7 @@ const CarouselBodyPhone = styled(ColumnCenter)`
   }
 `
 const Parenter = styled(ColumnCenter)`
-  background-image:${()=>isMobile ? null : `url(${ImageCommon.parenterBgImg})`};
+  background-image:${() => isMobile ? null : `url(${ImageCommon.parenterBgImg})`};
   background-position:center;
   background-size:895px 400px;
   background-repeat: no-repeat;
@@ -319,11 +320,11 @@ const PhoneTopCardTras2_Item = styled(Column)`
 `
 
 const ContentBox = styled.div<{
-  themeDark?:boolean|null
+  themeDark?: boolean | null
 }>`
   position: relative;
   z-index: 1;
-  background: ${({themeDark}) => `${themeDark?'#000000':'#FFFFFF'}` };
+  background: ${({ themeDark }) => `${themeDark ? '#000000' : '#FFFFFF'}`};
   padding: 36px 36px;
   max-width: 730px;
   margin-left: auto;
@@ -344,15 +345,15 @@ const ContentBox = styled.div<{
     padding: 20px;
     margin-right: -16px;
     width: 320px;
-    margin-top: ${({themeDark}) => `${themeDark?'108px':'200px'}` };
+    margin-top: ${({ themeDark }) => `${themeDark ? '108px' : '200px'}`};
     //margin-top: 200px;
   }
 `
 
 const ContentBoxFull = styled.div<{
-  themeDark?:boolean|null
+  themeDark?: boolean | null
 }>`
-  background: ${({themeDark}) => `${themeDark?'#000000':'#FFFFFF'}` };
+  background: ${({ themeDark }) => `${themeDark ? '#000000' : '#FFFFFF'}`};
   padding: 55px;
   width: 100%;
   @media (min-width: 768px) and (max-width: 1700px) {
@@ -404,14 +405,14 @@ const GradientBox = styled.div`
 `
 
 const HeroSection = styled.div<{
-  themeDark:boolean|null
+  themeDark: boolean | null
 }>`
   position: relative;
-  background-image: ${({themeDark})=>`${themeDark?'radial-gradient(100% 197.84% at 100% 0%, #4926F6 0%, #300169 46.28%, #000100 100%)':'url('+BgImages.HeroSectionBg+')'}`};
-  // background-image: ${({themeDark})=>`${themeDark?'url('+BgImages.Binary476ImgBg+'),radial-gradient(100% 197.84% at 100% 0%, #4926F6 0%, #300169 46.28%, #000100 100%)':'url('+BgImages.HeroSectionBg+')'}`};
+  background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(100% 197.84% at 100% 0%, #4926F6 0%, #300169 46.28%, #000100 100%)' : 'url(' + BgImages.HeroSectionBg + ')'}`};
+  // background-image: ${({ themeDark }) => `${themeDark ? 'url(' + BgImages.Binary476ImgBg + '),radial-gradient(100% 197.84% at 100% 0%, #4926F6 0%, #300169 46.28%, #000100 100%)' : 'url(' + BgImages.HeroSectionBg + ')'}`};
   background-repeat: no-repeat;
-  background-position: ${({themeDark})=> `${themeDark?'left center':'center'}` };
-  background-size: ${({themeDark})=> `${themeDark?'auto 100%':'cover'}` };
+  background-position: ${({ themeDark }) => `${themeDark ? 'left center' : 'center'}`};
+  background-size: ${({ themeDark }) => `${themeDark ? 'auto 100%' : 'cover'}`};
   transition: .4s;
   .heroSectionWrap {
     margin-top: 100px;
@@ -427,10 +428,10 @@ const HeroSection = styled.div<{
     }
   }
   @media (max-width: 767px){
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'-215px top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'170%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '-215px top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '170%' : 'cover'}`};
     .heroSectionWrap {
-      margin-top: ${({themeDark})=> `${themeDark?'121px':'270px'}`};
+      margin-top: ${({ themeDark }) => `${themeDark ? '121px' : '270px'}`};
       //margin-top: 270px;
       margin-right: -16px;
     }
@@ -442,8 +443,8 @@ const HeroSection = styled.div<{
     }
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    background-position: ${({themeDark})=> `${themeDark?'0px center':'-228px top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'137%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px center' : '-228px top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '137%' : 'cover'}`};
     ${CustomGrid} {
       grid-template-columns: 35% 65%;
       padding-top: 60px;
@@ -453,23 +454,23 @@ const HeroSection = styled.div<{
 `
 
 const SecondSection = styled.div<{
-  themeDark:boolean|null
+  themeDark: boolean | null
 }>`
   position:relative;
-  background-image: ${({themeDark})=>`${themeDark?'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.HandKeyboardBg+')'}`};
-  //background-image: ${({themeDark})=>`${themeDark?'url('+BgImages.FoldersImgBg+'),radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.HandKeyboardBg+')'}`};
+  background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.HandKeyboardBg + ')'}`};
+  //background-image: ${({ themeDark }) => `${themeDark ? 'url(' + BgImages.FoldersImgBg + '),radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.HandKeyboardBg + ')'}`};
   background-repeat: no-repeat;
-  background-position: ${({themeDark})=> `${themeDark?'left center':'center'}` };
-  background-size: ${({themeDark})=> `${themeDark?'auto 100%':'cover'}` };
+  background-position: ${({ themeDark }) => `${themeDark ? 'left center' : 'center'}`};
+  background-size: ${({ themeDark }) => `${themeDark ? 'auto 100%' : 'cover'}`};
   transition: .4s;
   @media (max-width: 767px) {
-    background-image: ${({themeDark})=>`${themeDark?'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.HandKeyboardBgMob+')'}`};
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'0 top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'130%':'cover'}`};
+    background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.HandKeyboardBgMob + ')'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '0 top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '130%' : 'cover'}`};
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'-123px  top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'100%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '-123px  top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '100%' : 'cover'}`};
     ${CustomGrid} {
       grid-template-columns: 35% 65%;
       padding-top: 60px;
@@ -485,22 +486,22 @@ const SecondSection = styled.div<{
 `
 
 const ThirdSection = styled.div<{
-  themeDark:boolean|null
+  themeDark: boolean | null
 }>`
   position:relative;
-  background-image: ${({themeDark})=>`${themeDark?'radial-gradient(109.36% 3021.89% at -5.77% 8.82%, #4825F2 0%, #2F0168 50.19%, #22014D 87.44%, #000100 100%)':'url('+BgImages.MobilesBg+')'}`};
-  // background-image: ${({themeDark})=>`${themeDark?'url('+BgImages.BitCoinsHandBg+'),radial-gradient(109.36% 3021.89% at -5.77% 8.82%, #4825F2 0%, #2F0168 50.19%, #22014D 87.44%, #000100 100%)':'url('+BgImages.MobilesBg+')'}`};
+  background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(109.36% 3021.89% at -5.77% 8.82%, #4825F2 0%, #2F0168 50.19%, #22014D 87.44%, #000100 100%)' : 'url(' + BgImages.MobilesBg + ')'}`};
+  // background-image: ${({ themeDark }) => `${themeDark ? 'url(' + BgImages.BitCoinsHandBg + '),radial-gradient(109.36% 3021.89% at -5.77% 8.82%, #4825F2 0%, #2F0168 50.19%, #22014D 87.44%, #000100 100%)' : 'url(' + BgImages.MobilesBg + ')'}`};
   background-repeat: no-repeat;
-  background-position: ${({themeDark})=> `${themeDark?'left center':'-40px center'}` };
-  background-size: ${({themeDark})=> `${themeDark?'auto 100%':'cover'}` };
+  background-position: ${({ themeDark }) => `${themeDark ? 'left center' : '-40px center'}`};
+  background-size: ${({ themeDark }) => `${themeDark ? 'auto 100%' : 'cover'}`};
   transition: .4s;
   @media (max-width: 767px) {
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'-279px top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'200%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '-279px top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '200%' : 'cover'}`};
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    background-position: ${({themeDark})=> `${themeDark?'0px center':'-279px top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'100%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px center' : '-279px top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '100%' : 'cover'}`};
     ${CustomGrid} {
       grid-template-columns: 35% 65%;
       padding-top: 60px;
@@ -514,29 +515,29 @@ const ThirdSection = styled.div<{
     }
   }
   @media (min-width: 1900px) {
-    background-position: ${({themeDark})=> `${themeDark?'left center':'6px center'}` };
+    background-position: ${({ themeDark }) => `${themeDark ? 'left center' : '6px center'}`};
 
   }
 `
 
 const ForthSection = styled.div<{
-  themeDark:boolean|null
+  themeDark: boolean | null
 }>`
   position:relative;
-  background-image: ${({themeDark})=>`${themeDark?'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.ShopOpenBg+')'}`};
-  // background-image: ${({themeDark})=>`${themeDark?'url('+BgImages.SpreadedDollarBg+'),radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.ShopOpenBg+')'}`};
+  background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.ShopOpenBg + ')'}`};
+  // background-image: ${({ themeDark }) => `${themeDark ? 'url(' + BgImages.SpreadedDollarBg + '),radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.ShopOpenBg + ')'}`};
   background-repeat: no-repeat;
-  background-position: ${({themeDark})=> `${themeDark?'left center':'center'}` };
-  background-size: ${({themeDark})=> `${themeDark?'auto 100%':'cover'}` };
+  background-position: ${({ themeDark }) => `${themeDark ? 'left center' : 'center'}`};
+  background-size: ${({ themeDark }) => `${themeDark ? 'auto 100%' : 'cover'}`};
   transition: .4s;
   @media (max-width: 767px) {
-    background-image: ${({themeDark})=>`${themeDark?'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)':'url('+BgImages.ShopOpenBgMob+')'}`};
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'0 top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'100%':'cover'}`};
+    background-image: ${({ themeDark }) => `${themeDark ? 'radial-gradient(100% 1381.64% at 100% 0%, #4825F2 0%, #2F0168 45.31%, #000100 76.04%)' : 'url(' + BgImages.ShopOpenBgMob + ')'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '0 top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '100%' : 'cover'}`};
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    background-position: ${({themeDark})=> `${themeDark?'0px top':'-224px top'}`}  ;
-    background-size: ${({themeDark})=> `${themeDark?'100%':'cover'}`};
+    background-position: ${({ themeDark }) => `${themeDark ? '0px top' : '-224px top'}`}  ;
+    background-size: ${({ themeDark }) => `${themeDark ? '100%' : 'cover'}`};
     ${CustomGrid} {
       grid-template-columns: 35% 65%;
       padding-top: 60px;
@@ -727,7 +728,7 @@ const SecondSectionAnimBox = styled.div`
   @media (max-width: 767px) {
     /*svg > g > g:first-child > image {
       display: none;
-      
+
     }*/
     svg{
       width:87% !important
@@ -762,7 +763,7 @@ const ThirdSectionAnimBox = styled.div`
   }*/
 `
 
-const IframeWrapper =styled.div`
+const IframeWrapper = styled.div`
 @media (min-width: 768px) and (max-width: 1700px) {
   >iframe{
     width:497px;
@@ -806,184 +807,47 @@ const ForthSectionAnimBox = styled.div`
   }*/
 `
 
-function CenterLine({width}:any){
-  return <RowBetween style={{width: width ? width : 256 - 80 - 54}}>
-    <LineCircle/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineCircle/>
-  </RowBetween>
-}
-function CenterVerLine(){
-  return <ColumnCenter>
-    <LineCircle/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineItem/>
-    <LineCircle/>
-  </ColumnCenter>
-}
-
 function Home(props: any) {
   const hideWarning = useOpenWarnning(false)
 
-  useEffect(()=>{
+  useEffect(() => {
     hideWarning()
-  },[])
+  }, [])
   return <>
     {
-      isMobile ? <PhoneHomePage props={props}/> : <HomePage props={props}/>
+      isMobile ? <PhoneHomePage props={props} /> : <HomePage props={props} />
     }
   </>
 }
 
-const PhoneHomePage=({props}:any)=>{
+const PhoneHomePage = ({ props }: any) => {
   const location = window.location.pathname
-  const carouselRef:any = useRef<undefined>()
-  const themeDark  = useTheme()
-  const {t} = useTranslation()
-  const {account} = useContext(WalletAddressContext);
+  const carouselRef: any = useRef<undefined>()
+  const themeDark = useTheme()
+  const { t } = useTranslation()
+  const { account } = useContext(WalletAddressContext);
   return <MainFullBody history={props.history}>
     <div style={{
       // backgroundColor:'#0D0D11',
-      width:'100%',
-      paddingTop:0,
-      zIndex:50
+      width: '100%',
+      paddingTop: 0,
+      zIndex: 50
     }}>
       <FontPoppins>
-        {location!=='/home2'?
-            <HeroSection themeDark={themeDark}>
-              {
-                themeDark ?
-                    <HeroSectionAnimBox>
-                      <Lottie config={{
-                        loop: true,
-                        autoplay: true,
-                        animationData: anim1,
-                        rendererSettings: {
-                          preserveAspectRatio: 'xMidYMid slice'
-                        }
-                      }}/>
-                    </HeroSectionAnimBox> : ''
-              }
-              <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
-                <div>
-                  {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
-                </div>
-                <div>
-                  <ContentBox className="heroSectionWrap" themeDark={themeDark}>
-                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                      <FontPoppins>
-                        <GradientText>
-                          {
-                            themeDark ? t('TheWorldsFirst') : t('GetYour')
-                          }
-                        </GradientText>
-                      </FontPoppins>
-                    </ThemeText>
-
-                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                      <FontPoppins>
-                        <GradientText>
-                          {
-                            themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
-                          }
-                        </GradientText>
-                      </FontPoppins>
-                    </ThemeText>
-                    {
-                      themeDark ?
-                          <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}><GradientText>{t('System')}</GradientText></ThemeText>
-                          : ''
-                    }
-                    <SpaceHeight height={24} heightApp={15}/>
-                    <div style={{display:'grid', gridTemplateColumns:'50% 50%', alignItems:'center', gap:'5px'}}>
-                      <div>
-                        <ContentParagraph fontSize={22} themeDark={themeDark} style={{marginBottom:'0'}}>
-                            <FontPoppins>
-                              {
-                                themeDark ? t('MintYourCRating') : t('YesYouOne')
-                              }
-                            </FontPoppins>
-                          </ContentParagraph>
-                          {
-                            !themeDark ? <ContentParagraph themeDark={themeDark} style={{marginTop: '-4px', marginBottom:'0'}}>
-                              <FontPoppins>
-                                {t('FindOutWhen')}
-                              </FontPoppins>
-                            </ContentParagraph> : ''
-                          }
-                      </div>
-                      <div>
-                        <GradientButton
-                            onClick={()=>{
-                              props.history.push("/profile")
-                            }}
-                        >
-                          Launch App
-                        </GradientButton>
-                      </div>
-                    </div>
-
-                    {/* <SpaceHeight height={12} heightApp={15}/> */}
-
-                  </ContentBox>
-                </div>
-              </CustomGrid>
-            </HeroSection>
-            :
-              <>
-              <GradFrameEffHome2>
-              <ContentBoxFull themeDark={themeDark} >
-                <WrapMaxWidth>
-                  <RowCenter style={{paddingBottom:'16px'}}>
-                  <iframe width="360" height="192"  src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-                    {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
-                      <PlayButton>
-                        <svg width="127" height="127" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="63.5" cy="63.5" r="63.5" fill="white" fillOpacity="0.36"/>
-                          <path d="M43.4873 35.4472L92.8288 63.9345L43.4873 92.4218L43.4873 35.4472Z" fill="white"/>
-                        </svg>
-                      </PlayButton>
-                    </VideoDemo>*/}
-                  </RowCenter>
-                  <ThemeText style={{fontSize:'22px',marginTop:'10px'}}  fontWeight={'900'}  fontFamily={'Poppins Regular'}>
-                    <GradientText style={{display:'inherit'}}>{t('ConnectWallet')}</GradientText><br/>
-                    <GradientText style={{display:'inherit'}}>{t('MintYourCreditScore')}</GradientText><br/>
-                    <GradientText style={{display:'inherit'}}>{t('OpenDoors')}</GradientText>
-                   </ThemeText>
-                </WrapMaxWidth>
-              </ContentBoxFull>
-            </GradFrameEffHome2>
-            <HeroSection themeDark={themeDark}>
+        {location !== '/home2' ?
+          <HeroSection themeDark={themeDark}>
             {
               themeDark ?
-                  <HeroSectionAnimBox>
-                    <Lottie config={{
-                      loop: true,
-                      autoplay: true,
-                      animationData: anim1,
-                      rendererSettings: {
-                        preserveAspectRatio: 'xMidYMid slice'
-                      }
-                    }}/>
-                  </HeroSectionAnimBox> : ''
+                <HeroSectionAnimBox>
+                  <Lottie config={{
+                    loop: true,
+                    autoplay: true,
+                    animationData: anim1,
+                    rendererSettings: {
+                      preserveAspectRatio: 'xMidYMid slice'
+                    }
+                  }} />
+                </HeroSectionAnimBox> : ''
             }
             <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
               <div>
@@ -991,7 +855,7 @@ const PhoneHomePage=({props}:any)=>{
               </div>
               <div>
                 <ContentBox className="heroSectionWrap" themeDark={themeDark}>
-                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                     <FontPoppins>
                       <GradientText>
                         {
@@ -1001,7 +865,7 @@ const PhoneHomePage=({props}:any)=>{
                     </FontPoppins>
                   </ThemeText>
 
-                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                     <FontPoppins>
                       <GradientText>
                         {
@@ -1012,32 +876,32 @@ const PhoneHomePage=({props}:any)=>{
                   </ThemeText>
                   {
                     themeDark ?
-                        <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}><GradientText>{t('System')}</GradientText></ThemeText>
-                        : ''
+                      <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}><GradientText>{t('System')}</GradientText></ThemeText>
+                      : ''
                   }
-                  <SpaceHeight height={24} heightApp={15}/>
-                  <div style={{display:'grid', gridTemplateColumns:'50% 50%', alignItems:'center', gap:'5px'}}>
+                  <SpaceHeight height={24} heightApp={15} />
+                  <div style={{ display: 'grid', gridTemplateColumns: '50% 50%', alignItems: 'center', gap: '5px' }}>
                     <div>
-                      <ContentParagraph fontSize={22} themeDark={themeDark} style={{marginBottom:'0'}}>
+                      <ContentParagraph fontSize={22} themeDark={themeDark} style={{ marginBottom: '0' }}>
+                        <FontPoppins>
+                          {
+                            themeDark ? t('MintYourCRating') : t('YesYouOne')
+                          }
+                        </FontPoppins>
+                      </ContentParagraph>
+                      {
+                        !themeDark ? <ContentParagraph themeDark={themeDark} style={{ marginTop: '-4px', marginBottom: '0' }}>
                           <FontPoppins>
-                            {
-                              themeDark ? t('MintYourCRating') : t('YesYouOne')
-                            }
+                            {t('FindOutWhen')}
                           </FontPoppins>
-                        </ContentParagraph>
-                        {
-                          !themeDark ? <ContentParagraph themeDark={themeDark} style={{marginTop: '-4px', marginBottom:'0'}}>
-                            <FontPoppins>
-                              {t('FindOutWhen')}
-                            </FontPoppins>
-                          </ContentParagraph> : ''
-                        }
+                        </ContentParagraph> : ''
+                      }
                     </div>
                     <div>
                       <GradientButton
-                          onClick={()=>{
-                            props.history.push("/profile")
-                          }}
+                        onClick={() => {
+                          props.history.push("/profile")
+                        }}
                       >
                         Launch App
                       </GradientButton>
@@ -1050,21 +914,125 @@ const PhoneHomePage=({props}:any)=>{
               </div>
             </CustomGrid>
           </HeroSection>
-        </>
+          :
+          <>
+            <GradFrameEffHome2>
+              <ContentBoxFull themeDark={themeDark} >
+                <WrapMaxWidth>
+                  <RowCenter style={{ paddingBottom: '16px' }}>
+                    <iframe width="360" height="192" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+                    {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
+                      <PlayButton>
+                        <svg width="127" height="127" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="63.5" cy="63.5" r="63.5" fill="white" fillOpacity="0.36"/>
+                          <path d="M43.4873 35.4472L92.8288 63.9345L43.4873 92.4218L43.4873 35.4472Z" fill="white"/>
+                        </svg>
+                      </PlayButton>
+                    </VideoDemo>*/}
+                  </RowCenter>
+                  <ThemeText style={{ fontSize: '22px', marginTop: '10px' }} fontWeight={'900'} fontFamily={'Poppins Regular'}>
+                    <GradientText style={{ display: 'inherit' }}>{t('ConnectWallet')}</GradientText><br />
+                    <GradientText style={{ display: 'inherit' }}>{t('MintYourCreditScore')}</GradientText><br />
+                    <GradientText style={{ display: 'inherit' }}>{t('OpenDoors')}</GradientText>
+                  </ThemeText>
+                </WrapMaxWidth>
+              </ContentBoxFull>
+            </GradFrameEffHome2>
+            <HeroSection themeDark={themeDark}>
+              {
+                themeDark ?
+                  <HeroSectionAnimBox>
+                    <Lottie config={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: anim1,
+                      rendererSettings: {
+                        preserveAspectRatio: 'xMidYMid slice'
+                      }
+                    }} />
+                  </HeroSectionAnimBox> : ''
+              }
+              <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
+                <div>
+                  {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
+                </div>
+                <div>
+                  <ContentBox className="heroSectionWrap" themeDark={themeDark}>
+                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            themeDark ? t('TheWorldsFirst') : t('GetYour')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText>
+
+                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText>
+                    {
+                      themeDark ?
+                        <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}><GradientText>{t('System')}</GradientText></ThemeText>
+                        : ''
+                    }
+                    <SpaceHeight height={24} heightApp={15} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '50% 50%', alignItems: 'center', gap: '5px' }}>
+                      <div>
+                        <ContentParagraph fontSize={22} themeDark={themeDark} style={{ marginBottom: '0' }}>
+                          <FontPoppins>
+                            {
+                              themeDark ? t('MintYourCRating') : t('YesYouOne')
+                            }
+                          </FontPoppins>
+                        </ContentParagraph>
+                        {
+                          !themeDark ? <ContentParagraph themeDark={themeDark} style={{ marginTop: '-4px', marginBottom: '0' }}>
+                            <FontPoppins>
+                              {t('FindOutWhen')}
+                            </FontPoppins>
+                          </ContentParagraph> : ''
+                        }
+                      </div>
+                      <div>
+                        <GradientButton
+                          onClick={() => {
+                            props.history.push("/profile")
+                          }}
+                        >
+                          Launch App
+                        </GradientButton>
+                      </div>
+                    </div>
+
+                    {/* <SpaceHeight height={12} heightApp={15}/> */}
+
+                  </ContentBox>
+                </div>
+              </CustomGrid>
+            </HeroSection>
+          </>
         }
         <SecondSection themeDark={themeDark}>
           {
             themeDark ?
-                <SecondSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: isMobile?mobile_anim2:anim2,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </SecondSectionAnimBox> : ''
+              <SecondSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: isMobile ? mobile_anim2 : anim2,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </SecondSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={144} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
             <div>
@@ -1072,7 +1040,7 @@ const PhoneHomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1081,7 +1049,7 @@ const PhoneHomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1093,7 +1061,7 @@ const PhoneHomePage=({props}:any)=>{
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('BuiltOnEthereumLayer2') : t('CreDAConnects')
@@ -1114,16 +1082,16 @@ const PhoneHomePage=({props}:any)=>{
         <ThirdSection themeDark={themeDark}>
           {
             themeDark ?
-                <ThirdSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: isMobile?mobile_anim3:anim3,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </ThirdSectionAnimBox> : ''
+              <ThirdSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: isMobile ? mobile_anim3 : anim3,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </ThirdSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={144} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
             <div>
@@ -1131,7 +1099,7 @@ const PhoneHomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1140,7 +1108,7 @@ const PhoneHomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1152,7 +1120,7 @@ const PhoneHomePage=({props}:any)=>{
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('TheCreDAOracle') : t('CreDaIsWorking')
@@ -1173,16 +1141,16 @@ const PhoneHomePage=({props}:any)=>{
         <ForthSection themeDark={themeDark}>
           {
             themeDark ?
-                <ForthSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: isMobile?mobile_anim4:anim4,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </ForthSectionAnimBox> : ''
+              <ForthSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: isMobile ? mobile_anim4 : anim4,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </ForthSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={144} mobPaddingTopBottom={50} mobPaddingLeftRight={30}>
             <div>
@@ -1190,7 +1158,7 @@ const PhoneHomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1199,7 +1167,7 @@ const PhoneHomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1210,20 +1178,20 @@ const PhoneHomePage=({props}:any)=>{
                 </ThemeText>
                 {
                   themeDark ?
-                      <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                        <FontPoppins>
-                          <GradientText>
-                            {
-                              t('andUsers')
-                            }
-                          </GradientText>
-                        </FontPoppins>
-                      </ThemeText>:''
+                    <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            t('andUsers')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText> : ''
                 }
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('AfterMintingcNFT') : t('AccessToCredit')
@@ -1242,19 +1210,19 @@ const PhoneHomePage=({props}:any)=>{
           </CustomGrid>
         </ForthSection>
         <GradientWrap>
-          {location!=='/home2'
-          ?
+          {location !== '/home2'
+            ?
             <GradFrameEff>
-            <ContentBoxFull themeDark={themeDark} >
-              <WrapMaxWidth>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('AThankYouToCrypt')} {
-                  themeDark ? t('thatsYou'):''
-                }</GradientText></ThemeText>
+              <ContentBoxFull themeDark={themeDark} >
+                <WrapMaxWidth>
+                  <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('AThankYouToCrypt')} {
+                    themeDark ? t('thatsYou') : ''
+                  }</GradientText></ThemeText>
 
-                <RowCenter style={{margin: '30px 0px 0px 0px'}}>
-                <iframe width="360" height="192"  src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <RowCenter style={{ margin: '30px 0px 0px 0px' }}>
+                    <iframe width="360" height="192" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-                  {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
+                    {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
                     <PlayButton>
                       <svg width="127" height="127" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="63.5" cy="63.5" r="63.5" fill="white" fillOpacity="0.36"/>
@@ -1262,18 +1230,18 @@ const PhoneHomePage=({props}:any)=>{
                       </svg>
                     </PlayButton>
                   </VideoDemo>*/}
-                </RowCenter>
+                  </RowCenter>
 
-              </WrapMaxWidth>
-            </ContentBoxFull>
-          </GradFrameEff>
-          :''}
-          <GradFrameEff style={{ paddingTop: '16px'}}>
+                </WrapMaxWidth>
+              </ContentBoxFull>
+            </GradFrameEff>
+            : ''}
+          <GradFrameEff style={{ paddingTop: '16px' }}>
             <ContentBoxFull themeDark={themeDark} >
               <WrapMaxWidth>
                 <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('HowToGetCryptoCredit')}</GradientText></ThemeText>
                 <StepsSection>
-                  <CustomGrid className="stepsGrid" alignItems={'self-start'} style={{marginTop: '50px', marginBottom: '10px'}} templateColumns={'repeat(4, 1fr)'} columnGap={128}>
+                  <CustomGrid className="stepsGrid" alignItems={'self-start'} style={{ marginTop: '50px', marginBottom: '10px' }} templateColumns={'repeat(4, 1fr)'} columnGap={128}>
                     <StepInner>
                       <RowCenter>
                         <StepsIconImg src={ImageCommon.Step1IconImg} />
@@ -1281,9 +1249,9 @@ const PhoneHomePage=({props}:any)=>{
                       </RowCenter>
                       <div>
                         <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step1')}</ThemeText>
-                        <SpaceHeight heightApp={6} height={24}/>
+                        <SpaceHeight heightApp={6} height={24} />
                         <div>
-                          <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{ themeDark ? t('ConnectYourWallets') : t('ConnectYourWallet')}</ThemeText>
+                          <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{themeDark ? t('ConnectYourWallets') : t('ConnectYourWallet')}</ThemeText>
                         </div>
                         <ThemeText className="stepsContent" fontSize={21}>{t('EssentialsToken')}</ThemeText>
                       </div>
@@ -1296,7 +1264,7 @@ const PhoneHomePage=({props}:any)=>{
                       </RowCenter>
                       <div>
                         <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step2')}</ThemeText>
-                        <SpaceHeight heightApp={6} height={24}/>
+                        <SpaceHeight heightApp={6} height={24} />
                         <div>
                           <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{t('ClaimCredaToken')}</ThemeText>
                         </div>
@@ -1310,9 +1278,9 @@ const PhoneHomePage=({props}:any)=>{
                       </RowCenter>
                       <div>
                         <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step3')}</ThemeText>
-                        <SpaceHeight heightApp={6} height={24}/>
+                        <SpaceHeight heightApp={6} height={24} />
                         <div>
-                          <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{ themeDark ? t('MintcNFT') : t('MintCreditNFT')}</ThemeText>
+                          <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{themeDark ? t('MintcNFT') : t('MintCreditNFT')}</ThemeText>
                         </div>
                         <ThemeText className="stepsContent" fontSize={21}>{t('TheHigherLevel')}</ThemeText>
                       </div>
@@ -1323,7 +1291,7 @@ const PhoneHomePage=({props}:any)=>{
                       </RowCenter>
                       <div>
                         <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step4')}</ThemeText>
-                        <SpaceHeight heightApp={6} height={24}/>
+                        <SpaceHeight heightApp={6} height={24} />
                         <div>
                           <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{t('EnjoyCreditPrivileges')}</ThemeText>
                         </div>
@@ -1332,18 +1300,18 @@ const PhoneHomePage=({props}:any)=>{
                     </StepInner>
                   </CustomGrid>
                 </StepsSection>
-                <SpaceHeight height={30} heightApp={15}/>
+                <SpaceHeight height={30} heightApp={15} />
                 <RowCenter>
                   <div>
                     <ThemeText fontSize={28} fontWeight={800}>{t('LetsGetStarted')}</ThemeText>
                   </div>
                 </RowCenter>
-                <SpaceHeight height={12} heightApp={15}/>
+                <SpaceHeight height={12} heightApp={15} />
                 <RowCenter>
                   <GradientButton
-                      onClick={()=>{
-                        props.history.push("/profile")
-                      }}
+                    onClick={() => {
+                      props.history.push("/profile")
+                    }}
                   >
                     Launch App
                   </GradientButton>
@@ -1351,18 +1319,18 @@ const PhoneHomePage=({props}:any)=>{
               </WrapMaxWidth>
             </ContentBoxFull>
           </GradFrameEff>
-          <GradFrameEff style={{ paddingTop: 0}}>
+          <GradFrameEff style={{ paddingTop: 0 }}>
             <ContentBoxFull themeDark={themeDark}>
               <WrapMaxWidth>
                 <ThreeCardsSection>
                   <CustomGrid templateColumns={'1fr 1fr 1fr'} columnGap={24}>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('Partnerships')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('DeriskingDeFi')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('CreDAReducesExposure')}</Text>
-                        <SpaceHeight height={28} heightApp={15}/>
-                        <RowCenter style={{margin:'0'}}>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('Partnerships')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('DeriskingDeFi')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('CreDAReducesExposure')}</Text>
+                        <SpaceHeight height={28} heightApp={15} />
+                        <RowCenter style={{ margin: '0' }}>
                           <a href="mailto:BD@creda.app">
                             <GradientButton>
                               Become a partner
@@ -1373,18 +1341,18 @@ const PhoneHomePage=({props}:any)=>{
                     </GradientBox>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('Technology')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('WhatBlockchainMeant')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('BuiltEthereumLayer2')}</Text>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('Technology')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('WhatBlockchainMeant')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('BuiltEthereumLayer2')}</Text>
                       </FontPoppins>
                     </GradientBox>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('PrivacySecurity')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('PersonalizedPersonal')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('CreDAAggregates')}</Text>
-                        <SpaceHeight height={28} heightApp={15}/>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'20px 0'}}><Text fontWeight={'800'}>{t('LastAuditBy')}</Text> {t('CertikDaysAgo')}</Text>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('PrivacySecurity')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('PersonalizedPersonal')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('CreDAAggregates')}</Text>
+                        <SpaceHeight height={28} heightApp={15} />
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '20px 0' }}><Text fontWeight={'800'}>{t('LastAuditBy')}</Text> {t('CertikDaysAgo')}</Text>
                       </FontPoppins>
                     </GradientBox>
                   </CustomGrid>
@@ -1399,24 +1367,24 @@ const PhoneHomePage=({props}:any)=>{
   </MainFullBody>
 }
 
-const HomePage=({props}:any)=>{
-  const {t} = useTranslation()
+const HomePage = ({ props }: any) => {
+  const { t } = useTranslation()
   const location = window.location.pathname
-  console.log("lo",location)
-  const themeDark  = useTheme()
-  const {account} = useContext(WalletAddressContext);
+  console.log("lo", location)
+  const themeDark = useTheme()
+  const { account } = useContext(WalletAddressContext);
   return <MainFullBody history={props.history}>
     <div style={{
       // backgroundColor:'#0D0D11',
-      width:'100%',
-      paddingTop:0,
-      zIndex:50
+      width: '100%',
+      paddingTop: 0,
+      zIndex: 50
     }}>
       <FontPoppins>
-        {location!=='/home2'?
-        <HeroSection themeDark={themeDark}>
-          {
-            themeDark ?
+        {location !== '/home2' ?
+          <HeroSection themeDark={themeDark}>
+            {
+              themeDark ?
                 <HeroSectionAnimBox>
                   <Lottie config={{
                     loop: true,
@@ -1425,43 +1393,43 @@ const HomePage=({props}:any)=>{
                     rendererSettings: {
                       preserveAspectRatio: 'xMidYMid slice'
                     }
-                  }}/>
+                  }} />
                 </HeroSectionAnimBox> : ''
-          }
-          <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
-            <div>
-              {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
-            </div>
-            <div>
-              <ContentBox className="heroSectionWrap" themeDark={themeDark}>
-                <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                  <FontPoppins>
-                    <GradientText>
-                      {
-                        themeDark ? t('TheWorldsFirst') : t('GetYour')
-                      }
-                    </GradientText>
-                  </FontPoppins>
-                </ThemeText>
+            }
+            <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
+              <div>
+                {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
+              </div>
+              <div>
+                <ContentBox className="heroSectionWrap" themeDark={themeDark}>
+                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                    <FontPoppins>
+                      <GradientText>
+                        {
+                          themeDark ? t('TheWorldsFirst') : t('GetYour')
+                        }
+                      </GradientText>
+                    </FontPoppins>
+                  </ThemeText>
 
-                <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                  <FontPoppins>
-                    <GradientText>
-                      {
-                        themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
-                      }
-                    </GradientText>
-                  </FontPoppins>
-                </ThemeText>
-                {
-                  themeDark ?
-                      <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}><GradientText>{t('System')}</GradientText></ThemeText>
+                  <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                    <FontPoppins>
+                      <GradientText>
+                        {
+                          themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
+                        }
+                      </GradientText>
+                    </FontPoppins>
+                  </ThemeText>
+                  {
+                    themeDark ?
+                      <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}><GradientText>{t('System')}</GradientText></ThemeText>
                       : ''
-                }
-                <SpaceHeight height={24} heightApp={15}/>
-                <div style={{display:'grid', gridTemplateColumns: themeDark ? '65% 35%' : '38% 62%', alignItems: themeDark ? 'center' : 'end', gap:'10px'}}>
-                  <div>
-                    <ContentParagraph fontSize={22} themeDark={themeDark} style={{marginBottom: themeDark ? '0' : '15px'}}>
+                  }
+                  <SpaceHeight height={24} heightApp={15} />
+                  <div style={{ display: 'grid', gridTemplateColumns: themeDark ? '65% 35%' : '38% 62%', alignItems: themeDark ? 'center' : 'end', gap: '10px' }}>
+                    <div>
+                      <ContentParagraph fontSize={22} themeDark={themeDark} style={{ marginBottom: themeDark ? '0' : '15px' }}>
                         <FontPoppins>
                           {
                             themeDark ? t('MintYourCRating') : t('YesYouOne')
@@ -1470,54 +1438,54 @@ const HomePage=({props}:any)=>{
                       </ContentParagraph>
                       {
                         !themeDark ? (
-                          <ContentParagraph themeDark={themeDark} style={{marginTop: '-4px', marginBottom:'0'}}>
+                          <ContentParagraph themeDark={themeDark} style={{ marginTop: '-4px', marginBottom: '0' }}>
                             <FontPoppins>
                               {t('FindOutWhen')}
                             </FontPoppins>
                           </ContentParagraph>
                         ) : ''
                       }
-                  </div>
-                  <div>
-                    <GradientButton
-                        onClick={()=>{
+                    </div>
+                    <div>
+                      <GradientButton
+                        onClick={() => {
                           props.history.push("/profile")
                         }}
-                    >
-                      Launch App
-                    </GradientButton>
+                      >
+                        Launch App
+                      </GradientButton>
+                    </div>
                   </div>
-                </div>
-              </ContentBox>
-            </div>
-          </CustomGrid>
-        </HeroSection>
-        :
-        <>
-        <GradFrameEffHome2>
-            <ContentBoxFull themeDark={themeDark} >
-              <WrapMaxWidth>
-                {/* <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}>
+                </ContentBox>
+              </div>
+            </CustomGrid>
+          </HeroSection>
+          :
+          <>
+            <GradFrameEffHome2>
+              <ContentBoxFull themeDark={themeDark} >
+                <WrapMaxWidth>
+                  {/* <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}>
                   <GradientText>{t('AThankYouToCrypt')}{
                   themeDark ? t('thatsYou') : ''
                 }</GradientText>
                 </ThemeText> */}
 
-                <RowCenterWrapper
-                >
+                  <RowCenterWrapper
+                  >
 
-                {/* <iframe width="700" height="393" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
-                 <IframeWrapper>
-                 <iframe  src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                 </IframeWrapper>
-                 <IframeWrapper style={{marginLeft:'60px'}}>
-                   <ThemeText  fontSize={45} fontWeight={'900'} style={{lineHeight:'1.7'}} fontFamily={'Poppins Regular'}>
-                    <GradientText>{t('ConnectWallet')}</GradientText><br/>
-                    <GradientText>{t('MintYourCreditScore')}</GradientText><br/>
-                    <GradientText>{t('OpenDoors')}</GradientText>
-                   </ThemeText>
-                 </IframeWrapper>
-                  {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
+                    {/* <iframe width="700" height="393" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
+                    <IframeWrapper>
+                      <iframe src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    </IframeWrapper>
+                    <IframeWrapper style={{ marginLeft: '60px' }}>
+                      <ThemeText fontSize={45} fontWeight={'900'} style={{ lineHeight: '1.7' }} fontFamily={'Poppins Regular'}>
+                        <GradientText>{t('ConnectWallet')}</GradientText><br />
+                        <GradientText>{t('MintYourCreditScore')}</GradientText><br />
+                        <GradientText>{t('OpenDoors')}</GradientText>
+                      </ThemeText>
+                    </IframeWrapper>
+                    {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
                     <PlayButton>
                       <svg width="127" height="127" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="63.5" cy="63.5" r="63.5" fill="white" fillOpacity="0.36"/>
@@ -1525,104 +1493,104 @@ const HomePage=({props}:any)=>{
                       </svg>
                     </PlayButton>
                   </VideoDemo>*/}
-                </RowCenterWrapper>
+                  </RowCenterWrapper>
 
-              </WrapMaxWidth>
-            </ContentBoxFull>
-          </GradFrameEffHome2>
-          <HeroSection themeDark={themeDark}>
-          {
-            themeDark ?
-                <HeroSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: anim1,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </HeroSectionAnimBox> : ''
-          }
-          <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
-            <div>
-              {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
-            </div>
-            <div>
-              <ContentBox className="heroSectionWrap" themeDark={themeDark}>
-                <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.5}}>
-                  <FontPoppins>
-                    <GradientText>
-                      {
-                        themeDark ? t('TheWorldsFirst') : t('GetYour')
+                </WrapMaxWidth>
+              </ContentBoxFull>
+            </GradFrameEffHome2>
+            <HeroSection themeDark={themeDark}>
+              {
+                themeDark ?
+                  <HeroSectionAnimBox>
+                    <Lottie config={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: anim1,
+                      rendererSettings: {
+                        preserveAspectRatio: 'xMidYMid slice'
                       }
-                    </GradientText>
-                  </FontPoppins>
-                </ThemeText>
-
-                <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                  <FontPoppins>
-                    <GradientText>
-                      {
-                        themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
-                      }
-                    </GradientText>
-                  </FontPoppins>
-                </ThemeText>
-                {
-                  themeDark ?
-                      <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}><GradientText>{t('System')}</GradientText></ThemeText>
-                      : ''
-                }
-                <SpaceHeight height={24} heightApp={15}/>
-                <div style={{display:'grid', gridTemplateColumns: themeDark ? '65% 35%' : '38% 62%', alignItems: themeDark ? 'center' : 'end', gap:'10px'}}>
-                  <div>
-                    <ContentParagraph fontSize={22} themeDark={themeDark} style={{marginBottom: themeDark ? '0' : '15px'}}>
-                        <FontPoppins>
-                          {
-                            themeDark ? t('MintYourCRating') : t('YesYouOne')
-                          }
-                        </FontPoppins>
-                      </ContentParagraph>
-                      {
-                        !themeDark ? (
-                          <ContentParagraph themeDark={themeDark} style={{marginTop: '-4px', marginBottom:'0'}}>
-                            <FontPoppins>
-                              {t('FindOutWhen')}
-                            </FontPoppins>
-                          </ContentParagraph>
-                        ) : ''
-                      }
-                  </div>
-                  <div>
-                    <GradientButton
-                        onClick={()=>{
-                          props.history.push("/profile")
-                        }}
-                    >
-                      Launch App
-                    </GradientButton>
-                  </div>
+                    }} />
+                  </HeroSectionAnimBox> : ''
+              }
+              <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={108} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
+                <div>
+                  {/*<img style={{filter: "invert(1)"}} src="https://via.placeholder.com/300"/>*/}
                 </div>
-              </ContentBox>
-            </div>
-          </CustomGrid>
-        </HeroSection>
-        </>
+                <div>
+                  <ContentBox className="heroSectionWrap" themeDark={themeDark}>
+                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.5 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            themeDark ? t('TheWorldsFirst') : t('GetYour')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText>
+
+                    <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            themeDark ? t('DeFiCreditRating') : t('CryptoCreditScore')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText>
+                    {
+                      themeDark ?
+                        <ThemeText className="heroHeading" fontSize={55} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}><GradientText>{t('System')}</GradientText></ThemeText>
+                        : ''
+                    }
+                    <SpaceHeight height={24} heightApp={15} />
+                    <div style={{ display: 'grid', gridTemplateColumns: themeDark ? '65% 35%' : '38% 62%', alignItems: themeDark ? 'center' : 'end', gap: '10px' }}>
+                      <div>
+                        <ContentParagraph fontSize={22} themeDark={themeDark} style={{ marginBottom: themeDark ? '0' : '15px' }}>
+                          <FontPoppins>
+                            {
+                              themeDark ? t('MintYourCRating') : t('YesYouOne')
+                            }
+                          </FontPoppins>
+                        </ContentParagraph>
+                        {
+                          !themeDark ? (
+                            <ContentParagraph themeDark={themeDark} style={{ marginTop: '-4px', marginBottom: '0' }}>
+                              <FontPoppins>
+                                {t('FindOutWhen')}
+                              </FontPoppins>
+                            </ContentParagraph>
+                          ) : ''
+                        }
+                      </div>
+                      <div>
+                        <GradientButton
+                          onClick={() => {
+                            props.history.push("/profile")
+                          }}
+                        >
+                          Launch App
+                        </GradientButton>
+                      </div>
+                    </div>
+                  </ContentBox>
+                </div>
+              </CustomGrid>
+            </HeroSection>
+          </>
         }
         <SecondSection themeDark={themeDark}>
           {
             themeDark ?
-                <SecondSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: anim2,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </SecondSectionAnimBox> : ''
+              <SecondSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: anim2,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </SecondSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={99} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
             <div>
@@ -1630,7 +1598,7 @@ const HomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1639,7 +1607,7 @@ const HomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1651,7 +1619,7 @@ const HomePage=({props}:any)=>{
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('BuiltOnEthereumLayer2') : t('CreDAConnects')
@@ -1672,16 +1640,16 @@ const HomePage=({props}:any)=>{
         <ThirdSection themeDark={themeDark}>
           {
             themeDark ?
-                <ThirdSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: anim3,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </ThirdSectionAnimBox> : ''
+              <ThirdSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: anim3,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </ThirdSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={99} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
             <div>
@@ -1689,7 +1657,7 @@ const HomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1698,7 +1666,7 @@ const HomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1710,7 +1678,7 @@ const HomePage=({props}:any)=>{
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('TheCreDAOracle') : t('CreDaIsWorking')
@@ -1731,16 +1699,16 @@ const HomePage=({props}:any)=>{
         <ForthSection themeDark={themeDark}>
           {
             themeDark ?
-                <ForthSectionAnimBox>
-                  <Lottie config={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: anim4,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice'
-                    }
-                  }}/>
-                </ForthSectionAnimBox> : ''
+              <ForthSectionAnimBox>
+                <Lottie config={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: anim4,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  }
+                }} />
+              </ForthSectionAnimBox> : ''
           }
           <CustomGrid templateColumns={'50% 50%'} paddingTopBottom={99} mobPaddingTopBottom={80} mobPaddingLeftRight={30}>
             <div>
@@ -1748,7 +1716,7 @@ const HomePage=({props}:any)=>{
             </div>
             <div>
               <ContentBox themeDark={themeDark}>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1757,7 +1725,7 @@ const HomePage=({props}:any)=>{
                     </GradientText>
                   </FontPoppins>
                 </ThemeText>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
+                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
                   <FontPoppins>
                     <GradientText>
                       {
@@ -1768,20 +1736,20 @@ const HomePage=({props}:any)=>{
                 </ThemeText>
                 {
                   themeDark ?
-                      <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{width: '100%', display:'block', lineHeight: 1.2}}>
-                        <FontPoppins>
-                          <GradientText>
-                            {
-                              t('andUsers')
-                            }
-                          </GradientText>
-                        </FontPoppins>
-                      </ThemeText>:''
+                    <ThemeText className="subHeading" fontSize={38} fontWeight={'800'} style={{ width: '100%', display: 'block', lineHeight: 1.2 }}>
+                      <FontPoppins>
+                        <GradientText>
+                          {
+                            t('andUsers')
+                          }
+                        </GradientText>
+                      </FontPoppins>
+                    </ThemeText> : ''
                 }
                 {/*<ContentHeading fontSize={38} themeDark={themeDark} marginBottom={0}>
                 {t('TurnYourCryptoExperience')}
               </ContentHeading>*/}
-                <SpaceHeight height={24} heightApp={15}/>
+                <SpaceHeight height={24} heightApp={15} />
                 <ContentParagraph themeDark={themeDark} marginBottom={0}>
                   {
                     themeDark ? t('AfterMintingcNFT') : t('AccessToCredit')
@@ -1800,20 +1768,20 @@ const HomePage=({props}:any)=>{
           </CustomGrid>
         </ForthSection>
         <GradientWrap>
-          {location!=='/home2'?
-          <GradFrameEff>
-            <ContentBoxFull themeDark={themeDark} >
-              <WrapMaxWidth>
-                <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('AThankYouToCrypt')}{
-                  themeDark ? t('thatsYou') : ''
-                }</GradientText></ThemeText>
+          {location !== '/home2' ?
+            <GradFrameEff>
+              <ContentBoxFull themeDark={themeDark} >
+                <WrapMaxWidth>
+                  <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('AThankYouToCrypt')}{
+                    themeDark ? t('thatsYou') : ''
+                  }</GradientText></ThemeText>
 
-                <RowCenter style={{margin: '88px 0'}}>
+                  <RowCenter style={{ margin: '88px 0' }}>
 
-                {/* <iframe width="700" height="393" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
+                    {/* <iframe width="700" height="393" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> */}
 
-                <iframe width="700" height="394" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                  {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
+                    <iframe width="700" height="394" src="https://www.youtube.com/embed/VN31gl4lZCc?controls=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    {/*<VideoDemo style={{position:'relative', display:'flex', alignItems:'center', justifyContent:'center', width:700, height:400, background:'linear-gradient(45deg, #320162, #4a21e9)'}}>
                     <PlayButton>
                       <svg width="127" height="127" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="63.5" cy="63.5" r="63.5" fill="white" fillOpacity="0.36"/>
@@ -1821,28 +1789,28 @@ const HomePage=({props}:any)=>{
                       </svg>
                     </PlayButton>
                   </VideoDemo>*/}
-                </RowCenter>
+                  </RowCenter>
 
-              </WrapMaxWidth>
-            </ContentBoxFull>
-          </GradFrameEff>:''}
+                </WrapMaxWidth>
+              </ContentBoxFull>
+            </GradFrameEff> : ''}
           <GradFrameEff
-              // style={{ paddingTop: 0}}
+          // style={{ paddingTop: 0}}
           >
             <ContentBoxFull themeDark={themeDark} >
               <WrapMaxWidth>
                 <ThemeText className="subHeading" fontSize={38} fontWeight={'800'}><GradientText>{t('HowToGetCryptoCredit')}</GradientText></ThemeText>
                 <StepsSection>
-                  <CustomGrid className="stepsGrid" alignItems={'self-start'} style={{margin: '88px 0'}} templateColumns={'repeat(4, 1fr)'} columnGap={128}>
+                  <CustomGrid className="stepsGrid" alignItems={'self-start'} style={{ margin: '88px 0' }} templateColumns={'repeat(4, 1fr)'} columnGap={128}>
                     <div>
                       <RowCenter height={200}>
                         <StepsIconImg src={ImageCommon.Step1IconImg} />
                         <StepsJoiningArrow src={ImageCommon.StepJoinIcon} />
                       </RowCenter>
                       <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step1')}</ThemeText>
-                      <SpaceHeight heightApp={15} height={24}/>
+                      <SpaceHeight heightApp={15} height={24} />
                       <div>
-                        <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{ themeDark ? t('ConnectYourWallets') : t('ConnectYourWallet')}</ThemeText>
+                        <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{themeDark ? t('ConnectYourWallets') : t('ConnectYourWallet')}</ThemeText>
                       </div>
                       <ThemeText className="stepsContent" fontSize={21}>{t('EssentialsToken')}</ThemeText>
                     </div>
@@ -1852,7 +1820,7 @@ const HomePage=({props}:any)=>{
                         <StepsJoiningArrow src={ImageCommon.StepJoinIcon} />
                       </RowCenter>
                       <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step2')}</ThemeText>
-                      <SpaceHeight heightApp={15} height={24}/>
+                      <SpaceHeight heightApp={15} height={24} />
                       <div>
                         <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{t('ClaimCredaToken')}</ThemeText>
                       </div>
@@ -1864,9 +1832,9 @@ const HomePage=({props}:any)=>{
                         <StepsJoiningArrow src={ImageCommon.StepJoinIcon} />
                       </RowCenter>
                       <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step3')}</ThemeText>
-                      <SpaceHeight heightApp={15} height={24}/>
+                      <SpaceHeight heightApp={15} height={24} />
                       <div>
-                        <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{ themeDark ? t('MintcNFT') : t('MintCreditNFT')}</ThemeText>
+                        <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{themeDark ? t('MintcNFT') : t('MintCreditNFT')}</ThemeText>
                       </div>
                       <ThemeText className="stepsContent" fontSize={21}>{t('TheHigherLevel')}</ThemeText>
                     </div>
@@ -1875,7 +1843,7 @@ const HomePage=({props}:any)=>{
                         <StepsIconImg src={ImageCommon.Step4IconImg} />
                       </RowCenter>
                       <ThemeText className="stepIndication" fontSize={28} fontWeight={800}>{t('Step4')}</ThemeText>
-                      <SpaceHeight heightApp={15} height={24}/>
+                      <SpaceHeight heightApp={15} height={24} />
                       <div>
                         <ThemeText className="stepsContent" fontSize={21} fontWeight={800}>{t('EnjoyCreditPrivileges')}</ThemeText>
                       </div>
@@ -1888,12 +1856,12 @@ const HomePage=({props}:any)=>{
                     <ThemeText fontSize={28} fontWeight={800}>{t('LetsGetStarted')}</ThemeText>
                   </div>
                 </RowCenter>
-                <SpaceHeight height={12} heightApp={15}/>
+                <SpaceHeight height={12} heightApp={15} />
                 <RowCenter>
                   <GradientButton
-                      onClick={()=>{
-                        props.history.push("/profile")
-                      }}
+                    onClick={() => {
+                      props.history.push("/profile")
+                    }}
                   >
                     Launch App
                   </GradientButton>
@@ -1901,18 +1869,18 @@ const HomePage=({props}:any)=>{
               </WrapMaxWidth>
             </ContentBoxFull>
           </GradFrameEff>
-          <GradFrameEff style={{ paddingTop: 0}}>
+          <GradFrameEff style={{ paddingTop: 0 }}>
             <ContentBoxFull themeDark={themeDark}>
               <WrapMaxWidth>
                 <ThreeCardsSection>
                   <CustomGrid templateColumns={'1fr 1fr 1fr'} columnGap={24}>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('Partnerships')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('DeriskingDeFi')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('CreDAReducesExposure')}</Text>
-                        <SpaceHeight height={28} heightApp={15}/>
-                        <RowCenter style={{margin:'0'}}>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('Partnerships')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('DeriskingDeFi')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('CreDAReducesExposure')}</Text>
+                        <SpaceHeight height={28} heightApp={15} />
+                        <RowCenter style={{ margin: '0' }}>
                           <a href="mailto:BD@creda.app">
                             <GradientButton>
                               Become a partner
@@ -1923,18 +1891,18 @@ const HomePage=({props}:any)=>{
                     </GradientBox>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('Technology')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('WhatBlockchainMeant')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('BuiltEthereumLayer2')}</Text>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('Technology')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('WhatBlockchainMeant')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('BuiltEthereumLayer2')}</Text>
                       </FontPoppins>
                     </GradientBox>
                     <GradientBox>
                       <FontPoppins>
-                        <Text className="textBadge" fontSize={21} style={{display:'block'}}>{t('PrivacySecurity')}</Text>
-                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{display:'block', margin:'10px 0'}}>{t('PersonalizedPersonal')}</Text>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'10px 0'}}>{t('CreDAAggregates')}</Text>
-                        <SpaceHeight height={28} heightApp={15}/>
-                        <Text className="servContent" fontSize={21} style={{display:'block', margin:'20px 0'}}><Text fontWeight={'800'}>{t('LastAuditBy')}</Text> {t('CertikDaysAgo')}</Text>
+                        <Text className="textBadge" fontSize={21} style={{ display: 'block' }}>{t('PrivacySecurity')}</Text>
+                        <Text className="servHeading" fontSize={28} fontWeight={'800'} style={{ display: 'block', margin: '10px 0' }}>{t('PersonalizedPersonal')}</Text>
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '10px 0' }}>{t('CreDAAggregates')}</Text>
+                        <SpaceHeight height={28} heightApp={15} />
+                        <Text className="servContent" fontSize={21} style={{ display: 'block', margin: '20px 0' }}><Text fontWeight={'800'}>{t('LastAuditBy')}</Text> {t('CertikDaysAgo')}</Text>
                       </FontPoppins>
                     </GradientBox>
                   </CustomGrid>
@@ -1944,587 +1912,8 @@ const HomePage=({props}:any)=>{
           </GradFrameEff>
         </GradientWrap>
       </FontPoppins>
-    {/*<SpaceHeight height={50} heightApp={100}/>*/}
+      {/*<SpaceHeight height={50} heightApp={100}/>*/}
     </div>
-  </MainFullBody>
-
-}
-
-
-const OldHomePage=({props}:any)=>{
-  const carouselRef:any = useRef<undefined>()
-  const {t} = useTranslation()
-  const themeDark  = useTheme()
-
-  return <MainFullBody history={props.history}>
-    <TopImage src={ImageCommon.home_top}/>
-    <TopImageRigth src={ImageCommon.home_top_right}/>
-    <CenterImage src={ImageCommon.center_rihgt_img}/>
-    <TopCardTras1>
-      <Text fontSize={22} fontWeight={'800'}>{t('CreditCard')}</Text>
-      <SpaceHeight height={20} heightApp={15}/>
-      <RowFixed>
-        {/* <Column>
-          <Text fontSize={12}>{t('CreDAToken')}</Text>
-          <Text fontSize={16}>2467.456</Text>
-        </Column> */}
-        {/* <SpaceWidth width={20} widthApp={10}/> */}
-        <Column>
-          <Text fontSize={12}>{t('CreditScore')}</Text>
-          <Text fontSize={16}>100</Text>
-        </Column>
-      </RowFixed>
-    </TopCardTras1>
-    <TopCardTras2>
-      <Text fontSize={22} fontWeight={'800'}>{t('PortfolioManager')}</Text>
-      <SpaceHeight height={20} heightApp={15}/>
-      <RowFixed>
-        {/* <Column>
-          <Text fontSize={12}>{t('ElastosESC')}</Text>
-          <Text fontSize={16}>2467.456</Text>
-        </Column>
-        <SpaceWidth width={20} widthApp={10}/> */}
-        <Column>
-          <Text fontSize={12}>{t('Ethereum')}</Text>
-          <Text fontSize={16}>99$</Text>
-        </Column>
-        {/* <SpaceWidth width={20} widthApp={10}/>
-        <Column>
-          <Text fontSize={12}>{t('HECO')}}</Text>
-          <Text fontSize={16}>1769</Text>
-        </Column> */}
-      </RowFixed>
-    </TopCardTras2>
-
-    <div style={{
-      // backgroundColor:'#0D0D11',
-      width:'100%',
-      paddingTop:100,
-      paddingBottom:70,
-      zIndex:50
-    }}>
-      <SpaceHeight height={150} heightApp={75}/>
-      <RowEnd>
-        <Column style={{marginRight:150}}>
-          <Text fontColor={'#4E55FF'} fontSize={20} fontWeight={'600'}>{t('BuildTitle')}</Text>
-          <ThemeText fontSize={64} fontWeight={'800'}>{t('TurnData')}</ThemeText>
-          <ThemeText style={{marginTop:-40}} fontSize={64} fontWeight={'800'}>{t('intoWealth')}</ThemeText>
-          <ThemeText style={{width:600}} fontSize={20}>{t('TurnDataDes')}</ThemeText>
-          <SpaceHeight height={20} heightApp={15}/>
-          <ThemeText style={{width:600}} fontSize={20}>{t('TurnDataDes1')}</ThemeText>
-          <SpaceHeight height={30} heightApp={15}/>
-          <RowFixed>
-            <GetStarted
-                onClick={()=>{
-                  props.history.push("/profile")
-                }}
-            >
-              Get started
-            </GetStarted>
-            <LearnMore style={{
-              color:themeDark?'#F1F4F6':'#0D0D11',
-              borderColor:themeDark?'#F1F4F6':'#0D0D11',
-            }} onClick={()=>{
-              window.open('https://creda-app.gitbook.io/creda-protocol/')
-            }}>
-              Learn more
-            </LearnMore>
-          </RowFixed>
-        </Column>
-      </RowEnd>
-
-      <SpaceHeight height={100} heightApp={150}/>
-      <ColumnCenter>
-        <ThemeText fontSize={48} fontWeight={'800'}>{t('Howworks')}</ThemeText>
-        <ThemeText style={{width:600}} fontSize={20}>{t('HowworksDes')}</ThemeText>
-      </ColumnCenter>
-      <SpaceHeight height={100} heightApp={50}/>
-      <RowCenter>
-        <RowFixed style={{width:256 * 4,position:'relative'}}>
-          <RowFixed style={{
-            position:'absolute',
-            top:21,
-          }}>
-            <SpaceWidth width={128+27+40} widthApp={50}/>
-            <CenterLine/>
-            <SpaceWidth width={40+54+40} widthApp={50}/>
-            <CenterLine/>
-            <SpaceWidth width={40+54+40} widthApp={50}/>
-            <CenterLine width={256 - 80 - 34}/>
-          </RowFixed>
-          <ColumnCenter style={{width:256,height:350}}>
-            <StepCircle>
-              <StepCircleImage src={ImageCommon.step_1_icon}/>
-            </StepCircle>
-            <Text fontColor={'#4E55FF'} fontSize={12} fontWeight={'400'}>{t('Step1')}</Text>
-            <SpaceHeight height={32} heightApp={15}/>
-            <ThemeText fontSize={16} fontWeight={'600'}>{t('Step1Title')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <ThemeText style={{width:220}}fontSize={14}>{t('Step1Des')}</ThemeText>
-          </ColumnCenter>
-          <ColumnCenter style={{width:256,height:350}}>
-            <StepCircle>
-              <StepCircleImage src={ImageCommon.step_2_icon}/>
-            </StepCircle>
-            <Text fontColor={'#4E55FF'} fontSize={12} fontWeight={'400'}>{t('Step2')}</Text>
-            <SpaceHeight height={32} heightApp={15}/>
-            <ThemeText fontSize={16} fontWeight={'600'}>{t('Step2Title')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <ThemeText style={{width:220}}fontSize={14}>{t('Step2Des')}</ThemeText>
-          </ColumnCenter>
-          <ColumnCenter style={{width:256,height:350}}>
-            <StepCircle>
-              <StepCircleImage src={ImageCommon.step_3_icon}/>
-            </StepCircle>
-            <Text fontColor={'#4E55FF'} fontSize={12} fontWeight={'400'}>{t('Step3')}</Text>
-            <SpaceHeight height={32} heightApp={15}/>
-            <ThemeText fontSize={16} fontWeight={'600'}>{t('Step3Title')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <ThemeText style={{width:220}}fontSize={14}>{t('Step3Des')}</ThemeText>
-          </ColumnCenter>
-          <ColumnCenter style={{width:256,height:350}}>
-            <StepCircle>
-              <StepCircleImage src={ImageCommon.step_4_icon}/>
-            </StepCircle>
-            <Text fontColor={'#4E55FF'} fontSize={12} fontWeight={'400'}>{t('Step4')}</Text>
-            <SpaceHeight height={32} heightApp={15}/>
-            <ThemeText fontSize={16} fontWeight={'600'}>{t('Step4Title')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <ThemeText style={{width:220}}fontSize={14}>{t('Step4Des')}</ThemeText>
-          </ColumnCenter>
-        </RowFixed>
-      </RowCenter>
-      <SpaceHeight height={50} heightApp={50}/>
-
-      <RowCenter>
-        <GetStarted
-            onClick={()=>{
-              props.history.push("/profile")
-            }}
-        >Get started</GetStarted>
-      </RowCenter>
-    </div>
-    <div style={{
-      backgroundColor:themeDark?'#121316':'white',
-      paddingTop:50,
-      paddingBottom:100,
-      width:'100%'
-    }}>
-      <ColumnCenter>
-        <ThemeText fontSize={48} fontWeight={'800'}>{t('DecentralizedCredit')}</ThemeText>
-        <ThemeText style={{width:530}} fontSize={20}>{t('DecentralizedCreditDes')}</ThemeText>
-      </ColumnCenter>
-      <SpaceHeight height={80} heightApp={40}/>
-      <RowCenter>
-        <ButtonClick onClick={()=>{
-          carouselRef && carouselRef.current && carouselRef.current.prev()
-        }}>
-          <CenterArrowImage style={{marginRight:70}} src={ImageCommon.center_left_arrow}/>
-        </ButtonClick>
-        <Carousel ref={(dom)=>carouselRef.current = dom} autoplay dots={false} afterChange={()=>{
-        }} style={{
-          width:972,
-        }}>
-          <div>
-            <CenterBody style={{
-              backgroundColor:themeDark?'#0D0D11':'#F1F4F6',
-            }}>
-              <Column>
-                <ThemeText style={{width:300}}  fontSize={24}>{t('DecentralizedTitle4')}</ThemeText>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{width:350}} fontSize={14} fontColor={'#777E90'}>{t('DecentralizedTitle4Des1')}</Text>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{width:350}} fontSize={14} fontColor={'#777E90'}>{t('DecentralizedTitle4Des2')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.minting_on_image}/>
-            </CenterBody>
-          </div>
-          <div>
-            <CenterBody style={{
-              backgroundColor:themeDark?'#0D0D11':'#F1F4F6',
-            }}>
-              <Column>
-                <ThemeText style={{width:300}}  fontSize={24}>{t('DecentralizedTitle3')}</ThemeText>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{width:350}} fontSize={14} fontColor={'#777E90'}>{t('DecentralizedTitle3Des')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.non_collatera_image}/>
-            </CenterBody>
-          </div>
-          <div>
-            <CenterBody style={{
-              backgroundColor:themeDark?'#0D0D11':'#F1F4F6'
-            }}>
-              <Column>
-                <ThemeText style={{width:300}}  fontSize={24}>{t('DecentralizedTitle2')}</ThemeText>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{width:350}} fontSize={14} fontColor={'#777E90'}>{t('DecentralizedTitle2Des')}</Text>
-              </Column>
-              <CenterRightImage style={{marginLeft:70}}  src={ImageCommon.creda_pool_img}/>
-            </CenterBody>
-          </div>
-          <div>
-            <CenterBody style={{
-              backgroundColor:themeDark?'#0D0D11':'#F1F4F6'
-            }}>
-              <Column>
-                <ThemeText style={{width:300}}  fontSize={24}>{t('DecentralizedTitle1')}</ThemeText>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{width:350}} fontSize={14} fontColor={'#777E90'}>{t('DecentralizedTitle1Des')}</Text>
-              </Column>
-              <CenterRightImage style={{marginLeft:70}}  src={ImageCommon.integrate_image}/>
-            </CenterBody>
-          </div>
-        </Carousel>
-        <ButtonClick onClick={()=>{
-          carouselRef && carouselRef.current && carouselRef.current.next()
-        }}>
-          <CenterArrowImage style={{marginLeft:70}}  src={ImageCommon.center_right_arrow}/>
-        </ButtonClick>
-      </RowCenter>
-    </div>
-    <SpaceHeight height={50} heightApp={100}/>
-    <div style={{
-      backgroundColor:themeDark?'#0D0D11':'#F1F4F6',
-      width:'100%',
-    }}>
-      <ColumnCenter>
-        <ThemeText fontSize={48} fontWeight={'800'}>{t('CreditContract')}</ThemeText>
-        <ThemeText style={{width:530}} fontSize={20}>{t('CreditContractDes')}</ThemeText>
-      </ColumnCenter>
-      <SpaceHeight height={100} heightApp={50}/>
-      <RowCenter>
-        <DownItem style={{
-          backgroundColor:themeDark?'#0D0D11':'white'
-        }}>
-          <DownItemCircle src={ImageCommon.down_item_1_icon}/>
-          <ColumnCenter>
-            <ThemeText fontSize={16}>{t('CreditContractTitle1')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <Text fontSize={14} fontColor={'#777E90'}>{t('CreditContractTitle1Des')}</Text>
-          </ColumnCenter>
-        </DownItem>
-        <SpaceWidth width={24} widthApp={12}/>
-        <DownItem style={{
-          backgroundColor:themeDark?'#0D0D11':'white'
-        }}>
-          <DownItemCircle src={ImageCommon.down_item_2_icon}/>
-          <ColumnCenter>
-            <ThemeText fontSize={16}>{t('CreditContractTitle2')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <Text fontSize={14} fontColor={'#777E90'}>{t('CreditContractTitle2Des')}</Text>
-          </ColumnCenter>
-        </DownItem>
-        <SpaceWidth width={24} widthApp={12}/>
-        <DownItem style={{
-          backgroundColor:themeDark?'#0D0D11':'white'
-        }}>
-          <DownItemCircle src={ImageCommon.down_item_3_icon}/>
-          <ColumnCenter>
-            <ThemeText fontSize={16}>{t('CreditContractTitle3')}</ThemeText>
-            <SpaceHeight height={16} heightApp={8}/>
-            <Text fontSize={14} fontColor={'#777E90'}>{t('CreditContractTitle3Des')}</Text>
-          </ColumnCenter>
-        </DownItem>
-      </RowCenter>
-      <SpaceHeight height={50} heightApp={0}/>
-      <RowCenter>
-        <a href="https://creda-app.gitbook.io/creda-protocol/">
-          <LearnMore style={{
-            color:themeDark?'#F1F4F6':'#0D0D11',
-            borderColor:themeDark?'#F1F4F6':'#0D0D11',
-          }}>
-            Learn more
-          </LearnMore>
-        </a>
-
-      </RowCenter>
-      <RowCenter>
-        <Parenter>
-          <ThemeText fontSize={48} fontWeight={'800'}>{t('Partners')}</ThemeText>
-          <RowBetween>
-            <Parenter_icon_1 src={themeDark?ImageCommon.elastos_logo_white:ImageCommon.elastos_logo_black}/>
-            <Parenter_icon_2 src={themeDark?ImageCommon.arbiturn_logo_white:ImageCommon.arbiturn_logo_black}/>
-            <Parenter_icon_3 src={themeDark?ImageCommon.filda_logo_white:ImageCommon.filda_logo_black}/>
-          </RowBetween>
-        </Parenter>
-      </RowCenter>
-    </div>
-  </MainFullBody>
-}
-
-const OldPhoneHomePage=({props}:any)=>{
-  const carouselRef:any = useRef<undefined>()
-  const themeDark  = useTheme()
-  const {t} = useTranslation()
-  return <MainFullBody history={props.history}>
-    <TopPhoneImage src={ImageCommon.phone_home_bg}/>
-    <CenterCarouse src={ImageCommon.phone_down_bgimg}/>
-    <Column style={{
-      paddingLeft:20,
-      // paddingRight:30,
-      width:'100%',
-      paddingTop:30,
-    }}>
-      <Text fontColor={'#4E55FF'} fontSize={36} fontWeight={'600'}>{t('BuildTitle')}</Text>
-      <ThemeText fontSize={100} fontWeight={'800'}>{t('TurnData')}</ThemeText>
-      <ThemeText style={{marginTop:-40}} fontSize={110} fontWeight={'800'}>{t('intoWealth')}</ThemeText>
-      <ThemeText fontSize={40}>{t('TurnDataDes')}</ThemeText>
-      <SpaceHeight height={0} heightApp={10}/>
-      <ThemeText fontSize={40}>{t('TurnDataDes1')}</ThemeText>
-      <SpaceHeight height={0} heightApp={37}/>
-    </Column>
-    <RowCenter>
-      <RowFixed>
-        <GetStarted
-            onClick={()=>{
-              props.history.push("/profile")
-            }}
-        >
-          Get started
-        </GetStarted>
-        <LearnMore style={{
-          color:themeDark?'#F1F4F6':'#0D0D11',
-          borderColor:themeDark?'#F1F4F6':'#0D0D11',
-        }} onClick={()=>{
-          window.open('https://creda-app.gitbook.io/creda-protocol/')
-        }}>
-          Learn more
-        </LearnMore>
-      </RowFixed>
-    </RowCenter>
-
-    <RowEnd>
-      <PhoneTopCardTras1>
-        <PhoneTopCardTras1_Item>
-          <Text fontSize={44} fontWeight={'800'}>{t('CreditCard')}</Text>
-          <RowFixed>
-            {/* <Column>
-            <Text fontSize={12}>{t('CreDAToken')}</Text>
-            <Text fontSize={16}>2467.456</Text>
-          </Column> */}
-            {/* <SpaceWidth width={20} widthApp={10}/> */}
-            <Column>
-              <Text fontSize={24}>{t('CreditScore')}</Text>
-              <Text fontSize={32}>100</Text>
-            </Column>
-          </RowFixed>
-        </PhoneTopCardTras1_Item>
-      </PhoneTopCardTras1>
-    </RowEnd>
-    <RowEnd>
-      <PhoneTopCardTras2>
-        <PhoneTopCardTras2_Item>
-          <Text fontSize={44} fontWeight={'800'}>{t('PortfolioManager')}</Text>
-          <RowFixed>
-            {/* <Column>
-              <Text fontSize={12}>{t('ElastosESC')}</Text>
-              <Text fontSize={16}>2467.456</Text>
-            </Column>
-            <SpaceWidth width={20} widthApp={10}/> */}
-            <Column>
-              <Text fontSize={24}>{t('Ethereum')}</Text>
-              <Text fontSize={32}>99$</Text>
-            </Column>
-            {/* <SpaceWidth width={20} widthApp={10}/>
-            <Column>
-              <Text fontSize={12}>{t('HECO')}}</Text>
-              <Text fontSize={16}>1769</Text>
-            </Column> */}
-          </RowFixed>
-        </PhoneTopCardTras2_Item>
-      </PhoneTopCardTras2>
-    </RowEnd>
-    <SpaceHeight height={0} heightApp={43}/>
-    <ColumnCenter>
-      <ThemeText fontSize={60} fontWeight={'800'}>{t('Howworks')}</ThemeText>
-      <SpaceHeight height={0} heightApp={10}/>
-      <ThemeText style={{width:'80%'}} fontSize={32}>{t('HowworksDes')}</ThemeText>
-    </ColumnCenter>
-    <SpaceHeight height={100} heightApp={30}/>
-    <ColumnCenter style={{marginTop:26,marginBottom:35}}>
-      <StepCircle>
-        <StepCircleImage src={ImageCommon.step_1_icon}/>
-      </StepCircle>
-      <Text fontColor={'#4E55FF'} fontSize={24} fontWeight={'400'}>{t('Step1')}</Text>
-      <SpaceHeight height={32} heightApp={32}/>
-      <ThemeText fontSize={32} fontWeight={'600'}>{t('Step1Title')}</ThemeText>
-      <SpaceHeight height={0} heightApp={16}/>
-      <ThemeText style={{width:220}}fontSize={28}>{t('Step1Des')}</ThemeText>
-    </ColumnCenter>
-    <CenterVerLine/>
-    <ColumnCenter style={{marginTop:26,marginBottom:35}}>
-      <StepCircle>
-        <StepCircleImage src={ImageCommon.step_2_icon}/>
-      </StepCircle>
-      <Text fontColor={'#4E55FF'} fontSize={24} fontWeight={'400'}>{t('Step2')}</Text>
-      <SpaceHeight height={32} heightApp={32}/>
-      <ThemeText fontSize={32} fontWeight={'600'}>{t('Step2Title')}</ThemeText>
-      <SpaceHeight height={16} heightApp={16}/>
-      <ThemeText style={{width:220}}fontSize={28}>{t('Step2Des')}</ThemeText>
-    </ColumnCenter>
-    <CenterVerLine/>
-    <ColumnCenter style={{marginTop:26,marginBottom:35}}>
-      <StepCircle>
-        <StepCircleImage src={ImageCommon.step_3_icon}/>
-      </StepCircle>
-      <Text fontColor={'#4E55FF'} fontSize={24} fontWeight={'400'}>{t('Step3')}</Text>
-      <SpaceHeight height={32} heightApp={32}/>
-      <ThemeText fontSize={32} fontWeight={'600'}>{t('Step3Title')}</ThemeText>
-      <SpaceHeight height={16} heightApp={16}/>
-      <ThemeText style={{width:220}}fontSize={28}>{t('Step3Des')}</ThemeText>
-    </ColumnCenter>
-    <CenterVerLine/>
-    <ColumnCenter style={{marginTop:26,marginBottom:35}}>
-      <StepCircle>
-        <StepCircleImage src={ImageCommon.step_4_icon}/>
-      </StepCircle>
-      <Text fontColor={'#4E55FF'} fontSize={23} fontWeight={'400'}>{t('Step4')}</Text>
-      <SpaceHeight height={32} heightApp={32}/>
-      <ThemeText fontSize={32} fontWeight={'600'}>{t('Step4Title')}</ThemeText>
-      <SpaceHeight height={16} heightApp={16}/>
-      <ThemeText style={{width:220}}fontSize={28}>{t('Step4Des')}</ThemeText>
-    </ColumnCenter>
-    <SpaceHeight height={0} heightApp={30}/>
-    <RowCenter>
-      <GetStarted
-          style={{marginRight:0}}
-          onClick={()=>{
-            props.history.push("/profile")
-          }}
-      >Get started</GetStarted>
-    </RowCenter>
-    <SpaceHeight height={0} heightApp={95}/>
-    <ColumnCenter>
-      <ThemeText style={{width:'80%',textAlign:'center'}}  fontSize={60} fontWeight={'800'}>{t('DecentralizedCredit')}</ThemeText>
-      <SpaceHeight height={0} heightApp={20}/>
-      <ThemeText style={{width:'80%'}} fontSize={32}>{t('DecentralizedCreditDes')}</ThemeText>
-    </ColumnCenter>
-    <SpaceHeight height={0} heightApp={52}/>
-    <RowCenter>
-      <div style={{
-        width:window.screen.width - 60,
-        borderRadius:20,
-        overflow:'hidden',
-        height:700,
-      }}>
-        <Carousel autoplay afterChange={()=>{}}
-                  style={{width:'100%'}}>
-          <div >
-            <CarouselBodyPhone style={{
-              backgroundColor:themeDark?'#0D0D11':'white',
-            }}>
-              <Column>
-                <ThemeText style={{textAlign:'center'}} fontSize={32}>{t('DecentralizedTitle4')}</ThemeText>
-                <SpaceHeight height={20} heightApp={20}/>
-                <Text style={{textAlign:'center'}} fontSize={28} fontColor={'#777E90'}>{t('DecentralizedTitle4Des1')}</Text>
-                <SpaceHeight height={20} heightApp={10}/>
-                <Text style={{textAlign:'center'}} fontSize={28} fontColor={'#777E90'}>{t('DecentralizedTitle4Des2')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.minting_on_image}/>
-            </CarouselBodyPhone>
-          </div>
-          <div >
-            <CarouselBodyPhone style={{
-              backgroundColor:themeDark?'#0D0D11':'white',
-            }}>
-              <Column>
-                <ThemeText style={{textAlign:'center'}} fontSize={32}>{t('DecentralizedTitle3')}</ThemeText>
-                <SpaceHeight height={20} heightApp={20}/>
-                <Text style={{textAlign:'center'}} fontSize={28} fontColor={'#777E90'}>{t('DecentralizedTitle3Des')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.non_collatera_image}/>
-            </CarouselBodyPhone>
-          </div>
-          <div >
-            <CarouselBodyPhone style={{
-              backgroundColor:themeDark?'#0D0D11':'white',
-            }}>
-              <Column >
-                <ThemeText style={{textAlign:'center'}} fontSize={32}>{t('DecentralizedTitle2')}</ThemeText>
-                <SpaceHeight height={20} heightApp={20}/>
-                <Text style={{textAlign:'center'}} fontSize={28} fontColor={'#777E90'}>{t('DecentralizedTitle2Des')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.creda_pool_img}/>
-            </CarouselBodyPhone>
-          </div>
-          <div>
-            <CarouselBodyPhone style={{
-              backgroundColor:themeDark?'#0D0D11':'white',
-            }}>
-              <Column >
-                <ThemeText style={{textAlign:'center'}} fontSize={32}>{t('DecentralizedTitle1')}</ThemeText>
-                <SpaceHeight height={20} heightApp={20}/>
-                <Text style={{textAlign:'center'}} fontSize={28} fontColor={'#777E90'}>{t('DecentralizedTitle1Des')}</Text>
-              </Column>
-              <CenterRightImage src={ImageCommon.integrate_image}/>
-            </CarouselBodyPhone>
-          </div>
-        </Carousel>
-      </div>
-    </RowCenter>
-    <SpaceHeight height={0} heightApp={115}/>
-    <ColumnCenter>
-      <ThemeText fontSize={60} fontWeight={'800'}>{t('CreditContract')}</ThemeText>
-      <SpaceHeight height={0} heightApp={10}/>
-      <ThemeText style={{width:'80%'}} fontSize={32}>{t('CreditContractDes')}</ThemeText>
-    </ColumnCenter>
-    <SpaceHeight height={0} heightApp={100}/>
-    <DownItemPhone style={{
-      backgroundColor:themeDark?'#0D0D11':'white',
-    }}>
-      <DownItemCircle src={ImageCommon.down_item_1_icon}/>
-      <ColumnCenter>
-        <ThemeText fontSize={32}>{t('CreditContractTitle1')}</ThemeText>
-        <SpaceHeight height={0} heightApp={28}/>
-        <Text fontSize={28} fontColor={'#777E90'}>{t('CreditContractTitle1Des')}</Text>
-      </ColumnCenter>
-    </DownItemPhone>
-    <SpaceHeight height={0} heightApp={26}/>
-    <DownItemPhone style={{
-      backgroundColor:themeDark?'#0D0D11':'white',
-    }}>
-      <DownItemCircle src={ImageCommon.down_item_2_icon}/>
-      <ColumnCenter>
-        <ThemeText fontSize={32}>{t('CreditContractTitle2')}</ThemeText>
-        <SpaceHeight height={0} heightApp={28}/>
-        <Text fontSize={28} fontColor={'#777E90'}>{t('CreditContractTitle2Des')}</Text>
-      </ColumnCenter>
-    </DownItemPhone>
-    <SpaceHeight height={0} heightApp={26}/>
-    <DownItemPhone style={{
-      backgroundColor:themeDark?'#0D0D11':'white',
-    }}>
-      <DownItemCircle src={ImageCommon.down_item_3_icon}/>
-      <ColumnCenter>
-        <ThemeText fontSize={32}>{t('CreditContractTitle3')}</ThemeText>
-        <SpaceHeight height={0} heightApp={28}/>
-        <Text fontSize={28} fontColor={'#777E90'}>{t('CreditContractTitle3Des')}</Text>
-      </ColumnCenter>
-    </DownItemPhone>
-    <SpaceHeight height={0} heightApp={26}/>
-    <LearnMore style={{
-      color:themeDark?'#F1F4F6':'#0D0D11',
-      borderColor:themeDark?'#F1F4F6':'#0D0D11',
-    }} onClick={()=>{
-      window.open('https://creda-app.gitbook.io/creda-protocol/')
-    }}>
-      Learn more
-    </LearnMore>
-    <SpaceHeight height={0} heightApp={26}/>
-    <RowCenter>
-      <Parenter>
-        <ThemeText fontSize={36} fontWeight={'600'}>{t('Partners')}</ThemeText>
-        <ColumnCenter>
-          <SpaceHeight height={50} heightApp={20}/>
-          <Parenter_icon_1 src={themeDark?ImageCommon.elastos_logo_white:ImageCommon.elastos_logo_black}/>
-          <SpaceHeight height={50} heightApp={10}/>
-          <Parenter_icon_2 src={themeDark?ImageCommon.arbiturn_logo_white:ImageCommon.arbiturn_logo_black}/>
-          <SpaceHeight height={50} heightApp={10}/>
-          <Parenter_icon_3 src={themeDark?ImageCommon.filda_logo_white:ImageCommon.filda_logo_black}/>
-        </ColumnCenter>
-      </Parenter>
-    </RowCenter>
   </MainFullBody>
 }
 
