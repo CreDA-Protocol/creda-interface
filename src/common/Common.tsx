@@ -314,10 +314,7 @@ export const getCurrencyFormatted = (num: string | number, decimals = 2) => {
   }
   return "$" + (num / si[i].value).toFixed(decimals).replace(rx, "$1") + si[i].symbol;
 }
-//一些配置信息
-export const config = {
-  refreshInterval: 5000
-}
+
 
 /**
  * 获取加速状态图标
@@ -357,26 +354,42 @@ export const CardPrice = [
   },
 ]
 
-export enum ChainId {
-  ethereum = 1,
-  ropsten = 3,
-  esc = 20,
-  elatest = 21,
-  heco = 128,
-  hecotest = 256,
-  bsc = 56,
-  local = 1337,
-  polygon = 137,
-  arbitrum = 42161,
-  kovan = 42,
-  rinkeby = 4,
-  goerli = 5,
-  celo = 42220,
-  celotest = 44787,
+export type ChainName = 'arbitrum' | 'esc' | 'elatest' | 'heco' | 'hecotest' | 'bsc' | 'local' | 'polygon' | 'ethereum' | 'ropsten' | 'celo' | 'celotest';
+
+export type ChainIdList = {
+  [chain in ChainName]: number;
+}
+
+export type ChainId = ChainIdList[keyof ChainIdList];
+
+export const ChainIds: ChainIdList = {
+  ethereum: 1,
+  ropsten: 3,
+  esc: 20,
+  elatest: 21,
+  heco: 128,
+  hecotest: 256,
+  bsc: 56,
+  local: 1337,
+  polygon: 137,
+  arbitrum: 42161,
+  //kovan: 42,
+  //rinkeby: 4,
+  //goerli: 5,
+  celo: 42220,
+  celotest: 44787
+}
+
+export function chainFromId(chainId: number): ChainName {
+  const chain = Object.entries(ChainIds).find(([key, val]) => val === chainId)?.[0] as ChainName;
+  if (!chain)
+    throw new Error(`Chain ID ${chainId} is not in the configured chains!`);
+
+  return chain;
 }
 
 // chainId
-export const chainIdConfig: any = {
+/* export const chainIdConfig: any = {
   [ChainId.esc]: "esc",
   [ChainId.elatest]: "elatest",
   [ChainId.heco]: "heco",
@@ -388,7 +401,7 @@ export const chainIdConfig: any = {
   [ChainId.kovan]: "kovan",
   [ChainId.celo]: "celo",
   [ChainId.celotest]: "celotest",
-}
+} */
 
 export enum ApprovalState {
   UNKNOWN,
@@ -1580,7 +1593,7 @@ export function switchNetwork(chainId: string) {
 }
 
 export function enableNetwork(chainId: number) {
-  if (chainId === ChainId.arbitrum || chainId === ChainId.esc || chainId === ChainId.celo || chainId === ChainId.celotest) {
+  if (chainId === ChainIds.arbitrum || chainId === ChainIds.esc || chainId === ChainIds.celo || chainId === ChainIds.celotest) {
     return true
   }
   return false
@@ -1594,7 +1607,7 @@ const rpcUrls = {
   20: "https://api.elastos.io/esc",           // Elastos mainnet
   21: "https://api-testnet.elastos.io/eth",       // Elastos testnet
   128: "https://heconode.ifoobar.com",             // HECO mainnet
-  [ChainId.arbitrum]: "https://arb1.arbitrum.io/rpc",        // Arbitrum
+  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc",        // Arbitrum
   56: "https://bsc-dataseed1.binance.org/",        // BSC
   42220: "https://forno.celo.org",        // Celo
   44787: "https://alfajores-forno.celo-testnet.org",        // Celo testnet
@@ -1609,8 +1622,8 @@ const walletConnect = {
   // Though, most other wallets such as TokenPocket consider that if no chainId is given by us,
   // they simply return chainId 1 (ethereum mainnet) which is not what we want.
   // Our solution is therefore to force the chainId to HECO for now.
-  chainId: ChainId.arbitrum,
-  networkId: ChainId.arbitrum,
+  chainId: ChainIds.arbitrum,
+  networkId: ChainIds.arbitrum,
   qrcode: true,
   clientMeta: {
     name: "CREDA.app",

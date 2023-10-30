@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import ImageCommon from "../../assets/common/ImageCommon";
 import ImageToken from "../../assets/tokens/ImageToken";
-import { ApprovalState, ChainId, GasInfo, balanceToBigNumber, colors, formatBalance } from "../../common/Common";
+import { ApprovalState, ChainIds, GasInfo, balanceToBigNumber, chainFromId, colors, formatBalance } from "../../common/Common";
 import {
     CustomIcon,
     FlexView,
@@ -19,7 +19,7 @@ import {
     MobileView,
     WinView
 } from "../../components/Common";
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useApprove, useCredaInfo, useWrapAmount } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
@@ -49,7 +49,7 @@ const BridgeContent = React.memo(({ isDark }: any) => {
     const { t } = useTranslation();
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const credaInfo = useCredaInfo()
 
     const [val, setVal] = React.useState('')
@@ -66,7 +66,7 @@ const BridgeContent = React.memo(({ isDark }: any) => {
     }
     let fromInfo = arb
     let toInfo = esc
-    if (chainId === ChainId.esc) {
+    if (chainId === ChainIds.esc) {
         fromInfo = esc
         toInfo = arb
     }
@@ -96,7 +96,7 @@ const BridgeContent = React.memo(({ isDark }: any) => {
     const addToast = useAddToast();
     const wrapInfo = useWrapAmount()
     const { show } = useLoadingContext()
-    const wrapChainId = chainId === ChainId.esc ? 0 : 1
+    const wrapChainId = chainId === ChainIds.esc ? 0 : 1
     function onWrap() {
         if (!RouterContract || !val) return
         show(LoadingType.confirm, "WRAP & BRIDGE")
@@ -291,7 +291,7 @@ const BridgeContent = React.memo(({ isDark }: any) => {
                     mSize={20}
                 ></CustomIcon>
                 <Input
-                    value={`${formatBalance(val) + ' WCREDA'} on ${chainId === ChainId.esc ? "ARB" : "ESC"}`}
+                    value={`${formatBalance(val) + ' WCREDA'} on ${chainId === ChainIds.esc ? "ARB" : "ESC"}`}
                     disabled={true}
                 ></Input>
             </InputView>
@@ -310,7 +310,7 @@ const BridgeContent = React.memo(({ isDark }: any) => {
                 <TitleH4
                     isDark={isDark}
                 >
-                    WCREDA on {chainId === ChainId.esc ? "ESC" : "ARB"}：{formatBalance(wrapInfo.data)}&nbsp;
+                    WCREDA on {chainId === ChainIds.esc ? "ESC" : "ARB"}：{formatBalance(wrapInfo.data)}&nbsp;
                 </TitleH4>
                 <CustomIcon
                     src={ImageToken.CREDA}

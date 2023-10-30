@@ -1,7 +1,7 @@
 import { TransactionResponse } from '@ethersproject/providers'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "../../common/Common"
+import { ChainIds, GasInfo, balanceToBigNumber, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
 import { ButtonClick } from '../../components/Button'
 import {
   GradientButton,
@@ -12,7 +12,7 @@ import {
   SpaceWidth,
   TextEqure
 } from '../../components/Row'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
@@ -95,14 +95,14 @@ export default function StakeModal({
 }) {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const maxNum = title === "Stake" ? data.lpBalance : data.staked;
   const addTransaction = useTransactionAdder();
   const IFNTContract = useContract(ContractConfig.CREDA[network]?.address, ContractConfig.CREDA.abi);
   const [input, setInput] = useState('')
   const loading = useContext(LoadingContext)
 
-  const showTitle = chainId == ChainId.esc ? 'ELA_CREDA_GLIDE_LP' : 'ETH_CREDA_SUSHI_LP'
+  const showTitle = chainId == ChainIds.esc ? 'ELA_CREDA_GLIDE_LP' : 'ETH_CREDA_SUSHI_LP'
 
   function onClick() {
     let endString = stringReplaceSpace(input)

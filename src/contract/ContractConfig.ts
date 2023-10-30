@@ -58,8 +58,29 @@ import WarshipExplore_ABI from '@abi/WarshipExplore.json';
 import CNETWORK_ABI from '@abi/cNETWORK.json';
 import cPiggyVault_ABI from '@abi/cPiggyVault.json';
 import cVault_ABI from '@abi/cVault.json';
+import { ChainName } from '@common/Common';
 
-const ContractConfig: any = {
+type ChainContractConfig = {
+  address: string;
+  abi?: any;
+}
+
+type ContractItemConfigBase = {
+  symbol: string;
+  abi?: any;
+  address?: string; // Default contract address, if no specific address given in chain configs
+  icon?: string;
+}
+
+type ContractItemConfig = ContractItemConfigBase & {
+  [chain in ChainName]?: ChainContractConfig;
+}
+
+type ContractsConfig = {
+  [contractName: string]: ContractItemConfig;
+}
+
+const ContractConfig: ContractsConfig = {
   WCREDA: {
     symbol: "WCREDA",
     abi: ERC20_ABI,
@@ -1277,7 +1298,7 @@ export const BankConfig: any = {
   USDC: {
     arbitrum: {
       symbol: "USDC",
-      address: ContractConfig.USDC.arbitrum.address,
+      address: ContractConfig.USDC.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cUSDC",
@@ -1291,7 +1312,7 @@ export const BankConfig: any = {
   USDT: {
     arbitrum: {
       symbol: "USDT",
-      address: ContractConfig.USDT.arbitrum.address,
+      address: ContractConfig.USDT.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cUSDT",
@@ -1305,7 +1326,7 @@ export const BankConfig: any = {
   WBTC: {
     arbitrum: {
       symbol: "WBTC",
-      address: ContractConfig.WBTC.arbitrum.address,
+      address: ContractConfig.WBTC.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cWBTC",
@@ -1319,7 +1340,7 @@ export const BankConfig: any = {
   DAI: {
     arbitrum: {
       symbol: "DAI",
-      address: ContractConfig.DAI.arbitrum.address,
+      address: ContractConfig.DAI.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cDAI",
@@ -1337,7 +1358,7 @@ export const EarnConfig: any = {
   USDC: {
     arbitrum: {
       symbol: "USDC",
-      address: ContractConfig.USDC.arbitrum.address,
+      address: ContractConfig.USDC.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cUSDC",
@@ -1349,14 +1370,14 @@ export const EarnConfig: any = {
     },
     esc: {
       cToken: {
-        address: ContractConfig.USDC.esc.address,
+        address: ContractConfig.USDC.esc?.address,
       }
     }
   },
   USDT: {
     arbitrum: {
       symbol: "USDT",
-      address: ContractConfig.USDT.arbitrum.address,
+      address: ContractConfig.USDT.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cUSDT",
@@ -1368,14 +1389,14 @@ export const EarnConfig: any = {
     },
     esc: {
       cToken: {
-        address: ContractConfig.USDT.esc.address,
+        address: ContractConfig.USDT.esc?.address,
       }
     }
   },
   WBTC: {
     arbitrum: {
       symbol: "WBTC",
-      address: ContractConfig.WBTC.arbitrum.address,
+      address: ContractConfig.WBTC.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cWBTC",
@@ -1387,14 +1408,14 @@ export const EarnConfig: any = {
     },
     esc: {
       cToken: {
-        address: ContractConfig.WBTC.esc.address,
+        address: ContractConfig.WBTC.esc?.address,
       }
     }
   },
   DAI: {
     arbitrum: {
       symbol: "DAI",
-      address: ContractConfig.DAI.arbitrum.address,
+      address: ContractConfig.DAI.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cDAI",
@@ -1406,14 +1427,14 @@ export const EarnConfig: any = {
     },
     esc: {
       cToken: {
-        address: ContractConfig.DAI.esc.address,
+        address: ContractConfig.DAI.esc?.address,
       }
     }
   },
   LINK: {
     arbitrum: {
       symbol: "LINK",
-      address: ContractConfig.LINK.arbitrum.address,
+      address: ContractConfig.LINK.arbitrum?.address,
       abi: ERC20_ABI,
       cToken: {
         symbol: "cDAI",
@@ -1425,35 +1446,35 @@ export const EarnConfig: any = {
     },
     esc: {
       cToken: {
-        address: ContractConfig.LINK.esc.address,
+        address: ContractConfig.LINK.esc?.address,
       }
     }
   },
   ELA: {
     esc: {
       cToken: {
-        address: ContractConfig.ELA.esc.address,
+        address: ContractConfig.ELA.esc?.address,
       }
     }
   },
   FILDA: {
     esc: {
       cToken: {
-        address: ContractConfig.FILDA.esc.address,
+        address: ContractConfig.FILDA.esc?.address,
       }
     }
   },
   GLIDE: {
     esc: {
       cToken: {
-        address: ContractConfig.GLIDE.esc.address,
+        address: ContractConfig.GLIDE.esc?.address,
       }
     }
   },
   ELK: {
     esc: {
       cToken: {
-        address: ContractConfig.ELK.esc.address,
+        address: ContractConfig.ELK.esc?.address,
       }
     }
   }

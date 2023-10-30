@@ -3,14 +3,14 @@ import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import ImageCommon from '../../assets/common/ImageCommon';
 import {
-  ChainId,
+  chainFromId,
   colors
 } from "../../common/Common";
 import { ButtonNormal } from '../../components/Button';
 import Column, { ColumnCenter } from '../../components/Column';
 import Modal from '../../components/NormalModal';
 import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../../components/Row';
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
@@ -119,7 +119,7 @@ export default function BorrowCollateralModal({
 
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
 
   // const [approval, approveCallback] = useApprove(ContractConfig.CREDA[network]?.address, ContractConfig.CreditNFT[network]?.address)
   const homoraContract = useContract(ContractConfig.HomoraBank[network]?.address, ContractConfig.HomoraBank.abi)

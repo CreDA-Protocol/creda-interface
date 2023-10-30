@@ -1,27 +1,23 @@
-import React, {useCallback, useContext, useState} from 'react'
+import { TransactionResponse } from '@ethersproject/providers'
+import { BigNumber } from "ethers"
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import Modal from '../Alert'
-import {RowCenter, Image, Text, SpaceWidth, SpaceHeight, RowFixed, RowBetween} from '../Row'
-import {ColumnCenter,ColumnEnd,ColumnBetween} from '../Column'
 import USDT_icon from '../../assets/tokens/USDT.png'
-import { isMobile } from 'react-device-detect'
 import {
   balanceToBigNumber,
-  bigNumberToBalance,
-  ChainId,
+  chainFromId,
   colors,
-  formatPercent,
   marketsConfig
-} from "../../common/Common";
-import {BigNumber} from "ethers";
-import {useDaInfo} from "../../contract";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {useContract} from "../../hooks/useContract";
-import {useTransactionAdder} from "../../state/transactions/hooks";
-import {TransactionResponse} from '@ethersproject/providers'
-import {LoadingCircle} from "../Common";
+} from "../../common/Common"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
+import { useDaInfo } from "../../contract"
+import { useContract } from "../../hooks/useContract"
+import { useTransactionAdder } from "../../state/transactions/hooks"
+import Modal from '../Alert'
+import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
+import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
-import {Button} from "antd";
+import { Button } from "antd"
 
 const Container = styled.div`
   height:480px;
@@ -91,48 +87,48 @@ const MaxButton = styled.div`
 export default function RepayModal({
   isOpen,
   onDismiss,
-    symbol,
-    markets
+  symbol,
+  markets
 }: {
   isOpen: boolean
   onDismiss: () => void,
-  symbol:string,
-  markets:any
+  symbol: string,
+  markets: any
 }) {
-  const [input,setInput] = useState("");
+  const [input, setInput] = useState("");
   // console.log(markets,"markets")
-  const daiInfo = useDaInfo(symbol,markets);
+  const daiInfo = useDaInfo(symbol, markets);
   const maxNum = daiInfo.borrowBalance || 0;
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
-  const qContract = useContract(marketsConfig[symbol]?.[network].qToken.address,marketsConfig[symbol]?.[network].qToken.abi)
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
+  const qContract = useContract(marketsConfig[symbol]?.[network].qToken.address, marketsConfig[symbol]?.[network].qToken.abi)
   const addTransaction = useTransactionAdder();
-  const [repayAllLoading,setRepayAllLoading] = useState(false);
-  const [repayCustomLoading,setRepayCustomLoading] = useState(false);
+  const [repayAllLoading, setRepayAllLoading] = useState(false);
+  const [repayCustomLoading, setRepayCustomLoading] = useState(false);
 
-  const onMax=()=>{
-      setInput(maxNum.toString())
+  const onMax = () => {
+    setInput(maxNum.toString())
   }
-  function onRepayAll(all=true) {
-    const minusOne = all?BigNumber.from(2).pow(256).sub(1):balanceToBigNumber(input);
-    console.log(minusOne,"minusOne")
+  function onRepayAll(all = true) {
+    const minusOne = all ? BigNumber.from(2).pow(256).sub(1) : balanceToBigNumber(input);
+    console.log(minusOne, "minusOne")
     all ? setRepayAllLoading(true) : setRepayCustomLoading(true);
     qContract?.repayBorrow(minusOne)
-        .then(async (response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: 'Repay '+symbol,
-          })
-          await response.wait();
-          onDismiss();
-          setRepayAllLoading(false)
-          setRepayCustomLoading(false)
+      .then(async (response: TransactionResponse) => {
+        addTransaction(response, {
+          summary: 'Repay ' + symbol,
         })
-        .catch((err: any) => {
-          console.log(err)
-          setRepayAllLoading(false)
-          setRepayCustomLoading(false)
-        })
+        await response.wait();
+        onDismiss();
+        setRepayAllLoading(false)
+        setRepayCustomLoading(false)
+      })
+      .catch((err: any) => {
+        console.log(err)
+        setRepayAllLoading(false)
+        setRepayCustomLoading(false)
+      })
   }
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
@@ -141,26 +137,26 @@ export default function RepayModal({
           <div>
             <ColumnCenter>
               <RowCenter>
-                <Image size={46} src={USDT_icon}/>
-                <SpaceWidth width={40} widthApp={20}/>
+                <Image size={46} src={USDT_icon} />
+                <SpaceWidth width={40} widthApp={20} />
                 <Text fontSize={34} fontColor={'#3A3A3A'}>{symbol}</Text>
               </RowCenter>
-              <SpaceHeight height={30} heightApp={15}/>
+              <SpaceHeight height={30} heightApp={15} />
               <Text fontSize={24} fontColor={'#3A3A3A'}>
                 Repay {symbol}
-                </Text>
+              </Text>
             </ColumnCenter>
-            <SpaceHeight height={50} heightApp={25}/>
+            <SpaceHeight height={50} heightApp={25} />
             {
-             <ColumnEnd>
-              <Text fontSize={20} fontColor={'#3A3A3A'}>{maxNum.toFixed(4)} {symbol}</Text>
-            </ColumnEnd>
+              <ColumnEnd>
+                <Text fontSize={20} fontColor={'#3A3A3A'}>{maxNum.toFixed(4)} {symbol}</Text>
+              </ColumnEnd>
             }
-            <SpaceHeight height={20} heightApp={10}/>
+            <SpaceHeight height={20} heightApp={10} />
             <InputDiv>
               <PanelValue
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
+                value={input}
+                onChange={e => setInput(e.target.value)}
               />
               <MaxButton onClick={onMax}>
                 MAX
@@ -168,8 +164,8 @@ export default function RepayModal({
             </InputDiv>
           </div>
           <RowBetween style={{
-            width:'100%',
-            }}>
+            width: '100%',
+          }}>
             <Button
               type={"primary"}
               onClick={onDismiss}
@@ -180,15 +176,15 @@ export default function RepayModal({
               block
               type={"primary"}
               size={"large"}
-              onClick={()=>onRepayAll(true)}
+              onClick={() => onRepayAll(true)}
               loading={repayAllLoading}
             >Repay All</ReapyAllButton>
             <Button
-                type={"primary"}
-                size={"large"}
-                block
-                onClick={()=>onRepayAll(false)}
-                loading={repayCustomLoading}
+              type={"primary"}
+              size={"large"}
+              block
+              onClick={() => onRepayAll(false)}
+              loading={repayCustomLoading}
             >Repay Custom</Button>
             {/*<Button style={{ flex:1,height:isMobile ? 30 : 60}}*/}
             {/*        backgroundColor={'#4022F3'}*/}

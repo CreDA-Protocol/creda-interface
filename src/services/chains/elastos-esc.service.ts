@@ -2,13 +2,13 @@ import ESC from "@assets/tokens/ELA.png";
 import axios from "axios";
 import { BigNumber } from "ethers";
 
-import { ChainId, bigNumberToBalance, formatBalance, getPriceESC } from "../../common/Common";
+import { ChainId, ChainIds, bigNumberToBalance, formatBalance, getPriceESC } from "../../common/Common";
 import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
 
 /**
  * Fetches ELA, ERC20/721/1155 token balances for an EVM (0x) address.
  */
-export async function elastosESCFetchTokenBalances(accountAddress: string, chainId: number): Promise<WalletList> {
+export async function elastosESCFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletList> {
   let allTokenInfos: TokenInfo[] = [];
 
   let elaToken = await elastosESCFetchELABalances(accountAddress, chainId);
@@ -23,7 +23,7 @@ export async function elastosESCFetchTokenBalances(accountAddress: string, chain
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function elastosESCFetchELABalances(address: string, chainId: number): Promise<TokenInfo> {
+export function elastosESCFetchELABalances(address: string, chainId: ChainId): Promise<TokenInfo> {
   return new Promise((resolve, reject) => {
     let rpcUrl = 'https://api.elastos.io/esc';
     if (chainId === 21) {
@@ -60,7 +60,7 @@ export function elastosESCFetchELABalances(address: string, chainId: number): Pr
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function elastosESCFetchERC20TokenBalances(accountAddress: string, chainId: number): Promise<TokenInfo[]> {
+export function elastosESCFetchERC20TokenBalances(accountAddress: string, chainId: ChainId): Promise<TokenInfo[]> {
   return new Promise((resolve, reject) => {
     let browserApiUrl = 'https://esc.elastos.io/api';
     if (chainId === 21) {
@@ -142,8 +142,8 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
 
 export function elastosESCEnableNetwork(chainId: number) {
   switch (chainId) {
-    case ChainId.esc:
-    case ChainId.elatest:
+    case ChainIds.esc:
+    case ChainIds.elatest:
       return true;
     default:
       return false;

@@ -6,10 +6,11 @@ import {
     ApprovalState,
     BSC_PROVIDER,
     ChainId,
+    ChainIds,
     SwapList,
     balanceToBigNumber,
     bigNumberToBalance,
-    config,
+    chainFromId,
     enableNetwork,
     formatBalance,
     getBuildStatus,
@@ -22,18 +23,19 @@ import {
     packageInfoConfig,
     walletInfo
 } from '../common/Common'
-import { NetworkTypeContext, WalletAddressContext } from "../context"
+import { NetworkTypeContext, WalletAddressContext } from "../contexts"
 import { useContract, useContractWithProvider, useTokenContract } from "../hooks/useContract"
 import { useTransactionAdder } from "../state/transactions/hooks"
 import ContractConfig, { BankConfig, EarnConfig } from './ContractConfig'
 
 import ERC20_ABI from '@abi/ERC20.json'
+import { GlobalConfiguration } from '@common/config'
 import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
 import { celoFetchTokenBalances } from 'src/services/chains/celo.service'
 import { WalletList, WalletToken } from '../model/wallet'
-import { ChainType2Id, ProjectConfig } from "../pages/Profile"
+import { ProjectConfig } from "../pages/Profile"
 import { LoadingContext, LoadingType } from "../provider/LoadingProvider"
 import { elastosESCFetchTokenBalances } from '../services/chains/elastos-esc.service'
 import { Covalent_enableNetwork, covalentFetchTokenBalances } from '../services/covalent.service'
@@ -44,7 +46,7 @@ import { Covalent_enableNetwork, covalentFetchTokenBalances } from '../services/
 export function useApproveCredit(): number {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [approve, setApprove] = useState(ApprovalState.PENDING);
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
     useEffect(() => {
@@ -61,7 +63,7 @@ export function useApproveCredit(): number {
                     }
                 })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [chainId, account, credaContract])
     return approve;
@@ -73,7 +75,7 @@ export function useApproveCredit(): number {
 export function useCreditPoints(): string {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [points, setPoints] = useState("");
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
     useEffect(() => {
@@ -86,7 +88,7 @@ export function useCreditPoints(): string {
                     setPoints(bigNumberToBalance(res));
                 })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, credaContract])
     return points;
@@ -98,7 +100,7 @@ export function useCreditPoints(): string {
 export function useBalance(symbol: string): string {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [balance, setBlance] = useState("");
     const tokenContract = useTokenContract(ContractConfig[symbol][network]?.address);
 
@@ -113,7 +115,7 @@ export function useBalance(symbol: string): string {
                     setBlance(bigNumberToBalance(res));
                 })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, tokenContract])
     return balance;
@@ -125,7 +127,7 @@ export function useBalance(symbol: string): string {
 export function useBalanceV2(symbol: string): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({
         loading: true,
         balance: 0
@@ -145,7 +147,7 @@ export function useBalanceV2(symbol: string): any {
                     });
                 })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, tokenContract])
     return info;
@@ -157,7 +159,7 @@ export function useBalanceV2(symbol: string): any {
 export function useMiningInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({});
     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
@@ -176,7 +178,7 @@ export function useMiningInfo(): any {
             }
             setInfo(obj);
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, credaContract, credaPlusContract])
 
@@ -215,7 +217,7 @@ export function useMiningInfo(): any {
 export function useStakeV2(symbol: string): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -238,7 +240,7 @@ export function useStakeV2(symbol: string): any {
                     });
                 })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, credaContract, network, symbol])
     return info;
@@ -315,7 +317,7 @@ const useAllowance = (tokenAddress: string, spender: string) => {
     const token = useTokenContract(tokenAddress);
     // const {chainId} = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    // const network = ChainId[chainId];
+    // const network = chainFromId(chainId);
 
     useEffect(() => {
         const getResult = () => {
@@ -340,7 +342,7 @@ const useAllowance = (tokenAddress: string, spender: string) => {
 export function useCardInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({});
     const nftContract = useContract(ContractConfig.CreditNFT[network]?.address, ContractConfig.CreditNFT.abi);
     // console.log(nftContract,network,ContractConfig.CreditNFT[network]?.address, ContractConfig.CreditNFT.abi,"nftContract")
@@ -357,7 +359,7 @@ export function useCardInfo(): any {
             }
             setInfo(obj);
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, nftContract])
 
@@ -370,7 +372,7 @@ export function useCardInfo(): any {
 export function useMarketsResult() {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({});
     let markets: any = Object.values(BankConfig);
     let contractCallContext: ContractCallContext[] = []
@@ -449,7 +451,7 @@ export function useMarketsResult() {
                 if (!walletInfo.provider) {
                     return
                 }
-                if (chainId !== ChainId.arbitrum) {
+                if (chainId !== ChainIds.arbitrum) {
                     return
                 }
 
@@ -474,7 +476,7 @@ export function useMarketsResult() {
         }
 
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, contractCallContext, contractCallResult, network]);
 
@@ -487,7 +489,7 @@ export function useMarketsResult() {
 export function useDaInfo(symbol: string, markets: any): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    // const network = ChainId[chainId];
+    // const network = chainFromId(chainId);
     const [info, setInfo] = useState({
         loading: true
     });
@@ -536,7 +538,7 @@ export function useDaInfo(symbol: string, markets: any): any {
             // console.log(obj)
             setInfo(obj);
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, markets, blocksPerDay, symbol])
 
@@ -549,7 +551,7 @@ export function useDaInfo(symbol: string, markets: any): any {
 export function useEarnInfo(symbol: string, markets: any): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({
         loading: true
     });
@@ -604,7 +606,7 @@ export function useEarnInfo(symbol: string, markets: any): any {
 
             setInfo(obj);
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, markets, blocksPerDay, symbol])
 
@@ -617,7 +619,7 @@ export function useEarnInfo(symbol: string, markets: any): any {
 export function useEarnResult() {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({});
     let markets: any = Object.values(EarnConfig);
     let contractCallContext: ContractCallContext[] = [];
@@ -694,7 +696,7 @@ export function useEarnResult() {
             if (!walletInfo.provider) {
                 return
             }
-            if (chainId !== ChainId.arbitrum) {
+            if (chainId !== ChainIds.arbitrum) {
                 return
             }
             const multicall = new Multicall({
@@ -716,7 +718,7 @@ export function useEarnResult() {
         }
 
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, contractCallContext, contractCallResult, network])
     return info;
@@ -835,7 +837,7 @@ function isNativeToken(symbol: string) {
 export function useMyStar(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -857,7 +859,7 @@ export function useMyStar(): any {
                 pid: Number(pid.toString())
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, initContract])
     return info;
@@ -869,7 +871,7 @@ export function useMyStar(): any {
 export function useStarInfo(pid: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -888,7 +890,7 @@ export function useStarInfo(pid: number): any {
                 amount: Number(amount.toString())
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, initContract, pid])
     return info;
@@ -900,7 +902,7 @@ export function useStarInfo(pid: number): any {
 export function useWalletInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState({
         loading: true,
         ETH: 0,
@@ -938,7 +940,7 @@ export function useWalletInfo(): any {
                 CREDA: Number(bigNumberToBalance(CREDA, creda_decimals)),
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, USDTContract, USDContract, DAIContract, CREDAContract, network])
     return info;
@@ -950,7 +952,7 @@ export function useWalletInfo(): any {
 export function useGiftInfo(tid: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -979,7 +981,7 @@ export function useGiftInfo(tid: number): any {
                 planet: Number(infoRes.planet.toString()),
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, initContract, tid])
     return info;
@@ -993,7 +995,7 @@ export function useGiftInfo(tid: number): any {
 export function useEarnedUSDTInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1012,7 +1014,7 @@ export function useEarnedUSDTInfo(id: number): any {
                 earned: Number(infoRes.toString())
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, collectContract, id, network])
     return info;
@@ -1025,7 +1027,7 @@ export function useEarnedUSDTInfo(id: number): any {
 export function useEarnedsCASHInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1044,7 +1046,7 @@ export function useEarnedsCASHInfo(id: number): any {
                 earned: Number(infoRes.toString())
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, collectContract, id, network])
     return info;
@@ -1054,7 +1056,7 @@ export function useEarnedsCASHInfo(id: number): any {
 export function useSwapBalance() {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState<any>({
         loading: true,
         data: {}
@@ -1104,7 +1106,7 @@ export function useSwapBalance() {
                 data: contractCallResult
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, network])
     return info;
@@ -1113,7 +1115,7 @@ export function useSwapBalance() {
 export function useSwapPrice(amount: number, tokens: string[]) {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const routerContract = useContract(ContractConfig.MdexRouter[network]?.address, ContractConfig.MdexRouter.abi);
     const [info, setInfo] = useState<any>({
         loading: true,
@@ -1151,7 +1153,7 @@ export function useSwapPrice(amount: number, tokens: string[]) {
             })
         };
 
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, routerContract, amount, tokens, path])
     return info;
@@ -1175,7 +1177,7 @@ export async function getSwapPrice(amount: number, path: string[], routerContrac
 export function usePoolInfo(tokenA: string, tokenB: string) {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const routerContract = useContract(ContractConfig.MdexRouter[network]?.address, ContractConfig.MdexRouter.abi);
     const factoryContract = useContract(ContractConfig.MdexFactory[network]?.address, ContractConfig.MdexFactory.abi);
     const [info, setInfo] = useState<any>({
@@ -1207,7 +1209,7 @@ export function usePoolInfo(tokenA: string, tokenB: string) {
             })
         };
 
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, factoryContract, network, routerContract, tokenA, tokenB])
     return info;
@@ -1219,7 +1221,7 @@ export function usePoolInfo(tokenA: string, tokenB: string) {
 export function useWarShipBuildInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1266,7 +1268,7 @@ export function useWarShipBuildInfo(): any {
                 })
             }
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, gameBuildContract])
     return info;
@@ -1278,7 +1280,7 @@ export function useWarShipBuildInfo(): any {
 export function useMyShip(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1303,7 +1305,7 @@ export function useMyShip(): any {
                 data: data
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, gameBuildContract])
     return info;
@@ -1315,7 +1317,7 @@ export function useMyShip(): any {
 export function useShipInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1357,7 +1359,7 @@ export function useShipInfo(id: number): any {
                 console.log(e)
             }
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, gameBuildContract, id])
     return info;
@@ -1369,7 +1371,7 @@ export function useShipInfo(id: number): any {
 export function useOpretaBuildInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1409,7 +1411,7 @@ export function useOpretaBuildInfo(id: number): any {
                 })
             }
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, gameBuildContract, id])
     return info;
@@ -1421,7 +1423,7 @@ export function useOpretaBuildInfo(id: number): any {
 export function useDataBaseBuildInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1462,7 +1464,7 @@ export function useDataBaseBuildInfo(id: number): any {
                 })
             }
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, gameBuildContract, id])
     return info;
@@ -1474,7 +1476,7 @@ export function useDataBaseBuildInfo(id: number): any {
 export function useExploreInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1507,7 +1509,7 @@ export function useExploreInfo(): any {
                 })
             }
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, exploreContract])
     return info;
@@ -1517,7 +1519,7 @@ export function useExploreInfo(): any {
 export function useBuildTasking(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const [info, setInfo] = useState<any>({
         loading: true,
         data: {}
@@ -1585,7 +1587,7 @@ export function useBuildTasking(): any {
                 data: contractCallResult
             })
         }
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, network])
     return info;
@@ -1644,55 +1646,60 @@ export function getPrice(markets: any, symbol: string) {
     return price;
 }
 
-/***
- * 船新版本
+type DefiboxState = {
+    loading: boolean;
+    support: boolean;
+    data: WalletList;
+}
+
+const defiBoxInitialState: DefiboxState = {
+    loading: true,
+    support: false,
+    data: {
+        total: 0,
+        tokens: [] as WalletToken[]
+    }
+};
+
+/**
+ * Gets wallet information from third party api.
+ * "Information" meaning, a list of tokens and their balance for the given wallet address.
  */
-// 获取DeFiBox钱包列表
-export function useBoxWalletList(chainType: string): any {
+export function useDefiBoxWalletInfo(targetChainId: ChainId) {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    // const network = ChainId[chainId];
-    const chainRef = useRef(chainType)
-    const initialState = {
-        loading: true,
-        support: false,
-        data: {
-            total: 0,
-            tokens: [] as WalletToken[]
-        }
-    }
-    const [info, setInfo] = useState(initialState);
+    // const network = chainFromId(chainId);
+    const chainRef = useRef<ChainId>(targetChainId);
+    const [info, setInfo] = useState<DefiboxState>(defiBoxInitialState);
 
     useEffect(() => {
-        const getResult = async () => {
+        const fetchTokenInfo = async () => {
             try {
-                if (!account || !chainType) {
+                if (!account || !targetChainId)
                     return;
-                }
-                if (chainRef.current !== chainType) {
-                    setInfo(initialState)
-                }
+
+                // Active chain changed, reset the info
+                if (chainRef.current !== targetChainId)
+                    setInfo(defiBoxInitialState)
 
                 let support = true;
-                let data: WalletList = {
-                    total: 0,
-                    tokens: [] as WalletToken[]
-                };
-                const networkChainId = ChainType2Id[chainType]
+                let data: WalletList = { total: 0, tokens: [] };
 
-                switch (networkChainId) {
-                    case ChainId.celo:
-                    case ChainId.celotest:
-                        data = await celoFetchTokenBalances(account, networkChainId)
+                console.log("useDefiBoxWalletInfo starting fetch for:", account, targetChainId);
+
+                switch (targetChainId) {
+                    case ChainIds.celo:
+                    case ChainIds.celotest:
+                        data = await celoFetchTokenBalances(account, targetChainId)
                         break;
-                    case ChainId.esc:
-                    case ChainId.elatest:
-                        data = await elastosESCFetchTokenBalances(account, networkChainId)
+                    case ChainIds.esc:
+                    case ChainIds.elatest:
+                        data = await elastosESCFetchTokenBalances(account, targetChainId)
                         break;
                     default:
-                        if (Covalent_enableNetwork(networkChainId)) {
-                            data = await covalentFetchTokenBalances(account, networkChainId)
+                        if (Covalent_enableNetwork(targetChainId)) {
+                            data = await covalentFetchTokenBalances(account, targetChainId)
                         } else {
                             support = false;
                         }
@@ -1706,13 +1713,16 @@ export function useBoxWalletList(chainType: string): any {
                     })
             } catch (e) {
                 logError("useBoxWalletList", e)
-                setInfo(initialState)
+                setInfo(defiBoxInitialState)
             }
         }
-        getResult()
+
+        fetchTokenInfo();
+
         // const interval = setInterval(getResult, config.refreshInterval);
         // return () => clearInterval(interval);
-    }, [account, chainType, initialState])
+    }, [account, targetChainId]);
+
     return info;
 }
 
@@ -1721,7 +1731,7 @@ export function useBoxApproveList(chainType: string): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    // const network = ChainId[chainId];
+    // const network = chainFromId(chainId);
     const chainRef = useRef(chainType);
     const initialState = {
         loading: true,
@@ -1762,7 +1772,7 @@ export function useBoxProjectList(chainType: string, projectName: string): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account = "0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1804,7 +1814,7 @@ export function useBoxProjectAll(chainType: string, projectNames: string[]): any
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const chainRef = useRef(chainType)
     const initialState: any = {
         loading: true,
@@ -1860,7 +1870,7 @@ export function useBoxProjectAll(chainType: string, projectNames: string[]): any
 export function useUnLockInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1915,19 +1925,19 @@ export function useUnLockInfo(): any {
             })
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, INFTContract, INFTUnlockContract, INFTLpContract, network])
     return info;
 }
 
 /**
- * 获取Credit Score
+ * Get latest credit score information.
  */
 export function useCreditInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -1937,7 +1947,6 @@ export function useCreditInfo(): any {
     });
     const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
     const APIContract = useContract(ContractConfig.APIConsumer[network]?.address, ContractConfig.APIConsumer.abi)
-
 
     useEffect(() => {
         const getResult = async () => {
@@ -1956,7 +1965,7 @@ export function useCreditInfo(): any {
                     did = await APIContract.getDidByAddress(account)
                 } catch { }
 
-                if (chainId === ChainId.esc) {
+                if (chainId === ChainIds.esc) {
                     const creditScore = await CredaContract.creditScore(account)
                     setInfo({
                         loading: false,
@@ -1990,7 +1999,7 @@ export function useCreditInfo(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, CredaContract, APIContract])
     return info;
@@ -2001,7 +2010,7 @@ export function useCreditInfo(): any {
 export function useCreditScore(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const credaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
     const [info, setInfo] = useState({
         loading: true,
@@ -2014,7 +2023,7 @@ export function useCreditScore(): any {
                     return;
                 }
                 let score = 0;
-                if (chainId === ChainId.esc) {
+                if (chainId === ChainIds.esc) {
                     const creditScore = await credaContract.creditScore(account)
                     setInfo({
                         loading: false,
@@ -2042,7 +2051,7 @@ export function useCreditScore(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, credaContract, chainId])
     return info;
@@ -2057,7 +2066,7 @@ function calcScore(account: string): number {
 export function useCredaInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2088,7 +2097,7 @@ export function useCredaInfo(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, CredaContract])
     return info;
@@ -2101,7 +2110,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account = "0xa3d41a68dbf6427aeF1eAD570763eDdb01D3E022"
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2115,7 +2124,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
     });
     const arbContract = useContract(ContractConfig.PersonalDataMinePoolPlus[network]?.address, ContractConfig.PersonalDataMinePoolPlus.abi)
     const escContract = useContract(ContractConfig.PersonalDataMinePoolV2[network]?.address, ContractConfig.PersonalDataMinePoolV2[network]?.abi)
-    const InitialMintContract = chainId === ChainId.esc ? escContract : arbContract
+    const InitialMintContract = chainId === ChainIds.esc ? escContract : arbContract
     const tokenContract = useContract(ContractConfig[symbol][network]?.address, ERC20_ABI)
     const credaContract = useContract(ContractConfig.PersonalDataMinePoolFix[network]?.address, ContractConfig.PersonalDataMinePoolFix.abi);
 
@@ -2128,7 +2137,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
                 const decimals: number = await tokenContract.decimals()
                 const balance: BigNumber = await tokenContract.balanceOf(account)
                 const staked: BigNumber = await InitialMintContract?.balanceOf(account, BigNumber.from(pid));
-                const claimable: BigNumber = await (chainId === ChainId.esc ? InitialMintContract?.earned(account) : InitialMintContract?.earned(account, BigNumber.from(pid)))
+                const claimable: BigNumber = await (chainId === ChainIds.esc ? InitialMintContract?.earned(account) : InitialMintContract?.earned(account, BigNumber.from(pid)))
                 const poolInfo: any = await InitialMintContract?.poolInfo(BigNumber.from(pid))
                 const totalSupply: BigNumber = await InitialMintContract.totalSupply(BigNumber.from(pid))
                 const priceConfig: any = {
@@ -2159,7 +2168,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, InitialMintContract, tokenContract, credaContract, pid, symbol])
     return info;
@@ -2173,7 +2182,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account = "0xa3d41a68dbf6427aeF1eAD570763eDdb01D3E022"
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2201,7 +2210,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                 const decimals: number = await tokenContract.decimals()
                 let balance: BigNumber = BigNumber.from(0)
 
-                if (chainId === ChainId.esc && symbol === 'ELA') {
+                if (chainId === ChainIds.esc && symbol === 'ELA') {
                     balance = await walletInfo.provider?.getBalance(account) as BigNumber
                 } else {
                     balance = await ctokenContract.balanceOf(account)
@@ -2223,7 +2232,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
                     CPDAI: 1.001
                 }
                 let price: any = ''
-                if (chainId === ChainId.esc) {
+                if (chainId === ChainIds.esc) {
                     const priceInfo = await getPriceESC(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
                     if (priceInfo && priceInfo[0])
                         price = Number(formatBalance(priceInfo[0].derivedUSD, 4))
@@ -2267,7 +2276,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, InitialMintContract, tokenContract, credaContract, ctokenContract, network, pid, symbol])
     return info;
@@ -2279,7 +2288,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
 export function useCNFTInfo(): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2314,7 +2323,7 @@ export function useCNFTInfo(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, CNFTContract, credaContract])
     return info;
@@ -2326,7 +2335,7 @@ export function useCNFTInfo(): any {
 export function useCnetWorkInfo(id: number): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2369,7 +2378,7 @@ export function useCnetWorkInfo(id: number): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, contract, id])
     return info;
@@ -2379,7 +2388,7 @@ export function useCnetWorkInfo(id: number): any {
 export function useSushiPrice(amount: number, path: string[]): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     const [info, setInfo] = useState({
         loading: true,
@@ -2406,7 +2415,7 @@ export function useSushiPrice(amount: number, path: string[]): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [account, chainId, contract, amount, path])
     return info;
@@ -2432,7 +2441,7 @@ export function useIconPrice(icon: string): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [icon])
     return price;
@@ -2459,7 +2468,7 @@ export function usePositionInfo(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [])
     return positionInfo;
@@ -2491,7 +2500,7 @@ export function useBscUsdt(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [contract, account])
     return data;
@@ -2501,7 +2510,7 @@ export function useWrapAmount(): any {
 
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const contract = useContract(ContractConfig.Router[network]?.address, ContractConfig.Router.abi)
     const [data, setData] = useState({
         loading: true,
@@ -2513,7 +2522,7 @@ export function useWrapAmount(): any {
             if (!contract || !account) {
                 return
             }
-            const wrapChainId = chainId === ChainId.esc ? 0 : 1
+            const wrapChainId = chainId === ChainIds.esc ? 0 : 1
             try {
                 const res: any = await contract.wrapAmount(BigNumber.from(wrapChainId))
                 setData({
@@ -2525,7 +2534,7 @@ export function useWrapAmount(): any {
             }
         };
         getResult()
-        const interval = setInterval(getResult, config.refreshInterval);
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
         return () => clearInterval(interval);
     }, [contract, account, chainId])
     return data;

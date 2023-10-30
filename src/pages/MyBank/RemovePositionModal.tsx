@@ -1,23 +1,18 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
-import styled from 'styled-components'
-import Modal from '../../components/NormalModal'
-import {
-  balanceToBigNumber,
-  bigNumberToBalance,
-  ChainId,
-  mathPriceTo4,
-  mathPriceTo6,
-  mathPriceTo8,
-  mathPriceTo12,
-  mathPriceTo18
-} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import ImageCommon from '../../assets/common/ImageCommon'
-import Column,{ColumnCenter} from '../../components/Column';
-import Row,{RowCenter,RowBetween, SpaceHeight, Text, RowFixed, RowEnd} from '../../components/Row';
-import { CardPair, LoadingRow } from '../../components/Common';
-import {ButtonNormal} from '../../components/Button'
+import { useContext, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
+import styled from 'styled-components';
+import ImageCommon from '../../assets/common/ImageCommon';
+import {
+  chainFromId,
+  mathPriceTo18,
+  mathPriceTo6
+} from "../../common/Common";
+import { ButtonNormal } from '../../components/Button';
+import Column, { ColumnCenter } from '../../components/Column';
+import { CardPair } from '../../components/Common';
+import Modal from '../../components/NormalModal';
+import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '../../components/Row';
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 
 export const DrawButton = styled.div`
   color:white;
@@ -133,74 +128,74 @@ export default function RemovePositionModal({
   pairInfo,
   onRemove
 }: {
-  pairInfo:any,
+  pairInfo: any,
   isOpen: boolean
   onDismiss: () => void,
-  onRemove: (info:any) => void,
+  onRemove: (info: any) => void,
 }) {
   const progress = useRef(0)
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
 
-  const [icon1Value,setIcon1Value] = useState(0)
-  const [icon2Value,setIcon2Value] = useState(0)
+  const [icon1Value, setIcon1Value] = useState(0)
+  const [icon2Value, setIcon2Value] = useState(0)
 
-  function onProgress(value:number){
+  function onProgress(value: number) {
     setIcon1Value(mathPriceTo18(Number(pairInfo.icon1Debts) * value / 100))
     setIcon2Value(pairInfo.pair2 == 'DAI' ? mathPriceTo18(Number(pairInfo.icon2Debts) * value / 100) : mathPriceTo6(Number(pairInfo.icon2Debts) * value / 100))
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={()=>{}}>
+    <Modal isOpen={isOpen} onDismiss={() => { }}>
       <ColumnCenter>
         <MainView>
-          <Column style={{width:'100%'}}>
+          <Column style={{ width: '100%' }}>
             <Row>
-              <BackButton onClick={()=>{
+              <BackButton onClick={() => {
                 progress.current = 0
                 onDismiss()
                 setIcon1Value(0)
                 setIcon2Value(0)
               }}>
-                <ArrowLeft src={ImageCommon.fanhui}/>
+                <ArrowLeft src={ImageCommon.fanhui} />
               </BackButton>
               <RowBetween>
                 <Text fontSize={28} fontWeight={'bold'}>Your Position Balance</Text>
               </RowBetween>
             </Row>
-            <SpaceHeight height={40} heightApp={20}/>
+            <SpaceHeight height={40} heightApp={20} />
           </Column>
           <Container>
             <Column>
               <Text fontSize={28} fontWeight={'bold'}>I'd like to remove</Text>
-              <SpaceHeight height={20} heightApp={10}/>
-              <Progress callBack={(value:number)=>{
-                console.log('callBack===',value);
+              <SpaceHeight height={20} heightApp={10} />
+              <Progress callBack={(value: number) => {
+                console.log('callBack===', value);
                 progress.current = value
                 onProgress(value)
-              }}/>
-              <SpaceHeight height={40} heightApp={20}/>
+              }} />
+              <SpaceHeight height={40} heightApp={20} />
               <Text fontSize={28} fontWeight={'bold'}>To receive</Text>
-              <SpaceHeight height={20} heightApp={10}/>
+              <SpaceHeight height={20} heightApp={10} />
               <RowBetween>
-                <CardPair pair1={pairInfo.pair1} showTitle={true}/>
+                <CardPair pair1={pairInfo.pair1} showTitle={true} />
                 <Text fontSize={28} fontWeight={'bold'}>{icon1Value}</Text>
               </RowBetween>
               <RowBetween>
-                <CardPair pair1={pairInfo.pair2} showTitle={true}/>
+                <CardPair pair1={pairInfo.pair2} showTitle={true} />
                 <Text fontSize={28} fontWeight={'bold'}>{icon2Value}</Text>
               </RowBetween>
             </Column>
-            <FarmButton onClick={()=>{
-              if (progress.current == 0){
+            <FarmButton onClick={() => {
+              if (progress.current == 0) {
                 return
               }
               onRemove({
                 ...pairInfo,
                 icon1Value,
                 icon2Value,
-                progress:progress.current
+                progress: progress.current
               })
               onDismiss()
             }}>Remove</FarmButton>
@@ -212,63 +207,63 @@ export default function RemovePositionModal({
 }
 
 const pWidth = isMobile ? 40 : 100
-function Progress({callBack}:any){
-  const [input,setInput] = useState('')
-  const [value,setValue] = useState(0)
+function Progress({ callBack }: any) {
+  const [input, setInput] = useState('')
+  const [value, setValue] = useState(0)
 
   return <ProgressDown>
     <Column>
       <ProgressTopView>
-        <ProgressLine/>
+        <ProgressLine />
         <ProgressCircle style={{
-          left:(pWidth / 2) + 0 * pWidth,
-          width:value == 0 ? 8 : 4,
-          height:value == 0 ? 8 : 4,
-          borderRadius:value == 0 ? 4 : 2,
-        }}/>
+          left: (pWidth / 2) + 0 * pWidth,
+          width: value == 0 ? 8 : 4,
+          height: value == 0 ? 8 : 4,
+          borderRadius: value == 0 ? 4 : 2,
+        }} />
         <ProgressCircle style={{
-          left:(pWidth / 2) + 1 * pWidth,
-          width:value == 25 ? 8 : 4,
-          height:value == 25 ? 8 : 4,
-          borderRadius:value == 25 ? 4 : 2,
-        }}/>
+          left: (pWidth / 2) + 1 * pWidth,
+          width: value == 25 ? 8 : 4,
+          height: value == 25 ? 8 : 4,
+          borderRadius: value == 25 ? 4 : 2,
+        }} />
         <ProgressCircle style={{
-          left:(pWidth / 2) + 2 * pWidth,
-          width:value == 50 ? 8 : 4,
-          height:value == 50 ? 8 : 4,
-          borderRadius:value == 50 ? 4 : 2,
-        }}/>
+          left: (pWidth / 2) + 2 * pWidth,
+          width: value == 50 ? 8 : 4,
+          height: value == 50 ? 8 : 4,
+          borderRadius: value == 50 ? 4 : 2,
+        }} />
         <ProgressCircle style={{
-          left:(pWidth / 2) + 3 * pWidth,
-          width:value == 75 ? 8 : 4,
-          height:value == 75 ? 8 : 4,
-          borderRadius:value == 75 ? 4 : 2,
-        }}/>
+          left: (pWidth / 2) + 3 * pWidth,
+          width: value == 75 ? 8 : 4,
+          height: value == 75 ? 8 : 4,
+          borderRadius: value == 75 ? 4 : 2,
+        }} />
         <ProgressCircle style={{
-          left:(pWidth / 2) + 4 * pWidth,
-          width:value == 100 ? 8 : 4,
-          height:value == 100 ? 8 : 4,
-          borderRadius:value == 100 ? 4 : 2,
-        }}/>
+          left: (pWidth / 2) + 4 * pWidth,
+          width: value == 100 ? 8 : 4,
+          height: value == 100 ? 8 : 4,
+          borderRadius: value == 100 ? 4 : 2,
+        }} />
       </ProgressTopView>
       <RowFixed>
-        <ProgressButton onClick={()=>{
+        <ProgressButton onClick={() => {
           setValue(0)
           callBack(0)
         }}>0%</ProgressButton>
-        <ProgressButton onClick={()=>{
+        <ProgressButton onClick={() => {
           setValue(25)
           callBack(25)
         }}>25%</ProgressButton>
-        <ProgressButton onClick={()=>{
+        <ProgressButton onClick={() => {
           setValue(50)
           callBack(50)
         }}>50%</ProgressButton>
-        <ProgressButton onClick={()=>{
+        <ProgressButton onClick={() => {
           setValue(75)
           callBack(75)
         }}>75%</ProgressButton>
-        <ProgressButton onClick={()=>{
+        <ProgressButton onClick={() => {
           setValue(100)
           callBack(100)
         }}>100%</ProgressButton>
@@ -279,7 +274,7 @@ function Progress({callBack}:any){
         <PanelValue placeholder='0' value={input} onChange={e => {
           setInput(e.target.value)
           callBack(Number(e.target.value))
-        }}/>
+        }} />
       </WhiteView>
       <Text fontSize={28} fontWeight={'bold'}>%</Text>
     </RowFixed>
@@ -348,10 +343,10 @@ const MaxButton = styled.div`
   }
 `
 
-const RiskItem = styled(RowCenter)<{
-  select:boolean
+const RiskItem = styled(RowCenter) <{
+  select: boolean
 }>`
-  background-color:${({select})=>select?'#4F56FF':'#777E90'};
+  background-color:${({ select }) => select ? '#4F56FF' : '#777E90'};
   font-size:24px;
   border-radius:50%;
   @media (max-width: 768px) {
@@ -418,13 +413,13 @@ const SegmentDiv = styled(RowFixed)`
   };
 `
 
-const TopSegmentItem = styled(RowCenter)<{
-  isChoose?:boolean
+const TopSegmentItem = styled(RowCenter) <{
+  isChoose?: boolean
 }>`
   width:fit-content;
-  background-color:${({isChoose})=>isChoose?'#4E55FF':'transparent'};
+  background-color:${({ isChoose }) => isChoose ? '#4E55FF' : 'transparent'};
   height:100%;
-  color:${({isChoose})=>isChoose?'white':'#777E90'};
+  color:${({ isChoose }) => isChoose ? 'white' : '#777E90'};
   align-items:center;
   border-radius:20px;
   font-size:22px;
@@ -441,10 +436,10 @@ const TopSegmentItem = styled(RowCenter)<{
   };
   padding:0px 20px
 `
-const SegmentItem = styled(RowCenter)<{
-  select:boolean
+const SegmentItem = styled(RowCenter) <{
+  select: boolean
 }>`
-  background-color:${({select})=>select?'#4F56FF':'#777E90'};
+  background-color:${({ select }) => select ? '#4F56FF' : '#777E90'};
   font-size:24px;
   border-radius:10px;
   padding:5px 15px;

@@ -1,19 +1,17 @@
-import { useCallback, useContext, useMemo, useEffect } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NetworkTypeContext } from "../../contexts";
 import { AppDispatch, AppState } from "../index";
-import {
-  addPopup,
-  ApplicationModal,
-  PopupContent,
-  removePopup,
-  setOpenModal,
-  setOpenWarnning,
-  changeThemeToDark,
-} from "./actions";
-import { NetworkTypeContext } from "../../context";
 import { setIsDark } from "../theme/actions";
 import { setIsWalkThrough } from "../walkthrough/actions";
-import { WalkThorughState } from "../walkthrough/reducer";
+import {
+  ApplicationModal,
+  PopupContent,
+  addPopup,
+  removePopup,
+  setOpenModal,
+  setOpenWarnning
+} from "./actions";
 
 export function useOutScale(): number {
   return useSelector((state: AppState) => state.application.outScale);
@@ -126,8 +124,8 @@ export function useWalkThrough(): (key: Number) => void {
   const dispatch = useDispatch();
 
   return useCallback(
-    ( key: Number) => {
-      dispatch(setIsWalkThrough( key ));
+    (key: Number) => {
+      dispatch(setIsWalkThrough(key));
     },
     [dispatch]
   );

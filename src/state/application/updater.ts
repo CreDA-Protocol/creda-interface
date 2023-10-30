@@ -1,10 +1,10 @@
-import {useCallback, useContext, useEffect, useState} from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { provider } from "../../common/Common"
+import { NetworkTypeContext } from "../../contexts"
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
-import { useDispatch } from 'react-redux'
-import {NetworkTypeContext} from "../../context";
-import {provider} from "../../common/Common";
 
 export default function Updater(): null {
   const { chainId } = useContext(NetworkTypeContext)

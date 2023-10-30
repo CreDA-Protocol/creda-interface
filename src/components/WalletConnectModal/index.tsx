@@ -3,9 +3,9 @@ import { BigNumber, ethers } from "ethers";
 import { useContext } from 'react';
 import styled from 'styled-components';
 import ImageCommon from "../../assets/common/ImageCommon";
-import { ChainId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
+import { ChainIds, chainFromId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
 import { RowCenter } from '../../components/Row';
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
 import Modal from '../NormalModal';
 const Container = styled(FlexViewCenterColumn)`
@@ -71,59 +71,59 @@ const LaterTitle = styled(BaseView)`
     };
 `
 enum ConnectType {
-    metamask=0,
-    walletconnect=1
+    metamask = 0,
+    walletconnect = 1
 }
 export default function WalletConnectModal({
-  show=true,
-  onDismiss,
-                                               changeChainId,
-                                               changeAccount
+    show = true,
+    onDismiss,
+    changeChainId,
+    changeAccount
 }: {
     show?: boolean
-  onDismiss: () => void,
-    changeChainId:(num:number)=>void,
-    changeAccount:(str:string[])=>void
+    onDismiss: () => void,
+    changeChainId: (num: number) => void,
+    changeAccount: (str: string[]) => void
 }) {
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
-  async function connectWallet(type:ConnectType) {
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
+    const network = chainFromId(chainId);
+    async function connectWallet(type: ConnectType) {
         try {
-            if(type===ConnectType.walletconnect){
+            if (type === ConnectType.walletconnect) {
                 const connectProvider = await createWalletConnectWeb3Provider();
                 connectProvider.enable()
                 walletInfo.provider = new ethers.providers.Web3Provider(connectProvider)
                 walletInfo.signer = walletInfo.provider.getSigner()
-                if(connectProvider.connected){
+                if (connectProvider.connected) {
                     changeAccount(connectProvider.accounts)
                     changeChainId(connectProvider.chainId)
                 }
-                connectProvider.on("disconnect", ()=>{
+                connectProvider.on("disconnect", () => {
                     console.log("Wallet connect disconnection event from the wallet");
                     walletInfo.provider = null
                     walletInfo.signer = undefined
                     changeAccount([])
                 })
                 connectProvider.on('chainChanged', changeChainId)
-                connectProvider.on('accountsChanged', (accounts:string[])=>{
+                connectProvider.on('accountsChanged', (accounts: string[]) => {
                     changeAccount(accounts)
                     changeChainId(connectProvider.chainId)
                 })
-            }else {
+            } else {
                 if (!ethereum?.isMetaMask) {
                     message.warn("Please install MetaMask!");
                     return;
                 }
-                if ([ChainId.arbitrum,ChainId.ropsten,ChainId.esc].indexOf(chainId)>=0) {
-                    ethereum.request({method: 'eth_requestAccounts'});
+                if ([ChainIds.arbitrum, ChainIds.ropsten, ChainIds.esc].indexOf(chainId) >= 0) {
+                    ethereum.request({ method: 'eth_requestAccounts' });
                     window.location.reload()
                 } else {
                     ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [
                             {
-                                chainId: BigNumber.from(ChainId.arbitrum).toHexString(),
+                                chainId: BigNumber.from(ChainIds.arbitrum).toHexString(),
                                 chainName: 'Arbitrum',
                                 nativeCurrency: {
                                     name: 'ETH',
@@ -143,45 +143,45 @@ export default function WalletConnectModal({
             }
             onDismiss()
 
-        }catch (e) {
-            logError("connectWallet",e)
+        } catch (e) {
+            logError("connectWallet", e)
         }
     }
-  return (
-    <Modal isOpen={show} onDismiss={onDismiss} >
-      <RowCenter>
-        <Container>
-            <Logo
-                src={ImageCommon.BrandLogoDarkMode}
-            ></Logo>
-            <ConnectTitle>Connect Wallet</ConnectTitle>
-            <FlexViewBetween>
-                <WalletItem
-                    title={"MetaMask"}
-                    icon={ImageCommon.metamask}
-                    onClick={()=>connectWallet(ConnectType.metamask)}
-                ></WalletItem>
-                <WalletItem
-                    title={"WalletConnect"}
-                    icon={ImageCommon.walletconnect}
-                    onClick={()=>connectWallet(ConnectType.walletconnect)}
-                ></WalletItem>
-            </FlexViewBetween>
+    return (
+        <Modal isOpen={show} onDismiss={onDismiss} >
+            <RowCenter>
+                <Container>
+                    <Logo
+                        src={ImageCommon.BrandLogoDarkMode}
+                    ></Logo>
+                    <ConnectTitle>Connect Wallet</ConnectTitle>
+                    <FlexViewBetween>
+                        <WalletItem
+                            title={"MetaMask"}
+                            icon={ImageCommon.metamask}
+                            onClick={() => connectWallet(ConnectType.metamask)}
+                        ></WalletItem>
+                        <WalletItem
+                            title={"WalletConnect"}
+                            icon={ImageCommon.walletconnect}
+                            onClick={() => connectWallet(ConnectType.walletconnect)}
+                        ></WalletItem>
+                    </FlexViewBetween>
 
-            <div style={{marginTop:'10px'}}>
-                    <label style={{color:'#ffffff'}}>Get your Crypto Credit Score by syncing your wallet</label>
-                </div>
-            <LaterTitle
-                onClick={onDismiss}
-            >Later</LaterTitle>
-        </Container>
-      </RowCenter>
-    </Modal>
-  )
+                    <div style={{ marginTop: '10px' }}>
+                        <label style={{ color: '#ffffff' }}>Get your Crypto Credit Score by syncing your wallet</label>
+                    </div>
+                    <LaterTitle
+                        onClick={onDismiss}
+                    >Later</LaterTitle>
+                </Container>
+            </RowCenter>
+        </Modal>
+    )
 }
 
-function WalletItem({title,icon,onClick}:any) {
-    return(
+function WalletItem({ title, icon, onClick }: any) {
+    return (
         <WrapItem
             onClick={onClick}
         >

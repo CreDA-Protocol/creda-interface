@@ -3,9 +3,9 @@ import { useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "react-redux";
 import styled from "styled-components";
-import { ChainId, formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
+import { ChainIds, chainFromId, formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
 import { RowCenter } from "../../components/Row";
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useWalkThroughStep } from "../../state/application/hooks";
 import { isTransactionRecent, useAllTransactions, } from "../../state/transactions/hooks";
 import { base_type } from "../Common";
@@ -48,8 +48,8 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   const location = history?.location?.pathname;
   // console.log("location", fromHome);
   const { chainId } = useContext(NetworkTypeContext);
-  const { account,disconnect } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const { account, disconnect } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
   const allTransactions = useAllTransactions();
   // console.log(chainId,"chainId")
   const sortedRecentTransactions = useMemo(() => {
@@ -115,13 +115,13 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   const menuProps = {
     items,
   };
-  if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.bsc,ChainId.heco,ChainId.ethereum,ChainId.esc,ChainId.celo, ChainId.celotest].indexOf(chainId) < 0) {
+  if (account && [ChainIds.arbitrum, ChainIds.ropsten, ChainIds.bsc, ChainIds.heco, ChainIds.ethereum, ChainIds.esc, ChainIds.celo, ChainIds.celotest].indexOf(chainId) < 0) {
     return (
       <>
-      {/* <WrongNetworkWrapper isMobile={isMobile}> */}
-      <HeaderViewWrong style={{zIndex:700}}>
-        <H5>Wrong NetWork</H5>
-      </HeaderViewWrong>
+        {/* <WrongNetworkWrapper isMobile={isMobile}> */}
+        <HeaderViewWrong style={{ zIndex: 700 }}>
+          <H5>Wrong NetWork</H5>
+        </HeaderViewWrong>
         {/* <WrongNetworkModal modal={true}/>
       </WrongNetworkWrapper> */}
       </>
@@ -130,22 +130,22 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   return (
     <>
       {account ? (
-              <Dropdown
-                  menu={menuProps}
-                  trigger={["hover","click"]}
-              >
-        <HeaderView>
+        <Dropdown
+          menu={menuProps}
+          trigger={["hover", "click"]}
+        >
+          <HeaderView>
 
             <H4>{formatAccount(account)}</H4>
 
-          {/*<Arrow src={ImageCommon.ArrowDownIcon_white}/>*/}
-          {pending.length > 0 && (
-            <Pending>
-              {pending?.length}
-              <Loader stroke={"#FFFFFF"} />
-            </Pending>
-          )}
-          {/* {location === "/profile" ? (
+            {/*<Arrow src={ImageCommon.ArrowDownIcon_white}/>*/}
+            {pending.length > 0 && (
+              <Pending>
+                {pending?.length}
+                <Loader stroke={"#FFFFFF"} />
+              </Pending>
+            )}
+            {/* {location === "/profile" ? (
             <StepModalWrap isMobile={isMobile}>
               <WalkThroughModal
                 currentStep={1}
@@ -156,12 +156,12 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
           ) : (
             ""
           )} */}
-        </HeaderView>
-              </Dropdown>
-      ) : (
-          <HeaderView onClick={connectWallet}>
-            <H4>Connect Wallet</H4>
           </HeaderView>
+        </Dropdown>
+      ) : (
+        <HeaderView onClick={connectWallet}>
+          <H4>Connect Wallet</H4>
+        </HeaderView>
         // <div style={{ position: "relative" }}>
         //       <GradientButton
         //         style={{
@@ -207,10 +207,10 @@ export const BaseView = styled.div<base_type>`
     background-color:${props => props.backgroundColor};
     max-width:${props => props.maxWidth};
     min-width:${props => props.minWidth};
-    opacity:${props=>props.disabled?0.6:1};
-    pointer-events:${props=>props.disabled?"none":"auto"};
-    position:${props=>props.position};
-    cursor:${props=>props.cursor};
+    opacity:${props => props.disabled ? 0.6 : 1};
+    pointer-events:${props => props.disabled ? "none" : "auto"};
+    position:${props => props.position};
+    cursor:${props => props.cursor};
     position:relative;
 `
 export const FlexView = styled(BaseView)`

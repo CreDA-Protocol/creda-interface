@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { ChainId, bigNumberToBalance } from "../common/Common";
+import { ChainId, ChainIds, bigNumberToBalance } from "../common/Common";
 import { WalletList } from "../model/wallet";
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
@@ -127,7 +127,7 @@ export type BlockTransactionWithContractTransfers = {
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function covalentFetchTokenBalances(accountAddress: string, chainId: number | string): Promise<WalletList> {
+export function covalentFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletList> {
   console.log('Covalent_fetchTokenBalances chainId:', chainId, ' accountAddress:', accountAddress)
   return new Promise((resolve, reject) => {
     let tokenBalancesUrl = covalentApiUrl;
@@ -183,11 +183,11 @@ function convertCovalentResult2WalletList(balanceItems: CovalentTokenBalanceItem
 
 export function Covalent_enableNetwork(chainId: number) {
   switch (chainId) {
-    case ChainId.ethereum:
-    case ChainId.bsc:
-    case ChainId.arbitrum:
-    case ChainId.polygon:
-    case ChainId.goerli:
+    case ChainIds.ethereum:
+    case ChainIds.bsc:
+    case ChainIds.arbitrum:
+    case ChainIds.polygon:
+      //case ChainId.goerli:
       return true;
     default:
       return false;

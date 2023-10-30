@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { animated, useSpring } from 'react-spring';
 import ImageCommon from "../assets/common/ImageCommon";
 import {
-  ChainId,
+  ChainIds,
   createWalletConnectWeb3Provider,
   ethereum,
   globalObj,
@@ -36,7 +36,7 @@ import {
 import { ThemeText } from "../components/ThemeComponent";
 import Toasts from "../components/Toasts";
 import WalletConnectModal from "../components/WalletConnectModal";
-import { NetworkTypeContext, WalletAddressContext } from "../context";
+import { NetworkTypeContext, WalletAddressContext } from "../contexts";
 import "../i18n";
 import LoadingProvider from "../provider/LoadingProvider";
 import store from "../state";
@@ -176,7 +176,7 @@ const MyBankAssetPrice = Loadable({
   loading: Loading,
 });
 export default function App() {
-  const [chainId, setChainId] = useState(ChainId.heco);
+  const [chainId, setChainId] = useState(ChainIds.heco);
   const [address, setAddress] = useState("");
   const [isAccountLoading, setIsAccountLoading] = useState(false);
   const [open, setOpen] = useState(false);

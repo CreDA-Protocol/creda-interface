@@ -11,12 +11,13 @@ import ImageCommon from "../../assets/common/ImageCommon"
 import ImageToken from "../../assets/tokens/ImageToken"
 import {
   ApprovalState,
-  ChainId,
+  ChainIds,
   GasInfo,
   MiningPool,
   MyBankAssetPriceIcons,
   MyBankAssetPriceIconsESC,
   balanceToBigNumber,
+  chainFromId,
   colors,
   formatBalance,
   formatPercent,
@@ -55,7 +56,7 @@ import {
 } from '../../components/Row'
 import StakeModal from '../../components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useApprove,
   useCNFTInfo,
@@ -228,7 +229,7 @@ function Vault(props: any) {
   // const unlockInfo:any = {}
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const addTransaction = useTransactionAdder();
   const addToast = useAddToast();
   const IFNTContract = useContract(ContractConfig.CREDA[network]?.address, ContractConfig.CREDA.abi);
@@ -258,7 +259,7 @@ function Vault(props: any) {
   let coinright = 'CREDA'
   let buyLpAddr = "https://app.sushi.com/add/0xc136E6B376a9946B156db1ED3A34b08AFdAeD76d/0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"
   let layerSymbol = "ETH"
-  if (chainId === ChainId.esc) {
+  if (chainId === ChainIds.esc) {
     lpName = "CREDA/ELA-LP"
     buyLpAddr = "https://glidefinance.io/add/0xc136E6B376a9946B156db1ED3A34b08AFdAeD76d/ELA"
     layerSymbol = "ELA"
@@ -558,7 +559,7 @@ function Vault(props: any) {
               onClick={claimCreda}
             >CLAIM</BlueButton>
           </JoinView>}
-          {chainId !== ChainId.esc && !cnetworkInfo.loading && !cnetworkInfo.isJoin && <JoinView
+          {chainId !== ChainIds.esc && !cnetworkInfo.loading && !cnetworkInfo.isJoin && <JoinView
             background={themeDark ? colors.dark_background : colors.background}
           >
             <JoinTitle
@@ -568,7 +569,7 @@ function Vault(props: any) {
               onClick={onJoin}
             >JOIN</BlueButton>
           </JoinView>}
-          {chainId !== ChainId.esc && !cnetworkInfo.loading && cnetworkInfo.isLayer && <>
+          {chainId !== ChainIds.esc && !cnetworkInfo.loading && cnetworkInfo.isLayer && <>
             <RowFixed style={{
               paddingLeft: isMobile ? 15 : 30,
               paddingTop: isMobile ? 20 : 40
@@ -701,7 +702,7 @@ function Vault(props: any) {
               </RowBetween>
             </BGDiv>
           </>}
-          {chainId !== ChainId.esc && !cnetworkInfo.loading && cnetworkInfo.isLayer && <Column>
+          {chainId !== ChainIds.esc && !cnetworkInfo.loading && cnetworkInfo.isLayer && <Column>
             <SpaceHeight height={40} heightApp={20} />
             <ThemeText fontSize={30} fontWeight={'bold'}>Credit Account</ThemeText>
             <CreditAccount />
@@ -781,7 +782,7 @@ function Vault(props: any) {
           <HardMiningPoolView hardpoolAction={hardpoolAction} />
 
 
-          {chainId !== ChainId.esc && <>
+          {chainId !== ChainIds.esc && <>
             <SpaceHeight height={40} heightApp={20} />
             <RowFixed style={{
               paddingLeft: isMobile ? 15 : 30,
@@ -827,7 +828,7 @@ function Vault(props: any) {
       <CustomStakeModal
         show={hardModalType !== ButtonType.hidden}
         onDismiss={() => setHardModalType(ButtonType.hidden)}
-        title={(info.type === ButtonType.stake ? "Stake " : "Unstake ") + (chainId == ChainId.esc ? '' : 'c') + info.symbol}
+        title={(info.type === ButtonType.stake ? "Stake " : "Unstake ") + (chainId == ChainIds.esc ? '' : 'c') + info.symbol}
         maxNum={info.type === ButtonType.stake ? info.balance : info.staked}
         onConfirm={info.type === ButtonType.stake ? onHardStake : onHardWithdraw}
         symbol={info.symbol}
@@ -852,7 +853,7 @@ function SoftLaunch({ symbol, index, poolAction, open }: any) {
   const themeDark = useTheme()
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, ContractConfig.PersonalDataMinePoolPlus?.[network]?.address)
   const info = useMiningPoolInfo(symbol, index)
   function action(type: ButtonType) {
@@ -942,7 +943,7 @@ function HardMiningPoolView({ hardpoolAction }: any) {
   const { chainId } = useContext(NetworkTypeContext);
   const [claimable, setClaimable] = useState<{ [key: string]: number }>({})
   let hardPools = MyBankAssetPriceIcons
-  if (chainId === ChainId.esc) {
+  if (chainId === ChainIds.esc) {
     hardPools = MyBankAssetPriceIconsESC
   }
   const info = useHardPoolInfo(hardPools[0].name, 0)
@@ -1022,12 +1023,12 @@ function HardMiningPoolView({ hardpoolAction }: any) {
 function HardLaunch({ symbol, index, poolAction, open }: any) {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const [approval, approveCallback] = useApprove(EarnConfig[symbol]?.[network]?.cToken?.address, ContractConfig.PersonalDataMinePoolV2?.[network]?.address)
 
   const info = useHardPoolInfo(symbol, index)
   function action(type: ButtonType) {
-    if (approval !== ApprovalState.APPROVED && !(chainId === ChainId.esc && info.pid === 0)) {
+    if (approval !== ApprovalState.APPROVED && !(chainId === ChainIds.esc && info.pid === 0)) {
       approveCallback()
       return
     }
@@ -1043,7 +1044,7 @@ function HardLaunch({ symbol, index, poolAction, open }: any) {
     <MiningLineItem>
       <RowFixed style={{ flex: 1, marginTop: 10 }}>
         <CoinIcon src={ImageToken[symbol]}></CoinIcon>
-        <ThemeTextEqure fontSize={14} fontWeight={'500'}>{chainId === ChainId.arbitrum && 'c'}{symbol}</ThemeTextEqure>
+        <ThemeTextEqure fontSize={14} fontWeight={'500'}>{chainId === ChainIds.arbitrum && 'c'}{symbol}</ThemeTextEqure>
       </RowFixed>
       <SpaceHeight height={0} heightApp={10} />
       <MiningRowBetweenItem>
@@ -1073,7 +1074,7 @@ function HardLaunch({ symbol, index, poolAction, open }: any) {
 
       <SpaceHeight height={0} heightApp={10} />
       <MiningButtonRow style={{ flex: 1.5 }}>
-        {chainId === ChainId.esc && info.pid === 0 ? <GradientButton
+        {chainId === ChainIds.esc && info.pid === 0 ? <GradientButton
           onClick={() => action(ButtonType.stake)}
         >Stake</GradientButton> : <GradientButton
           onClick={() => action(ButtonType.stake)}
@@ -1133,7 +1134,7 @@ function StakeButtons({ unlockInfo }: any) {
   const title = useRef<string>('')
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const [approval, approveCallback] = useApprove(ContractConfig.ETH_CREDA_LP[network]?.address, ContractConfig.CREDA[network]?.address)
   return <RowBetween>
     <GradientButton style={{ flex: 1 }} onClick={() => {
@@ -1252,9 +1253,9 @@ function CalculaterModal({ visible = false, onClose }: any) {
 function CreditAccount() {
   const { chainId } = useContext(NetworkTypeContext);
 
-  const [leftIndex, setLeftIndex] = useState(chainId !== ChainId.esc ? 0 : 1)
+  const [leftIndex, setLeftIndex] = useState(chainId !== ChainIds.esc ? 0 : 1)
   const [rightIndex, setRightIndex] = useState(0)
-  const leftIcon = useRef(chainId !== ChainId.esc ? 'USDT' : 'USDC')
+  const leftIcon = useRef(chainId !== ChainIds.esc ? 'USDT' : 'USDC')
   const themeDark = useTheme()
   const [show, setShow] = useState(false)
   const modalType = useRef('0')
@@ -1333,7 +1334,7 @@ const Segment = React.memo(({ onSelect }: { onSelect: (index: number, icon: stri
   return <SegmentDiv style={{
     backgroundColor: themeDark ? '#17181A' : 'white'
   }}>
-    {chainId !== ChainId.esc && <SegmentItem isChoose={selectIndex == 0} onClick={() => {
+    {chainId !== ChainIds.esc && <SegmentItem isChoose={selectIndex == 0} onClick={() => {
       setSelectIndex(0)
       onSelect && onSelect(0, 'USDT')
     }}><IconIcon src={ImageToken.USDT} />USDT</SegmentItem>}
@@ -1341,7 +1342,7 @@ const Segment = React.memo(({ onSelect }: { onSelect: (index: number, icon: stri
       setSelectIndex(1)
       onSelect && onSelect(1, 'USDC')
     }}><IconIcon src={ImageToken.USDC} />USDC</SegmentItem>
-    {chainId !== ChainId.esc && <SegmentItem isChoose={selectIndex == 2} onClick={() => {
+    {chainId !== ChainIds.esc && <SegmentItem isChoose={selectIndex == 2} onClick={() => {
       setSelectIndex(2)
       onSelect && onSelect(2, 'DAI')
     }}><IconIcon src={ImageToken.DAI} />DAI</SegmentItem>}

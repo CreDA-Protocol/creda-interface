@@ -1,12 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react'
-import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
-import {message, Tooltip} from "antd";
-import {useTheme, useWalkThroughStep} from '../../state/application/hooks'
-import {RowCenter, RowFixed, Text} from '../Row'
-import Column, {ColumnCenter} from '../Column'
-import {NetworkTypeContext, WalletAddressContext} from '../../context'
-import {ChainId} from '../../common/Common'
+import { Tooltip, message } from "antd";
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import ImageCommon from '../../assets/common/ImageCommon';
+import { ChainIds } from '../../common/Common';
+import { NetworkTypeContext, WalletAddressContext } from '../../contexts';
+import { useTheme, useWalkThroughStep } from '../../state/application/hooks';
+import Column, { ColumnCenter } from '../Column';
+import { RowCenter, RowFixed, Text } from '../Row';
 
 
 const HeaderFrame = styled.div`
@@ -93,7 +93,7 @@ const StepModalWrap = styled.div<{
     isMobile: boolean | null
 }>`
   .walk-through-modal-wrapper {
-    top: ${({isMobile}) => isMobile ? '97px' : '145px'};
+    top: ${({ isMobile }) => isMobile ? '97px' : '145px'};
     left: 53px;
     @media (min-width: 768px) and (max-width: 1700px) {
       top: 150px;
@@ -182,30 +182,31 @@ let subItemIndex = 0
 
 export default React.memo(LeftMenu)
 
-function LeftMenu({history}: any) {
+function LeftMenu({ history }: any) {
     const [selectIndex, setSelectIndex] = useState(getSelectIndex(history.location.pathname))
     const [subIndex, setSubIndex] = useState(0)
     const [wrongNetwork, setWrongNetwork] = useState(false)
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
     const themeDark = useTheme()
     const walkThroughStep = useWalkThroughStep()
+
     useEffect(() => {
-        if (account && [ChainId.arbitrum, ChainId.ropsten,ChainId.esc].indexOf(chainId) < 0) {
+        if (account && [ChainIds.arbitrum, ChainIds.ropsten, ChainIds.esc].indexOf(chainId) < 0) {
             setWrongNetwork(true)
         }
-    }, [account])
+    }, [account, chainId])
+
     useEffect(() => {
         if (selectIndex != 3) {
             if (subIndex != 0) {
                 setSubIndex(0)
             }
         }
-    }, [selectIndex])
-
+    }, [selectIndex, subIndex])
 
     function changeNav(path: string) {
-        if (chainId !== ChainId.arbitrum && chainId !== ChainId.esc && !["home", "profile", "bridge"].includes(path)) {
+        if (chainId !== ChainIds.arbitrum && chainId !== ChainIds.esc && !["home", "profile", "bridge"].includes(path)) {
             message.warn("Coming Soon!")
             return
         }
@@ -229,18 +230,18 @@ function LeftMenu({history}: any) {
             changeNav("home")
             setSelectIndex(0)
         }}>
-            <LeftIcon src={selectIndex == 0 ? selImg[0] : normalImg[0]}/>
+            <LeftIcon src={selectIndex == 0 ? selImg[0] : normalImg[0]} />
             Home
         </StyledNavLink>
         <div
-            style={{position: 'relative'}}>
+            style={{ position: 'relative' }}>
             <StyledNavLink className={
                 selectIndex === 1 ? 'active' : ''
             } onClick={() => {
                 changeNav("profile")
                 setSelectIndex(1)
             }}>
-                <LeftIcon src={selectIndex == 1 ? selImg[1] : normalImg[1]}/>
+                <LeftIcon src={selectIndex == 1 ? selImg[1] : normalImg[1]} />
                 Profile
             </StyledNavLink>
             {/* { location==='/vault'?
@@ -255,32 +256,32 @@ function LeftMenu({history}: any) {
             changeNav("vault")
             setSelectIndex(2)
         }}>
-            <LeftIcon src={selectIndex == 2 ? selImg[2] : normalImg[2]}/>
+            <LeftIcon src={selectIndex == 2 ? selImg[2] : normalImg[2]} />
             Vault
         </StyledNavLink>
-        {chainId !== ChainId.esc && <StyledNavLink className={
+        {chainId !== ChainIds.esc && <StyledNavLink className={
             selectIndex === 3 ? 'active' : ''
         }
-                       onClick={() => {
-                           setSelectIndex(3)
-                       }}>
+            onClick={() => {
+                setSelectIndex(3)
+            }}>
             <ColumnCenter>
-                <RowCenter style={{cursor: 'pointer'}} onClick={() => {
-                  // if (chainId==ChainId.esc){
-                  //   message.warn('coming soon~')
-                  //   return
-                  // }
-                 changeNav("myBank")
+                <RowCenter style={{ cursor: 'pointer' }} onClick={() => {
+                    // if (chainId==ChainId.esc){
+                    //   message.warn('coming soon~')
+                    //   return
+                    // }
+                    changeNav("myBank")
                     setSelectIndex(3)
                     setSubIndex(0)
                     subItemIndex = 0
                 }}>
-                    <LeftIcon src={selectIndex == 3 ? selImg[3] : normalImg[3]}/>
+                    <LeftIcon src={selectIndex == 3 ? selImg[3] : normalImg[3]} />
                     My Bank
-                    <ArrowJianTou src={selectIndex == 3 ? ImageCommon.jiantou_up : ImageCommon.jiantou_down_nor}/>
+                    <ArrowJianTou src={selectIndex == 3 ? ImageCommon.jiantou_up : ImageCommon.jiantou_down_nor} />
                 </RowCenter>
                 {
-                    <Column style={{marginLeft: 20}}>
+                    <Column style={{ marginLeft: 20 }}>
                         <SubItemButton
                             onClick={() => {
                                 // if(chainId===ChainId.esc){
@@ -325,7 +326,7 @@ function LeftMenu({history}: any) {
             className={
                 selectIndex === 4 ? 'active' : ''
             }>
-            <LeftIcon src={selectIndex == 4 ? selImg[4] : normalImg[4]}/>
+            <LeftIcon src={selectIndex == 4 ? selImg[4] : normalImg[4]} />
             Bridge
         </StyledNavLink>
         {/*</Tooltip>*/}
@@ -338,7 +339,7 @@ function LeftMenu({history}: any) {
                 className={
                     selectIndex === 5 ? 'active' : ''
                 }>
-                <LeftIcon src={selectIndex == 5 ? selImg[5] : normalImg[5]}/>
+                <LeftIcon src={selectIndex == 5 ? selImg[5] : normalImg[5]} />
                 Governance
             </StyledNavLink>
         </Tooltip>

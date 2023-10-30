@@ -1,11 +1,10 @@
-import {useState} from 'react';
-import styled from 'styled-components'
-import { isMobile } from 'react-device-detect'
+import { isMobile } from 'react-device-detect';
+import styled from 'styled-components';
+import { ChainIds, switchNetwork } from '../../common/Common';
 import { BlueButton } from '../Common';
-import { ChainId, switchNetwork } from '../../common/Common';
 
 export const Wrapper = styled.div<{
-  isMobile:boolean|null,
+  isMobile: boolean | null,
 }>`
   position: absolute;
   right: 0;
@@ -31,7 +30,7 @@ export const Wrapper = styled.div<{
   }
 `;
 
-const GradButton =styled.button`
+const GradButton = styled.button`
 width: 90px;
     height: 30px;
     background: linear-gradient(
@@ -106,33 +105,33 @@ export const ButtonWrap = styled.div`
   display:inline-flex;
 `;
 
-const Headerdiv= styled.div`
+const Headerdiv = styled.div`
   height: 5px;
   background: linear-gradient( 90deg,#4a1ee1,#1890ff);
   `;
 
 export default function WrongNetworkModal({
   modal
-  }: {
-    modal?:boolean
-  }) {
-  
-    return(
-      <>
-       { modal?
-       <div >
-        <Backdrop />
-            <Wrapper className='walk-through-modal-wrapper'  isMobile={isMobile} >
-                <StyledModal >
-                <Content>{'Please switch to Arbitrium Network.'}</Content>
-                <ButtonWrap>
-                <BlueButton onClick={()=>switchNetwork(`0x${(ChainId.arbitrum).toString(16)}`)} style={{borderRadius:'80px'}}>Switch</BlueButton>
-                </ButtonWrap>
-                </StyledModal>
-            </Wrapper>
-        </div>:''}
-      
-      </>
-    )
+}: {
+  modal?: boolean
+}) {
 
-  }
+  return (
+    <>
+      {modal ?
+        <div >
+          <Backdrop />
+          <Wrapper className='walk-through-modal-wrapper' isMobile={isMobile} >
+            <StyledModal >
+              <Content>{'Please switch to Arbitrium Network.'}</Content>
+              <ButtonWrap>
+                <BlueButton onClick={() => switchNetwork(`0x${(ChainIds.arbitrum).toString(16)}`)} style={{ borderRadius: '80px' }}>Switch</BlueButton>
+              </ButtonWrap>
+            </StyledModal>
+          </Wrapper>
+        </div> : ''}
+
+    </>
+  )
+
+}

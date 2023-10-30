@@ -1,21 +1,21 @@
 import { TransactionResponse } from '@ethersproject/providers'
-import {useCallback, useContext, useMemo} from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { chainFromId } from '@common/Common'
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'
 import { TransactionDetails } from './reducer'
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {ChainId} from "../../common/Common";
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: { summary?: string; approval?: { tokenAddress: string; spender: string }; claim?: { recipient: string } }
 ) => void {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -42,9 +42,9 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
 
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 

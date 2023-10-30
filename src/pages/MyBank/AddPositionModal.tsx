@@ -1,19 +1,15 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
-import styled from 'styled-components'
-import Modal from '../../components/NormalModal'
+import { useState } from 'react';
+import styled from 'styled-components';
+import ImageCommon from '../../assets/common/ImageCommon';
 import {
-  balanceToBigNumber,
-  bigNumberToBalance,
-  ChainId,
-  mathPriceTo4,
+  mathPriceTo4
 } from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import ImageCommon from '../../assets/common/ImageCommon'
-import Column,{ColumnCenter} from '../../components/Column';
-import Row,{RowCenter,RowBetween, SpaceHeight, Text, RowFixed, RowEnd} from '../../components/Row';
+import { ButtonNormal } from '../../components/Button';
+import Column, { ColumnCenter } from '../../components/Column';
 import { CardPair, LoadingRow } from '../../components/Common';
-import {ButtonNormal} from '../../components/Button'
-import {useIconPrice,useWalletInfo} from '../../contract'
+import Modal from '../../components/NormalModal';
+import Row, { RowBetween, RowCenter, RowEnd, RowFixed, SpaceHeight, Text } from '../../components/Row';
+import { useWalletInfo } from '../../contract';
 
 export const DrawButton = styled.div`
   color:white;
@@ -127,24 +123,24 @@ export default function AddPositionModal({
   onAdd,
   pairInfo,
 }: {
-  pairInfo:any,
+  pairInfo: any,
   isOpen: boolean
   onDismiss: () => void,
-  onAdd: (info:any) => void,
+  onAdd: (info: any) => void,
 }) {
-  const [firstInput,setFirstInput] = useState('')
-  const [secondInput,setSecondInput] = useState('')
-  
+  const [firstInput, setFirstInput] = useState('')
+  const [secondInput, setSecondInput] = useState('')
+
   const walletInfo = useWalletInfo()
- 
+
   return (
-    <Modal isOpen={isOpen} onDismiss={()=>{}}>
+    <Modal isOpen={isOpen} onDismiss={() => { }}>
       <ColumnCenter>
         <MainView>
-          <Column style={{width:'100%'}}>
+          <Column style={{ width: '100%' }}>
             <Row>
               <BackButton onClick={onDismiss}>
-                <ArrowLeft src={ImageCommon.fanhui}/>
+                <ArrowLeft src={ImageCommon.fanhui} />
               </BackButton>
               <RowBetween>
                 <Text fontSize={28} fontWeight={'bold'}>My position has</Text>
@@ -154,41 +150,41 @@ export default function AddPositionModal({
                 </Column>
               </RowBetween>
             </Row>
-            <SpaceHeight height={40} heightApp={20}/>
+            <SpaceHeight height={40} heightApp={20} />
             <RowBetween>
               <Text fontSize={20}>I'd like to supply more</Text>
               <Text fontSize={20}>Debt Ratio：{mathPriceTo4(pairInfo.borrowValue)}/{mathPriceTo4(pairInfo.ethValue * 0.7)}</Text>
             </RowBetween>
-            <SpaceHeight height={20} heightApp={10}/>
+            <SpaceHeight height={20} heightApp={10} />
           </Column>
           <Container>
             <Column>
               <RowEnd>
-                {walletInfo.loading ? <LoadingRow/> : <Text fontSize={20} fontColor={'#777E90'}>Balance：{mathPriceTo4(walletInfo[pairInfo.pair1])} {pairInfo.pair1}</Text>}
+                {walletInfo.loading ? <LoadingRow /> : <Text fontSize={20} fontColor={'#777E90'}>Balance：{mathPriceTo4(walletInfo[pairInfo.pair1])} {pairInfo.pair1}</Text>}
               </RowEnd>
               <WhiteView>
-                <CardPair pair1={pairInfo.pair1} showTitle={true}/>
-                <PanelValue placeholder='0.0' value={firstInput} onChange={e => setFirstInput(e.target.value)}/>
-                <MaxButton onClick={()=>{
+                <CardPair pair1={pairInfo.pair1} showTitle={true} />
+                <PanelValue placeholder='0.0' value={firstInput} onChange={e => setFirstInput(e.target.value)} />
+                <MaxButton onClick={() => {
                   setFirstInput(mathPriceTo4(walletInfo[pairInfo.pair1]) + '')
                 }}>
                   MAX
                 </MaxButton>
               </WhiteView>
               <RowEnd>
-                {walletInfo.loading ? <LoadingRow/> : <Text fontSize={20} fontColor={'#777E90'}>Balance：{mathPriceTo4(walletInfo[pairInfo.pair2])} {pairInfo.pair2}</Text>}
+                {walletInfo.loading ? <LoadingRow /> : <Text fontSize={20} fontColor={'#777E90'}>Balance：{mathPriceTo4(walletInfo[pairInfo.pair2])} {pairInfo.pair2}</Text>}
               </RowEnd>
               <WhiteView>
-                <CardPair pair1={pairInfo.pair2} showTitle={true}/>
-                <PanelValue placeholder='0.0' value={secondInput} onChange={e => setSecondInput(e.target.value)}/>
-                <MaxButton onClick={()=>{
+                <CardPair pair1={pairInfo.pair2} showTitle={true} />
+                <PanelValue placeholder='0.0' value={secondInput} onChange={e => setSecondInput(e.target.value)} />
+                <MaxButton onClick={() => {
                   setSecondInput(mathPriceTo4(walletInfo[pairInfo.pair2]) + '')
                 }}>
                   MAX
                 </MaxButton>
               </WhiteView>
             </Column>
-            <FarmButton onClick={()=>{
+            <FarmButton onClick={() => {
               onAdd({
                 ...pairInfo,
                 firstInput,
@@ -231,10 +227,10 @@ const MaxButton = styled.div`
   }
 `
 
-const RiskItem = styled(RowCenter)<{
-  select:boolean
+const RiskItem = styled(RowCenter) <{
+  select: boolean
 }>`
-  background-color:${({select})=>select?'#4F56FF':'#777E90'};
+  background-color:${({ select }) => select ? '#4F56FF' : '#777E90'};
   font-size:24px;
   border-radius:50%;
   @media (max-width: 768px) {
@@ -301,13 +297,13 @@ const SegmentDiv = styled(RowFixed)`
   };
 `
 
-const TopSegmentItem = styled(RowCenter)<{
-  isChoose?:boolean
+const TopSegmentItem = styled(RowCenter) <{
+  isChoose?: boolean
 }>`
   width:fit-content;
-  background-color:${({isChoose})=>isChoose?'#4E55FF':'transparent'};
+  background-color:${({ isChoose }) => isChoose ? '#4E55FF' : 'transparent'};
   height:100%;
-  color:${({isChoose})=>isChoose?'white':'#777E90'};
+  color:${({ isChoose }) => isChoose ? 'white' : '#777E90'};
   align-items:center;
   border-radius:20px;
   font-size:22px;
@@ -324,10 +320,10 @@ const TopSegmentItem = styled(RowCenter)<{
   };
   padding:0px 20px
 `
-const SegmentItem = styled(RowCenter)<{
-  select:boolean
+const SegmentItem = styled(RowCenter) <{
+  select: boolean
 }>`
-  background-color:${({select})=>select?'#4F56FF':'#777E90'};
+  background-color:${({ select }) => select ? '#4F56FF' : '#777E90'};
   font-size:24px;
   border-radius:10px;
   padding:5px 15px;

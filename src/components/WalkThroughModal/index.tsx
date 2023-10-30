@@ -1,18 +1,17 @@
-import React, { FunctionComponent, useEffect, useState,CSSProperties, useContext } from 'react';
-import styled, { css } from 'styled-components'
-import { useWalkThrough, useWalkThroughStep } from '../../state/application/hooks';
-import { isMobile } from 'react-device-detect'
-import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setDecrement, setIncrement } from '../../state/walkthrough/actions';
-import { WalletAddressContext } from '../../context';
-import { useCreditInfo } from '../../contract';
-import { BlueButton } from '../Common';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { isMobile } from 'react-device-detect';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { WalletAddressContext } from '../../contexts';
+import { useCreditInfo } from '../../contract';
+import { useWalkThrough, useWalkThroughStep } from '../../state/application/hooks';
+import { setDecrement, setIncrement } from '../../state/walkthrough/actions';
+import { BlueButton } from '../Common';
 
 export const Wrapper = styled.div<{
-  walkThroughStep:Number|null,
-  isMobile:boolean|null,
+  walkThroughStep: Number | null,
+  isMobile: boolean | null,
 }>`
   position: absolute;
   right: 0;
@@ -28,7 +27,7 @@ export const Wrapper = styled.div<{
     height: 15px;
     background-color: #ffffff;
     top: -8px;
-    left:${({isMobile,walkThroughStep})=>(!isMobile?"50%":walkThroughStep===1?"50%":walkThroughStep===3?"80%":walkThroughStep==2?'50%':"26%")};
+    left:${({ isMobile, walkThroughStep }) => (!isMobile ? "50%" : walkThroughStep === 1 ? "50%" : walkThroughStep === 3 ? "80%" : walkThroughStep == 2 ? '50%' : "26%")};
     position: absolute;
     border-radius: 2px 0 0 0;
     box-shadow: 0px 1px 6px 1px #56565682;
@@ -38,7 +37,7 @@ export const Wrapper = styled.div<{
   }
 `;
 
-const GradButton =styled.button`
+const GradButton = styled.button`
 width: 90px;
     height: 30px;
     background: linear-gradient(
@@ -113,7 +112,7 @@ export const ButtonWrap = styled.div`
   display:inline-flex;
 `;
 
-const Headerdiv= styled.div`
+const Headerdiv = styled.div`
   height: 5px;
   background: linear-gradient( 90deg,#4a1ee1,#1890ff);
   `;
@@ -129,21 +128,21 @@ export default function WalkThroughModal({
   Previous,
   prevsteps,
   setShowModal,
-  }: {
-    currentStep?:Number| undefined,
-    Test?:string,
-    title?:string,
-    TestHere?:string,
-    content?:string,
-    Next?:string,
-    steps?:boolean,
-    Previous?:string,
-    prevsteps?:string,
-    setShowModal?:any,
-  }) {
-    const countRef = useRef(1);
+}: {
+  currentStep?: Number | undefined,
+  Test?: string,
+  title?: string,
+  TestHere?: string,
+  content?: string,
+  Next?: string,
+  steps?: boolean,
+  Previous?: string,
+  prevsteps?: string,
+  setShowModal?: any,
+}) {
+  const countRef = useRef(1);
   const walkthrough = useWalkThrough();
-  const walkThroughStep=useWalkThroughStep()
+  const walkThroughStep = useWalkThroughStep()
   // if(walkThroughStep===countRef.current){
   //   window.location.href='./profile'
   // }
@@ -153,16 +152,16 @@ export default function WalkThroughModal({
   const { account } = useContext(WalletAddressContext);
   const creditInfo = useCreditInfo();
   const [cookies, setCookie] = useCookies(['user']);
-    
+
   useEffect(() => {
-    if(walkThroughStep === currentStep) {
+    if (walkThroughStep === currentStep) {
       setModal(true)
-    }else{
+    } else {
       setModal(false)
     }
   }, [walkThroughStep]);
-  
-  const handleNextSteps=()=>{
+
+  const handleNextSteps = () => {
     //
     dispatch(setIncrement(Number(walkThroughStep)))
     // if(walkThroughStep===1){
@@ -170,38 +169,38 @@ export default function WalkThroughModal({
     // }
   }
 
-  const handlePrevSteps=()=>{
+  const handlePrevSteps = () => {
     dispatch(setDecrement(Number(walkThroughStep)))
     // if(walkThroughStep===2){
     //   window.location.href='/vault'
     // }
   }
-  
-    return(
-      <>
-       { modal?
-       <div >
-        <Backdrop />
-            <Wrapper className='walk-through-modal-wrapper' walkThroughStep={walkThroughStep}  isMobile={isMobile} >
-                <StyledModal >
-                <Header>
-                    <HeaderText>{title || "Test "}</HeaderText>
-                    {/* <CloseButton >X</CloseButton> */}
-                </Header>
-                <Content>{content}</Content>
-                <ButtonWrap>
-                {
-                  walkThroughStep!==1
-                  ?
-                  <BlueButton  style={{marginRight:'10px',borderRadius:'80px'}} onClick={()=>handlePrevSteps()}>Previous</BlueButton>:''
-                }
-                <BlueButton style={{borderRadius:'80px'}}  onClick={()=>handleNextSteps()} disabled={steps}>Next</BlueButton>
-                </ButtonWrap>
-                </StyledModal>
-            </Wrapper>
-        </div>:''}
-      
-      </>
-    )
 
-  }
+  return (
+    <>
+      {modal ?
+        <div >
+          <Backdrop />
+          <Wrapper className='walk-through-modal-wrapper' walkThroughStep={walkThroughStep} isMobile={isMobile} >
+            <StyledModal >
+              <Header>
+                <HeaderText>{title || "Test "}</HeaderText>
+                {/* <CloseButton >X</CloseButton> */}
+              </Header>
+              <Content>{content}</Content>
+              <ButtonWrap>
+                {
+                  walkThroughStep !== 1
+                    ?
+                    <BlueButton style={{ marginRight: '10px', borderRadius: '80px' }} onClick={() => handlePrevSteps()}>Previous</BlueButton> : ''
+                }
+                <BlueButton style={{ borderRadius: '80px' }} onClick={() => handleNextSteps()} disabled={steps}>Next</BlueButton>
+              </ButtonWrap>
+            </StyledModal>
+          </Wrapper>
+        </div> : ''}
+
+    </>
+  )
+
+}
