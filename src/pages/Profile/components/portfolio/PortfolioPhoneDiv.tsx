@@ -2,7 +2,7 @@ import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { FC } from "react";
 import { useBoxProjectAll } from "src/contract";
-import { ChainType } from "../../chainsConfig";
+import { ChainType } from "../../configs/chainsConfig";
 import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
 
 export const PortfolioPhoneDiv: FC<{

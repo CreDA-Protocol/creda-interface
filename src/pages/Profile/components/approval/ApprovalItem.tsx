@@ -3,7 +3,7 @@ import { Column } from "@components/Column";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useBoxApproveList } from "src/contract";
-import { ChainType, chainIndexToId } from "../../chainsConfig";
+import { ChainType, chainIndexToId } from "../../configs/chainsConfig";
 import { Wrap } from "../Wrap";
 import { ApprovalDiv } from "./ApprovalDiv";
 import { ApprovalPhoneDiv } from "./ApprovalPhoneDiv";

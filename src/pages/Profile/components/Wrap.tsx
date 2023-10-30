@@ -1,6 +1,6 @@
 import { Tooltip } from "antd";
 import { useTheme } from "src/state/application/hooks";
-import { chainIndexToId, chainTitles } from "../chainsConfig";
+import { chainIndexToId, chainTitles } from "../configs/chainsConfig";
 import { WrapDiv, WrapItem } from "./StyledComponents";
 
 export function Wrap({ onIndexChange, selectedIndex }: any) {

@@ -44,7 +44,6 @@ import AboutUs from "./AboutUs";
 import { RedirectPathToHomeOnly } from "./Home/redirects";
 import Press from "./Press";
 import News from "./Press/News";
-import Test from "./test";
 
 import "@assets/css/custom.css";
 
@@ -194,9 +193,9 @@ export default function App() {
     // provider?.resolveName("heco");
 
     walletInfo.provider?.on("network", (newNetwork, oldNetwork) => {
-      // 当 Provider 进行初始连接时，它会发出一个“network”
-      // 事件，并且 oldNetwork 和 newNetwork 为 null。所以，如果
-      // oldNetwork 存在，它代表一个变化的网络
+      // When the Provider establishes an initial connection, it emits a "network"
+      // event with oldNetwork and newNetwork set to null. Therefore, if oldNetwork exists,
+      // it represents a changed network.
       // if(newNetwork.chainId===ChainId.bsc){
       //     window.location.href="http://ifntgame.com/home"
       // }else if(newNetwork.chainId===ChainId.polygon){
@@ -208,7 +207,8 @@ export default function App() {
         window.location.replace("/home")
       }
     });
-    ethereum?.on("accountsChanged", (accounts: string[]) => {
+
+    const onAccountsChanged = (accounts: string[]) => {
       console.log(accounts);
       if (accounts[0] !== address && accounts.length) {
         // provider?.lookupAddress(accounts)
@@ -217,7 +217,9 @@ export default function App() {
         setAddress("");
 
       }
-    });
+    }
+
+    ethereum?.on("accountsChanged", onAccountsChanged);
     async function checkWalletConnect() {
       const connectProvider = await createWalletConnectWeb3Provider();
       if (connectProvider.connected) {
@@ -229,9 +231,9 @@ export default function App() {
     checkWalletConnect();
     return () => {
       walletInfo.provider?.off("network");
-      ethereum?.off("accountsChanged");
+      ethereum?.off("accountsChanged", onAccountsChanged);
     };
-  }, []);
+  }, [address, changeAccount]);
 
   async function loadData() {
     try {
@@ -331,7 +333,6 @@ export default function App() {
                           component={Governance}
                         />
                         <Route exact strict path="/doc" component={Doc} />
-                        <Route exact strict path="/test" component={Test} />
                         <Route exact strict path="/press" component={Press} />
                         <Route exact strict path="/myBankEarn" component={MyBankEarn} />
                         <Route exact strict path="/myBankFarming"

@@ -12,16 +12,16 @@ import USDCIcon from '../assets/tokens/USD Coin (USDC).png';
 import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png';
 import { TransactionDetails } from "../state/transactions/reducer";
 
-import ERC20_ABI from "@abi/ERC20.json";
-import qERC20_ABI from '@abi/qERC20.json';
-
 import CompoundLens_ABI from "@abi/CompoundLens.json";
 import Comptroller_ABI from "@abi/Comptroller.json";
+import ERC20_ABI from "@abi/ERC20.json";
 import PriceOracle_ABI from "@abi/PriceOracle.json";
+import qERC20_ABI from '@abi/qERC20.json';
 
 export { CompoundLens_ABI, Comptroller_ABI, ERC20_ABI, PriceOracle_ABI, qERC20_ABI };
 
-export const ethereum = (window as any).ethereum;
+//export const ethereum = (window as any).ethereum;
+export const ethereum = window.ethereum;
 
 export const provider = ethereum ? new ethers.providers.Web3Provider(ethereum, "any") : null;
 export const signer = provider?.getSigner();

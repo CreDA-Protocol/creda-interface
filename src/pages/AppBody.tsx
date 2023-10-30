@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import Header from "../components/Header";
-import LeftMenu from '../components/LeftMenu'
+import React from 'react';
 import { isMobile } from 'react-device-detect';
-import {useTheme} from "../state/application/hooks";
+import styled from 'styled-components';
+import Header from "../components/Header";
+import LeftMenu from '../components/LeftMenu';
+import { useTheme } from "../state/application/hooks";
 
 const BodyWrapper = styled.div`
   overflow: unset;
@@ -35,24 +35,25 @@ export const MainFullBodyDiv = styled.div`
   overflow:unset
 `
 
-export default function AppBody({ children,history }: { children: React.ReactNode,history:any }) {
+export default function AppBody({ children, history }: { children: React.ReactNode, history: any }) {
   const themeDark = useTheme()
 
   return <BodyWrapper style={{
-    backgroundColor:themeDark ? '#0D0D11':'#F1F4F6'
+    backgroundColor: themeDark ? '#0D0D11' : '#F1F4F6'
   }}>
     {
-      !isMobile && <LeftMenu history={history}/>
+      !isMobile && <LeftMenu history={history} />
     }
     {children}
   </BodyWrapper>
 }
-export function MainFullBody({ children,history }: { children: React.ReactNode ,history?:any}) {
+
+export function MainFullBody({ children, history }: { children: React.ReactNode, history?: any }) {
   const themeDark = useTheme()
   return <MainFullBodyDiv style={{
-    backgroundColor:themeDark ? '#0D0D11':'#F1F4F6'
+    backgroundColor: themeDark ? '#0D0D11' : '#F1F4F6'
   }}>
-    <Header history={history}/>
+    <Header history={history} />
     {children}
   </MainFullBodyDiv>
 }

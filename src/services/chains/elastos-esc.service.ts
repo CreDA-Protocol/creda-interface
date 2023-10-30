@@ -1,7 +1,6 @@
 import ESC from "@assets/tokens/ELA.png";
 import axios from "axios";
 import { BigNumber } from "ethers";
-
 import { ChainId, ChainIds, bigNumberToBalance, formatBalance, getPriceESC } from "../../common/Common";
 import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
 
@@ -12,12 +11,12 @@ export async function elastosESCFetchTokenBalances(accountAddress: string, chain
   let allTokenInfos: TokenInfo[] = [];
 
   let elaToken = await elastosESCFetchELABalances(accountAddress, chainId);
-  allTokenInfos.push(elaToken)
+  allTokenInfos.push(elaToken);
+
   let ercTokens = await elastosESCFetchERC20TokenBalances(accountAddress, chainId);
   allTokenInfos = [...allTokenInfos, ...ercTokens];
 
-  const walletList = await convertESCResult2WalletList(allTokenInfos);
-  return walletList;
+  return convertESCResult2WalletList(allTokenInfos);
 }
 
 /**
@@ -30,7 +29,7 @@ export function elastosESCFetchELABalances(address: string, chainId: ChainId): P
       rpcUrl = 'https://api-testnet.elastos.io/eth';
     }
 
-    let elaToke = {
+    let elaToken = {
       type: TokenType.ELA,
       symbol: "ELA",
       name: "ELA",
@@ -49,19 +48,20 @@ export function elastosESCFetchELABalances(address: string, chainId: ChainId): P
       id: '1'
     };
     axios.post(rpcUrl, param).then((res: any) => {
-      elaToke.balance = res.data.result;
-      resolve(elaToke)
+      elaToken.balance = res.data.result;
+      resolve(elaToken)
     }).catch((e: any) => {
       console.log('Esc_fetchELABalances error', e);
-      resolve(elaToke)
+      resolve(elaToken)
     })
   })
 }
+
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
 export function elastosESCFetchERC20TokenBalances(accountAddress: string, chainId: ChainId): Promise<TokenInfo[]> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let browserApiUrl = 'https://esc.elastos.io/api';
     if (chainId === 21) {
       browserApiUrl = 'https://esc-testnet.elastos.io/api';

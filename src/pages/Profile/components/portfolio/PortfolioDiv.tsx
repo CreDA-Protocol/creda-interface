@@ -1,7 +1,7 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { useBoxProjectAll } from "src/contract";
-import { ChainType } from "../../chainsConfig";
+import { ChainType } from "../../configs/chainsConfig";
 import { ProjectItem } from "../project/ProjectItem";
 
 export function PortfolioDiv({ project, chainType }: any) {

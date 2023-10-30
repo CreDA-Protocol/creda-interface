@@ -2,7 +2,7 @@ import { Column } from "@components/Column";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { chainIndexToId } from "../../chainsConfig";
+import { chainIndexToId } from "../../configs/chainsConfig";
 import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
 import { PortfolioPhoneDiv } from "./PortfolioPhoneDiv";

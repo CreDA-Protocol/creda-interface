@@ -5,7 +5,7 @@ import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { useState } from "react";
 import { useTheme } from "styled-components";
-import { ProfileProjectsConfig } from "../../projectsConfig";
+import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { Arrow, LineH, SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItemMobile } from "../project/ProjectBankItemMobile";
 
