@@ -1,8 +1,4 @@
-import { TransactionResponse } from '@ethersproject/providers'
-import { useContext, useState } from 'react'
-import styled from 'styled-components'
-import { ChainIds, GasInfo, balanceToBigNumber, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
-import { ButtonClick } from '../../components/Button'
+import { ButtonClick } from '@components/Button'
 import {
   GradientButton,
   RowCenter,
@@ -11,7 +7,11 @@ import {
   SpaceHeight,
   SpaceWidth,
   TextEqure
-} from '../../components/Row'
+} from '@components/Row'
+import { TransactionResponse } from '@ethersproject/providers'
+import { useContext, useState } from 'react'
+import styled from 'styled-components'
+import { ChainIds, GasInfo, balanceToBigNumber, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"

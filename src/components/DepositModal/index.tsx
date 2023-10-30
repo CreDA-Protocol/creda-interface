@@ -1,9 +1,9 @@
+import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from "ethers"
 import { useContext, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import USDT_icon from '../../assets/tokens/USDT.png'
 import { ApprovalState, balanceToBigNumber, bigNumberToBalance, chainFromId, marketsConfig } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useApprove } from "../../contract"

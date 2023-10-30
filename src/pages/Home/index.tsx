@@ -1,3 +1,5 @@
+import { BgImages } from "@assets/bgImages/bgImages"
+import ImageCommon from '@assets/common/ImageCommon'
 import anim1 from '@assets/lottie/CreDa_website_animation1.json'
 import anim2 from '@assets/lottie/CreDa_website_animation2-wallets.json'
 import mobile_anim2 from '@assets/lottie/CreDa_website_animation2_resizeForMobile.json'
@@ -5,15 +7,8 @@ import anim3 from '@assets/lottie/CreDa_website_animation3-hand.json'
 import mobile_anim3 from '@assets/lottie/CreDa_website_animation3_mobileview.json'
 import anim4 from '@assets/lottie/CreDa_website_animation4.json'
 import mobile_anim4 from '@assets/lottie/CreDa_website_animation4_mobileview.json'
-import { Lottie } from "@crello/react-lottie"
-import { useContext, useEffect, useRef } from 'react'
-import { isMobile } from 'react-device-detect'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { BgImages } from "../../assets/bgImages/bgImages"
-import ImageCommon from '../../assets/common/ImageCommon'
-import { Base } from "../../components/Button"
-import Column, { ColumnCenter } from '../../components/Column'
+import { Base } from "@components/Button"
+import { Column, ColumnCenter } from '@components/Column'
 import Row, {
   ContentParagraph,
   CustomGrid,
@@ -24,8 +19,13 @@ import Row, {
   SpaceHeight,
   Text,
   WrapMaxWidth
-} from '../../components/Row'
-import { ThemeText } from '../../components/ThemeComponent'
+} from '@components/Row'
+import { ThemeText } from '@components/ThemeComponent'
+import { Lottie } from "@crello/react-lottie"
+import { useContext, useEffect, useRef } from 'react'
+import { isMobile } from 'react-device-detect'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { WalletAddressContext } from "../../contexts"
 import { useOpenWarnning, useTheme } from "../../state/application/hooks"
 import { MainFullBody } from '../AppBody'

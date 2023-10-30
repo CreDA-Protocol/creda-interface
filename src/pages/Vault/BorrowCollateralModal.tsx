@@ -1,21 +1,21 @@
+import ImageCommon from '@assets/common/ImageCommon';
+import { ButtonNormal } from '@components/Button';
+import { Column, ColumnCenter } from '@components/Column';
+import Modal from '@components/NormalModal';
+import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '@components/Row';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
-import ImageCommon from '../../assets/common/ImageCommon';
 import {
   chainFromId,
   colors
 } from "../../common/Common";
-import { ButtonNormal } from '../../components/Button';
-import Column, { ColumnCenter } from '../../components/Column';
-import Modal from '../../components/NormalModal';
-import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../../components/Row';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 
-import ImageToken from '../../assets/tokens/ImageToken';
+import ImageToken from '@assets/tokens/ImageToken';
 
 const Container = styled.div`
   display:flex;

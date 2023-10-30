@@ -1,14 +1,12 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
 import i18n from '../../i18n'
 // import { useActiveWeb3React } from '../../hooks'
+import ImageCommon from '@assets/common/ImageCommon'
+import { RowCenter } from '@components/Row'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useToggleModal,useTheme } from '../../state/application/hooks'
-import { ExternalLink } from '../../theme'
-import {RowCenter} from '../../components/Row'
-import ImageCommon from '../../assets/common/ImageCommon'
-import {colors} from "../../common/Common";
+import { useModalOpen, useTheme, useToggleModal } from '../../state/application/hooks'
 
 
 const StyledMenu = styled.div`
@@ -47,8 +45,8 @@ const MenuItemIcon = styled.img`
   height:30px;
   margin-right:10px
 `
-const HeaderView = styled(RowCenter)<{
-    themeDark?:boolean|null
+const HeaderView = styled(RowCenter) <{
+  themeDark?: boolean | null
 }>`
   height: 40px;
   color: white;
@@ -59,7 +57,7 @@ const HeaderView = styled(RowCenter)<{
   flex-direction: row;
   align-items:center;
   transition: .4s;
-  color: ${({themeDark}) => `${themeDark ? '#3278FF' : '#000'}` };
+  color: ${({ themeDark }) => `${themeDark ? '#3278FF' : '#000'}`};
   &:hover{
     color: #33D4FF !important;
     transition: .4s;
@@ -116,7 +114,7 @@ export default function I18nSwitch() {
   return (
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
     <StyledMenu ref={node as any}>
-      <HeaderView themeDark={themeDark} onClick={()=>{
+      <HeaderView themeDark={themeDark} onClick={() => {
         // toggle()
       }}>
         {/*<LanIcon src={i18n.language == 'zh-CN'?ImageCommon.cn_icon:ImageCommon.en_icon}/>*/}
@@ -126,12 +124,12 @@ export default function I18nSwitch() {
       {open && (
         <MenuFlyout>
           <MenuItem onClick={() => changeLanguage('en')}>
-            <MenuItemIcon src={ImageCommon.en_icon}/>
+            <MenuItemIcon src={ImageCommon.en_icon} />
             English
           </MenuItem>
-          <SpaceHeight/>
+          <SpaceHeight />
           <MenuItem onClick={() => changeLanguage('zh-CN')}>
-            <MenuItemIcon src={ImageCommon.cn_icon}/>
+            <MenuItemIcon src={ImageCommon.cn_icon} />
             Chinese
           </MenuItem>
         </MenuFlyout>

@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-import ImageCommon from '../../assets/common/ImageCommon'
+import ImageCommon from '@assets/common/ImageCommon'
 
 const BackgroundContainer = styled.div`
   position: fixed;

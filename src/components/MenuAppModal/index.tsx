@@ -1,8 +1,7 @@
-import React, {useCallback, useContext, useState} from 'react'
+import ImageCommon from '@assets/common/ImageCommon'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import Modal from '../NormalModal'
-import { NavLink } from 'react-router-dom'
-import ImageCommon from '../../assets/common/ImageCommon'
 
 const Container = styled.div`
   width:100%;
@@ -63,17 +62,17 @@ const ContainerWrapDiv = styled.div`
   };
 `
 const ContainerTopItem = styled.div<{
-  image:any
+  image: any
 }>`
-  width:${()=>`${(750 - 60 - 30 * 3) / 4}px`};
-  height:${()=>`${(750 - 60 - 30 * 3) / 4}px`};
-  background-image:${({image})=>`url(${image})`};
-  background-size:${()=>`${(750 - 60 - 30 * 3) / 4}px ${(750 - 60 - 30 * 3) / 4}px`};
+  width:${() => `${(750 - 60 - 30 * 3) / 4}px`};
+  height:${() => `${(750 - 60 - 30 * 3) / 4}px`};
+  background-image:${({ image }) => `url(${image})`};
+  background-size:${() => `${(750 - 60 - 30 * 3) / 4}px ${(750 - 60 - 30 * 3) / 4}px`};
   background-repeat: no-repeat;
   @media (max-width: 768px) {
-    width:${()=>`${(window.screen.width - 30 - 30 - 15 * 3) / 4}px`};
-    height:${()=>`${(window.screen.width - 30 - 30  - 15 * 3) / 4}px`};
-    background-size:${()=>`${(window.screen.width - 30 - 30  - 15 * 3) / 4}px ${(window.screen.width - 30 - 30  - 15 * 3) / 4}px`};
+    width:${() => `${(window.screen.width - 30 - 30 - 15 * 3) / 4}px`};
+    height:${() => `${(window.screen.width - 30 - 30 - 15 * 3) / 4}px`};
+    background-size:${() => `${(window.screen.width - 30 - 30 - 15 * 3) / 4}px ${(window.screen.width - 30 - 30 - 15 * 3) / 4}px`};
   };
   display:flex;
   flex-direction:row;
@@ -97,15 +96,15 @@ const ContainerTopChoose = styled.div`
   };
 `
 interface button_type {
-  disabled?:boolean
+  disabled?: boolean
 }
 const ContainerOpenbutton = styled.img<button_type>`
   width:136px;
   height:40px;
   cursor: pointer;
   margin-top:20px;
-  pointer-events:${props=>props.disabled?"none":"auto"};
-  opacity:${props=>props.disabled?0.6:1};
+  pointer-events:${props => props.disabled ? "none" : "auto"};
+  opacity:${props => props.disabled ? 0.6 : 1};
   @media (max-width: 768px) {
     width:68px;
     height:20px;
@@ -167,12 +166,12 @@ export default function MenuAppModal({
   isOpen: boolean
   onDismiss: () => void,
 }) {
-  
+
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} >
       <Container>
-        <ContainerClose src={ImageCommon.close_app} onClick={onDismiss}/>
-        <UniIcon src={ImageCommon.whitelogo}/>
+        <ContainerClose src={ImageCommon.close_app} onClick={onDismiss} />
+        <UniIcon src={ImageCommon.whitelogo} />
         <StyledNavLink onClick={onDismiss} to={'/home'} >HOME</StyledNavLink>
         <StyledNavLink onClick={onDismiss} to={'/vault'} >Vault</StyledNavLink>
         <StyledNavLink onClick={onDismiss} to={'/bank'} >Bank</StyledNavLink>

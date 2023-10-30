@@ -1,10 +1,25 @@
+import ImageCommon from '@assets/common/ImageCommon'
+import ImageToken from '@assets/tokens/ImageToken'
+import { Column } from '@components/Column'
+import { BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView } from '@components/Common'
+import { H4, HeaderView } from "@components/ConnectWallet"
+import CustomStakeModal from "@components/CustomStakeModal"
+import {
+  GradientButton,
+  RowBetween,
+  RowCenter,
+  RowEnd,
+  RowFixed,
+  SpaceHeight,
+  Text,
+  TextEqure
+} from '@components/Row'
+import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import { Badge, Skeleton } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
-import ImageToken from '../../assets/tokens/ImageToken'
 import {
   ApprovalState,
   balanceToBigNumber,
@@ -15,21 +30,6 @@ import {
   platforms,
   tipError
 } from "../../common/Common"
-import Column from '../../components/Column'
-import { BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView } from '../../components/Common'
-import { H4, HeaderView } from "../../components/ConnectWallet"
-import CustomStakeModal from "../../components/CustomStakeModal"
-import {
-  GradientButton,
-  RowBetween,
-  RowCenter,
-  RowEnd,
-  RowFixed,
-  SpaceHeight,
-  Text,
-  TextEqure
-} from '../../components/Row'
-import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useApprove, useCNFTInfo, useDaInfo, useMarketsResult } from "../../contract"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"

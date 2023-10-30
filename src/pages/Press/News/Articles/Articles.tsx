@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { FontPoppins } from "../../../../components/Row";
-import { MainFullBody } from "../../../AppBody";
-import {  useTranslation } from "react-i18next";
+import { BgImages } from "@assets/bgImages/bgImages";
+import { FontPoppins } from "@components/Row";
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
-import { useOpenWarnning, useTheme } from "../../../../state/application/hooks";
+import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
-import { BgImages } from "../../../../assets/bgImages/bgImages";
+import styled from "styled-components";
+import { useOpenWarnning, useTheme } from "../../../../state/application/hooks";
+import { MainFullBody } from "../../../AppBody";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`
   background: ${({ themeDark }) =>
@@ -57,8 +57,8 @@ const Card = styled.div<{
 `;
 
 const CardTitle = styled.label<{
-    themeDark: boolean | null;
-  }>`
+  themeDark: boolean | null;
+}>`
   @media (min-width: 768px) and (max-width: 1700px) {
     font-size: 13px;
   }
@@ -70,15 +70,15 @@ const CardTitle = styled.label<{
 `;
 
 const CardBodyTitle = styled.label<{
-    themeDark: boolean | null;
-  }>`
+  themeDark: boolean | null;
+}>`
   font-size: ${isMobile ? "13px" : "13px"};
   color: ${({ themeDark }) => (themeDark ? " #fff" : "#000")} ;
 `;
 
 const CardBody = styled.label<{
-    themeDark: boolean | null;
-  }>`
+  themeDark: boolean | null;
+}>`
   @media (min-width: 768px) and (max-width: 1700px) {
     font-size: 13px;
   }
@@ -112,8 +112,8 @@ const GradientText = styled.span`
 `;
 
 const CitationText = styled.label<{
-    themeDark: boolean | null;
-  }>`
+  themeDark: boolean | null;
+}>`
   @media (min-width: 768px) and (max-width: 1700px) {
     font-size: 11px;
   }
@@ -122,11 +122,11 @@ const CitationText = styled.label<{
   display:flex;
   align-items:center;
   justify-content:center;
-`; 
+`;
 
 function Articles(props: any) {
   const hideWarning = useOpenWarnning(false);
-  
+
   useEffect(() => {
     hideWarning();
     document.title = "News & Media";
@@ -138,7 +138,7 @@ function Articles(props: any) {
 const ArticlesPage = ({ props }: any) => {
   const themeDark = useTheme();
   const { t } = useTranslation();
-  const location=window.location.pathname
+  const location = window.location.pathname
 
   return (
     <MainFullBody history={props.history}>
@@ -148,58 +148,60 @@ const ArticlesPage = ({ props }: any) => {
             <Section style={!isMobile ? { paddingLeft: 0 } : {}}>
               <Box themeDark={themeDark}>
                 <CardImage src=
-                {
-                    location===`${t("NewDefi")}`?"https://creda.stablewplite.com/static/media/pexels_olia_clean_low.2214235a.jpg"
-                    :location===`${t("CreditScoringProtocol")}`?`${BgImages.CryptoScoringImage}`
-                    :location===`${t("FormerCeo")}`?`${BgImages.FakhulMiah}`
-                    :location===`${t("CyberConnect")}`?`${BgImages.CyberConnect}`
-                    :''
-                } alt="news-img" />
+                  {
+                    location === `${t("NewDefi")}` ? "https://creda.stablewplite.com/static/media/pexels_olia_clean_low.2214235a.jpg"
+                      : location === `${t("CreditScoringProtocol")}` ? `${BgImages.CryptoScoringImage}`
+                        : location === `${t("FormerCeo")}` ? `${BgImages.FakhulMiah}`
+                          : location === `${t("CyberConnect")}` ? `${BgImages.CyberConnect}`
+                            : ''
+                  } alt="news-img" />
                 <BoxHeading themeDark={themeDark}>
                   <GradientText>
-                {
-                    location===`${t("NewDefi")}`?`${t("NewDeFIPlatform")}`
-                    :location===`${t("CreditScoringProtocol")}`?`${t("CryptoCreditScoringProtocol")}`
-                    :location===`${t("FormerCeo")}`?`${t("CredaCeo")}`
-                    :location===`${t("CyberConnect")}`?`${t("CredaPartners")}`
-                    :''
-                }
+                    {
+                      location === `${t("NewDefi")}` ? `${t("NewDeFIPlatform")}`
+                        : location === `${t("CreditScoringProtocol")}` ? `${t("CryptoCreditScoringProtocol")}`
+                          : location === `${t("FormerCeo")}` ? `${t("CredaCeo")}`
+                            : location === `${t("CyberConnect")}` ? `${t("CredaPartners")}`
+                              : ''
+                    }
                   </GradientText>
                 </BoxHeading>
                 <Card themeDark={themeDark} isHighlight>
                   <CardTitle themeDark={themeDark}>
-                  {
-                    location===`${t("NewDefi")}`?`${t("CredaProtocol")}`
-                    :location===`${t("CreditScoringProtocol")}`?`${t("CredaPlatform")}`
-                    :location===`${t("FormerCeo")}`?`${t("CredaCeoT")}`
-                    :location===`${t("CyberConnect")}`?`${t("CredaConnect")}`
-                    :''
-                }
+                    {
+                      location === `${t("NewDefi")}` ? `${t("CredaProtocol")}`
+                        : location === `${t("CreditScoringProtocol")}` ? `${t("CredaPlatform")}`
+                          : location === `${t("FormerCeo")}` ? `${t("CredaCeoT")}`
+                            : location === `${t("CyberConnect")}` ? `${t("CredaConnect")}`
+                              : ''
+                    }
                   </CardTitle>
-                <CardBody style={{display:'block'}} themeDark={themeDark} 
-            dangerouslySetInnerHTML=
-                {{ __html: 
-                   location===`${t("NewDefi")}`? `${t("NewDefiPlatform")}`
-                   :location===`${t("CreditScoringProtocol")}`?`${t("CreditScoringProtocolPartners")}`
-                   :location===`${t("FormerCeo")}`?`${t("FormarCeoStangley")}`
-                   :location===`${t("CyberConnect")}`?`${t("CyberConnectPartner")}`
-                   :''
-                }}
-                >
-                </CardBody>
-                 <hr/>
-                 <div>
-                 <CitationText style={{display:'block',textAlign:'center'}} themeDark={themeDark} dangerouslySetInnerHTML=
-                {{ __html: 
-                   location===`${t("NewDefi")}`? `${t("NewDefiPlatformCitation")}`
-                   :location===`${t("CreditScoringProtocol")}`?`${t("CreditScoringProtocolPartnersCitation")}`
-                   :location===`${t("FormerCeo")}`?`${t("FormarCeoStangleyCitation")}`
-                   :location===`${t("CyberConnect")}`?`${t("CyberConnectPartnerCitation")}`
-                   :''
-                }}>
-                 </CitationText>
+                  <CardBody style={{ display: 'block' }} themeDark={themeDark}
+                    dangerouslySetInnerHTML=
+                    {{
+                      __html:
+                        location === `${t("NewDefi")}` ? `${t("NewDefiPlatform")}`
+                          : location === `${t("CreditScoringProtocol")}` ? `${t("CreditScoringProtocolPartners")}`
+                            : location === `${t("FormerCeo")}` ? `${t("FormarCeoStangley")}`
+                              : location === `${t("CyberConnect")}` ? `${t("CyberConnectPartner")}`
+                                : ''
+                    }}
+                  >
+                  </CardBody>
+                  <hr />
+                  <div>
+                    <CitationText style={{ display: 'block', textAlign: 'center' }} themeDark={themeDark} dangerouslySetInnerHTML=
+                      {{
+                        __html:
+                          location === `${t("NewDefi")}` ? `${t("NewDefiPlatformCitation")}`
+                            : location === `${t("CreditScoringProtocol")}` ? `${t("CreditScoringProtocolPartnersCitation")}`
+                              : location === `${t("FormerCeo")}` ? `${t("FormarCeoStangleyCitation")}`
+                                : location === `${t("CyberConnect")}` ? `${t("CyberConnectPartnerCitation")}`
+                                  : ''
+                      }}>
+                    </CitationText>
 
-                 </div>
+                  </div>
                 </Card>
               </Box>
             </Section>

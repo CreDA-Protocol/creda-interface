@@ -1,4 +1,38 @@
 import { QuestionCircleOutlined } from "@ant-design/icons/lib"
+import ImageCommon from "@assets/common/ImageCommon"
+import ImageToken from "@assets/tokens/ImageToken"
+import { Column, ColumnBetween, ColumnCenter } from '@components/Column'
+import {
+  BaseView,
+  BlueButton,
+  CardPair,
+  CustomIcon,
+  FlexViewBetween,
+  FlexViewCenter,
+  LgBorderButton,
+  LgWhiteButton,
+  LoadingRow,
+  MobileView,
+  WinView
+} from '@components/Common'
+import { H4 } from "@components/ConnectWallet"
+import CustomStakeModal from "@components/CustomStakeModal"
+import {
+  CustomGrid,
+  FontPoppins,
+  GradientButton,
+  GradientGaryButton,
+  RowBetween,
+  RowCenter,
+  RowEnd,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  Text,
+  TextEqure
+} from '@components/Row'
+import StakeModal from '@components/StakeModal'
+import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Badge, Button, Skeleton, Tooltip, message } from 'antd'
 import { BigNumber } from "ethers"
@@ -7,8 +41,6 @@ import Countdown from 'react-countdown'
 import { isMobile } from 'react-device-detect'
 import { useTranslation } from "react-i18next"
 import styled from 'styled-components'
-import ImageCommon from "../../assets/common/ImageCommon"
-import ImageToken from "../../assets/tokens/ImageToken"
 import {
   ApprovalState,
   ChainIds,
@@ -24,38 +56,6 @@ import {
   getNFTCardBgImage,
   tipError
 } from "../../common/Common"
-import Column, { ColumnBetween, ColumnCenter } from '../../components/Column'
-import {
-  BaseView,
-  BlueButton,
-  CardPair,
-  CustomIcon,
-  FlexViewBetween,
-  FlexViewCenter,
-  LgBorderButton,
-  LgWhiteButton,
-  LoadingRow,
-  MobileView,
-  WinView
-} from '../../components/Common'
-import { H4 } from "../../components/ConnectWallet"
-import CustomStakeModal from "../../components/CustomStakeModal"
-import {
-  CustomGrid,
-  FontPoppins,
-  GradientButton,
-  GradientGaryButton,
-  RowBetween,
-  RowCenter,
-  RowEnd,
-  RowFixed,
-  SpaceHeight,
-  SpaceWidth,
-  Text,
-  TextEqure
-} from '../../components/Row'
-import StakeModal from '../../components/StakeModal'
-import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useApprove,

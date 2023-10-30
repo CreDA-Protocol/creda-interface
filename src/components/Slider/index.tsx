@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
 
 const StyledRangeInput = styled.input<{ size: number }>`
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
@@ -110,7 +109,7 @@ export default function Slider({ value, onChange, min = 0, step = 1, max = 100, 
       size={size}
       type="range"
       value={value}
-      style={{width: '100%',  padding: '15px 0' }}
+      style={{ width: '100%', padding: '15px 0' }}
       onChange={changeCallback}
       aria-labelledby="input slider"
       step={step}

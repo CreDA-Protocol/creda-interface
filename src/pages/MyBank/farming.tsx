@@ -1,4 +1,9 @@
 import ERC20_ABI from "@abi/ERC20.json"
+import ImageCommon from '@assets/common/ImageCommon'
+import { Column } from '@components/Column'
+import { CardPair, CardPairCustom, LoadingRow } from '@components/Common'
+import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '@components/Row'
+import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Tooltip } from 'antd'
@@ -6,7 +11,6 @@ import { ethers } from 'ethers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
 import {
   MyBankAssetFarmingIcon,
   balanceToBigNumber,
@@ -15,10 +19,6 @@ import {
   mathPriceTo8,
   walletInfo
 } from "../../common/Common"
-import Column from '../../components/Column'
-import { CardPair, CardPairCustom, LoadingRow } from '../../components/Common'
-import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '../../components/Row'
-import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useIconPrice,

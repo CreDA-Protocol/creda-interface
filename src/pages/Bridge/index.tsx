@@ -1,14 +1,7 @@
 // import styled from 'styled-components'
-// import ImageCommon from '../../assets/common/ImageCommon'
-import { TransactionResponse } from "@ethersproject/providers";
-import { BigNumber } from "ethers";
-import React, { useCallback, useContext } from "react";
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import styled, { css } from "styled-components";
-import ImageCommon from "../../assets/common/ImageCommon";
-import ImageToken from "../../assets/tokens/ImageToken";
-import { ApprovalState, ChainIds, GasInfo, balanceToBigNumber, chainFromId, colors, formatBalance } from "../../common/Common";
+// import ImageCommon from '@assets/common/ImageCommon'
+import ImageCommon from "@assets/common/ImageCommon";
+import ImageToken from "@assets/tokens/ImageToken";
 import {
     CustomIcon,
     FlexView,
@@ -18,7 +11,14 @@ import {
     FlexViewCenterColumn,
     MobileView,
     WinView
-} from "../../components/Common";
+} from "@components/Common";
+import { TransactionResponse } from "@ethersproject/providers";
+import { BigNumber } from "ethers";
+import React, { useCallback, useContext } from "react";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import styled, { css } from "styled-components";
+import { ApprovalState, ChainIds, GasInfo, balanceToBigNumber, chainFromId, colors, formatBalance } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useApprove, useCredaInfo, useWrapAmount } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";

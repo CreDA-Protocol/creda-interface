@@ -1,17 +1,17 @@
+import ImageCommon from '@assets/common/ImageCommon';
+import { ButtonNormal } from '@components/Button';
+import { Column, ColumnCenter } from '@components/Column';
+import { CardPair } from '@components/Common';
+import Modal from '@components/NormalModal';
+import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { useContext, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import ImageCommon from '../../assets/common/ImageCommon';
 import {
   chainFromId,
   mathPriceTo18,
   mathPriceTo6
 } from "../../common/Common";
-import { ButtonNormal } from '../../components/Button';
-import Column, { ColumnCenter } from '../../components/Column';
-import { CardPair } from '../../components/Common';
-import Modal from '../../components/NormalModal';
-import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '../../components/Row';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 
 export const DrawButton = styled.div`

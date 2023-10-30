@@ -33,9 +33,9 @@ import { GlobalConfiguration } from '@common/config'
 import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
+import { ProfileProjectsConfig } from 'src/pages/Profile/projectsConfig'
 import { celoFetchTokenBalances } from 'src/services/chains/celo.service'
 import { WalletList, WalletToken } from '../model/wallet'
-import { ProjectConfig } from "../pages/Profile"
 import { LoadingContext, LoadingType } from "../provider/LoadingProvider"
 import { elastosESCFetchTokenBalances } from '../services/chains/elastos-esc.service'
 import { Covalent_enableNetwork, covalentFetchTokenBalances } from '../services/covalent.service'
@@ -1839,7 +1839,7 @@ export function useBoxProjectAll(chainType: string, projectNames: string[]): any
                 }
                 let allFetch: any = []
                 projectNames.forEach((item: string, index: number) => {
-                    if (Object.keys(ProjectConfig).indexOf(item) >= 0) {
+                    if (Object.keys(ProfileProjectsConfig).indexOf(item) >= 0) {
                         allFetch.push(getBoxProject(item))
                     }
                 })

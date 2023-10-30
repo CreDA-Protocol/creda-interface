@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { FontPoppins, GradientButton } from "../../components/Row";
-import { MainFullBody } from "../AppBody";
-import { useTranslation } from "react-i18next";
+import { BgImages } from "@assets/bgImages/bgImages";
+import { FontPoppins, GradientButton } from "@components/Row";
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import { useOpenWarnning, useTheme } from "../../state/application/hooks";
-import {  news, press } from "./data";
-import { BgImages } from "../../assets/bgImages/bgImages";
+import { MainFullBody } from "../AppBody";
+import { news, press } from "./data";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`
   background: ${({ themeDark }) =>
@@ -212,40 +212,40 @@ const PressPage = ({ props }: any) => {
                 <BoxHeading themeDark={themeDark}>
                   <GradientText>{t("MediaCoverage")}</GradientText>
                 </BoxHeading>
-                {news[0].name==='media'?
-                <Card themeDark={themeDark} isHighlight>
-                  <CardHeading>
-                    {`${news[0].publisher} - ${news[0].published}`}
-                  </CardHeading>
-                  <CardTitle href={news[0].url} target={"_blank"}>
-                    {news[0].title}
-                  </CardTitle>
-                  <br />
-                  <CardHeading>{news[0].desc}</CardHeading>
-                  {news[0].picture && (
-                    <CardImage src={news[0].picture} alt="news-img" />
-                  )}
-                </Card>:
-                <Card key={news[0].url} themeDark={themeDark} isHighlight={false}>
-                <CardHeading>
-                  {`Influencer - ${news[0].name}`} - {news[0].published}
-                </CardHeading>
-                <Video src={news[0].url} frameBorder={0} allowFullScreen />
-              </Card>
-              }
+                {news[0].name === 'media' ?
+                  <Card themeDark={themeDark} isHighlight>
+                    <CardHeading>
+                      {`${news[0].publisher} - ${news[0].published}`}
+                    </CardHeading>
+                    <CardTitle href={news[0].url} target={"_blank"}>
+                      {news[0].title}
+                    </CardTitle>
+                    <br />
+                    <CardHeading>{news[0].desc}</CardHeading>
+                    {news[0].picture && (
+                      <CardImage src={news[0].picture} alt="news-img" />
+                    )}
+                  </Card> :
+                  <Card key={news[0].url} themeDark={themeDark} isHighlight={false}>
+                    <CardHeading>
+                      {`Influencer - ${news[0].name}`} - {news[0].published}
+                    </CardHeading>
+                    <Video src={news[0].url} frameBorder={0} allowFullScreen />
+                  </Card>
+                }
               </Box>
               {news.slice(1).map((item) => (
                 <Card key={item._id} themeDark={themeDark} isHighlight={false}>
                   <CardHeading>
                     {`${item.publisher} - ${item.published}`}
                   </CardHeading>
-                  {item.name==='media'?
-                  <CardTitle href={item.url} target={"_blank"}>
-                    {item.title}
-                  </CardTitle>
-                  :
-                  <Video src={item.url} frameBorder={0} allowFullScreen />
-                }
+                  {item.name === 'media' ?
+                    <CardTitle href={item.url} target={"_blank"}>
+                      {item.title}
+                    </CardTitle>
+                    :
+                    <Video src={item.url} frameBorder={0} allowFullScreen />
+                  }
                 </Card>
               ))}
               {/* {influencers.map((item) => (
@@ -285,13 +285,13 @@ const PressPage = ({ props }: any) => {
           </Body>
         </Container>
         <FooterContainer themeDark={themeDark}>
-        <Heading themeDark={themeDark}>
+          <Heading themeDark={themeDark}>
             <GradientText>{t("Resources")}</GradientText>
           </Heading>
           <Media>
             <MediaBody>
               <MediaTitle>
-                  <CardTitle target="_blank" href="https://creda-app.gitbook.io/news-and-media-resources/news-and-media-resources/logo-and-brand-guide">Our Logo</CardTitle>
+                <CardTitle target="_blank" href="https://creda-app.gitbook.io/news-and-media-resources/news-and-media-resources/logo-and-brand-guide">Our Logo</CardTitle>
               </MediaTitle>
               <MediaTitle>
                 <CardTitle target="_blank" href="https://creda-app.gitbook.io/news-and-media-resources/news-and-media-resources/press-kit">Media Kit</CardTitle>

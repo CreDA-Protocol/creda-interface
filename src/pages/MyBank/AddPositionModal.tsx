@@ -1,14 +1,14 @@
+import ImageCommon from '@assets/common/ImageCommon';
+import { ButtonNormal } from '@components/Button';
+import { Column, ColumnCenter } from '@components/Column';
+import { CardPair, LoadingRow } from '@components/Common';
+import Modal from '@components/NormalModal';
+import Row, { RowBetween, RowCenter, RowEnd, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { useState } from 'react';
 import styled from 'styled-components';
-import ImageCommon from '../../assets/common/ImageCommon';
 import {
   mathPriceTo4
 } from "../../common/Common";
-import { ButtonNormal } from '../../components/Button';
-import Column, { ColumnCenter } from '../../components/Column';
-import { CardPair, LoadingRow } from '../../components/Common';
-import Modal from '../../components/NormalModal';
-import Row, { RowBetween, RowCenter, RowEnd, RowFixed, SpaceHeight, Text } from '../../components/Row';
 import { useWalletInfo } from '../../contract';
 
 export const DrawButton = styled.div`
