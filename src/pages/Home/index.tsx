@@ -809,7 +809,7 @@ function Home(props: any) {
 
   useEffect(() => {
     hideWarning()
-  }, [])
+  }, [hideWarning])
   return <>
     {
       isMobile ? <PhoneHomePage props={props} /> : <HomePage props={props} />

@@ -266,9 +266,11 @@ function Vault(props: any) {
     coinleft = 'ELA'
     coinright = 'CREDA'
   }
+
   useEffect(() => {
     showWarning()
-  }, [])
+  }, [showWarning]);
+
   function claimCreda() {
     loading.show(LoadingType.confirm, `Claim CREDA Token`)
     CredaContract?.claim(GasInfo)
@@ -366,6 +368,7 @@ function Vault(props: any) {
         })
     }
   }
+
   function onHardWithdraw(amount: string) {
     loading.show(LoadingType.confirm, `UnStake ${info.symbol}`)
     hardContract?.[info.symbol === "ELA" ? "withdrawELA" : "withdraw"](balanceToBigNumber(amount, info.decimals), BigNumber.from(info.pid))
@@ -383,6 +386,7 @@ function Vault(props: any) {
         tipError(err)
       })
   }
+
   function onHardClaim() {
     loading.show(LoadingType.confirm, `Claim`)
     hardContract?.claimReward()
@@ -400,6 +404,7 @@ function Vault(props: any) {
         tipError(err)
       })
   }
+
   function onStake(amount: string) {
     console.log('onStake');
 
@@ -422,6 +427,7 @@ function Vault(props: any) {
         tipError(err)
       })
   }
+
   function onWithdraw(amount: string) {
     console.log('onWithdraw');
 

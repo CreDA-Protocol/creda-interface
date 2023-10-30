@@ -92,6 +92,11 @@ function MyBankEarn(props: any) {
 }
 
 
+enum ButtonType {
+  deposit = 0,
+  withdraw = 1
+}
+
 const LeftIcon = styled.img`
   width:30px;
   @media (max-width: 768px) {
@@ -193,10 +198,7 @@ export function Earn() {
 }
 
 export default MyBankEarn;
-enum ButtonType {
-  deposit = 0,
-  withdraw = 1
-}
+
 function EarnItem({ item, themeDark, earnRes, onAction }: any) {
 
   const { chainId } = useContext(NetworkTypeContext);

@@ -2,7 +2,7 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ProfileProjectsConfig } from "../../projectsConfig";
+import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItem } from "./ProjectBankItem";
 

@@ -1,4 +1,3 @@
-
 export const ProfileProjectsConfig: any = {
   basisdollar: {
     title1: "Balance",

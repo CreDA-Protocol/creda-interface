@@ -56,13 +56,13 @@ import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useOpenWarnning, useTheme, useWalkThroughStep, } from "../../state/application/hooks";
 import { ToastStatus, useAddToast } from "../../state/toast";
 import { useTransactionAdder } from "../../state/transactions/hooks";
-import { chainIndexToId, chainTitles } from './chainsConfig';
 import { Segment } from "./components/Segment";
 import { AddressText, BGDiv, Body, CenterItemDiv, ColorDiv, ColorDivNoBorder, CopyIcon, IconIcon, IconIconBlue, LineH, LineV, MoreIcon, NFTBgImage, TopItemDiv } from './components/StyledComponents';
 import { WalletDiv } from "./components/WalletDiv";
 import { Wrap } from "./components/Wrap";
 import { ApprovalItem } from "./components/approval/ApprovalItem";
 import { PortfolioItem } from "./components/portfolio/PortfolioItem";
+import { chainIndexToId, chainTitles } from './configs/chainsConfig';
 
 enum StakeType {
     hidden = 0,
@@ -870,21 +870,4 @@ const BInput = styled.input<{
   };
 `;
 
-const BBtn = styled(RowCenter)`
-  width: 80px;
-  height: 30px;
-  background: #4f56ff;
-  border-radius: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffffff;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    width: 60px;
-    height: 20px;
-    font-size: 10px;
-  };
-`;
-
 export default Profile;
-

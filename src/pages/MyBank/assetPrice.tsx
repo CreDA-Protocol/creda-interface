@@ -146,14 +146,14 @@ function Earn() {
 
   useEffect(() => {
     if (chainId !== ChainIds.esc) {
-      let iconStriing = ''
-      earnPool.map((item, index) => {
-        iconStriing = iconStriing + item.name + ','
+      let iconString = ''
+      earnPool.forEach((item, index) => {
+        iconString = iconString + item.name + ','
       })
-      iconStriing = iconStriing.substring(0, iconStriing.length - 1)
-      fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${iconStriing}&tsyms=USD`).then((response) => response.json()).then((info) => {
+      iconString = iconString.substring(0, iconString.length - 1)
+      fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${iconString}&tsyms=USD`).then((response) => response.json()).then((info) => {
         let temp = [...earnPool]
-        temp.map((item: any) => {
+        temp.forEach((item: any) => {
           if (info.DISPLAY[item.name]) {
             item.price = info.DISPLAY[item.name]['USD'].PRICE
           } else {

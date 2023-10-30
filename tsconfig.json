@@ -21,6 +21,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "typeRoots": [
+      "src"
+    ],
     "paths": {
       "@abi/*": [
         "./src/assets/abi/*"
@@ -46,6 +49,7 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "src/global.d.ts"
   ]
 }

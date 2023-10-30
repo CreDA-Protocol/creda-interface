@@ -32,7 +32,7 @@ import { GlobalConfiguration } from '@common/config'
 import axios from 'axios'
 import { ContractCallContext, Multicall } from 'ethereum-multicall'
 import { toUtf8String } from "ethers/lib/utils"
-import { ProfileProjectsConfig } from 'src/pages/Profile/projectsConfig'
+import { ProfileProjectsConfig } from 'src/pages/Profile/configs/projectsConfig'
 import { celoFetchTokenBalances } from 'src/services/chains/celo.service'
 import { WalletList, WalletToken } from '../model/wallet'
 import { LoadingContext, LoadingType } from "../provider/LoadingProvider"
