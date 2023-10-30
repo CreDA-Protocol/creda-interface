@@ -31,12 +31,3 @@ export const ChainType: any = {
   CELO: 'celo',
   "Elastos ESC": "esc"
 };
-
-const ChainType2Id: any = {
-  "eth": 1,
-  "heco": 128,
-  "polygon": 137,
-  "bsc": 56,
-  "esc": 20,
-  "celo": 42220,
-};

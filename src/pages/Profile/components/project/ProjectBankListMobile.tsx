@@ -3,7 +3,7 @@ import { Column } from "@components/Column";
 import { CardPairOrigin } from "@components/Common";
 import { RowBetween, RowFixed } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ProfileProjectsConfig } from "../projectsConfig";
+import { ProfileProjectsConfig } from "../../projectsConfig";
 
 export function ProjectBankListMobile({ item, name, tokensKey }: any) {
   const tokens = item[tokensKey] || [];

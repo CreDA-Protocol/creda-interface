@@ -1,10 +1,14 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
+import { FC } from "react";
 import { useBoxProjectAll } from "src/contract";
-import { ChainType } from "../chainsConfig";
-import { ProjectItem } from "./ProjectItem";
+import { ChainType } from "../../chainsConfig";
+import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
 
-export function PortfolioDiv({ project, chainType }: any) {
+export const PortfolioPhoneDiv: FC<{
+  project: any,
+  chainType: number
+}> = ({ project, chainType }) => {
   const data = Object.values(project[chainType] || {});
 
   const projectNames = data.map((item: any, index: number) => {
@@ -24,9 +28,9 @@ export function PortfolioDiv({ project, chainType }: any) {
     return <ProfileLoading loading={allProject.loading}></ProfileLoading>;
   }
   return (
-    <Column style={{ width: "100%", marginTop: 30 }}>
+    <Column style={{ width: "100%", marginTop: 15 }}>
       {projectsFilterRes.map((item: any, index: number) => {
-        return <ProjectItem item={item}></ProjectItem>;
+        return <PortfolioPhoneItemDiv item={item}></PortfolioPhoneItemDiv>;
       })}
     </Column>
   );

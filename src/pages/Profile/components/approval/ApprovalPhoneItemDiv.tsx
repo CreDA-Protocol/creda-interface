@@ -9,7 +9,7 @@ import { BigNumber } from "ethers";
 import { useState } from "react";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { useTheme } from "styled-components";
-import { Arrow, BGDiv, CancelButton, LineH, SmallIconIcon } from "./StyledComponents";
+import { Arrow, BGDiv, CancelButton, LineH, SmallIconIcon } from "../StyledComponents";
 
 export function ApprovalPhoneItemDiv({ item, cancel }: any) {
   const [showMore, setShowMore] = useState(false);

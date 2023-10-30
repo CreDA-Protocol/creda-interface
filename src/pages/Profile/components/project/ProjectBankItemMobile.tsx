@@ -1,7 +1,7 @@
-import { SpaceHeight, RowBetween, TextEqure } from "@components/Row";
+import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { useTheme } from "styled-components";
+import { BGDiv, PortfolioTopBg } from "../StyledComponents";
 import { ProjectBankListMobile } from "./ProjectBankListMobile";
-import { BGDiv, PortfolioTopBg } from "./StyledComponents";
 
 export function ProjectBankItemMobile({ title, data, name, tokensKey }: any) {
   const themeDark = useTheme();

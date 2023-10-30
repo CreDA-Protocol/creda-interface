@@ -57,12 +57,12 @@ import { useOpenWarnning, useTheme, useWalkThroughStep, } from "../../state/appl
 import { ToastStatus, useAddToast } from "../../state/toast";
 import { useTransactionAdder } from "../../state/transactions/hooks";
 import { chainIndexToId, chainTitles } from './chainsConfig';
-import { ApprovalItem } from "./components/ApprovalItem";
-import { PortfolioItem } from "./components/PortfolioItem";
 import { Segment } from "./components/Segment";
 import { AddressText, BGDiv, Body, CenterItemDiv, ColorDiv, ColorDivNoBorder, CopyIcon, IconIcon, IconIconBlue, LineH, LineV, MoreIcon, NFTBgImage, TopItemDiv } from './components/StyledComponents';
 import { WalletDiv } from "./components/WalletDiv";
 import { Wrap } from "./components/Wrap";
+import { ApprovalItem } from "./components/approval/ApprovalItem";
+import { PortfolioItem } from "./components/portfolio/PortfolioItem";
 
 enum StakeType {
     hidden = 0,

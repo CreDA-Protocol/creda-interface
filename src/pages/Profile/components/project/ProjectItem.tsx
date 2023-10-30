@@ -2,9 +2,9 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ProfileProjectsConfig } from "../projectsConfig";
+import { ProfileProjectsConfig } from "../../projectsConfig";
+import { SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItem } from "./ProjectBankItem";
-import { SmallIconIcon } from "./StyledComponents";
 
 export function ProjectItem({ item }: any) {
   return (

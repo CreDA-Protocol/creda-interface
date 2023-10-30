@@ -6,7 +6,7 @@ import { TransactionResponse } from "@ethersproject/providers";
 import { useTokenContract } from "@hooks/useContract";
 import { BigNumber } from "ethers";
 import { useTransactionAdder } from "src/state/transactions/hooks";
-import { AddressShowText, BottomRight, CancelButton, LineHNor, SmallIconIcon } from "./StyledComponents";
+import { AddressShowText, BottomRight, CancelButton, LineHNor, SmallIconIcon } from "../StyledComponents";
 
 export function ApproveItem({ item, cancel }: any) {
   const tokenContract = useTokenContract(item.address);

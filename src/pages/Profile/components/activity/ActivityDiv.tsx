@@ -8,8 +8,8 @@ import {
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { useState } from "react";
 import { useTheme } from "src/state/application/hooks";
-import { BGDiv, LineH, WrapDiv } from "./StyledComponents";
 import styled from "styled-components";
+import { BGDiv, LineH, WrapDiv } from "../StyledComponents";
 
 const ActivityDivTopItem = styled(RowCenter) <{ isChoose: boolean; }>`
   align-items: center;

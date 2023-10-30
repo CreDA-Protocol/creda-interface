@@ -5,9 +5,9 @@ import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { useState } from "react";
 import { useTheme } from "styled-components";
-import { ProfileProjectsConfig } from "../projectsConfig";
-import { ProjectBankItemMobile } from "./ProjectBankItemMobile";
-import { Arrow, LineH, SmallIconIcon } from "./StyledComponents";
+import { ProfileProjectsConfig } from "../../projectsConfig";
+import { Arrow, LineH, SmallIconIcon } from "../StyledComponents";
+import { ProjectBankItemMobile } from "../project/ProjectBankItemMobile";
 
 export function PortfolioPhoneItemDiv({ item }: any) {
   const [showMore, setShowMore] = useState(false);
