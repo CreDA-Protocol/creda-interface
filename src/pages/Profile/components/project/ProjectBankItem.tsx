@@ -1,8 +1,8 @@
 import { Column } from "@components/Column";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { useTheme } from "styled-components";
+import { BGDiv, LineH, PortfolioTopBg } from "../StyledComponents";
 import { ProjectBankList } from "./ProjectBankList";
-import { BGDiv, LineH, PortfolioTopBg } from "./StyledComponents";
 
 
 export function ProjectBankItem({ title, data, name, tokensKey }: any) {

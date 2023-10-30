@@ -1,7 +1,7 @@
 import { Column } from "@components/Column";
 import { useState } from "react";
+import { Wrap } from "../Wrap";
 import { ActivityDiv } from "./ActivityDiv";
-import { Wrap } from "./Wrap";
 
 function ActivityItem() {
   const [chainIndex, setChainIndex] = useState(0);

@@ -7,20 +7,19 @@ import {
     BSC_PROVIDER,
     ChainId,
     ChainIds,
+    ChainName,
     SwapList,
     balanceToBigNumber,
     bigNumberToBalance,
     chainFromId,
     enableNetwork,
     formatBalance,
-    getBuildStatus,
     getPriceByApi,
     getPriceESC,
     logError,
     marketsConfig,
     mathPriceTo8,
     multiCallConfig,
-    packageInfoConfig,
     walletInfo
 } from '../common/Common'
 import { NetworkTypeContext, WalletAddressContext } from "../contexts"
@@ -1515,84 +1514,6 @@ export function useExploreInfo(): any {
     return info;
 }
 
-// 获取自己所有建筑生产任务的信息
-export function useBuildTasking(): any {
-    const { chainId } = useContext(NetworkTypeContext);
-    const { account } = useContext(WalletAddressContext);
-    const network = chainFromId(chainId);
-    const [info, setInfo] = useState<any>({
-        loading: true,
-        data: {}
-    });
-
-
-    useEffect(() => {
-        const getResult = async () => {
-            if (!account) {
-                return;
-            }
-            if (!walletInfo.provider) {
-                return
-            }
-            const multicall = new Multicall({
-                multicallCustomContractAddress: multiCallConfig.network[network]?.address,
-                ethersProvider: walletInfo.provider
-            });
-            let contractCallContext: ContractCallContext[] = []
-
-            const contractCallResult: any = {};
-            const items = Object.values(packageInfoConfig)
-            const needItems: any = items.filter((item: any, index) => {
-                if (item.need) {
-                    return true;
-                }
-            })
-            // const needItems = [packageInfoConfig["41"]];
-            let buildTaskingCallContext: ContractCallContext = {
-                reference: 'getBuildTasking',
-                contractAddress: ContractConfig.Production[network]?.address,
-                abi: ContractConfig.Production.abi,
-                calls: []
-            }
-
-            for (let item of needItems) {
-                let callsItem = {
-                    reference: item.id + '.getBuildTasking.' + account,
-                    methodName: 'getBuildTasking',
-                    methodParameters: [account, BigNumber.from(item.buildId)]
-                }
-                buildTaskingCallContext.calls.push(callsItem)
-            }
-            contractCallContext.push(buildTaskingCallContext)
-            const multicallResult = await multicall.call(contractCallContext)
-            for (const resultItem in multicallResult.results) {
-                let callsReturnArray = multicallResult.results[resultItem].callsReturnContext
-                for (let callsReturnItem in callsReturnArray) {
-                    const data = callsReturnArray[callsReturnItem]
-                    // console.log(data,"callsReturnArray")
-                    contractCallResult[data.reference] = (data.returnValues.length && BigNumber.from(data.returnValues[0].hex).toString() === data.reference.slice(0, data.reference.indexOf('.'))) ? {
-                        id: Number(BigNumber.from(data.returnValues[0].hex).toString()),
-                        completeTime: Number(BigNumber.from(data.returnValues[1].hex).toString()),
-                        status: getBuildStatus(Number(BigNumber.from(data.returnValues[1].hex).toString()))
-                    } : {
-                        id: 0,
-                        completeTime: 0,
-                        status: getBuildStatus(0)
-                    }
-                }
-            }
-            // console.log(contractCallResult)
-            setInfo({
-                loading: false,
-                data: contractCallResult
-            })
-        }
-        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
-        return () => clearInterval(interval);
-    }, [account, network])
-    return info;
-}
-
 /**
  * 获取存款
  */
@@ -1727,7 +1648,7 @@ export function useDefiBoxWalletInfo(targetChainId: ChainId) {
 }
 
 // 获取DeFiBox授权列表
-export function useBoxApproveList(chainType: string): any {
+export function useBoxApproveList(chainType: ChainName): any {
     const { chainId } = useContext(NetworkTypeContext);
     const { account } = useContext(WalletAddressContext);
     // const account="0xd2050719ea37325bdb6c18a85f6c442221811fac"

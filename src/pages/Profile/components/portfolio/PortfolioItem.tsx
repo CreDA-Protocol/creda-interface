@@ -2,10 +2,10 @@ import { Column } from "@components/Column";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { chainIndexToId } from "../chainsConfig";
+import { chainIndexToId } from "../../chainsConfig";
+import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
 import { PortfolioPhoneDiv } from "./PortfolioPhoneDiv";
-import { Wrap } from "./Wrap";
 
 export function PortfolioItem() {
   const [chainIndex, setChainIndex] = useState(0);

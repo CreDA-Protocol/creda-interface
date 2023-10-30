@@ -1,11 +1,11 @@
-import { chainFromId, switchNetwork, ChainIdConfig } from "@common/Common";
+import { ChainIdConfig, chainFromId, switchNetwork } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
-import { RowBetween, TextEqure, SpaceHeight } from "@components/Row";
+import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { useContext } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import { useTheme } from "styled-components";
+import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
-import { BGDiv } from "./StyledComponents";
 
 export function ApprovalDiv({ data, netType }: any) {
   const { chainId } = useContext(NetworkTypeContext);
