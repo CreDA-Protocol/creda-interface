@@ -3,10 +3,10 @@ import { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
-import { ChainId } from "../../common/Common"
+import { ChainIds } from "../../common/Common"
 import Column from '../../components/Column'
 import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '../../components/Row'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useChangeTemeDark,
   useOpenWarnning,
@@ -407,7 +407,7 @@ function MenuList({ history, setShowModal }: any) {
 
 
   useEffect(() => {
-    if (account && [ChainId.arbitrum, ChainId.ropsten, ChainId.esc].indexOf(chainId) < 0) {
+    if (account && [ChainIds.arbitrum, ChainIds.ropsten, ChainIds.esc].indexOf(chainId) < 0) {
       setWrongNetwork(true)
     }
   }, [account, chainId])
@@ -421,7 +421,7 @@ function MenuList({ history, setShowModal }: any) {
   }, [selectIndex, subIndex]);
   function changeNav(data: string) {
     // console.log(chainId,data)
-    if (chainId !== ChainId.arbitrum && chainId !== ChainId.esc && !["home", "profile", "aboutus", "news&media", "doc", "bridge"].includes(data)) {
+    if (chainId !== ChainIds.arbitrum && chainId !== ChainIds.esc && !["home", "profile", "aboutus", "news&media", "doc", "bridge"].includes(data)) {
       message.warn("Coming Soon!")
       return
     }
@@ -439,7 +439,7 @@ function MenuList({ history, setShowModal }: any) {
         history.push("./about-us");
         break;
       case "myBank":
-        if (chainId === ChainId.esc) {
+        if (chainId === ChainIds.esc) {
           message.warn('coming soon~')
         } else {
           history.push("./myBank");
@@ -476,7 +476,7 @@ function MenuList({ history, setShowModal }: any) {
   return (
     <div>
       {menus.map((item: any, index: number) => {
-        if (chainId === ChainId.esc && item.title === 'My Bank') {
+        if (chainId === ChainIds.esc && item.title === 'My Bank') {
           return
         }
         return (
@@ -527,7 +527,7 @@ function MenuList({ history, setShowModal }: any) {
                   {item.title}
                 </RowFixed>
                 {
-                  chainId !== ChainId.esc && index === 4 &&
+                  chainId !== ChainIds.esc && index === 4 &&
                   (
                     <Column style={{ marginLeft: 30 }}>
                       <SubItemButton onClick={(e: any) => {

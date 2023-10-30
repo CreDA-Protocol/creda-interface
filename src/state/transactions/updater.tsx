@@ -1,11 +1,11 @@
-import {useContext, useEffect} from 'react'
+import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { provider } from "../../common/Common"
+import { NetworkTypeContext } from "../../contexts"
 import { useAddPopup, useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, finalizeTransaction } from './actions'
-import {NetworkTypeContext} from "../../context";
-import {provider} from "../../common/Common";
 
 export function shouldCheck(
   lastBlockNumber: number,

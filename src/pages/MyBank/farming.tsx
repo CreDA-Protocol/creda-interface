@@ -8,10 +8,10 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import {
-  ChainId,
   MyBankAssetFarmingIcon,
   balanceToBigNumber,
   bigNumberToBalance,
+  chainFromId,
   mathPriceTo8,
   walletInfo
 } from "../../common/Common"
@@ -19,7 +19,7 @@ import Column from '../../components/Column'
 import { CardPair, CardPairCustom, LoadingRow } from '../../components/Common'
 import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '../../components/Row'
 import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useIconPrice,
   usePositionInfo
@@ -269,8 +269,7 @@ function Earn() {
   const [showValue, setShowValue] = useState(false)
 
   const { chainId } = useContext(NetworkTypeContext);
-  const network = ChainId[chainId];
-
+  const network = chainFromId(chainId);
 
   useEffect(() => {
     setTimeout(() => {
@@ -410,7 +409,7 @@ function MyPostion() {
 
   const loading = useContext(LoadingContext)
   const { chainId } = useContext(NetworkTypeContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const homoraContract = useContract(ContractConfig.HomoraBank[network]?.address, ContractConfig.HomoraBank.abi)
   const { account } = useContext(WalletAddressContext);
 

@@ -7,7 +7,6 @@ import {
   isAddress,
   shortenAddress,
 } from '.'
-import { ChainId } from '../common/Common'
 
 describe('utils', () => {
   describe('#getScanLink', () => {
@@ -21,14 +20,14 @@ describe('utils', () => {
       expect(getScanLink(1, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
     })
     it('unrecognized chain id defaults to mainnet', () => {
-      expect(getScanLink(<any>2, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
+      expect(getScanLink(2, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
     })
     it('ropsten', () => {
       expect(getScanLink(3, 'abc', 'address')).toEqual('https://ropsten.etherscan.io/address/abc')
     })
-    it('enum', () => {
+    /* it('enum', () => {
       expect(getScanLink(ChainId.rinkeby, 'abc', 'address')).toEqual('https://rinkeby.etherscan.io/address/abc')
-    })
+    }) */
   })
 
   /* describe('#calculateSlippageAmount', () => {

@@ -8,7 +8,7 @@ import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import { colors, formatAccount } from "../common/Common";
 import { RowEnd } from "../components/Row";
-import { NetworkTypeContext } from "../context";
+import { NetworkTypeContext } from "../contexts";
 import { useTheme } from "../state/application/hooks";
 import { getScanLink, getScanName } from "../utils";
 

@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import { chainFromId } from '@common/Common'
+import { useContext } from 'react'
 import { AlertCircle, CheckCircle } from 'react-feather'
-import styled, { ThemeContext } from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import {ExternalLink, TYPE } from '../../theme'
+import styled, { ThemeContext } from 'styled-components'
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
+import { ExternalLink, TYPE } from '../../theme'
 import { getScanLink, getScanName } from '../../utils'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
-import {ChainId} from "../../common/Common";
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -22,9 +22,9 @@ export default function TransactionPopup({
   success?: boolean
   summary?: string
 }) {
-    const {chainId} = useContext(NetworkTypeContext);
-    const {account} = useContext(WalletAddressContext);
-    const network = ChainId[chainId];
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
 
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()

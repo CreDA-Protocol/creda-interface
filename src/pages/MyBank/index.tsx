@@ -7,8 +7,8 @@ import ImageCommon from '../../assets/common/ImageCommon'
 import ImageToken from '../../assets/tokens/ImageToken'
 import {
   ApprovalState,
-  ChainId,
   balanceToBigNumber,
+  chainFromId,
   formatBalance,
   formatPercent,
   getNFTCardBgImage,
@@ -30,7 +30,7 @@ import {
   TextEqure
 } from '../../components/Row'
 import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useApprove, useCNFTInfo, useDaInfo, useMarketsResult } from "../../contract"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
@@ -281,7 +281,7 @@ function MyBank(props: any) {
 
 export function BankTopInfo() {
   const { chainId } = useContext(NetworkTypeContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const themeDark = useTheme()
   const cnftInfo = useCNFTInfo()
   return <>
@@ -534,7 +534,7 @@ function BottomAction({ symbol, bankInfo, onAction }: any) {
 function DaiItem({ item, symbol, bankInfo, onAction }: any) {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const loading = useContext(LoadingContext)
   const daiInfo = useDaInfo(symbol, bankInfo)
   const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, BankConfig[symbol]?.[network]?.cToken?.address)
@@ -705,5 +705,5 @@ function DaiItem({ item, symbol, bankInfo, onAction }: any) {
 
 export default MyBank;
 const ApproveBtn = styled.span`
-    
+
 `

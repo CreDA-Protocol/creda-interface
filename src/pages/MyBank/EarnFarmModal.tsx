@@ -7,15 +7,15 @@ import styled from 'styled-components';
 import ImageCommon from '../../assets/common/ImageCommon';
 import {
   ApprovalState,
-  ChainId,
-  balanceToBigNumber
+  balanceToBigNumber,
+  chainFromId
 } from "../../common/Common";
 import { ButtonNormal } from '../../components/Button';
 import Column, { ColumnCenter } from '../../components/Column';
 import { CardPair, LoadingRow } from '../../components/Common';
 import Modal from '../../components/NormalModal';
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '../../components/Row';
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useApprove, useIconPrice, useWalletInfo } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
@@ -148,7 +148,7 @@ export default function EarnFarmModal({
   const walletInfo = useWalletInfo()
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
 
   const homoraContract = useContract(ContractConfig.HomoraBank[network]?.address, ContractConfig.HomoraBank.abi)
   const spellContract = useContract(ContractConfig.SushiswapSpellV1[network]?.address, ContractConfig.SushiswapSpellV1.abi)

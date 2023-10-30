@@ -21,7 +21,7 @@ import { Tooltip, message } from "antd";
 import axios from "axios";
 import copy from "copy-to-clipboard";
 import { BigNumber } from "ethers";
-import { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import BNB from "../../assets/tokens/Binance Coin (BNB).png";
 import ESC from "../../assets/tokens/ELA.png";
@@ -31,8 +31,10 @@ import {
     ApprovalState,
     ChainId,
     ChainIdConfig,
+    ChainIds,
     GasInfo,
     balanceToBigNumber,
+    chainFromId,
     enableNetwork,
     formatAccount,
     formatBalance,
@@ -40,22 +42,22 @@ import {
     formatPositiveNumber,
     getNFTCardBgImage,
     switchNetwork,
-    tipError,
+    tipError
 } from "../../common/Common";
 import { BlueButton, CardPairOrigin, FlexView, ProfileLoading, WhiteButton } from "../../components/Common";
 import ConnectToWalletModal from "../../components/ConnectToWalletModal";
 import { H4 } from "../../components/ConnectWallet";
 import CustomStakeModal from "../../components/CustomStakeModal";
 import { ThemeText, ThemeTextEqure } from "../../components/ThemeComponent";
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import {
     useApprove,
     useBoxApproveList,
     useBoxProjectAll,
-    useBoxWalletList,
     useCNFTInfo,
     useCreditInfo,
     useCreditScore,
+    useDefiBoxWalletInfo,
 } from "../../contract";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract, useTokenContract } from "../../hooks/useContract";
@@ -194,13 +196,11 @@ const WrapDiv = styled(RowBetween)`
   justify-content: flex-start;
 `;
 const WrapItem = styled(RowCenter) <{
-    isChoose?: boolean;
+    selected?: boolean;
     disabled?: boolean;
     themeDark?: boolean | null;
 }>`
-    //background-color:${({ isChoose }) => (isChoose ? "#4E55FF" : "#17181A")};
   background: ${({ themeDark }) => (themeDark ? "#17181a" : "#FFF")};
-  //background: #FFF;
   font-size: 16px;
   font-weight: bold;
   align-items: center;
@@ -233,12 +233,12 @@ const WrapItem = styled(RowCenter) <{
     padding: 5px 10px;
     background: ${({ themeDark }) => (themeDark ? "#17181a" : "#FFF")};
 
-    border-bottom: ${({ isChoose }) =>
+    border-bottom: ${({ selected: isChoose }) =>
         isChoose ? "1px solid #4E55FF" : "none"};
     border-radius: 10px;
     margin-right: 10px;
     font-size: 14px;
-    color: ${({ isChoose }) => (isChoose ? "#4E55FF" : "#777E90")};
+    color: ${({ selected: isChoose }) => (isChoose ? "#4E55FF" : "#777E90")};
   };
 `;
 
@@ -409,15 +409,29 @@ const Arrow = styled.img`
   margin-left: 10px;
 `;
 
-const wrapItems = [
-    "Ethereum",
-    "BSC",
-    "Elastos ESC",
-    "CELO",
-    "HECO",
-    "Polygon",
-    "Arbitrum",
+/**
+ * Mapping between chain index in the UI vs chain id
+ */
+const chainIndexToId: ChainId[] = [
+    ChainIds.ethereum, // "Ethereum",
+    ChainIds.bsc, // "BSC",
+    ChainIds.esc, // "Elastos ESC",
+    ChainIds.celo, // "CELO",
+    ChainIds.heco, // "HECO",
+    ChainIds.polygon, // "Polygon",
+    ChainIds.arbitrum // "Arbitrum",
 ];
+
+const chainTitles: { [chainId: ChainId]: string } = {
+    [ChainIds.ethereum]: "Ethereum",
+    [ChainIds.bsc]: "BSC",
+    [ChainIds.esc]: "Elastos ESC",
+    [ChainIds.celo]: "CELO",
+    [ChainIds.heco]: "HECO",
+    [ChainIds.polygon]: "Polygon",
+    [ChainIds.arbitrum]: "Arbitrum"
+};
+
 const ChainType: any = {
     Ethereum: "eth",
     HECO: "heco",
@@ -1066,13 +1080,43 @@ enum StakeType {
 function Profile(props: any) {
     const [connectToModal, setConnectToModal] = useState(false);
     const [stopAnimation, setStopAnimation] = useState(false)
-    useEffect(() => {
-        setTimeout(() => {
-            setStopAnimation(true)
-        }, 1800);
-    }, [stopAnimation])
-
     const { account, isaccountLoading } = useContext(WalletAddressContext);
+    const { chainId } = useContext(NetworkTypeContext);
+    const network = chainFromId(chainId);
+    const [chainIndex, setChainIndex] = useState(0);
+    const [segmentIndex, setSegmentIndex] = useState(0);
+    const walletList = useDefiBoxWalletInfo(chainIndexToId[chainIndex]);
+    const walletListEth = useDefiBoxWalletInfo(chainIndexToId[0]);
+    const walletListBsc = useDefiBoxWalletInfo(chainIndexToId[1]);
+    const walletListEsc = useDefiBoxWalletInfo(chainIndexToId[2]);
+    const showWarning = useOpenWarnning(true);
+    const creditInfo = useCreditInfo();
+    const scoreInfo = useCreditScore()
+    const addTransaction = useTransactionAdder();
+    const addToast = useAddToast();
+    const loading = useContext(LoadingContext)
+    const themeDark = useTheme();
+
+    // Contracts
+    const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
+    const APIContract = useContract(
+        ContractConfig.APIConsumer[network]?.address,
+        ContractConfig.APIConsumer.abi
+    );
+    const CNFTContract = useContract(
+        ContractConfig.CreditNFT[network]?.address,
+        ContractConfig.CreditNFT[network]?.abi || ContractConfig.CreditNFT.abi
+    );
+    const [approval, approveCallback] = useApprove(
+        ContractConfig.CREDA[network]?.address,
+        ContractConfig.CreditNFT[network]?.address
+    );
+
+    //stakemodal
+    const [modalType, setModalType] = useState(StakeType.hidden);
+    const cnftInfo = useCNFTInfo();
+    const walkThroughStep = useWalkThroughStep();
+
     useEffect(() => {
         // if(props.location.props==='fromConnectWallet'){
         //   console.log("if")
@@ -1086,44 +1130,16 @@ function Profile(props: any) {
         // }
         setConnectToModal(true);
     }, []);
-    const { chainId } = useContext(NetworkTypeContext);
-    const network = ChainId[chainId];
-    const [chainIndex, setChainIndex] = useState(0);
-    const [segmentIndex, setSegmentIndex] = useState(0);
-    const walletList = useBoxWalletList(ChainType[wrapItems[chainIndex]]);
-    const walletListEth = useBoxWalletList(ChainType[wrapItems[0]]);
-    const walletListBsc = useBoxWalletList(ChainType[wrapItems[1]]);
-    const walletListEsc = useBoxWalletList(ChainType[wrapItems[2]]);
-    const showWarning = useOpenWarnning(true);
-    const creditInfo = useCreditInfo();
-    const scoreInfo = useCreditScore()
-    const addTransaction = useTransactionAdder();
-    const addToast = useAddToast();
-    const loading = useContext(LoadingContext)
-
-    const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
-
-    const APIContract = useContract(
-        ContractConfig.APIConsumer[network]?.address,
-        ContractConfig.APIConsumer.abi
-    );
-    const themeDark = useTheme();
-    const [approval, approveCallback] = useApprove(
-        ContractConfig.CREDA[network]?.address,
-        ContractConfig.CreditNFT[network]?.address
-    );
-    const CNFTContract = useContract(
-        ContractConfig.CreditNFT[network]?.address,
-        ContractConfig.CreditNFT[network]?.abi || ContractConfig.CreditNFT.abi
-    );
-    //stakemodal
-    const [modalType, setModalType] = useState(StakeType.hidden);
-    const cnftInfo = useCNFTInfo();
-    const walkThroughStep = useWalkThroughStep();
 
     useEffect(() => {
         showWarning();
     }, [showWarning]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setStopAnimation(true)
+        }, 1800);
+    }, [stopAnimation])
 
     function approve() {
         loading.show(LoadingType.confirm, `Sync`)
@@ -1383,7 +1399,7 @@ function Profile(props: any) {
 
                                     </div>
 
-                                    {chainId === ChainId.esc && <div>
+                                    {chainId === ChainIds.esc && <div>
                                         {scoreInfo.data <= 0 && (
                                             <div style={{ position: "relative" }}>
 
@@ -1763,7 +1779,7 @@ function Profile(props: any) {
                                     </CenterItemDiv>
                                 </BGDiv>
                             )}
-                            <WalletDiv data={walletList} chainTitle={wrapItems[chainIndex]} />
+                            <WalletDiv data={walletList} chainTitle={chainTitles[chainIndexToId[chainIndex]]} />
                         </>
                     ) : segmentIndex === 1 ? (
                         <>
@@ -1919,30 +1935,30 @@ function Segment({ onSegmentSelect }: any) {
     );
 }
 
-function Wrap({ onIndexChange, selectIndex }: any) {
+function Wrap({ onIndexChange, selectedIndex }: any) {
     const themeDark = useTheme();
     return (
         <WrapDiv>
-            {wrapItems.map((item: any, index: number) => {
+            {chainIndexToId.map((item, index) => {
                 if (index > 3) {
                     return (
                         <Tooltip placement="top" title={"Coming soon..."}>
                             <WrapItem
                                 themeDark={themeDark}
-                                className={selectIndex === index ? "active" : ""}
+                                className={selectedIndex === index ? "active" : ""}
                                 style={
                                     {
                                         // backgroundColor: selectIndex == index ? '#4E55FF': (themeDark? '#17181A' : 'white'),
                                         // color:selectIndex == index ? 'white' : (themeDark? 'white' : '#17181A')
                                     }
                                 }
-                                isChoose={selectIndex === index}
+                                selected={selectedIndex === index}
                                 // onClick={()=>{
                                 //   onIndexChange(index)
                                 // }}
                                 disabled={index > 3}
                             >
-                                {item}
+                                {chainTitles[item]}
                             </WrapItem>
                         </Tooltip>
                     );
@@ -1950,20 +1966,20 @@ function Wrap({ onIndexChange, selectIndex }: any) {
                 return (
                     <WrapItem
                         themeDark={themeDark}
-                        className={selectIndex === index ? "active" : ""}
+                        className={selectedIndex === index ? "active" : ""}
                         style={
                             {
                                 // background: selectIndex == index ? 'linear-gradient(90deg, #4a1ee1, #1890ff)': (themeDark? '#17181A' : 'white'),
                                 // color:selectIndex == index ? 'white' : (themeDark? 'white' : '#17181A')
                             }
                         }
-                        isChoose={selectIndex === index}
+                        selected={selectedIndex === index}
                         onClick={() => {
                             onIndexChange(index);
                         }}
                         disabled={index > 3}
                     >
-                        {item}
+                        {chainTitles[item]}
                     </WrapItem>
                 );
             })}
@@ -1971,7 +1987,10 @@ function Wrap({ onIndexChange, selectIndex }: any) {
     );
 }
 
-function WalletDiv({ data, chainTitle }: any) {
+const WalletDiv: FC<{
+    data: any;
+    chainTitle: string;
+}> = ({ data, chainTitle }) => {
     // console.log(data)
     const [input, setInput] = useState("");
     const themeDark = useTheme();
@@ -2158,16 +2177,19 @@ function PortfolioItem() {
             {isMobile ? (
                 <PortfolioPhoneDiv
                     project={defiProject}
-                    chainType={wrapItems[chainIndex]}
+                    chainType={chainIndexToId[chainIndex]}
                 />
             ) : (
-                <PortfolioDiv project={defiProject} chainType={wrapItems[chainIndex]} />
+                <PortfolioDiv project={defiProject} chainType={chainIndexToId[chainIndex]} />
             )}
         </Column>
     );
 }
 
-function PortfolioPhoneDiv({ project, chainType }: any) {
+const PortfolioPhoneDiv: FC<{
+    project: any,
+    chainType: number
+}> = ({ project, chainType }) => {
     const data = Object.values(project[chainType] || {});
 
     const projectNames = data.map((item: any, index: number) => {
@@ -2713,24 +2735,24 @@ function ActivityDiv({ data }: any) {
 
 function ApprovalItem() {
     const [chainIndex, setChainIndex] = useState(0);
-    const approveList = useBoxApproveList(ChainType[wrapItems[chainIndex]]);
+    const approveList = useBoxApproveList(ChainType[chainIndexToId[chainIndex]]);
 
-    function changChainIndex(index: number) {
+    function changeChainIndex(index: number) {
         setChainIndex(index);
     }
 
     return (
         <Column style={{ width: "100%" }}>
-            <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex} />
+            <Wrap onIndexChange={changeChainIndex} selectIndex={chainIndex} />
             {isMobile ? (
                 <ApprovalPhoneDiv
                     data={approveList}
-                    netType={ChainType[wrapItems[chainIndex]]}
+                    netType={ChainType[chainIndexToId[chainIndex]]}
                 />
             ) : (
                 <ApprovalDiv
                     data={approveList}
-                    netType={ChainType[wrapItems[chainIndex]]}
+                    netType={ChainType[chainIndexToId[chainIndex]]}
                 />
             )}
         </Column>
@@ -2739,7 +2761,7 @@ function ApprovalItem() {
 
 function ApprovalPhoneDiv({ data, netType }: any) {
     const { chainId } = useContext(NetworkTypeContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
 
     function cancel(cancelApprove: any) {
         if (network === netType) {
@@ -2861,7 +2883,7 @@ function ApprovalPhoneItemDiv({ item, cancel }: any) {
 
 function ApprovalDiv({ data, netType }: any) {
     const { chainId } = useContext(NetworkTypeContext);
-    const network = ChainId[chainId];
+    const network = chainFromId(chainId);
     const themeDark = useTheme();
 
     function cancel(cancelApprove: any) {

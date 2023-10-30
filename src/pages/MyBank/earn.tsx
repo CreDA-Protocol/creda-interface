@@ -6,9 +6,9 @@ import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import {
   ApprovalState,
-  ChainId,
   MyBankAssetPriceIcons,
   balanceToBigNumber,
+  chainFromId,
   formatBalance,
   formatPercent,
   tipError
@@ -18,7 +18,7 @@ import { LoadingRow } from "../../components/Common"
 import CustomStakeModal from "../../components/CustomStakeModal"
 import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '../../components/Row'
 import { ThemeTextEqure } from '../../components/ThemeComponent'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useApprove, useEarnInfo, useEarnResult } from "../../contract"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
@@ -201,7 +201,7 @@ function EarnItem({ item, themeDark, earnRes, onAction }: any) {
 
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const symbol = item.name
   const [approval, approveCallback] = useApprove(ContractConfig[symbol]?.[network]?.address, EarnConfig[symbol]?.[network]?.cToken?.address)
   const info = useEarnInfo(item.name, earnRes)

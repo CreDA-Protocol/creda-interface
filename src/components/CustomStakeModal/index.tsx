@@ -1,12 +1,10 @@
-import React, {useCallback, useContext, useState} from 'react'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
+import { ChainIds, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
+import { ButtonClick } from '../../components/Button'
+import { RowCenter, RowEnd, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '../../components/Row'
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import Modal from '../NormalModal'
-import { NavLink } from 'react-router-dom'
-import ImageCommon from '../../assets/common/ImageCommon'
-import Row,{ RowCenter,RowEnd,RowFixed,SpaceHeight,SpaceWidth,Text,RowBetween,TextEqure } from '../../components/Row'
-import {ButtonClick} from '../../components/Button'
-import {ApprovalState, balanceToBigNumber, ChainId, formatBalance, stringReplaceSpace} from "../../common/Common";
-import {NetworkTypeContext, WalletAddressContext} from "../../context";
 
 
 const Container = styled.div`
@@ -73,51 +71,51 @@ const CancelButton = styled(BlueButton)`
   color:#777E90;
 `
 enum ButtonType {
-    cancel=0,
-    confirm=1
+  cancel = 0,
+  confirm = 1
 }
 export default function CustomStakeModal({
-  show=true,
+  show = true,
   onDismiss,
   title,
-    maxNum=0,
-    onConfirm,
-    cancelTitle="Cancel",
-    confirmTitle="Confirm",
-    balanceTitle="",
-    symbol=''
+  maxNum = 0,
+  onConfirm,
+  cancelTitle = "Cancel",
+  confirmTitle = "Confirm",
+  balanceTitle = "",
+  symbol = ''
 }: {
-    show?: boolean
+  show?: boolean
   onDismiss: () => void,
-  title?:string,
-    maxNum?:number,
-    onConfirm?:any,
-    cancelTitle?:string,
-    confirmTitle?:string,
-  balanceTitle?:string,
-  symbol?:string
+  title?: string,
+  maxNum?: number,
+  onConfirm?: any,
+  cancelTitle?: string,
+  confirmTitle?: string,
+  balanceTitle?: string,
+  symbol?: string
 }) {
-  const {chainId} = useContext(NetworkTypeContext);
-  const {account} = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
-  const [input,setInput] = useState('')
-  function onClick(type:ButtonType){
-      if(type===ButtonType.confirm){
-        let endString = stringReplaceSpace(input)
-        if (!endString){
-          return
-        }
-        onConfirm && onConfirm(endString)
-        setInput('')
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
+  const [input, setInput] = useState('')
+  function onClick(type: ButtonType) {
+    if (type === ButtonType.confirm) {
+      let endString = stringReplaceSpace(input)
+      if (!endString) {
+        return
       }
-      onDismiss()
+      onConfirm && onConfirm(endString)
+      setInput('')
+    }
+    onDismiss()
   }
   function onMax() {
-      setInput(maxNum+"")
+    setInput(maxNum + "")
   }
 
-  if (chainId===ChainId.esc && symbol == 'ELA'){
-    
+  if (chainId === ChainIds.esc && symbol == 'ELA') {
+
   }
   return (
     <Modal isOpen={show} onDismiss={onDismiss} >
@@ -126,23 +124,23 @@ export default function CustomStakeModal({
           <RowCenter>
             <TextEqure fontColor={'#0D0D11'} fontSize={20} fontWeight={'bold'}>{title}</TextEqure>
           </RowCenter>
-          <SpaceHeight height={30} heightApp={15}/>
+          <SpaceHeight height={30} heightApp={15} />
           <RowEnd>
-            <TextEqure fontColor={'#777E90'} fontSize={15} fontWeight={'bold'}>{formatBalance(maxNum,8)}{balanceTitle}</TextEqure>
+            <TextEqure fontColor={'#777E90'} fontSize={15} fontWeight={'bold'}>{formatBalance(maxNum, 8)}{balanceTitle}</TextEqure>
           </RowEnd>
           <SearchDiv>
             <InputDiv value={input}
               placeholder={''}
-              onChange={e => setInput(e.target.value)}/>
-              <SearchButton
-                onClick={onMax}
-              >Max</SearchButton>
+              onChange={e => setInput(e.target.value)} />
+            <SearchButton
+              onClick={onMax}
+            >Max</SearchButton>
           </SearchDiv>
-          <SpaceHeight height={30} heightApp={15}/>
+          <SpaceHeight height={30} heightApp={15} />
           <RowCenter>
-            <CancelButton onClick={()=>onClick(ButtonType.cancel)}>{cancelTitle}</CancelButton>
-            <SpaceWidth width={30} widthApp={15}/>
-            <BlueButton onClick={()=>onClick(ButtonType.confirm)}>{confirmTitle}</BlueButton>
+            <CancelButton onClick={() => onClick(ButtonType.cancel)}>{cancelTitle}</CancelButton>
+            <SpaceWidth width={30} widthApp={15} />
+            <BlueButton onClick={() => onClick(ButtonType.confirm)}>{confirmTitle}</BlueButton>
           </RowCenter>
         </Container>
       </RowCenter>

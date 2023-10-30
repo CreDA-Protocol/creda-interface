@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import ImageCommon from '../../assets/common/ImageCommon'
 import ImageToken from '../../assets/tokens/ImageToken'
 import CREDAIcon from '../../assets/tokens/creda.png'
-import { ChainId, MyBankAssetPriceIcons, MyBankAssetPriceIconsESC, formatBalance } from "../../common/Common"
+import { ChainIds, MyBankAssetPriceIcons, MyBankAssetPriceIconsESC, chainFromId, formatBalance } from "../../common/Common"
 import Column from '../../components/Column'
 import { RowBetween, RowFixed, SpaceHeight } from '../../components/Row'
 import { ThemeText, ThemeTextEqure } from '../../components/ThemeComponent'
-import { NetworkTypeContext, WalletAddressContext } from "../../context"
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useSushiPrice } from '../../contract'
 import ContractConfig from '../../contract/ContractConfig'
 import { GlidePrice, getCoinPrice } from '../../services/glidefinance.service'
@@ -135,17 +135,17 @@ function Earn() {
   const themeDark = useTheme()
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   const sushiPrice = useSushiPrice(1, [ContractConfig.CREDA[network]?.address, ContractConfig.USDT[network]?.address])
   // console.log('sushiPrice==',sushiPrice);
   let earnPool = MyBankAssetPriceIcons
-  if (chainId === ChainId.esc) {
+  if (chainId === ChainIds.esc) {
     earnPool = MyBankAssetPriceIconsESC
   }
   const [iconList, setIconList] = useState(earnPool)
 
   useEffect(() => {
-    if (chainId !== ChainId.esc) {
+    if (chainId !== ChainIds.esc) {
       let iconStriing = ''
       earnPool.map((item, index) => {
         iconStriing = iconStriing + item.name + ','
@@ -211,7 +211,7 @@ function Earn() {
     </RowFixed>
     <SpaceHeight height={30} heightApp={15} />
     <WarpView>
-      {chainId !== ChainId.esc && <WarpSubView>
+      {chainId !== ChainIds.esc && <WarpSubView>
         <RowFixed>
           <IconIcon src={CREDAIcon} />
           <ThemeText fontSize={24}>CREDA</ThemeText>

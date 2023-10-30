@@ -1,15 +1,14 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import Modal from '../NormalModal'
-import { RowCenter } from '../../components/Row'
-import { ChainId } from "../../common/Common";
-import { NetworkTypeContext, WalletAddressContext } from "../../context";
-import { BaseView, FlexViewBetween, FlexViewCenterColumn } from '../Common';
-import ConnectWallet from '../ConnectWallet';
-import { BgImages } from '../../assets/bgImages/bgImages';
+import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
+import { chainFromId } from '@common/Common';
 import { Lottie } from '@crello/react-lottie';
-import creditScore from '@assets/lottie/CreDa_creditScore_animation.json'
+import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
+import styled from 'styled-components';
+import { RowCenter } from '../../components/Row';
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
+import { FlexViewBetween } from '../Common';
+import ConnectWallet from '../ConnectWallet';
+import Modal from '../NormalModal';
 
 
 const Container = styled.div`
@@ -29,7 +28,7 @@ transition: .5s;
     padding:15px;
     width:90%;
   };
- 
+
 `
 const LaterTitle = styled.label`
     font-size: 16px;
@@ -50,7 +49,7 @@ export default function ConnectToWalletModal({
 }) {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = ChainId[chainId];
+  const network = chainFromId(chainId);
   return (
     <Modal isOpen={show} onDismiss={onDismiss} prop={'fromprofile'}>
       <RowCenter>

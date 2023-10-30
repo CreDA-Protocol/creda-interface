@@ -1,23 +1,18 @@
-import React, {useContext, useRef, useState} from 'react'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import i18n from '../../i18n'
 // import { useActiveWeb3React } from '../../hooks'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useToggleModal,useTheme } from '../../state/application/hooks'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '../../state/application/hooks'
 
-import { ButtonLink,ButtonClick } from '../Button'
-import { RowCenter, RowFixed } from '../Row'
+import { message } from "antd"
 import ImageCommon from '../../assets/common/ImageCommon'
-import {ThemeText} from '../../components/ThemeComponent'
-import { Link } from 'react-router-dom'
-import Profile from '../../pages/Profile'
-import {NetworkTypeContext} from "../../context";
-import {ChainId} from "../../common/Common";
-import {message} from "antd";
+import { ChainIds } from "../../common/Common"
+import { ThemeText } from '../../components/ThemeComponent'
+import { NetworkTypeContext } from "../../contexts"
+import { ButtonClick, ButtonLink } from '../Button'
+import { RowCenter, RowFixed } from '../Row'
 
-const DropFlyWrap =  styled.div`
+const DropFlyWrap = styled.div`
   position: relative;
 `
 
@@ -83,7 +78,7 @@ const SearchDiv = styled(RowFixed)`
   }
 `
 const InputDiv = styled.input<{
-  themeDark?:boolean|null
+  themeDark?: boolean | null
 }>`
   font-size: 16px;
   flex:1;
@@ -95,7 +90,7 @@ const InputDiv = styled.input<{
   width: 100%;
   margin-left:10px;
   background-color:transparent;
-  color: ${({themeDark}) => `${themeDark ? 'white' : '#0d0d11'}` }
+  color: ${({ themeDark }) => `${themeDark ? 'white' : '#0d0d11'}`}
 `
 const SearchIcon = styled.img`
   width:18px;
@@ -128,99 +123,99 @@ const HeaderLink = styled.div`
   }
 `
 
-export default function TopMenu({history}:any) {
-  const {chainId} = useContext(NetworkTypeContext);
+export default function TopMenu({ history }: any) {
+  const { chainId } = useContext(NetworkTypeContext);
   const [isHome] = useState(history.location.pathname == '/home')
   const [isMediaPage] = useState(history.location.pathname == '/news-and-media')
   const [isAboutPage] = useState(history.location.pathname == '/about-us')
 
 
-  const [open,setOpen] = useState(false)
-  const {t} = useTranslation()
-  const [input,setInput] = useState('')
+  const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
+  const [input, setInput] = useState('')
   const themeDark = useTheme()
-  function changeNav(path:string){
-    if(chainId!==ChainId.arbitrum && chainId!==ChainId.esc &&  !["home","profile"].includes(path)){
+  function changeNav(path: string) {
+    if (chainId !== ChainIds.arbitrum && chainId !== ChainIds.esc && !["home", "profile"].includes(path)) {
       message.warn("Coming Soon!")
       return
     }
-    history.push("/"+path)
+    history.push("/" + path)
   }
   return <RowFixed>
-    <SpaceWidth/>
+    <SpaceWidth />
     {
       isHome || isMediaPage || isAboutPage || '/home2' ? <RowFixed>
         <ButtonClick
-            onClick={()=>changeNav("home")}
-            >
+          onClick={() => changeNav("home")}
+        >
           <HeaderLink>
             <ThemeText>{t('Home')}</ThemeText>
           </HeaderLink>
         </ButtonClick>
-        <SpaceWidth/>
+        <SpaceWidth />
         <ButtonClick
-            onClick={()=>changeNav("profile")}
-            >
+          onClick={() => changeNav("profile")}
+        >
           <HeaderLink>
             <ThemeText>{t('Profile')}</ThemeText>
           </HeaderLink>
         </ButtonClick>
-        <SpaceWidth/>
+        <SpaceWidth />
         <ButtonClick
-            onClick={()=>changeNav("vault")}
-            >
+          onClick={() => changeNav("vault")}
+        >
           <HeaderLink>
             <ThemeText>{t('Vault')}</ThemeText>
           </HeaderLink>
         </ButtonClick>
-        <SpaceWidth/>
-        {chainId !== ChainId.esc && <ButtonClick
-            onClick={()=>{
-              changeNav("myBank")
-            }}
-            >
+        <SpaceWidth />
+        {chainId !== ChainIds.esc && <ButtonClick
+          onClick={() => {
+            changeNav("myBank")
+          }}
+        >
           <HeaderLink>
             <ThemeText>{t('My Bank')}</ThemeText>
           </HeaderLink>
         </ButtonClick>}
-        {chainId !== ChainId.esc && <SpaceWidth/>}
+        {chainId !== ChainIds.esc && <SpaceWidth />}
         <ButtonLink to={'/about-us'}>
           <HeaderLink>
             <ThemeText>{t('About Us')}</ThemeText>
           </HeaderLink>
         </ButtonLink>
-        <SpaceWidth/>
+        <SpaceWidth />
       </RowFixed> :
-      ''
+        ''
     }
 
     <DropFlyWrap>
-      <ButtonClick onClick={()=>window.open('https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper')}>
+      <ButtonClick onClick={() => window.open('https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper')}>
         <RowCenter>
           <HeaderLink>
-            <ThemeText style={{marginRight:'25px'}}>{t('Whitepaper')}</ThemeText>
+            <ThemeText style={{ marginRight: '25px' }}>{t('Whitepaper')}</ThemeText>
           </HeaderLink>
           {/*<Arrow src={themeDark?ImageCommon.ArrowDownIcon_white:ImageCommon.ArrowDownIcon_black} style={{transform:`${open ? 'rotate(180deg)' : 'rotate(0deg)'}`, transition:'.4s'}} />*/}
         </RowCenter>
       </ButtonClick>
       {open && (
-          <MenuFlyout>
-            <MenuItem onClick={() => {
-              setOpen(false)
-              window.open('https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper')
-            }}>
-              {t('Whitepaper')}
-              <MenuItemIcon src={ImageCommon.Group_arrow}/>
-            </MenuItem>
-            <SpaceHeight/>
-            <MenuItem onClick={() => {
-              setOpen(false)
-              window.open('https://creda-app.gitbook.io/creda-protocol/')
-            }}>
-              {t('Protocal Litepaper')}
-              <MenuItemIcon src={ImageCommon.Group_arrow}/>
-            </MenuItem>
-          </MenuFlyout>
+        <MenuFlyout>
+          <MenuItem onClick={() => {
+            setOpen(false)
+            window.open('https://creda-app.gitbook.io/protocol/introduction/creda-protocol-whitepaper')
+          }}>
+            {t('Whitepaper')}
+            <MenuItemIcon src={ImageCommon.Group_arrow} />
+          </MenuItem>
+          <SpaceHeight />
+          <MenuItem onClick={() => {
+            setOpen(false)
+            window.open('https://creda-app.gitbook.io/creda-protocol/')
+          }}>
+            {t('Protocal Litepaper')}
+            <MenuItemIcon src={ImageCommon.Group_arrow} />
+          </MenuItem>
+        </MenuFlyout>
       )}
     </DropFlyWrap>
   </RowFixed>
