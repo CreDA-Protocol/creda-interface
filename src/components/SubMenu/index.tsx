@@ -1,10 +1,9 @@
-import { Menu, Dropdown } from 'antd';
-import React from 'react'
-import styled from 'styled-components'
-import { isMobile } from 'react-device-detect'
-import {useTranslation} from "react-i18next";
+import { Dropdown, Menu } from 'antd';
+import { isMobile } from 'react-device-detect';
+import { useTranslation } from "react-i18next";
+import styled from 'styled-components';
 
-import ImageCommon from '../../assets/common/ImageCommon'
+import ImageCommon from '@assets/common/ImageCommon';
 import Row from '../Row';
 const TopMenuImage = styled.img`
   width: 28px;
@@ -24,10 +23,10 @@ const TopMenuButtonImage = styled.img`
   margin-left:20px
 `
 
-export default function SubMenu({history}:any) {
-  const {t} = useTranslation();
+export default function SubMenu({ history }: any) {
+  const { t } = useTranslation();
 
-  function onPush(index:number){
+  function onPush(index: number) {
     switch (index) {
       case 0:
         // history.push('/searching')
@@ -55,60 +54,60 @@ export default function SubMenu({history}:any) {
   return (
     <>
       {isMobile ? <Dropdown overlay={<Menu>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(0)
-            }}>
-              {t('go yo fight')}
-            </TopMenuItem>
-          </Menu.Item>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(1)
-            }}>
-              {t('money reward')}
-            </TopMenuItem>
-          </Menu.Item>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(2)
-            }}>
-              {t('go to drill')}
-            </TopMenuItem>
-          </Menu.Item>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(3)
-            }}>
-              {t('go to search')}
-            </TopMenuItem>
-          </Menu.Item>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(4)
-            }}>
-              {t('go to trad')}
-            </TopMenuItem>
-          </Menu.Item>
-          <Menu.Item>
-            <TopMenuItem onClick={()=>{
-              onPush(5)
-            }}>
-              {t('go to build')}
-            </TopMenuItem>
-          </Menu.Item>
-        </Menu>} >
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(0)
+          }}>
+            {t('go yo fight')}
+          </TopMenuItem>
+        </Menu.Item>
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(1)
+          }}>
+            {t('money reward')}
+          </TopMenuItem>
+        </Menu.Item>
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(2)
+          }}>
+            {t('go to drill')}
+          </TopMenuItem>
+        </Menu.Item>
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(3)
+          }}>
+            {t('go to search')}
+          </TopMenuItem>
+        </Menu.Item>
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(4)
+          }}>
+            {t('go to trad')}
+          </TopMenuItem>
+        </Menu.Item>
+        <Menu.Item>
+          <TopMenuItem onClick={() => {
+            onPush(5)
+          }}>
+            {t('go to build')}
+          </TopMenuItem>
+        </Menu.Item>
+      </Menu>} >
         <TopMenuImage
-            src={ImageCommon.money_right_menu}
+          src={ImageCommon.money_right_menu}
         ></TopMenuImage>
       </Dropdown> : <Row>
-        <TopMenuButtonImage onClick={()=>onPush(0)} src={ImageCommon.gotofight}/>
-        <TopMenuButtonImage onClick={()=>onPush(1)} src={ImageCommon.gotomoney}/>
-        <TopMenuButtonImage onClick={()=>onPush(2)} src={ImageCommon.gotodrillbg}/>
-        <TopMenuButtonImage onClick={()=>onPush(3)} src={ImageCommon.gotosearch}/>
-        <TopMenuButtonImage onClick={()=>onPush(4)} src={ImageCommon.gototrad}/>
-        <TopMenuButtonImage onClick={()=>onPush(5)} src={ImageCommon.gotobuildbg}/>
-        </Row>}
+        <TopMenuButtonImage onClick={() => onPush(0)} src={ImageCommon.gotofight} />
+        <TopMenuButtonImage onClick={() => onPush(1)} src={ImageCommon.gotomoney} />
+        <TopMenuButtonImage onClick={() => onPush(2)} src={ImageCommon.gotodrillbg} />
+        <TopMenuButtonImage onClick={() => onPush(3)} src={ImageCommon.gotosearch} />
+        <TopMenuButtonImage onClick={() => onPush(4)} src={ImageCommon.gototrad} />
+        <TopMenuButtonImage onClick={() => onPush(5)} src={ImageCommon.gotobuildbg} />
+      </Row>}
     </>
   )
 }

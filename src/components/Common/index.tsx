@@ -1,19 +1,18 @@
-import React, { HTMLProps, useCallback, useEffect, useState } from 'react'
+import ImageCommon from '@assets/common/ImageCommon'
+import lottie_loading from '@assets/lottie/lf30_editor_zt6iytgw.json'
+import Circle from '@assets/svg/lightcircle.svg'
+import ImageToken from '@assets/tokens/ImageToken'
+import { Lottie } from "@crello/react-lottie"
+import { Skeleton } from "antd"
+import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
+import { useHistory } from 'react-router-dom'
+import { animated, config, useSpring } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 import { colors, formatBalance, panelPairs } from '../../common/Common'
-import { animated, config, useSpring } from 'react-spring'
-import ImageCommon from '../../assets/common/ImageCommon'
-import ContractConfig from '../../contract/ContractConfig'
 import { useBalanceV2 } from '../../contract'
-import { isMobile } from 'react-device-detect'
-import Circle from '../../assets/svg/lightcircle.svg'
-import ReactGA from 'react-ga'
-import { Lottie } from "@crello/react-lottie";
-import ImageToken from '../../assets/tokens/ImageToken'
-import { useTheme } from "../../state/application/hooks";
-import { useHistory } from 'react-router-dom'
-import { Skeleton } from "antd";
-import lottie_loading from '@assets/lottie/lf30_editor_zt6iytgw.json';
+import ContractConfig from '../../contract/ContractConfig'
+import { useTheme } from "../../state/application/hooks"
 
 export const Content = styled.div`
   width:100%;

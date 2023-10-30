@@ -1,29 +1,28 @@
-import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
-import styled from "styled-components";
-import { FontPoppins } from "../../components/Row";
-import { useOpenWarnning, useTheme } from "../../state/application/hooks";
-import { MainFullBody } from "../AppBody";
 import {
+  John,
   benjaminPiette,
   cassieZhang,
   fakhulMiah,
+  fred,
   jamieRead,
   kevinWong,
   longWang,
   nenadDukelic,
   sakuraMoriuchi,
+  small_logo,
   songBao,
   sunnyFengHan,
   troyTohid,
-  williamZhijunZhang,
-  fred,
-  creda_logo,
-  small_logo,
-  John
-} from "../../assets/aboutUs";
+  williamZhijunZhang
+} from "@assets/aboutUs";
+import Modal from "@components/Modal";
+import { FontPoppins } from "@components/Row";
+import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import Modal from "../../components/Modal";
+import styled from "styled-components";
+import { useOpenWarnning, useTheme } from "../../state/application/hooks";
+import { MainFullBody } from "../AppBody";
 
 const GradientText = styled.span`
   background: linear-gradient(360deg, #00b8ff 0%, #3466ff 103.91%);
@@ -174,7 +173,7 @@ const AboutUsBody: FunctionComponent = () => {
         {t("AdvisoryTeam")}
       </GradientText>
       <TeamBody>
-      <AboutUsCard
+        <AboutUsCard
           img={longWang}
           name="Long Wang"
           title={t("ExecutiveAdvisor")}
@@ -237,13 +236,13 @@ const AboutUsBody: FunctionComponent = () => {
 
 export default AboutUs;
 
-const Avatar = styled.img<{name: string | null}>`
+const Avatar = styled.img<{ name: string | null }>`
   height: 4rem;
   border-radius: 50%;
   object-fit: cover;
   transition: height 0.3s ease, width 0.3s ease;
   width: ${({ name }) =>
-  name=='Jonathan Hargreaves' ? "5rem" : "4rem"};
+    name == 'Jonathan Hargreaves' ? "5rem" : "4rem"};
 `;
 
 const Details = styled.div`
@@ -339,7 +338,7 @@ const Arrow = styled.div<{ themeDark: boolean | null }>`
   svg {
     height: 1.5rem;
     fill: ${({ themeDark }) =>
-      themeDark ? "rgb(241, 244, 246)" : "rgb(13, 13, 17)"};
+    themeDark ? "rgb(241, 244, 246)" : "rgb(13, 13, 17)"};
   }
 `;
 
@@ -362,7 +361,7 @@ const ModalClose = styled.div<{ themeDark: boolean | null }>`
   svg {
     height: 1.5rem;
     fill: ${({ themeDark }) =>
-      themeDark ? "rgb(241, 244, 246)" : "rgb(13, 13, 17)"};
+    themeDark ? "rgb(241, 244, 246)" : "rgb(13, 13, 17)"};
   }
 `;
 
@@ -371,12 +370,12 @@ interface CardProps {
   name: string;
   title: string;
   location?:
-    | "North America"
-    | "Europe"
-    | "Asia"
-    | "Africa"
-    | "South America"
-    | "Australia";
+  | "North America"
+  | "Europe"
+  | "Asia"
+  | "Africa"
+  | "South America"
+  | "Australia";
   bio?: string;
   style?: CSSProperties;
 }
@@ -390,7 +389,7 @@ const AboutUsCard: FunctionComponent<CardProps> = ({
   style = {},
 }) => {
   const themeDark = useTheme();
-  console.log("_name",name)
+  console.log("_name", name)
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = () => setIsOpen(true);

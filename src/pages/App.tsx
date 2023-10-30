@@ -1,15 +1,11 @@
 import { Suspense, useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
-
-
-
-
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
 import { animated, useSpring } from 'react-spring';
+import styled from 'styled-components';
 import ImageCommon from "../assets/common/ImageCommon";
 import {
   ChainIds,
@@ -19,7 +15,7 @@ import {
   walletInfo
 } from "../common/Common";
 import { ButtonClick } from "../components/Button";
-import Column, { ColumnNormal } from "../components/Column";
+import { Column, ColumnNormal } from "../components/Column";
 import { ColumnBetween } from "../components/Column/index";
 import Loading from "../components/Loading";
 import Popups from "../components/Popups";

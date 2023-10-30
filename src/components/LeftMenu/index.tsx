@@ -1,11 +1,11 @@
+import ImageCommon from '@assets/common/ImageCommon';
 import { Tooltip, message } from "antd";
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ImageCommon from '../../assets/common/ImageCommon';
 import { ChainIds } from '../../common/Common';
 import { NetworkTypeContext, WalletAddressContext } from '../../contexts';
 import { useTheme, useWalkThroughStep } from '../../state/application/hooks';
-import Column, { ColumnCenter } from '../Column';
+import { Column, ColumnCenter } from '../Column';
 import { RowCenter, RowFixed, Text } from '../Row';
 
 

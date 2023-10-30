@@ -1,8 +1,8 @@
+import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from "ethers"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import USDT_icon from '../../assets/tokens/USDT.png'
 import {
   balanceToBigNumber,
   chainFromId,

@@ -1,10 +1,8 @@
 
-import React, { useState } from 'react'
+import ImageCommon from '@assets/common/ImageCommon'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
-import Column from '../Column'
-import Row, { Text, Image, RowBetween, SpaceHeight, RowCenter, SpaceWidth } from '../Row'
+import Row, { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
 const HeaderFrame = styled.div`
   align-items: center;

@@ -1,12 +1,12 @@
+import ImageCommon from "@assets/common/ImageCommon";
 import styled from "styled-components";
-import ImageCommon from "../../assets/common/ImageCommon";
 
-export default function Loading(){
-    return(
-        <Container>
-            <Logo src={ImageCommon.credaLogoForDark}></Logo>
-        </Container>
-    )
+export default function Loading() {
+  return (
+    <Container>
+      <Logo src={ImageCommon.credaLogoForDark}></Logo>
+    </Container>
+  )
 }
 
 const Container = styled.div`

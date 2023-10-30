@@ -1,27 +1,26 @@
+import ImageCommon from '@assets/common/ImageCommon';
+import { ButtonNormal } from '@components/Button';
+import { Column, ColumnCenter } from '@components/Column';
+import { CardPair, LoadingRow } from '@components/Common';
+import Modal from '@components/NormalModal';
+import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 import { message } from 'antd';
 import { ethers } from 'ethers';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ImageCommon from '../../assets/common/ImageCommon';
 import {
   ApprovalState,
   balanceToBigNumber,
   chainFromId
 } from "../../common/Common";
-import { ButtonNormal } from '../../components/Button';
-import Column, { ColumnCenter } from '../../components/Column';
-import { CardPair, LoadingRow } from '../../components/Common';
-import Modal from '../../components/NormalModal';
-import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '../../components/Row';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useApprove, useIconPrice, useWalletInfo } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useTheme } from '../../state/application/hooks';
-
 
 export const DrawButton = styled.div`
   color:white;

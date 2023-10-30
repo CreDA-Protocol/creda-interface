@@ -1,20 +1,9 @@
-import React, { useRef } from "react";
 import styled from "styled-components";
-import i18n from "../../i18n";
 // import { useActiveWeb3React } from '../../hooks'
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import { ApplicationModal } from "../../state/application/actions";
 import {
-  useModalOpen,
-  useToggleModal,
   useChangeTemeDark,
-  useTheme,
+  useTheme
 } from "../../state/application/hooks";
-import { ExternalLink } from "../../theme";
-import Row, { RowCenter } from "../Row";
-import ImageCommon from "../../assets/common/ImageCommon";
-import { isMobile } from "react-device-detect";
-import { colors } from "../../common/Common";
 
 const HeaderView = styled.div`
   cursor: pointer;

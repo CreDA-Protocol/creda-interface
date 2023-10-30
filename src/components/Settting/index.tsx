@@ -1,15 +1,6 @@
-import React, { useRef } from 'react'
 import styled from 'styled-components'
-import i18n from '../../i18n'
 // import { useActiveWeb3React } from '../../hooks'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useToggleModal } from '../../state/application/hooks'
-import { ExternalLink } from '../../theme'
-import Row, {RowCenter} from '../../components/Row'
-import ImageCommon from '../../assets/common/ImageCommon'
-import { isMobile } from 'react-device-detect'
-import {colors} from "../../common/Common";
+import ImageCommon from '@assets/common/ImageCommon'
 
 const HeaderView = styled.div`
   cursor:pointer;
@@ -33,9 +24,9 @@ const Arrow = styled.img`
 
 
 export default function Setting() {
-  return <HeaderView onClick={()=>{
+  return <HeaderView onClick={() => {
 
   }}>
-    <Arrow src={ImageCommon.Setting_white}/>
+    <Arrow src={ImageCommon.Setting_white} />
   </HeaderView>
 }

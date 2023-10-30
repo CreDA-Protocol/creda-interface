@@ -1,9 +1,7 @@
-import React, {useCallback, useContext, useState} from 'react'
-import styled from 'styled-components'
-import Modal from '../NormalModal'
-import ImageCommon from '../../assets/common/ImageCommon'
-import { Tooltip } from 'antd';
-import {useTranslation} from "react-i18next";
+import ImageCommon from '@assets/common/ImageCommon';
+import { useTranslation } from "react-i18next";
+import styled from 'styled-components';
+import Modal from '../NormalModal';
 
 const Container = styled.div`
   width:100%;
@@ -72,11 +70,11 @@ export default function AlertModal({
 }: {
   isOpen: boolean
   onDismiss: () => void,
-  title:string
+  title: string
 }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onDismiss={()=>{}} >
+    <Modal isOpen={isOpen} onDismiss={() => { }} >
       <Container>
         <ContainerTop>
           <ContainerTitle>{title}</ContainerTitle>

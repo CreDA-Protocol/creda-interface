@@ -1,9 +1,14 @@
+import ImageCommon from '@assets/common/ImageCommon'
+import { Column, ColumnCenter } from '@components/Column'
+import { LoadingRow } from "@components/Common"
+import CustomStakeModal from "@components/CustomStakeModal"
+import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
+import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import { useContext, useState } from 'react'
 import Countdown from 'react-countdown'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
 import {
   ApprovalState,
   MyBankAssetPriceIcons,
@@ -13,11 +18,6 @@ import {
   formatPercent,
   tipError
 } from "../../common/Common"
-import Column, { ColumnCenter } from '../../components/Column'
-import { LoadingRow } from "../../components/Common"
-import CustomStakeModal from "../../components/CustomStakeModal"
-import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '../../components/Row'
-import { ThemeTextEqure } from '../../components/ThemeComponent'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useApprove, useEarnInfo, useEarnResult } from "../../contract"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"

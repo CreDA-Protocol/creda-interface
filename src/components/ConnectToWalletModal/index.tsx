@@ -1,10 +1,10 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import { chainFromId } from '@common/Common';
+import { RowCenter } from '@components/Row';
 import { Lottie } from '@crello/react-lottie';
 import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import { RowCenter } from '../../components/Row';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { FlexViewBetween } from '../Common';
 import ConnectWallet from '../ConnectWallet';

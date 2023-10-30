@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../state/application/hooks'
 
+import ImageCommon from '@assets/common/ImageCommon'
+import { ThemeText } from '@components/ThemeComponent'
 import { message } from "antd"
-import ImageCommon from '../../assets/common/ImageCommon'
 import { ChainIds } from "../../common/Common"
-import { ThemeText } from '../../components/ThemeComponent'
 import { NetworkTypeContext } from "../../contexts"
 import { ButtonClick, ButtonLink } from '../Button'
 import { RowCenter, RowFixed } from '../Row'

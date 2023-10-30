@@ -1,10 +1,10 @@
+import ImageCommon from "@assets/common/ImageCommon";
+import { RowCenter } from '@components/Row';
 import message from "antd/lib/message";
 import { BigNumber, ethers } from "ethers";
 import { useContext } from 'react';
 import styled from 'styled-components';
-import ImageCommon from "../../assets/common/ImageCommon";
 import { ChainIds, chainFromId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
-import { RowCenter } from '../../components/Row';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
 import Modal from '../NormalModal';

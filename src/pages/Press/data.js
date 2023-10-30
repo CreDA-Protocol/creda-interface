@@ -1,4 +1,4 @@
-import { BgImages } from "../../assets/bgImages/bgImages";
+import { BgImages } from "@assets/bgImages/bgImages";
 
 export const news = [
   {

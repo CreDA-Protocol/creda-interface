@@ -1,11 +1,11 @@
+import ImageCommon from '@assets/common/ImageCommon'
+import { Column } from '@components/Column'
+import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '@components/Row'
 import { message } from "antd"
 import { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import ImageCommon from '../../assets/common/ImageCommon'
 import { ChainIds } from "../../common/Common"
-import Column from '../../components/Column'
-import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '../../components/Row'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useChangeTemeDark,
