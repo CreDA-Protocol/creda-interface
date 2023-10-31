@@ -1,3 +1,3 @@
 interface Window {
-  ethereum: import('ethers').providers.Web3Provider;
+  ethereum: import('ethers').providers.ExternalProvider;
 }

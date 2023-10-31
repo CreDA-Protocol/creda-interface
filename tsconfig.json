@@ -21,8 +21,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "typeRoots": [
-      "src"
+    "types": [
+      "jest"
     ],
     "paths": {
       "@abi/*": [
