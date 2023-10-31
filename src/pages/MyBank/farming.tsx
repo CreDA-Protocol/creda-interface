@@ -1,4 +1,4 @@
-import ERC20_ABI from "@abi/ERC20.json"
+import ERC20_ABI from "@abi/generic/ERC20.json"
 import ImageCommon from '@assets/common/ImageCommon'
 import { Column } from '@components/Column'
 import { CardPair, CardPairCustom, LoadingRow } from '@components/Common'

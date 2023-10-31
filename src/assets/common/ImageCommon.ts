@@ -1,15 +1,4 @@
-import ArrowDownIcon_white from './ArrowDown Icon_white.png';
-import Group_arrow from './Group_arrow.png';
-import Setting_white from './Setting_white.png';
-import cn_icon from './cn_icon.png';
-import credaLogoForDark from './credaLogoForDark.png';
-import credaLogoForLight from './credaLogoForLight.png';
-import doc_bg_image from './doc_bg_image.png';
-import en_icon from './en_icon.png';
-import lan_bg_image from './lan_bg_image.png';
-
-
-import profileLoading from '../animatedJson/lf20_x62chJ.json';
+import profileLoading from '../lottie/profileLoading.json';
 import About_black from '../svg/About_black.svg';
 import About_white from '../svg/About_white.svg';
 import AboutUsWhite from '../svg/Aboutus_white.svg';
@@ -28,6 +17,7 @@ import TelegramIcon from '../svg/telegram_ic.svg';
 import TwitterIcon from '../svg/twitter_ic.svg';
 import Activity from './Activity.png';
 import AddUser from './AddUser.png';
+import ArrowDownIcon_white from './ArrowDown Icon_white.png';
 import ArrowDown from './ArrowDown.png';
 import ArrowDown2 from './ArrowDown2.png';
 import ArrowDown3 from './ArrowDown3.png';
@@ -83,6 +73,7 @@ import Filter2 from './Filter2.png';
 import Folder from './Folder.png';
 import Game from './Game.png';
 import Graph from './Graph.png';
+import Group_arrow from './Group_arrow.png';
 import Heart from './Heart.png';
 import Hide from './Hide.png';
 import Home from './Home.png';
@@ -121,6 +112,7 @@ import Scan from './Scan.png';
 import Search from './Search.png';
 import Send from './Send.png';
 import Setting from './Setting.png';
+import Setting_white from './Setting_white.png';
 import ShieldDone from './ShieldDone.png';
 import Show from './Show.png';
 import Star from './Star.png';
@@ -150,8 +142,12 @@ import arrow_upright_white from './arrow_upright_white.png';
 import center_left_arrow from './center_left_arrow.png';
 import center_right_arrow from './center_right_arrow.png';
 import center_rihgt_img from './center_rihgt_img.png';
+import cn_icon from './cn_icon.png';
+import credaLogoForDark from './credaLogoForDark.png';
+import credaLogoForLight from './credaLogoForLight.png';
 import creda_log from './creda_log.png';
 import creda_pool_img from './creda_pool_img.png';
+import doc_bg_image from './doc_bg_image.png';
 import ThemeLightIcon from './dotcircle.png';
 import down_item_1_icon from './down_item_1_icon.png';
 import down_item_2_icon from './down_item_2_icon.png';
@@ -161,6 +157,7 @@ import earn_icon_sel from './earn_icon_sel.png';
 import ela from './ela.png';
 import elastos_logo_black from './elastos_logo_black.png';
 import elastos_logo_white from './elastos_logo_white.png';
+import en_icon from './en_icon.png';
 import fanhui from './fanhui.png';
 import fenxiang from './fenxiang.png';
 import filda_logo_black from './filda_logo_black.png';
@@ -194,6 +191,7 @@ import integrate_image from './integrate_image.png';
 import jiantou_down from './jiantou_down.png';
 import jiantou_down_nor from './jiantou_down_nor.png';
 import jiantou_up from './jiantou_up.png';
+import lan_bg_image from './lan_bg_image.png';
 import left_menu_bridge from './left_menu_bridge.png';
 import left_menu_bridge_white from './left_menu_bridge_white.png';
 import left_menu_doc from './left_menu_doc.png';
@@ -247,7 +245,7 @@ import walletconnect from './walletconnect.svg';
 import warnning_icon from './warnning_icon.png';
 import youjiantou from './youjiantou.png';
 
-const ImageCommon:any = {
+const ImageCommon: any = {
   Bridge_black,
   Bridge_white,
   About_black,
@@ -471,8 +469,8 @@ const ImageCommon:any = {
   BrandLogoLightMode,
   HamburgerIcon,
   HamburgerBlackIcon,
-  icon_creda_big:icon_creda_small,
-  icon_creda_small:icon_creda_big,
+  icon_creda_big: icon_creda_small,
+  icon_creda_small: icon_creda_big,
   myBank_earn,
   jiantou_up,
   jiantou_down,

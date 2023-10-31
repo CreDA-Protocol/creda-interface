@@ -1,8 +1,8 @@
 import ImageCommon from '@assets/common/ImageCommon'
-import lottie_loading from '@assets/lottie/lf30_editor_zt6iytgw.json'
 import Circle from '@assets/svg/lightcircle.svg'
 import ImageToken from '@assets/tokens/ImageToken'
 import { Lottie } from "@crello/react-lottie"
+import { useBalance } from '@services/tokens.service'
 import { Skeleton } from "antd"
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -12,7 +12,6 @@ import styled, { keyframes } from 'styled-components'
 import { colors, formatBalance, panelPairs } from '../../common/Common'
 import ContractConfig from '../../contract/ContractConfig'
 import { useTheme } from "../../state/application/hooks"
-import { useBalance } from '@services/tokens.service'
 
 export const Content = styled.div`
   width:100%;
@@ -567,28 +566,6 @@ const LoadingView = styled(FlexViewCenter)`
     right:0;
     pointer-events:auto;
 `
-
-export function BgLoading() {
-  return (
-    <LoadingView
-      onClick={(e: any) => {
-        e.stopPropagation()
-      }}
-    >
-      <Lottie config={{
-        loop: true,
-        autoplay: true,
-        animationData: lottie_loading,
-        rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice'
-        }
-      }}
-        width={"60%"}
-        height={"auto"}
-      />
-    </LoadingView>
-  )
-}
 
 export function ProfileLoading({ loading = true }) {
   if (!loading) {
