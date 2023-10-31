@@ -1,7 +1,8 @@
 import ESC from "@assets/tokens/ELA.png";
+import { getCoinPrice } from "@services/glidefinance.service";
 import axios from "axios";
 import { BigNumber } from "ethers";
-import { ChainId, ChainIds, bigNumberToBalance, formatBalance, getPriceESC } from "../../common/Common";
+import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "../../common/Common";
 import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
 
 /**
@@ -95,7 +96,7 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
     return t.contractAddress;
   }).filter(t => t != null)
 
-  const priceInfo = await getPriceESC(JSON.stringify(tokenContracts));
+  const priceInfo = await getCoinPrice(JSON.stringify(tokenContracts));
   for (let token of tokenInfos) {
     if ((token.type !== TokenType.ERC_20) && (token.type !== TokenType.ELA)) {
       // TODO: how to show nft?

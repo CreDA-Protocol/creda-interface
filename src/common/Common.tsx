@@ -5,9 +5,7 @@ import ImageToken from "@assets/tokens/ImageToken";
 import USDTIcon from '@assets/tokens/Tether (USDT).png';
 import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
 import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
-import { GlidePrice } from "@services/glidefinance.service";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { TransactionDetails } from "../state/transactions/reducer";
@@ -695,39 +693,6 @@ export function getPriceByApi(symbol: string): Promise<number> {
         console.log(err)
         resolve(0)
       })
-  })
-}
-
-export function getPriceESC(symbol: any): Promise<GlidePrice[]> {
-  return new Promise((resolve, reject) => {
-    const url = `https://api.glidefinance.io/subgraphs/name/glide/exchange`;
-    const params = {
-      "query": "\n" +
-        "      query tokens {\n" +
-        "        now: tokens(\n" +
-        `      where: {id_in:${symbol}}\n` +
-        "      \n" +
-        "      orderBy: tradeVolumeUSD\n" +
-        "      orderDirection: desc\n" +
-        "    ) {\n" +
-        "      id\n" +
-        "      symbol\n" +
-        "      name\n" +
-        "      derivedELA\n" +
-        "      derivedUSD\n" +
-        "      tradeVolumeUSD\n" +
-        "      totalTransactions\n" +
-        "      totalLiquidity\n" +
-        "    }\n" +
-        "      }\n" +
-        "    "
-    }
-    axios.post(url, params).then((res: any) => {
-      resolve(res.data.data.now)
-    }).catch((e: any) => {
-      console.warn('getPriceESC error:', e);
-      resolve([])
-    })
   })
 }
 
