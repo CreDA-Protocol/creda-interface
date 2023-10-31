@@ -5,6 +5,7 @@ import CustomStakeModal from "@components/CustomStakeModal"
 import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
 import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
+import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useContext, useState } from 'react'
 import Countdown from 'react-countdown'
 import { isMobile } from 'react-device-detect'
@@ -24,7 +25,6 @@ import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTheme } from '../../state/application/hooks'
-import AppBody, { MainFullBody } from '../AppBody'
 import { BankTopInfo } from './index'
 
 const Body = styled(Column)`

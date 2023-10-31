@@ -1,9 +1,9 @@
+import Header from "@components/Header";
+import LeftMenu from '@components/LeftMenu';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import Header from "../components/Header";
-import LeftMenu from '../components/LeftMenu';
-import { useTheme } from "../state/application/hooks";
+import { useTheme } from "../../state/application/hooks";
 
 const BodyWrapper = styled.div`
   overflow: unset;
@@ -14,7 +14,7 @@ const BodyWrapper = styled.div`
   @media (max-width: 768px) {
     // background-color:#0D0D11
   };
-  
+
   //max-width:1220px;
   padding:0px;
   z-Index:100;

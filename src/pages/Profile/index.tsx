@@ -12,8 +12,8 @@ import {
     SpaceWidth,
     TextEqure,
 } from "@components/Row";
+import AppBody, { MainFullBody } from "@pages/components/AppBody";
 import styled from "styled-components";
-import AppBody, { MainFullBody } from "../AppBody";
 
 import BNB from "@assets/tokens/Binance Coin (BNB).png";
 import ESC from "@assets/tokens/ELA.png";

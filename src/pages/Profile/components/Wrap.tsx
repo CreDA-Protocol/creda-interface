@@ -11,7 +11,7 @@ export function Wrap({ onIndexChange, selectedIndex }: any) {
       {chainIndexToId.map((item, index) => {
         if (index > disableIndex) {
           return (
-            <Tooltip placement="top" title={"Coming soon..."}>
+            <Tooltip placement="top" title={"Coming soon..."} key={index}>
               <WrapItem
                 themeDark={themeDark}
                 className={selectedIndex === index ? "active" : ""}
@@ -32,8 +32,10 @@ export function Wrap({ onIndexChange, selectedIndex }: any) {
             </Tooltip>
           );
         }
+
         return (
           <WrapItem
+            key={index}
             themeDark={themeDark}
             className={selectedIndex === index ? "active" : ""}
             style={

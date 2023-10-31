@@ -22,13 +22,13 @@ import Row, {
 } from '@components/Row'
 import { ThemeText } from '@components/ThemeComponent'
 import { Lottie } from "@crello/react-lottie"
+import { MainFullBody } from '@pages/components/AppBody'
 import { useContext, useEffect, useRef } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { WalletAddressContext } from "../../contexts"
 import { useOpenWarnning, useTheme } from "../../state/application/hooks"
-import { MainFullBody } from '../AppBody'
 
 export const ButtonClick = styled(Base)`
   padding: 0;
