@@ -1,12 +1,43 @@
 import { ApprovalState, ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, enableNetwork, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { BigNumber } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
+
+export type CreditData = {
+    score: string,
+    address: string,
+    proofs: string[],
+    proof: string,
+    leaf: string,
+}
+
+export type CreditResponse = {
+    code: number,
+    message: string,
+    data: CreditData
+}
+
+async function getCreditInfo(address: string): Promise<number> {
+    const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${address}`;
+    let score = 0;
+    try {
+        let res: AxiosResponse<CreditResponse> = await axios.get(originUrl);
+        // console.log(res)
+        let data = res.data
+        if (data.code === 200) {
+            let str = data.data.score
+            score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
+        }
+    } catch (e) {
+        console.warn("getCreditInfo error:", e);
+    }
+    return score;
+}
 
 /**
  * Get latest credit score information.
@@ -51,19 +82,8 @@ export function useCreditInfo(): any {
             did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
           })
         } else {
-          let score = 0;
-          try {
-            const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
-            let res: any = await axios.get(originUrl);
-            // console.log(res)
-            res = res.data
-            if (res.code === 200) {
-              let str = res.data.score
-              // console.log(Number(str.slice(2,6)),Number(str.slice(6,10)),Number(str.slice(10,14)),Number(str.slice(14,18)))
-              score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
-            }
-          } catch (e) {
-          }
+          let score = await getCreditInfo(account);
+
           setInfo({
             loading: false,
             score: score <= 0 ? calcScore(account) : score,
@@ -83,8 +103,8 @@ export function useCreditInfo(): any {
 }
 
 /**
-* 获取Credit Score
-*/
+ * Get Credit Score
+ */
 export function useCreditScore(): any {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
@@ -108,17 +128,8 @@ export function useCreditScore(): any {
             data: Number(formatBalance(creditScore.toString(), 2))
           })
         } else {
-          try {
-            const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${account}`;
-            let res: any = await axios.get(originUrl);
-            res = res.data
-            if (res.code === 200) {
-              let str = res.data.score
-              score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
-            }
-          } catch (e) {
+          score = await getCreditInfo(account);
 
-          }
           setInfo({
             loading: false,
             data: score <= 0 ? calcScore(account) : score
@@ -141,7 +152,7 @@ function calcScore(account: string): number {
 }
 
 /**
- * 获取CNFT info
+ * Get CNFT info
  */
 export function useCNFTInfo(): any {
   const { chainId } = useContext(NetworkTypeContext);
@@ -188,8 +199,8 @@ export function useCNFTInfo(): any {
 }
 
 /**
-* 获取CnetWork info
-*/
+ * Get CnetWork info
+ */
 export function useCnetWorkInfo(id: number): any {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
