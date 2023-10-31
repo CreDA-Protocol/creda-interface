@@ -5,10 +5,11 @@ import { WrapDiv, WrapItem } from "./StyledComponents";
 
 export function Wrap({ onIndexChange, selectedIndex }: any) {
   const themeDark = useTheme();
+  const disableIndex = 4;
   return (
     <WrapDiv>
       {chainIndexToId.map((item, index) => {
-        if (index > 3) {
+        if (index > disableIndex) {
           return (
             <Tooltip placement="top" title={"Coming soon..."}>
               <WrapItem
@@ -24,7 +25,7 @@ export function Wrap({ onIndexChange, selectedIndex }: any) {
                 // onClick={()=>{
                 //   onIndexChange(index)
                 // }}
-                disabled={index > 3}
+                disabled={index > disableIndex}
               >
                 {chainTitles[item]}
               </WrapItem>
@@ -45,7 +46,7 @@ export function Wrap({ onIndexChange, selectedIndex }: any) {
             onClick={() => {
               onIndexChange(index);
             }}
-            disabled={index > 3}
+            disabled={index > disableIndex}
           >
             {chainTitles[item]}
           </WrapItem>

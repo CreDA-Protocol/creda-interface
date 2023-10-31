@@ -8,9 +8,9 @@ export const chainIndexToId: ChainId[] = [
   ChainIds.bsc, // "BSC",
   ChainIds.esc, // "Elastos ESC",
   ChainIds.celo, // "CELO",
-  ChainIds.heco, // "HECO",
+  // ChainIds.heco, // "HECO", hide
+  ChainIds.arbitrum, // "Arbitrum",
   ChainIds.polygon, // "Polygon",
-  ChainIds.arbitrum // "Arbitrum",
 ];
 
 export const chainTitles: { [chainId: ChainId]: string } = {
