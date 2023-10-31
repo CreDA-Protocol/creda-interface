@@ -16,6 +16,7 @@ import {
 } from '@components/Row'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
+import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { Badge, Skeleton } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -38,7 +39,6 @@ import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarnning, useTheme } from '../../state/application/hooks'
 import { useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
-import AppBody, { MainFullBody } from '../AppBody'
 import { Earn } from './earn'
 
 const Body = styled(Column)`

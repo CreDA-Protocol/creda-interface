@@ -1,11 +1,11 @@
 import { BgImages } from "@assets/bgImages/bgImages";
 import { FontPoppins, GradientButton } from "@components/Row";
+import { MainFullBody } from "@pages/components/AppBody";
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useOpenWarnning, useTheme } from "../../state/application/hooks";
-import { MainFullBody } from "../AppBody";
 import { news, press } from "./data";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`

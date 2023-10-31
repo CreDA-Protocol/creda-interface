@@ -177,7 +177,7 @@ export default function EarnFarmModal({
     return () => {
       // homoraContract.off("EXECUTOR",eventListener)
     }
-  }, [homoraContract])
+  }, [homoraContract, account])
 
   function framClick() {
     if (ETHapproval !== ApprovalState.APPROVED) {

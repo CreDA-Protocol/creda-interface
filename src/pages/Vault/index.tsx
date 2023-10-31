@@ -34,6 +34,7 @@ import {
 import StakeModal from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
+import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { Badge, Button, Skeleton, Tooltip, message } from 'antd'
 import { BigNumber } from "ethers"
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -73,7 +74,6 @@ import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarnning, useTheme } from "../../state/application/hooks"
 import { ToastStatus, useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
-import AppBody, { MainFullBody } from '../AppBody'
 import BorrowCollateralModal from './BorrowCollateralModal'
 
 const Body = styled(Column)`

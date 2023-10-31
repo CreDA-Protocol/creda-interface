@@ -6,6 +6,7 @@ import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHei
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
+import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { Tooltip } from 'antd'
 import { ethers } from 'ethers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -28,7 +29,6 @@ import ContractConfig from "../../contract/ContractConfig"
 import { getContract, useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTheme } from '../../state/application/hooks'
-import AppBody, { MainFullBody } from '../AppBody'
 import AddPositionModal from './AddPositionModal'
 import EarnFarmModal from './EarnFarmModal'
 import RemovePositionModal from './RemovePositionModal'
@@ -418,7 +418,7 @@ function MyPostion() {
 
   const currentPositionInfo = useRef({})
 
-  async function getPositionInfo() {
+  const getPositionInfo = async () => {
     if (!positionInfo.loading) {
       if (positions.length == 0) {
         setShowLoadingRow(true)
@@ -442,7 +442,6 @@ function MyPostion() {
   useEffect(() => {
     getPositionInfo()
   }, [positionInfo])
-
 
   async function getInfo(positionId: any) {
     if (!positionId) { return }
@@ -723,7 +722,9 @@ function MyPostion() {
             </Row>
             {
               positions.map((item: any, index: number) => {
-                if (!item) { return }
+                if (!item)
+                  return null;
+
                 return <RowBetween style={{ marginBottom: 20 }}>
                   <RowFixed style={{ flex: 1 }}>
                     <ThemeText style={{ width: isMobile ? 50 : 80 }} fontSize={20} fontWeight={'400'}>#{item.pid}</ThemeText>

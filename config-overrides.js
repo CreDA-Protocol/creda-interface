@@ -89,6 +89,7 @@ module.exports = override(
     addWebpackAlias({
         '@abi': path.resolve(__dirname, 'src/assets/abi'),
         '@assets': path.resolve(__dirname, 'src/assets'),
+        '@pages': path.resolve(__dirname, 'src/pages'),
         '@common': path.resolve(__dirname, 'src/common'),
         '@components': path.resolve(__dirname, 'src/components'),
         '@hooks': path.resolve(__dirname, 'src/hooks'),

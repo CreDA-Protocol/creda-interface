@@ -17,12 +17,12 @@ import {
 } from "@assets/aboutUs";
 import Modal from "@components/Modal";
 import { FontPoppins } from "@components/Row";
+import { MainFullBody } from "@pages/components/AppBody";
 import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useOpenWarnning, useTheme } from "../../state/application/hooks";
-import { MainFullBody } from "../AppBody";
 
 const GradientText = styled.span`
   background: linear-gradient(360deg, #00b8ff 0%, #3466ff 103.91%);

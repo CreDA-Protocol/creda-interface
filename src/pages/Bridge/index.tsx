@@ -13,6 +13,7 @@ import {
     WinView
 } from "@components/Common";
 import { TransactionResponse } from "@ethersproject/providers";
+import AppBody, { MainFullBody } from '@pages/components/AppBody';
 import { BigNumber } from "ethers";
 import React, { useCallback, useContext } from "react";
 import { isMobile } from "react-device-detect";
@@ -27,7 +28,6 @@ import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../state/application/hooks";
 import { useAddToast } from "../../state/toast";
 import { useTransactionAdder } from "../../state/transactions/hooks";
-import AppBody, { MainFullBody } from '../AppBody';
 
 function Bridge(props: any) {
     const isDark = useTheme()
@@ -44,7 +44,9 @@ function Bridge(props: any) {
         </MainFullBody>
     )
 }
+
 export default Bridge;
+
 const BridgeContent = React.memo(({ isDark }: any) => {
     const { t } = useTranslation();
     const { chainId } = useContext(NetworkTypeContext);
@@ -498,7 +500,7 @@ const HoleContent = styled.div<ITheme>`
     padding-right:70px;
     position:relative;
   ${props => props.isDark && css`
-    
+
     background: ${colors.dark_background};
   `}
     @media (max-width: 768px) {
@@ -609,7 +611,7 @@ const Input = styled.input`
   font-size: 22px;
   text-align: right;
     &:focus{
-       outline: none; 
+       outline: none;
     }
   @media (max-width: 768px){
     font-size: 12px;
@@ -711,17 +713,17 @@ const TabFlag = styled.div<tab_flag>`
     transition: all 0.5s ease-in-out;
 `
 const ChainWrapView = styled(FlexViewBetween)`
-      
+
 `
 const CrossInfoView = styled(FlexViewCenter)`
     flex-direction:column;
-  
+
 `
 const PositionView = styled.div`
     position:relative;
-    top:-20px;    
+    top:-20px;
     @media (max-width: 768px) {
-        top:-50px; 
+        top:-50px;
     };
 `
 type main_button = {

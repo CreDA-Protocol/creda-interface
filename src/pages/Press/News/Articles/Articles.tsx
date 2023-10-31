@@ -1,12 +1,12 @@
 import { BgImages } from "@assets/bgImages/bgImages";
 import { FontPoppins } from "@components/Row";
+import { MainFullBody } from "@pages/components/AppBody";
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { useOpenWarnning, useTheme } from "../../../../state/application/hooks";
-import { MainFullBody } from "../../../AppBody";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`
   background: ${({ themeDark }) =>
@@ -36,7 +36,7 @@ const Box = styled.div<{ themeDark: boolean | null }>`
   padding: ${isMobile ? "1rem" : "2rem"};
   min-height: 300px;
   background: ${({ themeDark }) => (themeDark ? "rgb(23, 24, 26)" : "white")};
-  
+
 `;
 
 const BoxHeading = styled.div<{ themeDark: boolean | null }>`
