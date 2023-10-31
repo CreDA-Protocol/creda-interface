@@ -349,6 +349,26 @@ export function chainFromId(chainId: number): ChainName {
   return chain;
 }
 
+export function enableBank(chainId: number): boolean {
+  switch (chainId) {
+    case ChainIds.esc:
+    case ChainIds.arbitrum:
+      return true;
+    default:
+      return false;
+  }
+}
+
+export function enableVault(chainId: number): boolean {
+  switch (chainId) {
+    case ChainIds.esc:
+    case ChainIds.arbitrum:
+      return true;
+    default:
+      return false;
+  }
+}
+
 // chainId
 /* export const chainIdConfig: any = {
   [ChainId.esc]: "esc",

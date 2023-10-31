@@ -2,7 +2,7 @@ import ImageCommon from '@assets/common/ImageCommon';
 import { Tooltip, message } from "antd";
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ChainIds } from '../../common/Common';
+import { ChainIds, enableBank, enableVault } from '../../common/Common';
 import { NetworkTypeContext, WalletAddressContext } from '../../contexts';
 import { useTheme, useWalkThroughStep } from '../../state/application/hooks';
 import { Column, ColumnCenter } from '../Column';
@@ -250,68 +250,51 @@ function LeftMenu({ history }: any) {
 
     </StepModalWrap>:''} */}
         </div>
-        <StyledNavLink className={
-            selectIndex === 2 ? 'active' : ''
-        } onClick={() => {
-            changeNav("vault")
-            setSelectIndex(2)
-        }}>
+        {enableVault(chainId) &&
+          <StyledNavLink className={selectIndex === 2 ? 'active' : ''}
+            onClick={() => {
+                changeNav("vault")
+                setSelectIndex(2)
+            }}>
             <LeftIcon src={selectIndex == 2 ? selImg[2] : normalImg[2]} />
-            Vault
-        </StyledNavLink>
-        {chainId !== ChainIds.esc && <StyledNavLink className={
-            selectIndex === 3 ? 'active' : ''
+              Vault
+          </StyledNavLink>
         }
+        {enableBank(chainId) &&
+          <StyledNavLink className={selectIndex === 3 ? 'active' : ''}
             onClick={() => {
                 setSelectIndex(3)
             }}>
             <ColumnCenter>
                 <RowCenter style={{ cursor: 'pointer' }} onClick={() => {
-                    // if (chainId==ChainId.esc){
-                    //   message.warn('coming soon~')
-                    //   return
-                    // }
                     changeNav("myBank")
                     setSelectIndex(3)
                     setSubIndex(0)
                     subItemIndex = 0
                 }}>
-                    <LeftIcon src={selectIndex == 3 ? selImg[3] : normalImg[3]} />
-                    My Bank
-                    <ArrowJianTou src={selectIndex == 3 ? ImageCommon.jiantou_up : ImageCommon.jiantou_down_nor} />
+                <LeftIcon src={selectIndex == 3 ? selImg[3] : normalImg[3]} />
+                  My Bank
+                <ArrowJianTou src={selectIndex == 3 ? ImageCommon.jiantou_up : ImageCommon.jiantou_down_nor} />
                 </RowCenter>
                 {
                     <Column style={{ marginLeft: 20 }}>
-                        <SubItemButton
-                            onClick={() => {
-                                // if(chainId===ChainId.esc){
-                                //     message.warn('Coming soon...')
-                                //     return
-                                // }
-                                changeNav("myBankEarn")
-                                setSubIndex(1)
-                            }
-                            }
-                        >
-                            <Text fontSize={12} fontColor={subIndex == 1 ? '#fff' : '#cfcdcd'}>Earn</Text>
+                        <SubItemButton onClick={() => {
+                            changeNav("myBankEarn")
+                            setSubIndex(1)
+                        }}>
+                          <Text fontSize={12} fontColor={subIndex == 1 ? '#fff' : '#cfcdcd'}>Earn</Text>
                         </SubItemButton>
                         <SubItemButton onClick={() => {
-                            // if(chainId===ChainId.esc){
-                            //     message.warn('Coming soon...')
-                            //     return
-                            // }
                             changeNav("myBankFarming")
                             setSubIndex(2)
-                        }
-                        }>
-                            <Text fontSize={12} fontColor={subIndex == 2 ? '#fff' : '#cfcdcd'}>Farming</Text>
+                        }}>
+                          <Text fontSize={12} fontColor={subIndex == 2 ? '#fff' : '#cfcdcd'}>Farming</Text>
                         </SubItemButton>
                         <SubItemButton onClick={() => {
                             changeNav("myBankAssetPrice")
                             setSubIndex(3)
-                        }
-                        }>
-                            <Text fontSize={12} fontColor={subIndex == 3 ? '#fff' : '#cfcdcd'}>Asset Price</Text>
+                        }}>
+                          <Text fontSize={12} fontColor={subIndex == 3 ? '#fff' : '#cfcdcd'}>Asset Price</Text>
                         </SubItemButton>
                     </Column>
                 }

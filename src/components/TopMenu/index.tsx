@@ -7,7 +7,7 @@ import { useTheme } from '../../state/application/hooks'
 import ImageCommon from '@assets/common/ImageCommon'
 import { ThemeText } from '@components/ThemeComponent'
 import { message } from "antd"
-import { ChainIds } from "../../common/Common"
+import { ChainIds, enableBank, enableVault } from "../../common/Common"
 import { NetworkTypeContext } from "../../contexts"
 import { ButtonClick, ButtonLink } from '../Button'
 import { RowCenter, RowFixed } from '../Row'
@@ -161,24 +161,22 @@ export default function TopMenu({ history }: any) {
           </HeaderLink>
         </ButtonClick>
         <SpaceWidth />
-        <ButtonClick
+        {enableVault(chainId) && <ButtonClick
           onClick={() => changeNav("vault")}
         >
           <HeaderLink>
             <ThemeText>{t('Vault')}</ThemeText>
           </HeaderLink>
-        </ButtonClick>
-        <SpaceWidth />
-        {chainId !== ChainIds.esc && <ButtonClick
-          onClick={() => {
-            changeNav("myBank")
-          }}
+        </ButtonClick>}
+        {enableVault(chainId) && <SpaceWidth />}
+        {enableBank(chainId) && <ButtonClick
+          onClick={() => changeNav("myBank")}
         >
           <HeaderLink>
             <ThemeText>{t('My Bank')}</ThemeText>
           </HeaderLink>
         </ButtonClick>}
-        {chainId !== ChainIds.esc && <SpaceWidth />}
+        {enableVault(chainId) && <SpaceWidth />}
         <ButtonLink to={'/about-us'}>
           <HeaderLink>
             <ThemeText>{t('About Us')}</ThemeText>
@@ -220,5 +218,3 @@ export default function TopMenu({ history }: any) {
     </DropFlyWrap>
   </RowFixed>
 }
-
-
