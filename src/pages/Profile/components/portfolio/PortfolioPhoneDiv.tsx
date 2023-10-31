@@ -1,35 +1,34 @@
+import { ChainId } from "@common/Common";
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
+import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio.service";
 import { FC } from "react";
 import { ChainType } from "../../configs/chainsConfig";
 import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
-import { useBoxProjectAll } from "@services/portfolio.service";
 
 export const PortfolioPhoneDiv: FC<{
-  project: any,
-  chainType: number
-}> = ({ project, chainType }) => {
-  const data = Object.values(project[chainType] || {});
+  availableProjects: PortfolioAvailableProjects;
+  chainType: ChainId;
+}> = ({ availableProjects, chainType }) => {
+  const activeChainProjects = Object.values(availableProjects[chainType] || []);
+  const projectNames = activeChainProjects.map(item => item.name);
+  const allProjectsDataset = usePortfolioAllWalletProjects(ChainType[chainType], projectNames);
+  const projects = allProjectsDataset?.data;
 
-  const projectNames = data.map((item: any, index: number) => {
-    return item.name;
-  });
-  const allProject = useBoxProjectAll(ChainType[chainType], projectNames);
-  const projects = allProject.data;
-  const projectsFilterRes = projects.filter(
-    (currentValue: any, index: number, arr: any) => {
-      return currentValue?.asset > 0;
-    }
-  );
-  projectsFilterRes.sort((a: any, b: any) => {
+  // Keep only projects with positive balance assets
+  const projectsWithAssets = projects?.filter(currentValue => currentValue?.asset > 0);
+
+  // Sort projects by asset name
+  projectsWithAssets.sort((a: any, b: any) => {
     return b.asset - a.asset;
   });
-  if (allProject.loading) {
-    return <ProfileLoading loading={allProject.loading}></ProfileLoading>;
-  }
+
+  if (allProjectsDataset.loading)
+    return <ProfileLoading loading={allProjectsDataset.loading}></ProfileLoading>;
+
   return (
     <Column style={{ width: "100%", marginTop: 15 }}>
-      {projectsFilterRes.map((item: any, index: number) => {
+      {projectsWithAssets.map((item: any, index: number) => {
         return <PortfolioPhoneItemDiv item={item}></PortfolioPhoneItemDiv>;
       })}
     </Column>

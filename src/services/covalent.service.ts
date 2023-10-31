@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers";
 import { ChainId, ChainIds, bigNumberToBalance } from "../common/Common";
-import { WalletList } from "../model/wallet";
+import { WalletTokenList } from "../model/wallet";
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
 const API_KEY = 'ckey_4d8058ee307e4d05bd2572d7a2f'; // https://www.covalenthq.com/
@@ -127,7 +127,7 @@ export type BlockTransactionWithContractTransfers = {
 /**
  * Fetches ERC20/721/1155 token balances for an EVM (0x) address and saves tokens to wallet.
  */
-export function covalentFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletList> {
+export function covalentFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletTokenList> {
   console.log('Covalent_fetchTokenBalances chainId:', chainId, ' accountAddress:', accountAddress)
   return new Promise((resolve, reject) => {
     let tokenBalancesUrl = covalentApiUrl;
@@ -137,7 +137,7 @@ export function covalentFetchTokenBalances(accountAddress: string, chainId: Chai
     tokenBalancesUrl += '?key=' + API_KEY;
     tokenBalancesUrl += '&format=JSON&nft=true&no-nft-fetch=false';
 
-    const walletListEmpty: WalletList = {
+    const walletListEmpty: WalletTokenList = {
       total: 0,
       tokens: []
     }
@@ -160,7 +160,7 @@ export function covalentFetchTokenBalances(accountAddress: string, chainId: Chai
 }
 
 function convertCovalentResult2WalletList(balanceItems: CovalentTokenBalanceItem[]) {
-  let walletList: WalletList = {
+  let walletList: WalletTokenList = {
     total: 0,
     tokens: []
   };

@@ -31,7 +31,7 @@ import { H4 } from "@components/ConnectWallet";
 import CustomStakeModal from "@components/CustomStakeModal";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
 import { useCNFTInfo, useCreditInfo, useCreditScore } from "@services/credit.service";
-import { useDefiBoxWalletInfo } from "@services/portfolio.service";
+import { usePortfolioWalletTokenList } from "@services/portfolio.service";
 import { useApprove } from "@services/tokens.service";
 import {
     ApprovalState,
@@ -74,10 +74,10 @@ function Profile(props: any) {
     const network = chainFromId(chainId);
     const [chainIndex, setChainIndex] = useState(0);
     const [segmentIndex, setSegmentIndex] = useState(0);
-    const walletList = useDefiBoxWalletInfo(chainIndexToId[chainIndex]);
-    const walletListEth = useDefiBoxWalletInfo(chainIndexToId[0]);
-    const walletListBsc = useDefiBoxWalletInfo(chainIndexToId[1]);
-    const walletListEsc = useDefiBoxWalletInfo(chainIndexToId[2]);
+    const walletList = usePortfolioWalletTokenList(chainIndexToId[chainIndex]);
+    const walletListEth = usePortfolioWalletTokenList(chainIndexToId[0]);
+    const walletListBsc = usePortfolioWalletTokenList(chainIndexToId[1]);
+    const walletListEsc = usePortfolioWalletTokenList(chainIndexToId[2]);
     const showWarning = useOpenWarnning(true);
     const creditInfo = useCreditInfo();
     const scoreInfo = useCreditScore()
