@@ -10,8 +10,8 @@ import ImageCommon from "../assets/common/ImageCommon";
 import {
   ChainIds,
   createWalletConnectWeb3Provider,
-  ethereum,
   globalObj,
+  provider,
   walletInfo
 } from "../common/Common";
 import { ButtonClick } from "../components/Button";
@@ -219,7 +219,7 @@ export default function App() {
       }
     }
 
-    ethereum?.on("accountsChanged", onAccountsChanged);
+    provider?.on("accountsChanged", onAccountsChanged);
     async function checkWalletConnect() {
       const connectProvider = await createWalletConnectWeb3Provider();
       if (connectProvider.connected) {
@@ -231,7 +231,7 @@ export default function App() {
     checkWalletConnect();
     return () => {
       walletInfo.provider?.off("network");
-      ethereum?.off("accountsChanged", onAccountsChanged);
+      provider?.off("accountsChanged", onAccountsChanged);
     };
   }, [address, changeAccount]);
 
@@ -265,6 +265,7 @@ export default function App() {
     setChainId(chainId);
 
   }
+
   function changeAccount(accounts: string[]) {
     console.log(accounts, "accounts");
     if (accounts[0] !== address && accounts.length) {
@@ -276,6 +277,7 @@ export default function App() {
 
     }
   }
+
   function Updaters() {
     return (
       <>
@@ -284,6 +286,7 @@ export default function App() {
       </>
     );
   }
+
   const faderStyle = useSpring({
     from: { scale: 0.5 },
     to: { scale: 1.5 },
