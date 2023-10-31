@@ -1,15 +1,15 @@
+import ImageCommon from '@assets/common/ImageCommon';
+import DAIIcon from '@assets/tokens/Dai (DAI).png';
+import ETHIcon from '@assets/tokens/Ethereum (ETH).png';
+import ImageToken from "@assets/tokens/ImageToken";
+import USDTIcon from '@assets/tokens/Tether (USDT).png';
+import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
+import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
 import { GlidePrice } from "@services/glidefinance.service";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import ImageCommon from '../assets/common/ImageCommon';
-import DAIIcon from '../assets/tokens/Dai (DAI).png';
-import ETHIcon from '../assets/tokens/Ethereum (ETH).png';
-import ImageToken from "../assets/tokens/ImageToken";
-import USDTIcon from '../assets/tokens/Tether (USDT).png';
-import USDCIcon from '../assets/tokens/USD Coin (USDC).png';
-import WBTCIcon from '../assets/tokens/Wrapped Bitcoin (WBTC).png';
 import { TransactionDetails } from "../state/transactions/reducer";
 
 import CompoundLens_ABI from "@abi/CompoundLens.json";
