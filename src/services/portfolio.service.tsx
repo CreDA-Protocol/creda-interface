@@ -5,9 +5,12 @@ import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { WalletToken, WalletTokenList } from "src/model/wallet";
+import { PermanentCache } from "./caches/permanent-cache";
 import { celoFetchTokenBalances } from "./chains/celo.service";
 import { elastosESCFetchTokenBalances } from "./chains/elastos-esc.service";
 import { Covalent_enableNetwork, covalentFetchTokenBalances } from "./covalent.service";
+
+const oneDayInSeconds = (24 * 60 * 60);
 
 export type PortfolioAvailableProject = {
   chainName: string; // ie: "heco". Seems to be the same as "chainType" in other UI parts
@@ -49,6 +52,27 @@ export type PortfolioDataset<T> = {
   data: T;
 }
 
+const portfolioProjectsCache = new PermanentCache<string, {}>("portfolio-projects-cache", async (key) => {
+  // Miss cache, when the cache cannot deliver the requested data.
+  try {
+    const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
+    let res = await axios.get(originUrl);
+
+    let obj: PortfolioAvailableProjects = {};
+    res.data.data.forEach((item: { chainName: string; name: string }, index: number) => {
+      if (!obj[item.chainName])
+        obj[item.chainName] = [];
+
+      obj[item.chainName].push(item);
+    });
+
+    return JSON.stringify(obj);
+  } catch (e) {
+    logError("useAvailablePortfolioProjects() error:", e)
+    return null;
+  }
+}, oneDayInSeconds);
+
 /**
  * List of Defi projects available at the third party service, from which we can
  * get info from.
@@ -57,25 +81,9 @@ export function useAvailablePortfolioProjects(): PortfolioAvailableProjects {
   const [availableProjects, setAvailableProjects] = useState<PortfolioAvailableProjects>(null);
 
   useEffect(() => {
-    async function getResult() {
-      try {
-        const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
-        let res = await axios.get(originUrl);
-
-        let obj: PortfolioAvailableProjects = {};
-        res.data.data.forEach((item: { chainName: string; name: string }, index: number) => {
-          if (!obj[item.chainName])
-            obj[item.chainName] = [];
-
-          obj[item.chainName].push(item);
-        });
-        setAvailableProjects(obj);
-      } catch (e) {
-        logError("useAvailablePortfolioProjects() error:", e)
-      }
-    }
-
-    getResult();
+    portfolioProjectsCache.get("all-projects", null, false).then(allProjectsStr => {
+      setAvailableProjects(allProjectsStr ? JSON.parse(allProjectsStr) : null);
+    })
   }, []);
 
   return availableProjects;
