@@ -10,7 +10,7 @@ export type WalletToken = {
   amount: string;
 }
 
-export type WalletList = {
+export type WalletTokenList = {
   total: number;
   tokens: WalletToken[];
 }

@@ -1,31 +1,34 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
+import { ChainId } from "@lychees/uniscam-sdk";
+import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio.service";
+import { FC } from "react";
 import { ChainType } from "../../configs/chainsConfig";
 import { ProjectItem } from "../project/ProjectItem";
-import { useBoxProjectAll } from "@services/portfolio.service";
 
-export function PortfolioDiv({ project, chainType }: any) {
-  const data = Object.values(project[chainType] || {});
+export const PortfolioDiv: FC<{
+  availableProjects: PortfolioAvailableProjects;
+  chainType: ChainId;
+}> = ({ availableProjects, chainType }) => {
+  const activeChainProjects = Object.values(availableProjects[chainType] || []);
+  const projectNames = activeChainProjects.map(project => project.name);
+  const allProjectsDataset = usePortfolioAllWalletProjects(ChainType[chainType], projectNames);
+  const projects = allProjectsDataset.data;
 
-  const projectNames = data.map((item: any, index: number) => {
-    return item.name;
-  });
-  const allProject = useBoxProjectAll(ChainType[chainType], projectNames);
-  const projects = allProject.data;
-  const projectsFilterRes = projects.filter(
-    (currentValue: any, index: number, arr: any) => {
-      return currentValue?.asset > 0;
-    }
-  );
-  projectsFilterRes.sort((a: any, b: any) => {
+  // Keep only projects with positive balance assets
+  const projectsWithAssets = projects?.filter(currentValue => currentValue?.asset > 0);
+
+  // Sort projects by asset name
+  projectsWithAssets.sort((a: any, b: any) => {
     return b.asset - a.asset;
   });
-  if (allProject.loading) {
-    return <ProfileLoading loading={allProject.loading}></ProfileLoading>;
-  }
+
+  if (allProjectsDataset.loading)
+    return <ProfileLoading loading={allProjectsDataset.loading}></ProfileLoading>;
+
   return (
     <Column style={{ width: "100%", marginTop: 30 }}>
-      {projectsFilterRes.map((item: any, index: number) => {
+      {projectsWithAssets.map((item: any, index: number) => {
         return <ProjectItem item={item}></ProjectItem>;
       })}
     </Column>

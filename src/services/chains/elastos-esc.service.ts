@@ -1,14 +1,14 @@
 import ESC from "@assets/tokens/ELA.png";
+import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "@common/Common";
 import { getCoinPrice } from "@services/glidefinance.service";
 import axios from "axios";
 import { BigNumber } from "ethers";
-import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "../../common/Common";
-import { TokenInfo, TokenType, WalletList } from "../../model/wallet";
+import { TokenInfo, TokenType, WalletTokenList } from "src/model/wallet";
 
 /**
  * Fetches ELA, ERC20/721/1155 token balances for an EVM (0x) address.
  */
-export async function elastosESCFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletList> {
+export async function elastosESCFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletTokenList> {
   let allTokenInfos: TokenInfo[] = [];
 
   let elaToken = await elastosESCFetchELABalances(accountAddress, chainId);
@@ -87,7 +87,7 @@ export function elastosESCFetchERC20TokenBalances(accountAddress: string, chainI
 }
 
 async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
-  let walletList: WalletList = {
+  let walletList: WalletTokenList = {
     total: 0,
     tokens: []
   };
