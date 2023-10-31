@@ -1,4 +1,4 @@
-import ERC20_ABI from "@abi/ERC20.json";
+import ERC20_ABI from "@abi/generic/ERC20.json";
 import { Contract, ethers } from "ethers";
 import { useMemo } from "react";
 import { walletInfo } from "../common/Common";

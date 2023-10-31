@@ -12,28 +12,29 @@ import bUSD from '@assets/tokens/bUSD.png';
 import sCASH from '@assets/tokens/sCASH.png';
 
 // Generic token contracts
-import ERC20_ABI from "@abi/ERC20.json";
-import qERC20_ABI from '@abi/qERC20.json';
+import ERC20_ABI from "@abi/generic/ERC20.json";
+import qERC20_ABI from '@abi/generic/qERC20.json';
 
 // Creda core contracts
-import CredaCore_ABI from '@abi/CredaCore.json';
-import Creda_ABI from '@abi/CredaTest.json';
-import CredaTestPlus_ABI from '@abi/CredaTestPlus.json';
-import CreditNFT_ABI from '@abi/CreditNFT.json';
-import CreditNFTV2_ABI from "@abi/CreditNFTV2.json";
-import CNETWORK_ABI from '@abi/cNETWORK.json';
+import APIConsumer_ABI from '@abi/creda/APIConsumer.json'; // Seems to be doing creda/credit/did things...
+import CredaCore_ABI from '@abi/creda/CredaCore.json';
+import Creda_ABI from '@abi/creda/CredaTest.json';
+import CredaTestPlus_ABI from '@abi/creda/CredaTestPlus.json';
+import CreditNFT_ABI from '@abi/creda/CreditNFT.json';
+import CreditNFTV2_ABI from "@abi/creda/CreditNFTV2.json";
+import CNETWORK_ABI from '@abi/creda/cNETWORK.json';
 
 // Swapping
-import IUniswapV2Pair_ABI from "@abi/IUniswapV2Pair.json";
-import IWMasterChef_ABI from "@abi/IWMasterChef.json";
-import MdexFactory_ABI from '@abi/MdexFactory.json';
-import MdexRouter_ABI from '@abi/MdexRouter.json';
-import PancakeFactory_ABI from "@abi/PancakeFactory.json";
-import PancakeRouter_ABI from "@abi/PancakeRouter.json";
-import QuickSwapFactory_ABI from '@abi/QuickSwapFactory.json';
-import QuickSwapRouter_ABI from '@abi/QuickSwapRouter.json';
-import Router_ABI from "@abi/Router.json";
-import SushiFactory_ABI from "@abi/SushiFactory.json";
+import IUniswapV2Pair_ABI from "@abi/swap/IUniswapV2Pair.json";
+import IWMasterChef_ABI from "@abi/swap/IWMasterChef.json";
+import MdexFactory_ABI from '@abi/swap/MdexFactory.json';
+import MdexRouter_ABI from '@abi/swap/MdexRouter.json';
+import PancakeFactory_ABI from "@abi/swap/PancakeFactory.json";
+import PancakeRouter_ABI from "@abi/swap/PancakeRouter.json";
+import QuickSwapFactory_ABI from '@abi/swap/QuickSwapFactory.json';
+import QuickSwapRouter_ABI from '@abi/swap/QuickSwapRouter.json';
+import Router_ABI from "@abi/swap/Router.json";
+import SushiFactory_ABI from "@abi/swap/SushiFactory.json";
 
 // CREDA locked/unlocked tokens management in various chains
 import InitialMint_ABI from '@abi/InitialMint.json';
@@ -42,31 +43,28 @@ import PersonalDataMinePoolPlus_ABI from '@abi/PersonalDataMinePoolPlus.json';
 import PersonalDataMinePoolV2_ABI from '@abi/PersonalDataMinePoolV2.json';
 import PersonalDataMinePoolV2ESC_ABI from '@abi/PersonalDataMinePoolV2ESC.json';
 
-// Portfolio
-import cPiggyVault_ABI from '@abi/cPiggyVault.json';
-
 // Unclear usage contracts
-import APIConsumer_ABI from '@abi/APIConsumer.json';
-import Collection_ABI from '@abi/Collection.json';
-import HomoraBank_ABI from "@abi/HomoraBank.json";
 import IFNT_ABI from '@abi/IFNT.json';
 import IFNTunlock_ABI from '@abi/IFNTunlock.json';
-import InitializeAddress_ABI from '@abi/InitializeAddress.json';
-import NFTStore_ABI from '@abi/NFTStore.json';
-import Production_ABI from '@abi/Production.json';
-import SushiswapSpellV1_ABI from "@abi/SushiswapSpellV1.json";
-import Vault_ABI from '@abi/Vault.json';
-import cVault_ABI from '@abi/cVault.json';
+import HomoraBank_ABI from "@abi/banking/HomoraBank.json";
+import NFTStore_ABI from '@abi/banking/NFTStore.json';
+import Vault_ABI from '@abi/banking/Vault.json';
+import cPiggyVault_ABI from '@abi/banking/cPiggyVault.json';
+import cVault_ABI from '@abi/banking/cVault.json';
+import SushiswapSpellV1_ABI from "@abi/swap/SushiswapSpellV1.json";
 
 // Deprecated gaming contracts
-import BuildDataBase_ABI from '@abi/BuildDataBase.json';
-import BuildOpreta_ABI from '@abi/BuildOpreta.json';
-import BuildReward_ABI from '@abi/BuildReward.json';
-import CreateWarship_ABI from '@abi/CreateWarship.json';
-import GameBuild_ABI from '@abi/GameBuild.json';
-import Items_ABI from '@abi/Items.json';
-import WarshipExplore_ABI from '@abi/WarshipExplore.json';
-import WarshipNFT_ABI from '@abi/WarshipNFT.json';
+import BuildDataBase_ABI from '@abi/gaming/BuildDataBase.json';
+import BuildOpreta_ABI from '@abi/gaming/BuildOpreta.json';
+import BuildReward_ABI from '@abi/gaming/BuildReward.json';
+import Collection_ABI from '@abi/gaming/Collection.json';
+import CreateWarship_ABI from '@abi/gaming/CreateWarship.json';
+import GameBuild_ABI from '@abi/gaming/GameBuild.json';
+import InitializeAddress_ABI from '@abi/gaming/InitializeAddress.json';
+import Items_ABI from '@abi/gaming/Items.json';
+import Production_ABI from '@abi/gaming/Production.json'; // Also seems related to gaming
+import WarshipExplore_ABI from '@abi/gaming/WarshipExplore.json';
+import WarshipNFT_ABI from '@abi/gaming/WarshipNFT.json';
 
 import { ChainName } from '@common/Common';
 
