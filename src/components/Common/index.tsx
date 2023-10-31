@@ -10,9 +10,9 @@ import { useHistory } from 'react-router-dom'
 import { animated, config, useSpring } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 import { colors, formatBalance, panelPairs } from '../../common/Common'
-import { useBalanceV2 } from '../../contract'
 import ContractConfig from '../../contract/ContractConfig'
 import { useTheme } from "../../state/application/hooks"
+import { useBalance } from '@services/tokens.service'
 
 export const Content = styled.div`
   width:100%;
@@ -427,7 +427,7 @@ const PanelItemList = styled(FlexViewBetween)`
   }
 `
 const PanelItem = ({ symbol, onSelect }: any) => {
-  const info = useBalanceV2(symbol);
+  const info = useBalance(symbol);
   return (
     <PanelItemList
       onClick={() => {
@@ -589,7 +589,6 @@ export function BgLoading() {
     </LoadingView>
   )
 }
-
 
 export function ProfileLoading({ loading = true }) {
   if (!loading) {

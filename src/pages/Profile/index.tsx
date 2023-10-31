@@ -30,6 +30,9 @@ import ConnectToWalletModal from "@components/ConnectToWalletModal";
 import { H4 } from "@components/ConnectWallet";
 import CustomStakeModal from "@components/CustomStakeModal";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
+import { useCNFTInfo, useCreditInfo, useCreditScore } from "@services/credit.service";
+import { useDefiBoxWalletInfo } from "@services/portfolio.service";
+import { useApprove } from "@services/tokens.service";
 import {
     ApprovalState,
     ChainIds,
@@ -43,13 +46,6 @@ import {
     tipError
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import {
-    useApprove,
-    useCNFTInfo,
-    useCreditInfo,
-    useCreditScore,
-    useDefiBoxWalletInfo
-} from "../../contract";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";

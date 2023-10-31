@@ -1,9 +1,9 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { FC } from "react";
-import { useBoxProjectAll } from "src/contract";
 import { ChainType } from "../../configs/chainsConfig";
 import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
+import { useBoxProjectAll } from "@services/portfolio.service";
 
 export const PortfolioPhoneDiv: FC<{
   project: any,

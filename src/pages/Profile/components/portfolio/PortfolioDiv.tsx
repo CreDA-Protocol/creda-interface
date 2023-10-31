@@ -1,8 +1,8 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
-import { useBoxProjectAll } from "src/contract";
 import { ChainType } from "../../configs/chainsConfig";
 import { ProjectItem } from "../project/ProjectItem";
+import { useBoxProjectAll } from "@services/portfolio.service";
 
 export function PortfolioDiv({ project, chainType }: any) {
   const data = Object.values(project[chainType] || {});

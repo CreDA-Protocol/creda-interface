@@ -10,6 +10,7 @@ import { PortfolioPhoneDiv } from "./PortfolioPhoneDiv";
 export function PortfolioItem() {
   const [chainIndex, setChainIndex] = useState(0);
   const [defiProject, setDefiProject] = useState<Object>({});
+
   useEffect(() => {
     async function getResult() {
       try {

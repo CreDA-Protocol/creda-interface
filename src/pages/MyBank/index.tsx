@@ -17,6 +17,7 @@ import {
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useApprove } from '@services/tokens.service'
 import { Badge, Skeleton } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -32,7 +33,6 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useApprove, useCNFTInfo, useDaInfo, useMarketsResult } from "../../contract"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
@@ -40,6 +40,8 @@ import { useOpenWarnning, useTheme } from '../../state/application/hooks'
 import { useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import { Earn } from './earn'
+import { useMarketsResult, useDaInfo } from '@services/banking.service'
+import { useCNFTInfo } from '@services/credit.service'
 
 const Body = styled(Column)`
   width:100%;

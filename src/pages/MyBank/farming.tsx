@@ -7,6 +7,8 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useIconPrice } from "@services/banking.service"
+import { usePositionInfo } from "@services/mining-staking.service"
 import { Tooltip } from 'antd'
 import { ethers } from 'ethers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -21,10 +23,6 @@ import {
   walletInfo
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import {
-  useIconPrice,
-  usePositionInfo
-} from "../../contract"
 import ContractConfig from "../../contract/ContractConfig"
 import { getContract, useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"

@@ -32,7 +32,6 @@ export function useLoadingContext() {
 }
 
 export default function LoadingProvider({ children }: any) {
-
     const [visible, setVisible] = useState(false)
     const [type, setType] = useState(LoadingType.confirm)
     const [message, setMessage] = useState("")
@@ -174,6 +173,7 @@ function Loading({ visible, type, message, onClose }: any) {
         </LoadingContainer>
     )
 }
+
 const LoadingContainer = styled.div`
     position:fixed;
     left:0;
