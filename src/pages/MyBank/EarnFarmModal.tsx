@@ -6,6 +6,7 @@ import Modal from '@components/NormalModal';
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
+import { useApprove } from '@services/tokens.service';
 import { message } from 'antd';
 import { ethers } from 'ethers';
 import React, { useContext, useEffect, useState } from 'react';
@@ -16,11 +17,11 @@ import {
   chainFromId
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import { useApprove, useIconPrice, useWalletInfo } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useTheme } from '../../state/application/hooks';
+import { useWalletInfo, useIconPrice } from '@services/banking.service';
 
 export const DrawButton = styled.div`
   color:white;

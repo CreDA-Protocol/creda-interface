@@ -5,13 +5,13 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { balanceToBigNumber, chainFromId, marketsConfig } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useDaInfo } from "../../contract"
 import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { LoadingCircle } from "../Common"
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
+import { useDaInfo } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;
@@ -20,7 +20,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height:240px;
   };
-  
+
 `
 const InputDiv = styled.div`
   height:80px;

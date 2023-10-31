@@ -4,10 +4,10 @@ import { useCallback, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { bigNumberToBalance, formatPercent } from "../../common/Common"
-import { useDaInfo } from "../../contract"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
+import { useDaInfo } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;
@@ -16,7 +16,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height:240px;
   };
-  
+
 `
 const InputDiv = styled.div`
   height:80px;

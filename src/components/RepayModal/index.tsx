@@ -10,7 +10,6 @@ import {
   marketsConfig
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useDaInfo } from "../../contract"
 import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
@@ -18,6 +17,7 @@ import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
 import { Button } from "antd"
+import { useDaInfo } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;
@@ -26,7 +26,7 @@ const Container = styled.div`
   @media (max-width: 768px) {
     height:240px;
   };
-  
+
 `
 const InputDiv = styled.div`
   height:80px;

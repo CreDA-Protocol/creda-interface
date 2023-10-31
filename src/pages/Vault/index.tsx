@@ -35,6 +35,7 @@ import StakeModal from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useApprove } from "@services/tokens.service"
 import { Badge, Button, Skeleton, Tooltip, message } from 'antd'
 import { BigNumber } from "ethers"
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -58,16 +59,6 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import {
-  useApprove,
-  useCNFTInfo,
-  useCnetWorkInfo,
-  useCredaInfo,
-  useCreditInfo,
-  useHardPoolInfo,
-  useMiningPoolInfo,
-  useUnLockInfo,
-} from "../../contract"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
@@ -75,6 +66,9 @@ import { useOpenWarnning, useTheme } from "../../state/application/hooks"
 import { ToastStatus, useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import BorrowCollateralModal from './BorrowCollateralModal'
+import { useUnLockInfo, useCredaInfo } from "@services/creda-token.service"
+import { useCreditInfo, useCNFTInfo, useCnetWorkInfo } from "@services/credit.service"
+import { useMiningPoolInfo, useHardPoolInfo } from "@services/mining-staking.service"
 
 const Body = styled(Column)`
   width:100%;
@@ -1590,7 +1584,7 @@ const LpRight = styled(LpLeft)`
   border-radius: 20px;
   position:relative;
   padding:0;
-  
+
 `
 const GetLp = styled(Button)`
 width: 120px;

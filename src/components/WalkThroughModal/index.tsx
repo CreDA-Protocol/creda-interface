@@ -4,10 +4,10 @@ import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { WalletAddressContext } from '../../contexts';
-import { useCreditInfo } from '../../contract';
 import { useWalkThrough, useWalkThroughStep } from '../../state/application/hooks';
 import { setDecrement, setIncrement } from '../../state/walkthrough/actions';
 import { BlueButton } from '../Common';
+import { useCreditInfo } from '@services/credit.service';
 
 export const Wrapper = styled.div<{
   walkThroughStep: Number | null,
@@ -19,7 +19,7 @@ export const Wrapper = styled.div<{
   z-index: 700;
   width: 292px;
   outline: 0;
-  font-family:'Poppins Regular' !important; 
+  font-family:'Poppins Regular' !important;
   &:before {
     content: '';
     display: block;

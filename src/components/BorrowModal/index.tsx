@@ -10,13 +10,13 @@ import {
   marketsConfig
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { getPrice, getTotalBorrowLimit, getTotalDaiBalance, useDaInfo } from "../../contract"
 import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { LoadingCircle } from "../Common"
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
+import { useDaInfo, getPrice, getTotalBorrowLimit, getTotalDaiBalance } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import {
   mathPriceTo4
 } from "../../common/Common";
-import { useWalletInfo } from '../../contract';
+import { useWalletInfo } from '@services/banking.service';
 
 export const DrawButton = styled.div`
   color:white;

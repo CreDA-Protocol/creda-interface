@@ -6,6 +6,8 @@ import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqur
 import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useEarnInfo, useEarnResult } from '@services/banking.service'
+import { useApprove } from '@services/tokens.service'
 import { useContext, useState } from 'react'
 import Countdown from 'react-countdown'
 import { isMobile } from 'react-device-detect'
@@ -20,7 +22,6 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useApprove, useEarnInfo, useEarnResult } from "../../contract"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"

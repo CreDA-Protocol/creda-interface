@@ -14,6 +14,7 @@ import {
 } from "@components/Common";
 import { TransactionResponse } from "@ethersproject/providers";
 import AppBody, { MainFullBody } from '@pages/components/AppBody';
+import { useApprove } from "@services/tokens.service";
 import { BigNumber } from "ethers";
 import React, { useCallback, useContext } from "react";
 import { isMobile } from "react-device-detect";
@@ -21,13 +22,14 @@ import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import { ApprovalState, ChainIds, GasInfo, balanceToBigNumber, chainFromId, colors, formatBalance } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import { useApprove, useCredaInfo, useWrapAmount } from '../../contract';
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../state/application/hooks";
 import { useAddToast } from "../../state/toast";
 import { useTransactionAdder } from "../../state/transactions/hooks";
+import { useCredaInfo } from "@services/creda-token.service";
+import { useWrapAmount } from "@services/swap-bridge.service";
 
 function Bridge(props: any) {
     const isDark = useTheme()
