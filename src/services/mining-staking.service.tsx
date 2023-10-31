@@ -1,10 +1,11 @@
-import { ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, enableNetwork, formatBalance, getPriceByApi, getPriceESC, logError, mathPriceTo8, walletInfo } from "@common/Common";
+import { ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, enableNetwork, formatBalance, getPriceByApi, logError, mathPriceTo8, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
 import { BigNumber, ethers } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { EarnConfig } from "src/contract/ContractConfig";
+import { getCoinPrice } from "./glidefinance.service";
 
 /**
  * 获取收益信息
@@ -230,14 +231,14 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
         }
         let price: any = ''
         if (chainId === ChainIds.esc) {
-          const priceInfo = await getPriceESC(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
+          const priceInfo = await getCoinPrice(JSON.stringify([ContractConfig[symbol][network]?.address.toLowerCase()]))
           if (priceInfo && priceInfo[0])
             price = Number(formatBalance(priceInfo[0].derivedUSD, 4))
         } else {
           price = await getPriceByApi(symbol)
         }
 
-        console.log('price==', symbol, price);
+        console.log('useHardPoolInfo price:', symbol, price);
 
         const tvl = Number(bigNumberToBalance(totalSupply, decimals)) * price * 2
 

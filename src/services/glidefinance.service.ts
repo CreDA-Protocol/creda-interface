@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export type GlidePrice = {
   derivedELA: string;
@@ -11,7 +11,13 @@ export type GlidePrice = {
   tradeVolumeUSD: string;
 }
 
-export function getCoinPrice(coinidList: any): Promise<GlidePrice[]> {
+export type GlideData = {
+  data: {
+    now: GlidePrice[]
+  }
+}
+
+export function getCoinPrice(coinidList: string): Promise<GlidePrice[]> {
   return new Promise(resolve => {
     const url = `https://api.glidefinance.io/subgraphs/name/glide/exchange`;
     const params = {
@@ -35,10 +41,10 @@ export function getCoinPrice(coinidList: any): Promise<GlidePrice[]> {
         "      }\n" +
         "    "
     }
-    axios.post(url, params).then((res: any) => {
+    axios.post(url, params).then((res: AxiosResponse<GlideData>) => {
       resolve(res.data.data.now);
     }).catch((e: any) => {
-      console.log('getCoinPrice==', e);
+      console.warn('getCoinPrice error', e);
     })
   });
 }
