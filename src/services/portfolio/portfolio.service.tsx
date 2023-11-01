@@ -5,10 +5,17 @@ import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { WalletToken, WalletTokenList } from "src/model/wallet";
-import { PermanentCache } from "./caches/permanent-cache";
-import { celoFetchTokenBalances } from "./chains/celo.service";
-import { elastosESCFetchTokenBalances } from "./chains/elastos-esc.service";
-import { Covalent_enableNetwork, covalentFetchTokenBalances } from "./covalent.service";
+import { PermanentCache } from "../caches/permanent-cache";
+import { celoFetchTokenBalances } from "../chains/celo.service";
+import { elastosESCFetchTokenBalances } from "../chains/elastos-esc.service";
+import { Covalent_enableNetwork, covalentFetchTokenBalances } from "../covalent.service";
+import { simulatedPortfolioApi_assetsStaking } from "./simulated-portfolio-api";
+
+// TEMP TEST
+console.log("Fetching TIN assets (test)");
+simulatedPortfolioApi_assetsStaking("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(stakedAssets => {
+  console.log("Staked assets:", stakedAssets);
+});
 
 const oneDayInSeconds = (24 * 60 * 60);
 

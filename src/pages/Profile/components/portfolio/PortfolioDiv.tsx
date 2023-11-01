@@ -1,7 +1,7 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { ChainId } from "@lychees/uniscam-sdk";
-import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio.service";
+import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { ChainType } from "../../configs/chainsConfig";
 import { ProjectItem } from "../project/ProjectItem";

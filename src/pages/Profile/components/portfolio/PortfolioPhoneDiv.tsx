@@ -1,7 +1,7 @@
 import { ChainId } from "@common/Common";
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
-import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio.service";
+import { PortfolioAvailableProjects, usePortfolioAllWalletProjects } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { ChainType } from "../../configs/chainsConfig";
 import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
