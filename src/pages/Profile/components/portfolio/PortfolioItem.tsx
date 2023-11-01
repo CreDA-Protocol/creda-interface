@@ -1,5 +1,5 @@
 import { Column } from "@components/Column";
-import { useAvailablePortfolioProjects } from "@services/portfolio.service";
+import { useAvailablePortfolioProjects } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { chainIndexToId } from "../../configs/chainsConfig";

@@ -31,7 +31,7 @@ import { H4 } from "@components/ConnectWallet";
 import CustomStakeModal from "@components/CustomStakeModal";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
 import { useCNFTInfo, useCreditInfo, useCreditScore } from "@services/credit.service";
-import { usePortfolioWalletTokenList } from "@services/portfolio.service";
+import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from "@services/tokens.service";
 import {
     ApprovalState,
