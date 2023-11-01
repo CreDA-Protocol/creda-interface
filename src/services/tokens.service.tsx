@@ -108,7 +108,8 @@ const useAllowance = (tokenAddress: string, spender: string) => {
 /**
  * Approves a spender to spend user's tokens from the given token contract.
  */
-export function useApprove(tokenAddress: string, spender: string): [ApprovalState, () => Promise<void>] {
+export function useApprove(tokenAddress: string, spender: string, approvedIfTokenContractMissing = false): [ApprovalState, () => Promise<void>] {
+
   const loading = useContext(LoadingContext)
   const tokenContract = useTokenContract(tokenAddress);
   const currentAllowance = useAllowance(tokenAddress, spender)
@@ -128,6 +129,12 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
   const [approvalState, setApproveState] = useState(ApprovalState.UNKNOWN);
   const addTransaction = useTransactionAdder();
   useEffect(() => {
+    // Don't need to call approve if the chain doesn't have creda erc20 token.
+    if (approvedIfTokenContractMissing && !tokenAddress) {
+      setApproveState(ApprovalState.APPROVED);
+      return;
+    }
+
     if (!currentAllowance) {
       setApproveState(ApprovalState.UNKNOWN);
     } else if (currentAllowance.eq(BigNumber.from(0))) {
@@ -137,7 +144,8 @@ export function useApprove(tokenAddress: string, spender: string): [ApprovalStat
       // console.log(currentAllowance,"currentAllowance")
       setApproveState(ApprovalState.APPROVED);
     }
-  }, [currentAllowance])
+  }, [currentAllowance, approvedIfTokenContractMissing, tokenAddress])
+
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       console.error('approve was called unnecessarily');
