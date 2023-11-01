@@ -2,20 +2,21 @@ import CELO from "@assets/tokens/Celo (CELO).png";
 import { BigNumber } from "ethers";
 
 import { ChainId, ChainIds, bigNumberToBalance } from "../../common/Common";
-import { TokenInfo, TokenType, WalletTokenList } from "../../model/wallet";
+import { TokenInfo, TokenType } from "../../model/wallet";
+import { PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 
 
 /**
  * Fetches Celo, ERC20/721/1155 token balances for an EVM (0x) address.
  */
-export async function celoFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<WalletTokenList> {
+export async function celoFetchTokenBalances(accountAddress: string, chainId: ChainId): Promise<PortfolioWalletTokenList> {
   return new Promise((resolve, reject) => {
     let rpcUrl = 'https://explorer.celo.org/mainnet/api/?module=account&action=tokenlist&address=';
     if (chainId === ChainIds.celotest) {
       rpcUrl = 'https://explorer.celo.org/alfajores/api/?module=account&action=tokenlist&address=';
     }
 
-    const walletListEmpty: WalletTokenList = {
+    const walletListEmpty: PortfolioWalletTokenList = {
       total: 0,
       tokens: []
     }
@@ -39,7 +40,7 @@ export async function celoFetchTokenBalances(accountAddress: string, chainId: Ch
 }
 
 async function convertResult2WalletList(tokenInfos: TokenInfo[]) {
-  let walletList: WalletTokenList = {
+  let walletList: PortfolioWalletTokenList = {
     total: 0,
     tokens: []
   };

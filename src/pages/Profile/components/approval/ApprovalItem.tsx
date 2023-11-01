@@ -1,6 +1,6 @@
 import { chainFromId } from "@common/Common";
 import { Column } from "@components/Column";
-import { useBoxApproveList } from "@services/portfolio/portfolio.service";
+import { usePortfolioApprovalsList } from "@services/portfolio/portfolio.service";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { ChainType, chainIndexToId } from "../../configs/chainsConfig";
@@ -10,7 +10,7 @@ import { ApprovalPhoneDiv } from "./ApprovalPhoneDiv";
 
 export function ApprovalItem() {
   const [chainIndex, setChainIndex] = useState(0);
-  const approveList = useBoxApproveList(chainFromId(chainIndexToId[chainIndex]));
+  const approveList = usePortfolioApprovalsList(chainFromId(chainIndexToId[chainIndex]));
 
   function changeChainIndex(index: number) {
     setChainIndex(index);

@@ -1,4 +1,4 @@
-export type TinAsset = {
+export type TinFarmAsset = {
   id: string; // '20ce04ee-441a-469d-aaae-d66b93772c20',
   name: string; //'Glide',
   shortName: string; //'glide',
@@ -17,10 +17,10 @@ export type TinAsset = {
   wallet: string;
 };
 
-export type TinAssetsResponse = {
+export type TinFarmAssetsResponse = {
   statusCode: 200;
   message: 'Done!';
-  data: TinAsset | TinAsset[];
+  data: TinFarmAsset | TinFarmAsset[];
 };
 
 /**
