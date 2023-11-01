@@ -2,15 +2,15 @@ import ImageCommon from "@assets/common/ImageCommon";
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import { Column } from "@components/Column";
 import {
-    CustomGrid,
-    FontPoppins,
-    GradientButton,
-    RowBetween,
-    RowCenter,
-    RowFixed,
-    SpaceHeight,
-    SpaceWidth,
-    TextEqure,
+  CustomGrid,
+  FontPoppins,
+  GradientButton,
+  RowBetween,
+  RowCenter,
+  RowFixed,
+  SpaceHeight,
+  SpaceWidth,
+  TextEqure,
 } from "@components/Row";
 import AppBody, { MainFullBody } from "@pages/components/AppBody";
 import styled from "styled-components";
@@ -34,16 +34,15 @@ import { useCNFTInfo, useCreditInfo, useCreditScore } from "@services/credit.ser
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from "@services/tokens.service";
 import {
-    ApprovalState,
-    ChainIds,
-    GasInfo,
-    balanceToBigNumber,
-    chainFromId,
-    enableNetwork,
-    formatAccount,
-    formatBalance,
-    getNFTCardBgImage,
-    tipError
+  ApprovalState,
+  GasInfo,
+  balanceToBigNumber,
+  chainFromId,
+  enableNetwork,
+  formatAccount,
+  formatBalance,
+  getNFTCardBgImage,
+  tipError
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
@@ -98,7 +97,8 @@ function Profile(props: any) {
     );
     const [approval, approveCallback] = useApprove(
         ContractConfig.CREDA[network]?.address,
-        ContractConfig.CreditNFT[network]?.address
+        ContractConfig.CreditNFT[network]?.address,
+        true
     );
 
     //stakemodal
@@ -187,24 +187,21 @@ function Profile(props: any) {
     }
 
     function mintCNFT() {
-        // console.log("CNFTContract?.mintNFT()", CNFTContract?.mintNFT())
         if (approval !== ApprovalState.APPROVED && enableNetwork(chainId)) {
             approveCallback();
             return;
         }
         loading.show(LoadingType.confirm, "Mint NFT")
-        CNFTContract?.mintNFT()
+        CNFTContract?.mintNFT(GasInfo)
             .then(async (response: TransactionResponse) => {
-                // console.log("CNFTContract?.mintNFT()_ay")
-                // addTransaction(response, {
-                //     summary: "Mint NFT",
-                // });
+                console.log("CNFTContract.mintNFT response:", response)
                 loading.show(LoadingType.pending, response.hash)
                 await response.wait();
                 loading.show(LoadingType.success, response.hash)
             })
             .catch((err: any) => {
                 // addToast(ToastStatus.error, err.data?.message);
+                console.log("CNFTContract.mintNFT error:", err)
                 loading.show(LoadingType.error, err.reason || err.message)
                 tipError(err);
             });
@@ -388,7 +385,7 @@ function Profile(props: any) {
 
                                     </div>
 
-                                    {chainId === ChainIds.esc && <div>
+                                    {enableNetwork(chainId) && <div>
                                         {scoreInfo.data <= 0 && (
                                             <div style={{ position: "relative" }}>
 

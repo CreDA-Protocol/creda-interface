@@ -22,6 +22,7 @@ import Creda_ABI from '@abi/creda/CredaTest.json';
 import CredaTestPlus_ABI from '@abi/creda/CredaTestPlus.json';
 import CreditNFT_ABI from '@abi/creda/CreditNFT.json';
 import CreditNFTV2_ABI from "@abi/creda/CreditNFTV2.json";
+import CreditNFTV3_ABI from "@abi/creda/CreditNFTV3.json";
 import CNETWORK_ABI from '@abi/creda/cNETWORK.json';
 
 // Swapping
@@ -658,6 +659,14 @@ const ContractConfig: ContractsConfig = {
     esc: {
       address: "0x0E0e0fCb700c3CfEe1AeEa5c1d7A21dd90d1ce7E",
       abi: CreditNFTV2_ABI
+    },
+    elatest: {
+      address: "0xd4563C741DE9C13F1Fdc31467AC6eAc451e10f57",
+      abi: CreditNFTV3_ABI
+    },
+    celo: {
+      address: "0xDe19103a6Ef95312FF1bA093a9c78904D947A419",
+      abi: CreditNFTV3_ABI
     },
     ropsten: {
       address: "0x67EBeB38Ce79E0A3B723bA42393910504db28758"

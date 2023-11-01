@@ -2,9 +2,15 @@ import ESC from "@assets/tokens/ELA.png";
 import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "@common/Common";
 import { getCoinPrice } from "@services/glidefinance.service";
 import { PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { BigNumber } from "ethers";
 import { TokenInfo, TokenType } from "src/model/wallet";
+
+type BalanceData = {
+  id: string,
+  jsonrpc: string,
+  result: string,
+}
 
 /**
  * Fetches ELA, ERC20/721/1155 token balances for an EVM (0x) address.
@@ -49,7 +55,7 @@ export function elastosESCFetchELABalances(address: string, chainId: ChainId): P
       jsonrpc: "2.0",
       id: '1'
     };
-    axios.post(rpcUrl, param).then((res: any) => {
+    axios.post(rpcUrl, param).then((res: AxiosResponse<BalanceData>) => {
       elaToken.balance = res.data.result;
       resolve(elaToken)
     }).catch((e: any) => {

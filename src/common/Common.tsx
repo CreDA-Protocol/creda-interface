@@ -510,7 +510,7 @@ export function switchNetwork(chainId: string) {
 }
 
 export function enableNetwork(chainId: number) {
-  if (chainId === ChainIds.arbitrum || chainId === ChainIds.esc || chainId === ChainIds.celo || chainId === ChainIds.celotest) {
+  if (chainId === ChainIds.arbitrum || chainId === ChainIds.esc || chainId === ChainIds.elatest || chainId === ChainIds.celo || chainId === ChainIds.celotest) {
     return true
   }
   return false
