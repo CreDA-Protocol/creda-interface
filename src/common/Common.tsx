@@ -347,7 +347,10 @@ export function chainFromId(chainId: number): ChainName {
   return chain;
 }
 
-export function enableBank(chainId: number): boolean {
+/**
+ * Tells if the "My bank" menu is available on the UI for the given chain.
+ */
+export function bankIsEnabledOnChain(chainId: ChainId): boolean {
   switch (chainId) {
     case ChainIds.esc:
     case ChainIds.arbitrum:
@@ -357,7 +360,10 @@ export function enableBank(chainId: number): boolean {
   }
 }
 
-export function enableVault(chainId: number): boolean {
+/**
+ * Tells if the "Vault" menu is available on the UI for the given chain.
+ */
+export function vaultIsEnabledOnChain(chainId: ChainId): boolean {
   switch (chainId) {
     case ChainIds.esc:
     case ChainIds.arbitrum:

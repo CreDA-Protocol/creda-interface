@@ -1,20 +1,20 @@
-import { ChainIds, ChainName, logError } from "@common/Common";
+import { ChainName, logError } from "@common/Common";
 import { ChainId } from "@lychees/uniscam-sdk";
 import { ProfileProjectsConfig } from "@pages/Profile/configs/projectsConfig";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
-import { WalletToken, WalletTokenList } from "src/model/wallet";
 import { PermanentCache } from "../caches/permanent-cache";
-import { celoFetchTokenBalances } from "../chains/celo.service";
-import { elastosESCFetchTokenBalances } from "../chains/elastos-esc.service";
-import { Covalent_enableNetwork, covalentFetchTokenBalances } from "../covalent.service";
-import { simulatedPortfolioApi_assetsStaking } from "./simulated-portfolio-api";
+import { simulatedPortfolioApi_assets_tokens } from "./simulated-portfolio-api";
+import { WalletToken } from "./simulated-portfolio-api/model/tinnetwork/tokens.";
 
 // TEMP TEST
 console.log("Fetching TIN assets (test)");
-simulatedPortfolioApi_assetsStaking("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(stakedAssets => {
+/* simulatedPortfolioApi_assets_staking("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(stakedAssets => {
   console.log("Staked assets:", stakedAssets);
+}); */
+simulatedPortfolioApi_assets_tokens("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(tokens => {
+  console.log("Wallet tokens:", tokens);
 });
 
 const oneDayInSeconds = (24 * 60 * 60);
@@ -51,6 +51,21 @@ export type PortfolioApprovals = {
   authorizations: {
     address: string; // authorized token contract address
   }[]
+}
+
+export type PortfolioWalletToken = {
+  //valueBTC: number;
+  value: number;
+  icon: string; // token http image
+  symbol: string;
+  price: number;
+  priceChangePercentage24h?: number;
+  amount: string;
+}
+
+export type PortfolioWalletTokenList = {
+  total: number;
+  tokens: PortfolioWalletToken[];
 }
 
 export type PortfolioDataset<T> = {
@@ -148,12 +163,12 @@ export function usePortfolioAllWalletProjects(chainType: string, projectNames: s
   return walletProjects;
 }
 
-const defiBoxInitialState: PortfolioDataset<WalletTokenList> = {
+const defiBoxInitialState: PortfolioDataset<PortfolioWalletTokenList> = {
   loading: true,
   supported: false,
   data: {
     total: 0,
-    tokens: [] as WalletToken[]
+    tokens: [] as PortfolioWalletToken[]
   }
 };
 
@@ -161,10 +176,10 @@ const defiBoxInitialState: PortfolioDataset<WalletTokenList> = {
 * Gets wallet information from third party api.
 * "Information" meaning, a list of tokens and their balance for the given wallet address.
 */
-export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDataset<WalletTokenList> {
+export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDataset<PortfolioWalletTokenList> {
   const { account } = useContext(WalletAddressContext);
   const chainRef = useRef<ChainId>(targetChainId);
-  const [walletTokens, setWalletTokens] = useState<PortfolioDataset<WalletTokenList>>(defiBoxInitialState);
+  const [walletTokens, setWalletTokens] = useState<PortfolioDataset<PortfolioWalletTokenList>>(defiBoxInitialState);
 
   useEffect(() => {
     const fetchWalletTokens = async () => {
@@ -177,11 +192,18 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
           setWalletTokens(defiBoxInitialState)
 
         let supportedChain = true;
-        let data: WalletTokenList = { total: 0, tokens: [] };
+        let data: PortfolioWalletTokenList = { total: 0, tokens: [] };
 
         console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
 
-        switch (targetChainId) {
+        const tokensResponse = await simulatedPortfolioApi_assets_tokens(account, targetChainId);
+        if (tokensResponse) {
+          const tokens: WalletToken[] = JSON.parse(tokensResponse);
+          console.log("tokens:", tokens);
+          // TODO: Convert from api response wallet token to portfolio wallet token
+        }
+
+        /* switch (targetChainId) {
           case ChainIds.celo:
           case ChainIds.celotest:
             data = await celoFetchTokenBalances(account, targetChainId)
@@ -197,7 +219,7 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
               supportedChain = false;
             }
             break;
-        }
+        } */
 
         if (supportedChain) {
           setWalletTokens({
@@ -229,7 +251,7 @@ const approvalsInitialState: PortfolioDataset<PortfolioApprovals> = {
  * Gets the list of token spending approvals given by the active wallet, to third party
  * projects/apps.
  */
-export function useBoxApproveList(chainType: ChainName): PortfolioDataset<PortfolioApprovals> {
+export function usePortfolioApprovalsList(chainType: ChainName): PortfolioDataset<PortfolioApprovals> {
   const { account } = useContext(WalletAddressContext);
   const chainRef = useRef(chainType);
   const [approvals, setApprovals] = useState(approvalsInitialState);
