@@ -2,7 +2,7 @@ import { ApprovalState, ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, en
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
 import axios, { AxiosResponse } from "axios";
-import { BigNumber } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
@@ -22,7 +22,8 @@ export type CreditResponse = {
     data: CreditData
 }
 
-async function getCreditInfo(address: string): Promise<number> {
+async function getCreditInfoByApi(address: string): Promise<number> {
+    // TODO: update api url
     const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${address}`;
     let score = 0;
     try {
@@ -34,9 +35,34 @@ async function getCreditInfo(address: string): Promise<number> {
             score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
         }
     } catch (e) {
-        console.warn("getCreditInfo error:", e);
+        console.warn("getCreditInfoByApi error:", e);
     }
     return score;
+}
+
+// Get credit scores from there (if there is a data contract on the target chain), or call the backend api to get the credit score
+// TODO: don't use credaContract
+async function getCreditScore(account: string, chainId: number, credaContract: Contract | null, dataContract: Contract | null): Promise<number> {
+  let score = 0;
+  try {
+    if (dataContract) {
+      // TODO: We get credit from backend api, then call updateCredit to update data to dataContract.
+      let info = await dataContract.getCreditInfo(account)
+      console.log('dataContract.getCreditInfo:', info, account)
+      score = Number(formatBalance(info.credit, 2))
+    }
+    else if (chainId === ChainIds.esc) {
+      const creditScore = await credaContract.creditScore(account)
+      console.log('credaContract.getCreditInfo:', creditScore)
+      score = Number(formatBalance(creditScore.toString(), 2))
+    } else {
+      let scoreByApi = await getCreditInfoByApi(account);
+      score = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
+    }
+  } catch (e) {
+      console.log("getCreditScore error:", e)
+  }
+  return score;
 }
 
 /**
@@ -55,11 +81,12 @@ export function useCreditInfo(): any {
   });
   const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
   const APIContract = useContract(ContractConfig.APIConsumer[network]?.address, ContractConfig.APIConsumer.abi)
+  const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
 
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !CredaContract || !enableNetwork(chainId) || !APIContract) {
+        if (!account || !enableNetwork(chainId)) {
           return;
         }
 
@@ -73,24 +100,13 @@ export function useCreditInfo(): any {
           did = await APIContract.getDidByAddress(account)
         } catch { }
 
-        if (chainId === ChainIds.esc) {
-          const creditScore = await CredaContract.creditScore(account)
-          setInfo({
-            loading: false,
-            score: Number(formatBalance(creditScore.toString(), 2)),
-            earn: Number(bigNumberToBalance(earn)),
-            did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
-          })
-        } else {
-          let score = await getCreditInfo(account);
-
-          setInfo({
-            loading: false,
-            score: score <= 0 ? calcScore(account) : score,
-            earn: Number(bigNumberToBalance(earn)),
-            did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
-          })
-        }
+        let score = await getCreditScore(account, chainId, CredaContract, DataContract);
+        setInfo({
+          loading: false,
+          score: score,
+          earn: Number(bigNumberToBalance(earn)),
+          did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
+        })
       } catch (e) {
         logError("useCreditInfo", e)
       }
@@ -98,7 +114,7 @@ export function useCreditInfo(): any {
     getResult()
     const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
     return () => clearInterval(interval);
-  }, [account, chainId, CredaContract, APIContract])
+  }, [account, chainId, CredaContract, APIContract, DataContract])
   return info;
 }
 
@@ -109,7 +125,8 @@ export function useCreditScore(): any {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
-  const credaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
+  const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
+  const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
   const [info, setInfo] = useState({
     loading: true,
     data: 0,
@@ -117,24 +134,14 @@ export function useCreditScore(): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !credaContract) {
+        if (!account || (!CredaContract && !DataContract)) {
           return;
         }
-        let score = 0;
-        if (chainId === ChainIds.esc) {
-          const creditScore = await credaContract.creditScore(account)
-          setInfo({
-            loading: false,
-            data: Number(formatBalance(creditScore.toString(), 2))
-          })
-        } else {
-          score = await getCreditInfo(account);
-
-          setInfo({
-            loading: false,
-            data: score <= 0 ? calcScore(account) : score
-          })
-        }
+        let score = await getCreditScore(account, chainId, CredaContract, DataContract);
+        setInfo({
+          loading: false,
+          data: score
+        })
       } catch (e) {
         logError("useCreditScore", e)
       }
@@ -142,10 +149,11 @@ export function useCreditScore(): any {
     getResult()
     const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
     return () => clearInterval(interval);
-  }, [account, credaContract, chainId])
+  }, [account, CredaContract, DataContract, chainId])
   return info;
 }
 
+// TODO: why get core by address? Fake score?
 function calcScore(account: string): number {
   const res = Number(account).toFixed(2).slice(2, 4)
   return Number(res) + 150
@@ -173,18 +181,23 @@ export function useCNFTInfo(): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !CNFTContract || !enableNetwork(chainId) || !credaContract) {
+        if (!account || !CNFTContract || !enableNetwork(chainId)) {
           return;
         }
         let lv: number = await CNFTContract.getOwnerNFTLevel(account)
-        let balance: BigNumber = await credaContract.balanceOf(account)
+        let balance = 0;
+        // There is no credaContract on some chain.
+        if (credaContract) {
+          let balanceBignumber: BigNumber = await credaContract.balanceOf(account)
+          balance = Number(bigNumberToBalance(balanceBignumber))
+        }
         let no: BigNumber = await CNFTContract.getOwnerNFTNo(account)
         let nftInfo: any = await CNFTContract.nftsDict(no)
         setInfo({
           loading: false,
           lv,
           no: Number(no.toString()),
-          balance: Number(bigNumberToBalance(balance)),
+          balance: balance,
           amount: Number(bigNumberToBalance(nftInfo.amount))
         })
       } catch (e) {
