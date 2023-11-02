@@ -101,11 +101,12 @@ export default function CustomStakeModal({
   const [input, setInput] = useState('')
   function onClick(type: ButtonType) {
     if (type === ButtonType.confirm) {
-      let endString = stringReplaceSpace(input)
-      if (!endString) {
+      let amount = stringReplaceSpace(input)
+      if (!amount) {
         return
       }
-      onConfirm && onConfirm(endString)
+      // TODO: check the amount
+      onConfirm && onConfirm(amount)
       setInput('')
     }
     onDismiss()

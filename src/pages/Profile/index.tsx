@@ -320,7 +320,12 @@ function Profile(props: any) {
                                     textTransform: "capitalize",
                                 }}
                             >
-                                <H4>{network.toUpperCase()}</H4>
+                                {account &&
+                                  <H4>{network.toUpperCase()}</H4>
+                                }
+                                {!account &&
+                                  <H4> Not Connected</H4>
+                                }
                             </GradientButton>
                         </CustomGrid>
                     </RowBetween>
