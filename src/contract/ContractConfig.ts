@@ -23,6 +23,7 @@ import CredaTestPlus_ABI from '@abi/creda/CredaTestPlus.json';
 import CreditNFT_ABI from '@abi/creda/CreditNFT.json';
 import CreditNFTV2_ABI from "@abi/creda/CreditNFTV2.json";
 import CreditNFTV3_ABI from "@abi/creda/CreditNFTV3.json";
+import DataContract_ABI from "@abi/creda/DataContract.json";
 import CNETWORK_ABI from '@abi/creda/cNETWORK.json';
 
 // Swapping
@@ -673,6 +674,18 @@ const ContractConfig: ContractsConfig = {
     },
     arbitrum: {
       address: "0x7308a054F7ADb93C286529aDc954976377eB0cF0",
+    }
+  },
+  DataContract: {
+    symbol: "DataContract",
+    address: "0x878063db2d3d54e4F18e7bC448FA56A0e111C054",
+    icon: MAN,
+    abi: DataContract_ABI,
+    elatest: {
+      address: "0x36aFfC79ABBd2F8Aaf32800A1333c524aF3bCE79",
+    },
+    celo: {
+      address: "0x878063db2d3d54e4F18e7bC448FA56A0e111C054",
     }
   },
   // 游戏
