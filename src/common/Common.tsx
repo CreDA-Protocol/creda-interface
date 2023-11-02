@@ -29,7 +29,7 @@ export const walletInfo = {
 }
 // 通过定制 URL 连接 :
 export const HECO_URL = "https://http-mainnet.hecochain.com";
-export const BSC_URL = "https://bsc-dataseed1.binance.org/";
+export const BSC_URL = "https://bsc-dataseed1.defibit.io/";
 export const Arbitrum_Url = "https://arb1.arbitrum.io/rpc/";
 
 export const HECO_PROVIDER = new ethers.providers.JsonRpcProvider(HECO_URL);

@@ -48,12 +48,12 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
     if (dataContract) {
       // TODO: We get credit from backend api, then call updateCredit to update data to dataContract.
       let info = await dataContract.getCreditInfo(account)
-      console.log('dataContract.getCreditInfo:', info, account)
+      // console.log('dataContract.getCreditInfo:', info, account)
       score = Number(formatBalance(info.credit, 2))
     }
     else if (chainId === ChainIds.esc) {
       const creditScore = await credaContract.creditScore(account)
-      console.log('credaContract.getCreditInfo:', creditScore)
+      // console.log('credaContract.getCreditInfo:', creditScore)
       score = Number(formatBalance(creditScore.toString(), 2))
     } else {
       let scoreByApi = await getCreditInfoByApi(account);

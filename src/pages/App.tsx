@@ -75,7 +75,7 @@ const MyBankFarming = Loadable({ loader: () => import('./MyBank/farming'), loadi
 const MyBankAssetPrice = Loadable({ loader: () => import('./MyBank/assetPrice'), loading: Loading });
 
 export default function App() {
-  const [chainId, setChainId] = useState(ChainIds.heco);
+  const [chainId, setChainId] = useState(ChainIds.esc);
   const [address, setAddress] = useState("");
   const [isAccountLoading, setIsAccountLoading] = useState(false);
   const [open, setOpen] = useState(false);
