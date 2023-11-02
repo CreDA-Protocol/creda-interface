@@ -486,7 +486,7 @@ function Profile(props: any) {
                                                 {cnftInfo.loading ? "-" : cnftInfo.no}
                                             </ThemeTextEqure>
                                         </FlexView>
-                                        {cnftInfo.no > 0 && (
+                                        {(cnftInfo.no > 0) && CredaContract && (
                                             <BlueButton
                                                 onClick={() => setModalType(StakeType.upgrade)}
                                             >
