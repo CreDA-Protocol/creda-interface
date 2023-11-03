@@ -9,10 +9,10 @@ import { ChainIds } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import {
   useChangeTemeDark,
-  useOpenWarnning,
+  useOpenWarning,
   useTheme,
   useWalkThroughStep,
-  useWarnning,
+  useWarning,
 } from "../../state/application/hooks"
 import ConnectWallet from '../ConnectWallet'
 import I18nSwitch from '../I18nSwitch'
@@ -208,8 +208,8 @@ export default function Header({ history }: any) {
   //   }
   // }, [account])
 
-  const warnning = useWarnning();
-  const closeWarnning = useOpenWarnning(false);
+  const warnning = useWarning();
+  const closeWarnning = useOpenWarning(false);
   // useEffect(()=>{
   //   if (warnning){
   //     setTimeout(() => {

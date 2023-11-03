@@ -1,7 +1,7 @@
 import ESC from "@assets/tokens/ELA.png";
 import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "@common/Common";
 import { getCoinPrice } from "@services/glidefinance.service";
-import { PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
+import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber } from "ethers";
 import { TokenInfo, TokenType } from "src/model/wallet";
@@ -121,14 +121,14 @@ async function convertESCResult2WalletList(tokenInfos: TokenInfo[]) {
     let amount = bigNumberToBalance(BigNumber.from(token.balance), parseInt(token.decimals));
     let value = price !== -1 ? parseFloat((price * parseFloat(amount)).toFixed(2)) : -1;
 
-    let walletToken = {
+    let walletToken: PortfolioWalletToken = {
       symbol: token.symbol,
       value: value,
       icon: ESC,
       price: price,
       priceChangePercentage24h: 0, // TODO
-      amount: amount,
-      valueBTC: 0,
+      amount: parseFloat(amount),
+      //valueBTC: 0,
     }
     if (value > 0) {
       walletList.total += value;

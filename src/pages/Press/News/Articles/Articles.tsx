@@ -6,7 +6,7 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { useOpenWarnning, useTheme } from "../../../../state/application/hooks";
+import { useOpenWarning, useTheme } from "../../../../state/application/hooks";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`
   background: ${({ themeDark }) =>
@@ -125,7 +125,7 @@ const CitationText = styled.label<{
 `;
 
 function Articles(props: any) {
-  const hideWarning = useOpenWarnning(false);
+  const hideWarning = useOpenWarning(false);
 
   useEffect(() => {
     hideWarning();

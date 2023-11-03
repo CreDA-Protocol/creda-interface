@@ -102,13 +102,13 @@ export function useToasts(): AppState["toast"]["toasts"] {
   const list = useSelector((state: AppState) => state.toast.toasts);
   return useMemo(() => list, [list]);
 }
-export function useWarnning(): AppState["application"]["openWarnning"] {
+export function useWarning(): AppState["application"]["openWarnning"] {
   const warnning = useSelector(
     (state: AppState) => state.application.openWarnning
   );
   return warnning;
 }
-export function useOpenWarnning(open: boolean): () => void {
+export function useOpenWarning(open: boolean): () => void {
   const dispatch = useDispatch<AppDispatch>();
   return useCallback(() => dispatch(setOpenWarnning(open)), [dispatch, open]);
 }
@@ -120,11 +120,11 @@ export function useChangeTemeDark(): () => void {
   const isDark = useTheme();
   return useCallback(() => dispatch(setIsDark(!isDark)), [dispatch, isDark]);
 }
-export function useWalkThrough(): (key: Number) => void {
+export function useWalkThrough(): (key: number) => void {
   const dispatch = useDispatch();
 
   return useCallback(
-    (key: Number) => {
+    (key: number) => {
       dispatch(setIsWalkThrough(key));
     },
     [dispatch]

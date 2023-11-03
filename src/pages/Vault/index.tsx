@@ -35,6 +35,9 @@ import StakeModal from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useCredaInfo, useUnLockInfo } from "@services/creda-token.service"
+import { useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"
+import { useHardPoolInfo, useMiningPoolInfo } from "@services/mining-staking.service"
 import { useApprove } from "@services/tokens.service"
 import { Badge, Button, Skeleton, Tooltip, message } from 'antd'
 import { BigNumber } from "ethers"
@@ -62,13 +65,10 @@ import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useOpenWarnning, useTheme } from "../../state/application/hooks"
+import { useOpenWarning, useTheme } from "../../state/application/hooks"
 import { ToastStatus, useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import BorrowCollateralModal from './BorrowCollateralModal'
-import { useUnLockInfo, useCredaInfo } from "@services/creda-token.service"
-import { useCreditInfo, useCNFTInfo, useCnetWorkInfo } from "@services/credit.service"
-import { useMiningPoolInfo, useHardPoolInfo } from "@services/mining-staking.service"
 
 const Body = styled(Column)`
   width:100%;
@@ -230,7 +230,7 @@ function Vault(props: any) {
   const MintContract = useContract(ContractConfig.PersonalDataMinePoolPlus[network]?.address, ContractConfig.PersonalDataMinePoolPlus.abi);
   const cnetworkContract = useContract(ContractConfig.CNETWORK[network]?.address, ContractConfig.CNETWORK.abi);
   const { t } = useTranslation();
-  const showWarning = useOpenWarnning(true)
+  const showWarning = useOpenWarning(true)
   const credaInfo = useCredaInfo()
   const creditInfo = useCreditInfo()
   const themeDark = useTheme()

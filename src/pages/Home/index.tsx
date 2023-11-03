@@ -28,7 +28,7 @@ import { isMobile } from 'react-device-detect'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { WalletAddressContext } from "../../contexts"
-import { useOpenWarnning, useTheme } from "../../state/application/hooks"
+import { useOpenWarning, useTheme } from "../../state/application/hooks"
 
 export const ButtonClick = styled(Base)`
   padding: 0;
@@ -805,7 +805,7 @@ const ForthSectionAnimBox = styled.div`
 `
 
 function Home(props: any) {
-  const hideWarning = useOpenWarnning(false)
+  const hideWarning = useOpenWarning(false)
 
   useEffect(() => {
     hideWarning()

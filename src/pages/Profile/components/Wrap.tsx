@@ -1,9 +1,13 @@
 import { Tooltip } from "antd";
+import { FC } from "react";
 import { useTheme } from "src/state/application/hooks";
 import { chainIndexToId, chainTitles } from "../configs/chainsConfig";
 import { WrapDiv, WrapItem } from "./StyledComponents";
 
-export function Wrap({ onIndexChange, selectedIndex }: any) {
+export const Wrap: FC<{
+  onIndexChange: (newIndex: number) => any;
+  selectedIndex: number;
+}> = ({ onIndexChange, selectedIndex }) => {
   const themeDark = useTheme();
   const disableIndex = 4;
   return (

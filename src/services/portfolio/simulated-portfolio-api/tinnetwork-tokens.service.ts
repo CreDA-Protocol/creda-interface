@@ -58,51 +58,47 @@ export async function getWalletTokens(address: string, chainId: number): Promise
         }
       });
 
+      addressCache.fetchInProgress = false;
+
       if (response.ok) {
         let tinTokensResponse = await response.json() as TinWalletTokensResponse;
         console.log("tin assets", tinTokensResponse);
 
         const tokens: WalletToken[] = [];
         for (const tinToken of tinTokensResponse.data) {
+          // TODO: CACHING DATE?
+
+          let icon: string = null;
+          if (tinToken.icon) {
+            if (!tinToken.icon.startsWith("http"))
+              icon = `https://api.tin.network/icons/tokens/${tinToken.icon}.webp`;
+            else
+              icon = tinToken.icon; // coingecko, etc
+          }
+
           tokens.push({
-            name: tinToken.name
-            // TODO: Other fields
-          })
+            name: tinToken.name,
+            symbol: tinToken.symbol.toUpperCase(),
+            price: tinToken.price,
+            balance: tinToken.amount,
+            balanceUSD: tinToken.amountPrice,
+            icon
+          });
         }
 
-        // Normally only 1 item in "data" as we filtered with a single farm but let's loop.
-        /* let amount = 0;
-        let iterableAssets: TinFarmAsset[] = [];
-
-        // Make an asset array out of a possible "array or object"
-        if (assets.data) { // Can be null, if Tin provides no info about a specific farm (eg: filda on ESC)
-          if (Array.isArray(assets.data))
-            iterableAssets = assets.data;
-          else
-            iterableAssets = [assets.data];
-        }
-
-        for (let asset of iterableAssets) {
-          // In case of error, the amount can be null or undefined in tin api.
-          if (asset.amountPrice === undefined || asset.amountPrice === null) {
-            console.log("fetchFarmAssets KO - unknown amount price", asset.amountPrice);
-            return null;
-          }
-          else {
-            amount = amount + asset.amountPrice;
-          }
-        } */
+        addressCache.tokens = tokens;
+        addressCache.updatedAt = Date.now() / 1000;
 
         return tokens;
       }
       else {
-        console.log("fetchFarmAssets KO", response.statusText);
+        console.log("getWalletTokens KO", response.statusText);
         return null;
       }
     }
     catch (e) {
       console.error(e);
-      console.log("fetchFarmAssets KO");
+      console.log("getWalletTokens KO");
       return null;
     }
 

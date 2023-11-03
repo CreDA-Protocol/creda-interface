@@ -3,14 +3,15 @@ import { formatBalance, formatPositiveNumber } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
+import { PortfolioDataset, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { Row } from "antd";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTheme } from "styled-components";
-import { BGDiv, InputDiv, LineH, MoreIcon, SearchDiv, SearchIcon, SmallIconIcon } from "./StyledComponents";
+import { BGDiv, InputDiv, LineH, MoreIcon, SearchDiv, SearchIcon, SmallIconIcon } from "../StyledComponents";
 
 export const WalletDiv: FC<{
-  data: any;
+  data: PortfolioDataset<PortfolioWalletTokenList>;
   chainTitle: string;
 }> = ({ data, chainTitle }) => {
   // console.log(data)
@@ -75,7 +76,7 @@ export const WalletDiv: FC<{
       </RowBetween>
       <Column style={{ width: '100%' }}>
         {/* <ProfileLoading loading={data.loading}></ProfileLoading> */}
-        {!data.support &&
+        {!data.supported &&
           <RowCenter>
             <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
               coming soon~
@@ -84,7 +85,7 @@ export const WalletDiv: FC<{
         }
 
         {!data.loading &&
-          data.data.tokens.map((item: any, index: number) => {
+          data.data.tokens.map((item, index) => {
             if (hidden && item.value < 1) {
               return null
             }
@@ -118,9 +119,9 @@ export const WalletDiv: FC<{
                       <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
                         {formatBalance(item.amount)} {item.symbol}
                       </ThemeTextEqure>
-                      <TextEqure fontColor={"#777E90"} fontSize={14}>
+                      {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                         &nbsp;
-                      </TextEqure>
+                      </TextEqure> */}
                     </Column>
                   )}
                   <Row style={{ alignItems: "flex-start", flex: 1 }}>
@@ -128,9 +129,9 @@ export const WalletDiv: FC<{
                       <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
                         ${formatPositiveNumber(item.value)}
                       </ThemeTextEqure>
-                      <TextEqure fontColor={"#777E90"} fontSize={14}>
-                        {/*{formatBalance(item.valueBTC)} BTC*/}
-                      </TextEqure>
+                      {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
+                        {formatBalance(item.valueBTC)} BTC
+                      </TextEqure> */}
                     </Column>
                     {isMobile && (
                       <MoreIcon
@@ -147,7 +148,7 @@ export const WalletDiv: FC<{
       <SpaceHeight height={40} heightApp={20} />
       <RowCenter>
         <TextEqure fontColor={"#777E90"} fontSize={12}>
-          {`Tokens with value <$1 are hidden`}
+          {`Tokens with 0 value are hidden`}
         </TextEqure>
         <TextEqure
           style={{ cursor: "pointer", marginLeft: 15 }}
