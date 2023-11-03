@@ -73,9 +73,12 @@ export async function getStakedAssets(address: string, chainId: number): Promise
       if (fetchAllFarms || !(farm.shortName in userChains.farms) || (userChains.farms[farm.shortName].assetsStaked && userChains.farms[farm.shortName].assets.updatedAt + STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC < (Date.now() / 1000))) {
         console.log(`no cache or cache expired for address ${address} for chain ${chainId} for farm ${farm.shortName}`);
         // No assets fetched or expired assets, fetch them all for this chain.
-        let { amount: farmValue, pendingAmount: farmPendingAmount } = await fetchFarmAssets(address, farm, chainId);
-        if (farmValue !== null) { // null probably means error. So we just don't remember this attempt and we'll try again next time
-          console.log("farmValue", farmValue);
+        const farmAssets = await fetchFarmAssets(address, farm, chainId);
+        if (!farmAssets)
+          return null; // if one asset fails, return null so we don't cache empty data by mistake.
+
+        if (farmAssets.amount !== null) { // null probably means error. So we just don't remember this attempt and we'll try again next time
+          console.log("farmValue", farmAssets.amount, farmAssets.pendingAmount);
 
           // Entry not existing, create it with placeholders firt
           if (!(farm.shortName in userChains.farms)) {
@@ -92,11 +95,11 @@ export async function getStakedAssets(address: string, chainId: number): Promise
 
           // Fill with real data
           let userFarm = userChains.farms[farm.shortName];
-          userFarm.assetsStaked = farmValue > 0;
+          userFarm.assetsStaked = farmAssets.amount > 0;
           userFarm.assets = {
             updatedAt: Date.now() / 1000,
-            amount: farmValue,
-            pendingAmount: farmPendingAmount
+            amount: farmAssets.amount,
+            pendingAmount: farmAssets.pendingAmount
           };
         }
       }

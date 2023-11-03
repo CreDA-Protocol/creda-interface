@@ -1,6 +1,7 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
-import { ChainId } from "@lychees/uniscam-sdk";
+import { ThemeTextEqure } from "@components/ThemeComponent";
+import { ChainId } from "@services/chain.service";
 import { usePortfolioAllWalletProjects } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { isMobile } from "react-device-detect";
@@ -26,12 +27,15 @@ export const PortfolioDiv: FC<{
 
   return (
     <Column style={{ width: "100%", marginTop: 30 }}>
-      {!isMobile && projectsWithAssets.map((item, index) => {
+      {!isMobile && projectsWithAssets?.length > 0 && projectsWithAssets.map((item, index) => {
         return <PortfolioItemDiv item={item} key={index}></PortfolioItemDiv>;
       })}
-      {isMobile && projectsWithAssets.map((item, index) => {
+      {isMobile && projectsWithAssets?.length > 0 && projectsWithAssets.map((item, index) => {
         return <PortfolioPhoneItemDiv item={item} key={index}></PortfolioPhoneItemDiv>;
       })}
-    </Column>
+      {projectsWithAssets.length === 0 && <ThemeTextEqure fontSize={18} fontWeight={"bold"} style={{ textAlign: "center" }}>
+        No asset found in top 10 Defi projects.
+      </ThemeTextEqure>}
+    </Column >
   );
 }

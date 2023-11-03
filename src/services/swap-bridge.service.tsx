@@ -1,6 +1,7 @@
-import { ChainIds, balanceToBigNumber, bigNumberToBalance, chainFromId, logError } from "@common/Common";
+import { balanceToBigNumber, bigNumberToBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
+import { ChainIds, chainFromId } from "@services/chain.service";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";

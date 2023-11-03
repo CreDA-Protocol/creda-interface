@@ -1,13 +1,13 @@
-import { chainFromId } from '@common/Common'
-import { useContext } from 'react'
-import { AlertCircle, CheckCircle } from 'react-feather'
-import { useTranslation } from 'react-i18next'
-import styled, { ThemeContext } from 'styled-components'
-import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { ExternalLink, TYPE } from '../../theme'
-import { getScanLink, getScanName } from '../../utils'
-import { AutoColumn } from '../Column'
-import { AutoRow } from '../Row'
+import { useContext } from 'react';
+import { AlertCircle, CheckCircle } from 'react-feather';
+import { useTranslation } from 'react-i18next';
+import styled, { ThemeContext } from 'styled-components';
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
+import { ExternalLink, TYPE } from '../../theme';
+import { getScanLink, getScanName } from '../../utils';
+import { AutoColumn } from '../Column';
+import { AutoRow } from '../Row';
+import { chainFromId } from '@services/chain.service';
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;

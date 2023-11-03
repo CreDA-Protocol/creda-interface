@@ -18,6 +18,7 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
+import { chainFromId } from "@services/chain.service"
 import { useCNFTInfo } from '@services/credit.service'
 import { useApprove } from '@services/tokens.service'
 import { Badge, Skeleton } from 'antd'
@@ -27,7 +28,6 @@ import styled from 'styled-components'
 import {
   ApprovalState,
   balanceToBigNumber,
-  chainFromId,
   formatBalance,
   formatPercent,
   getNFTCardBgImage,

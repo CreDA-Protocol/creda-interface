@@ -1,8 +1,7 @@
 import { TransactionResponse } from '@ethersproject/providers'
+import { chainFromId } from '@services/chain.service'
 import { useCallback, useContext, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { chainFromId } from '@common/Common'
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'

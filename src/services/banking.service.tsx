@@ -1,6 +1,7 @@
-import { ChainIds, bigNumberToBalance, chainFromId, getPriceByApi, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
+import { bigNumberToBalance, getPriceByApi, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useTokenContract } from "@hooks/useContract";
+import { ChainIds, chainFromId } from "@services/chain.service";
 import { ContractCallContext, Multicall } from "ethereum-multicall";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";

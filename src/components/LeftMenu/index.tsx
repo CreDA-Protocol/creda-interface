@@ -1,13 +1,13 @@
 import ImageCommon from '@assets/common/ImageCommon';
+import { ChainIds } from "@services/chain.service";
 import { Tooltip, message } from "antd";
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from '../../common/Common';
+import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from '../../common/Common';
 import { NetworkTypeContext, WalletAddressContext } from '../../contexts';
 import { useTheme, useWalkThroughStep } from '../../state/application/hooks';
 import { Column, ColumnCenter } from '../Column';
 import { RowCenter, RowFixed, Text } from '../Row';
-
 
 const HeaderFrame = styled.div`
   flex-direction: column;

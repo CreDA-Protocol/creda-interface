@@ -5,7 +5,6 @@ import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import {
   balanceToBigNumber,
-  chainFromId,
   colors,
   marketsConfig
 } from "../../common/Common"
@@ -16,8 +15,9 @@ import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
-import { Button } from "antd"
 import { useDaInfo } from '@services/banking.service'
+import { Button } from "antd"
+import { chainFromId } from '@services/chain.service'
 
 const Container = styled.div`
   height:480px;

@@ -15,6 +15,8 @@ import Comptroller_ABI from "@abi/banking/Comptroller.json";
 import ERC20_ABI from "@abi/generic/ERC20.json";
 import qERC20_ABI from '@abi/generic/qERC20.json';
 import PriceOracle_ABI from "@abi/swap/PriceOracle.json";
+import { ChainId } from '@lychees/uniscam-sdk';
+import { ChainIds } from '@services/chain.service';
 
 export { CompoundLens_ABI, Comptroller_ABI, ERC20_ABI, PriceOracle_ABI, qERC20_ABI };
 
@@ -313,39 +315,6 @@ export const getCurrencyFormatted = (num: string | number, decimals = 2) => {
   return "$" + (num / si[i].value).toFixed(decimals).replace(rx, "$1") + si[i].symbol;
 }
 
-export type ChainName = 'arbitrum' | 'esc' | 'elatest' | 'heco' | 'hecotest' | 'bsc' | 'local' | 'polygon' | 'ethereum' | 'ropsten' | 'celo' | 'celotest';
-
-export type ChainIdList = {
-  [chain in ChainName]: number;
-}
-
-export type ChainId = ChainIdList[keyof ChainIdList];
-
-export const ChainIds: ChainIdList = {
-  ethereum: 1,
-  ropsten: 3,
-  esc: 20,
-  elatest: 21,
-  heco: 128,
-  hecotest: 256,
-  bsc: 56,
-  local: 1337,
-  polygon: 137,
-  arbitrum: 42161,
-  //kovan: 42,
-  //rinkeby: 4,
-  //goerli: 5,
-  celo: 42220,
-  celotest: 44787
-}
-
-export function chainFromId(chainId: number): ChainName {
-  const chain = Object.entries(ChainIds).find(([key, val]) => val === chainId)?.[0] as ChainName;
-  if (!chain)
-    throw new Error(`Chain ID ${chainId} is not in the configured chains!`);
-
-  return chain;
-}
 
 /**
  * Tells if the "My bank" menu is available on the UI for the given chain.

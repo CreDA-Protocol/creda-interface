@@ -1,5 +1,5 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
-import { ApprovalState, GasInfo, balanceToBigNumber, chainFromId, enableNetwork, formatBalance, getNFTCardBgImage, tipError } from "@common/Common";
+import { ApprovalState, GasInfo, balanceToBigNumber, enableNetwork, formatBalance, getNFTCardBgImage, tipError } from "@common/Common";
 import { Column } from "@components/Column";
 import { BlueButton, FlexView, WhiteButton } from "@components/Common";
 import CustomStakeModal from '@components/CustomStakeModal';
@@ -8,6 +8,7 @@ import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useContract } from '@hooks/useContract';
+import { chainFromId, chainIndexToId } from "@services/chain.service";
 import { useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
@@ -19,7 +20,6 @@ import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { ToastStatus, useAddToast } from "src/state/toast";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { useTheme } from "styled-components";
-import { chainIndexToId } from "../configs/chainsConfig";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
 
 enum StakeType {

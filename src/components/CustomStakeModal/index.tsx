@@ -1,8 +1,9 @@
 import { ButtonClick } from '@components/Button'
 import { RowCenter, RowEnd, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
+import { ChainIds, chainFromId } from "@services/chain.service"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { ChainIds, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
+import { formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import Modal from '../NormalModal'
 

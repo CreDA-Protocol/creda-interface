@@ -5,11 +5,12 @@ import { Column } from '@components/Column'
 import { RowBetween, RowFixed, SpaceHeight } from '@components/Row'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { ChainIds, chainFromId } from "@services/chain.service"
 import { useSushiPrice } from '@services/pricing.service'
 import { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import { ChainIds, MyBankAssetPriceIcons, MyBankAssetPriceIconsESC, chainFromId, formatBalance } from "../../common/Common"
+import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC, formatBalance } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from '../../contract/ContractConfig'
 import { GlidePrice, getCoinPrice } from '../../services/glidefinance.service'

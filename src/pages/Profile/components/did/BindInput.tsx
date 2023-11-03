@@ -1,9 +1,10 @@
 import ImageCommon from "@assets/common/ImageCommon";
-import { chainFromId, tipError } from "@common/Common";
+import { tipError } from "@common/Common";
 import { FlexView } from "@components/Common";
 import { GradientButton } from "@components/Row";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useContract } from "@hooks/useContract";
+import { chainFromId } from "@services/chain.service";
 import { useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";

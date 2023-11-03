@@ -1,9 +1,8 @@
-import { chainFromId } from "@common/Common";
 import { Column } from "@components/Column";
+import { ChainType, chainFromId, chainIndexToId } from "@services/chain.service";
 import { usePortfolioApprovalsList } from "@services/portfolio/portfolio.service";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
-import { ChainType, chainIndexToId } from "../../configs/chainsConfig";
 import { Wrap } from "../Wrap";
 import { ApprovalDiv } from "./ApprovalDiv";
 import { ApprovalPhoneDiv } from "./ApprovalPhoneDiv";

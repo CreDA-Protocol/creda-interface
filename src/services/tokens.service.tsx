@@ -1,8 +1,9 @@
-import { ApprovalState, bigNumberToBalance, chainFromId } from "@common/Common";
+import { ApprovalState, bigNumberToBalance, } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useTokenContract } from "@hooks/useContract";
+import { chainFromId } from "@services/chain.service";
 import { BigNumber } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";

@@ -1,14 +1,14 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
-import { chainFromId } from '@common/Common';
+import Modal from '@components/Alert';
 import { RowCenter } from '@components/Row';
 import { Lottie } from '@crello/react-lottie';
+import { chainFromId } from '@services/chain.service';
 import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { FlexViewBetween } from '../Common';
 import ConnectWallet from '../ConnectWallet';
-import Modal from '../NormalModal';
 
 
 const Container = styled.div`
@@ -50,8 +50,9 @@ export default function ConnectToWalletModal({
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
+
   return (
-    <Modal isOpen={show} onDismiss={onDismiss} prop={'fromprofile'}>
+    <Modal isOpen={show} onDismiss={onDismiss} /* prop={'fromprofile'} */>
       <RowCenter>
         <Container>
           <FlexViewBetween style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

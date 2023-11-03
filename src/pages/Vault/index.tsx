@@ -35,6 +35,7 @@ import StakeModal from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { ChainIds, chainFromId } from "@services/chain.service"
 import { useCredaInfo, useUnLockInfo } from "@services/creda-token.service"
 import { useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"
 import { useHardPoolInfo, useMiningPoolInfo } from "@services/mining-staking.service"
@@ -48,13 +49,11 @@ import { useTranslation } from "react-i18next"
 import styled from 'styled-components'
 import {
   ApprovalState,
-  ChainIds,
   GasInfo,
   MiningPool,
   MyBankAssetPriceIcons,
   MyBankAssetPriceIconsESC,
   balanceToBigNumber,
-  chainFromId,
   colors,
   formatBalance,
   formatPercent,

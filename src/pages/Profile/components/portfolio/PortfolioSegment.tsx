@@ -1,6 +1,6 @@
 import { Column } from "@components/Column";
+import { chainIndexToId } from "@services/chain.service";
 import { FC, useState } from "react";
-import { chainIndexToId } from "../../configs/chainsConfig";
 import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
 

@@ -1,10 +1,10 @@
 import CELO from "@assets/tokens/Celo (CELO).png";
 import { BigNumber } from "ethers";
 
+import { ChainId, ChainIds } from "@services/chain.service";
 import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
-import { ChainId, ChainIds, bigNumberToBalance } from "../../common/Common";
+import { bigNumberToBalance } from "../../common/Common";
 import { TokenInfo, TokenType } from "../../model/wallet";
-
 
 /**
  * Fetches Celo, ERC20/721/1155 token balances for an EVM (0x) address.

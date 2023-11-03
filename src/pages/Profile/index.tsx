@@ -15,11 +15,9 @@ import { FlexView } from "@components/Common";
 import ConnectToWalletModal from "@components/ConnectToWalletModal";
 import { H4 } from "@components/ConnectWallet";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
+import { chainFromId } from "@services/chain.service";
 import { useCreditInfo } from "@services/credit.service";
-import {
-    chainFromId,
-    formatAccount
-} from "../../common/Common";
+import { formatAccount } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useOpenWarning, useWalkThroughStep } from "../../state/application/hooks";
 import { Segment } from "./components/Segment";

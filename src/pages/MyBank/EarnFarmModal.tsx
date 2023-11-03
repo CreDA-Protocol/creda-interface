@@ -6,6 +6,8 @@ import Modal from '@components/NormalModal';
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
+import { useIconPrice, useWalletInfo } from '@services/banking.service';
+import { chainFromId } from "@services/chain.service";
 import { useApprove } from '@services/tokens.service';
 import { message } from 'antd';
 import { ethers } from 'ethers';
@@ -14,14 +16,12 @@ import styled from 'styled-components';
 import {
   ApprovalState,
   balanceToBigNumber,
-  chainFromId
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useTheme } from '../../state/application/hooks';
-import { useWalletInfo, useIconPrice } from '@services/banking.service';
 
 export const DrawButton = styled.div`
   color:white;

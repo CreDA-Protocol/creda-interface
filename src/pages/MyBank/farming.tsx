@@ -8,6 +8,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useIconPrice } from "@services/banking.service"
+import { chainFromId } from "@services/chain.service"
 import { usePositionInfo } from "@services/mining-staking.service"
 import { Tooltip } from 'antd'
 import { ethers } from 'ethers'
@@ -18,7 +19,6 @@ import {
   MyBankAssetFarmingIcon,
   balanceToBigNumber,
   bigNumberToBalance,
-  chainFromId,
   mathPriceTo8,
   walletInfo
 } from "../../common/Common"

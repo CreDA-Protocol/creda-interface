@@ -1,8 +1,9 @@
-import { chainFromId, enableNetwork, bigNumberToBalance, mathPriceTo8, logError } from "@common/Common";
+import { bigNumberToBalance, enableNetwork, logError, mathPriceTo8 } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract, useTokenContract } from "@hooks/useContract";
+import { chainFromId } from "@services/chain.service";
 import { BigNumber } from "ethers";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 

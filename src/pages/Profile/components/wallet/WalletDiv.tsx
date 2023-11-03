@@ -3,6 +3,7 @@ import { formatBalance, formatPositiveNumber } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
+import { ChainId, canFetchWalletTokens } from "@services/chain.service";
 import { PortfolioDataset, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { Row } from "antd";
 import { FC, useState } from "react";
@@ -13,11 +14,12 @@ import { BGDiv, InputDiv, LineH, MoreIcon, SearchDiv, SearchIcon, SmallIconIcon 
 export const WalletDiv: FC<{
   data: PortfolioDataset<PortfolioWalletTokenList>;
   chainTitle: string;
-}> = ({ data, chainTitle }) => {
-  // console.log(data)
+  chainId: ChainId;
+}> = ({ data, chainTitle, chainId }) => {
   const [input, setInput] = useState("");
   const themeDark = useTheme();
   const [hidden, setHidden] = useState(true)
+
   return (
     <BGDiv
       style={{
@@ -76,10 +78,10 @@ export const WalletDiv: FC<{
       </RowBetween>
       <Column style={{ width: '100%' }}>
         {/* <ProfileLoading loading={data.loading}></ProfileLoading> */}
-        {!data.supported &&
+        {!canFetchWalletTokens(chainId) &&
           <RowCenter>
             <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
-              coming soon~
+              Feature not supported on this network.
             </ThemeTextEqure>
           </RowCenter>
         }
