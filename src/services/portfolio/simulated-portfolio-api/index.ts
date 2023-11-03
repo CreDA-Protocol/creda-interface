@@ -16,6 +16,9 @@ export async function simulatedPortfolioApi_assets_staking(walletAddress: string
 
   try {
     let stakedAssets = await getStakedAssets(walletAddress, chainId);
+    if (!stakedAssets)
+      return null;
+
     return JSON.stringify(stakedAssets); // Simulated raw json, don't share types with client
   }
   catch (e) {
@@ -33,6 +36,9 @@ export async function simulatedPortfolioApi_assets_tokens(walletAddress: string,
 
   try {
     let walletTokens = await getWalletTokens(walletAddress, chainId);
+    if (!walletTokens)
+      return null;
+
     return JSON.stringify(walletTokens); // Simulated raw json, don't share types with client
   }
   catch (e) {

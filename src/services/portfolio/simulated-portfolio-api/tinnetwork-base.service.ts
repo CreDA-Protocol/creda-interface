@@ -23,8 +23,10 @@ const STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC = (10 * 60); // 10 minutes to refr
 
 const stakedAssetsCache: StakedAssetsCache = {}; // Empty cache when the service starts
 
-let tinFarms: TinFarm[] = [];
 let tinChains: TinChain[] = [];
+
+let tinFarms: TinFarm[] = [];
+let tinFarmsTVLSorted: TinFarm[] = [];
 
 export const tinRootOperationsQueue = new Queue(1);
 
@@ -37,6 +39,9 @@ async function fetchFarmsList(): Promise<void> {
       let farms = await response.json() as TinFarmsResponse;
       tinFarms = farms.data;
 
+      // Sort farms
+      sortFarmsByTVL();
+
       console.log(`Fetched ${tinFarms.length} TIN farms`);
     }
     else {
@@ -46,6 +51,24 @@ async function fetchFarmsList(): Promise<void> {
   catch (e) {
     console.error("TIN Network farms list couldn't be fetched! Staking info won't be available!", e);
   }
+}
+
+/**
+ * Sort farms by TVL. In case of equality, sort by name
+ */
+function sortFarmsByTVL() {
+  tinFarmsTVLSorted = [...tinFarms]; // Work on a cloned array
+
+  tinFarmsTVLSorted.sort((f1, f2) => {
+    const f1tvl = f1.tvl || 0;
+    const f2tvl = f2.tvl || 0;
+
+    if (f1tvl === f2tvl) {
+      return f1.name.toLowerCase().localeCompare(f2.name.toLowerCase());
+    } else {
+      return f2tvl - f1tvl;
+    }
+  });
 }
 
 async function fetchChainsList() {
@@ -78,8 +101,28 @@ export function getTinFarmByShortName(shortName: string): TinFarm {
   return tinFarms.find(tf => tf.shortName === shortName);
 }
 
-export function getFarmsForChain(chainId: number): TinFarm[] {
-  return tinFarms.filter(tf => tf.chainIds.indexOf(chainId) >= 0);
+/**
+ * Returns all farms present on a given chain.
+ */
+export function getTVLSortedFarmsForChain(chainId: number): TinFarm[] {
+  return tinFarmsTVLSorted.filter(tf => tf.chainIds.indexOf(chainId) >= 0);
+}
+
+/**
+ * Returns only the top farms present on a given chain. This is used to ensure
+ * that we don't fetch user assets on "all" farms which is highly inefficient bu
+ * instead, we fetch only the top farm by TVL
+ */
+export function getTopFarmsForChain(chainId: number): TinFarm[] {
+  const chainFarm = getTVLSortedFarmsForChain(chainId);
+  const topListSize = 10; // Max number of farms to keep
+
+  // Get top tvl farms (not: many farms don't have TVL information)
+  // If there are not enough farms with TVL, farms with no tvl are picked as well in the sorted listed (alphabeticall)
+  return chainFarm.slice(0, topListSize);
+
+
+  // TODO: create a manual whitelist to be able to add additional farms that we want for CreDA specifically.
 }
 
 async function tinInit() {

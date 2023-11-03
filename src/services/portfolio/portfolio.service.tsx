@@ -1,23 +1,14 @@
-import { ChainName, logError } from "@common/Common";
-import { ChainId } from "@lychees/uniscam-sdk";
-import { ProfileProjectsConfig } from "@pages/Profile/configs/projectsConfig";
+import { ChainId, ChainName, logError } from "@common/Common";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { PermanentCache } from "../caches/permanent-cache";
-import { simulatedPortfolioApi_assets_tokens } from "./simulated-portfolio-api";
+import { simulatedPortfolioApi_assets_staking, simulatedPortfolioApi_assets_tokens } from "./simulated-portfolio-api";
+import { SummarizedStakedAssets } from "./simulated-portfolio-api/model/tinnetwork/assets";
 import { WalletToken } from "./simulated-portfolio-api/model/tinnetwork/tokens.";
 
-// TEMP TEST
-console.log("Fetching TIN assets (test)");
-/* simulatedPortfolioApi_assets_staking("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(stakedAssets => {
-  console.log("Staked assets:", stakedAssets);
-}); */
-/* simulatedPortfolioApi_assets_tokens("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(tokens => {
-  console.log("Wallet tokens:", tokens);
-}); */
-
 const oneDayInSeconds = (24 * 60 * 60);
+const oneHoursInSeconds = (60 * 60);
 
 export type PortfolioAvailableProject = {
   chainName: string; // ie: "heco". Seems to be the same as "chainType" in other UI parts
@@ -29,10 +20,10 @@ export type PortfolioAvailableProject = {
  */
 export type PortfolioProjectDetails = {
   name: string; // Project name
-  asset: number; // NOT CLEAR: it's an asset balance but what asset?
+  value: number; // User's balance, total USD value, available and in farming
+  farmingValue: number; // User's balance, total USD value, pending only (need to withdraw)
   icon: string; // project http image
   desc: string; // project description
-  farmingValue: number; // user's balance total USD value
 }
 
 /**
@@ -74,7 +65,7 @@ export type PortfolioDataset<T> = {
   data: T;
 }
 
-const portfolioProjectsCache = new PermanentCache<string, {}>("portfolio-projects-cache", async (key) => {
+/* const portfolioProjectsCache = new PermanentCache<string, {}>("portfolio-projects-cache", async (key) => {
   // Miss cache, when the cache cannot deliver the requested data.
   try {
     const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
@@ -93,13 +84,13 @@ const portfolioProjectsCache = new PermanentCache<string, {}>("portfolio-project
     logError("useAvailablePortfolioProjects() error:", e)
     return null;
   }
-}, oneDayInSeconds);
+}, oneDayInSeconds); */
 
 /**
  * List of Defi projects available at the third party service, from which we can
  * get info from.
  */
-export function useAvailablePortfolioProjects(): PortfolioAvailableProjects {
+/* export function useAvailablePortfolioProjects(): PortfolioAvailableProjects {
   const [availableProjects, setAvailableProjects] = useState<PortfolioAvailableProjects>(null);
 
   useEffect(() => {
@@ -109,56 +100,80 @@ export function useAvailablePortfolioProjects(): PortfolioAvailableProjects {
   }, []);
 
   return availableProjects;
-}
+} */
 
-const allWalletProjectsInitialState: PortfolioDataset<PortfolioProjectDetails[]> = {
+const stakingInitialState: PortfolioDataset<PortfolioProjectDetails[]> = {
   loading: true,
   data: []
 }
+
+const portfolioUserStakingCache = new PermanentCache<string, { account: string; targetChainId: number }>("portfolio-user-staking-cache", async (key, { account, targetChainId }) => {
+  // Miss cache, when the cache cannot deliver the requested data.
+  try {
+    console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
+
+    const stakingResponse = await simulatedPortfolioApi_assets_staking(account, targetChainId);
+    if (stakingResponse) {
+      const tinStakingData: SummarizedStakedAssets[] = JSON.parse(stakingResponse);
+
+      const staking: PortfolioDataset<PortfolioProjectDetails[]> = {
+        loading: false,
+        data: []
+      };
+
+      staking.data = tinStakingData.map(project => ({
+        name: project.farmShortName,
+        value: project.amountUSD,
+        account,
+        desc: project.farmName,
+        icon: project.farmIconUrl,
+        farmingValue: project.pendingAmountUSD
+      }));
+
+      return JSON.stringify(staking);
+    }
+    else {
+      return null;
+    }
+  } catch (e) {
+    logError("useAvailablePortfolioProjects() error:", e)
+    return null;
+  }
+}, oneDayInSeconds);
 
 /**
  * Returns detailed information about all Defi projects a users has assets into,
  * with the balance. projectNames list must among projects returns by useAvailablePortfolioProjects()
  */
-export function usePortfolioAllWalletProjects(chainType: string, projectNames: string[]): PortfolioDataset<PortfolioProjectDetails[]> {
-  const { account } = useContext(WalletAddressContext);
-  const chainRef = useRef(chainType);
+export function usePortfolioAllWalletProjects(targetChainId: ChainId): PortfolioDataset<PortfolioProjectDetails[]> {
+  let { account } = useContext(WalletAddressContext);
+  const chainRef = useRef(targetChainId);
 
-  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioProjectDetails[]>>(allWalletProjectsInitialState);
+  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG
+
+  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioProjectDetails[]>>(stakingInitialState);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        if (!account || !chainType || !projectNames.length)
+        if (!account || !targetChainId)
           return;
 
-        if (chainRef.current !== chainType)
-          setWalletProjects(allWalletProjectsInitialState)
+        if (chainRef.current !== targetChainId)
+          setWalletProjects(stakingInitialState);
 
-        // https://defi-app.whatscoin.com/dgg/account/project/heco/supernova?lang=cn&address=0xd2050719ea37325bdb6c18a85f6c442221811fac
-        // https://defi-app.whatscoin.com/dgg/account/project-v2/heco/supernova?lang=en&address=0xd2050719ea37325bdb6c18a85f6c442221811fac
-        const getProjectDetails = (projectName: string) => {
-          const originUrl = `https://defi-app.whatscoin.com/dgg/account/project-v2/${chainType}/${projectName}?lang=cn&address=${account}`;
-          return axios.get(originUrl)
-        }
-
-        let allFetch: any = []
-        projectNames.forEach(item => {
-          // Only keep information about the projects we want to support (configured in projects config)
-          if (item in ProfileProjectsConfig)
-            allFetch.push(getProjectDetails(item));
+        portfolioUserStakingCache.get(`${account}-${targetChainId}`, { account, targetChainId }).then(stakingList => {
+          if (!stakingList)
+            setWalletProjects({ loading: false, data: [] });
+          else
+            setWalletProjects(JSON.parse(stakingList));
         });
-
-        let res: any[] = await axios.all(allFetch);
-        let data = res.map(item => item.data.data);
-
-        setWalletProjects({ loading: false, data });
       } catch (e) {
         logError("usePortfolioAllWalletProjects()", e)
       }
     }
     fetchProjects();
-  }, [account, chainType, projectNames]);
+  }, [account, targetChainId]);
 
   return walletProjects;
 }
@@ -172,88 +187,91 @@ const defiBoxInitialState: PortfolioDataset<PortfolioWalletTokenList> = {
   }
 };
 
+const portfolioWalletTokenListCache = new PermanentCache<string, { account: string; targetChainId: ChainId }>("portfolio-wallet-token-list-cache", async (key, { account, targetChainId }) => {
+  try {
+    let tokenList: PortfolioWalletTokenList = { total: 0, tokens: [] };
+
+    console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
+
+    const tokensResponse = await simulatedPortfolioApi_assets_tokens(account, targetChainId);
+    if (tokensResponse) {
+      const tokens: WalletToken[] = JSON.parse(tokensResponse);
+
+      const portfolioTokens: PortfolioWalletToken[] = tokens.map(t => ({
+        price: t.price,
+        value: t.balanceUSD,
+        amount: t.balance,
+        icon: t.icon,
+        symbol: t.symbol,
+      }));
+
+      tokenList.tokens = portfolioTokens;
+      tokenList.total = portfolioTokens.map(t => t.value).reduce((sum, value) => sum + value, 0);
+
+      return JSON.stringify(tokenList);
+    }
+    else {
+      console.warn(`Failed to retrieve token list for account ${account} chain ${targetChainId}`);
+      return null;
+    }
+
+    /* switch (targetChainId) {
+      case ChainIds.celo:
+      case ChainIds.celotest:
+        data = await celoFetchTokenBalances(account, targetChainId)
+        break;
+      case ChainIds.esc:
+      case ChainIds.elatest:
+        data = await elastosESCFetchTokenBalances(account, targetChainId)
+        break;
+      default:
+        if (Covalent_enableNetwork(targetChainId)) {
+          data = await covalentFetchTokenBalances(account, targetChainId)
+        } else {
+          supportedChain = false;
+        }
+        break;
+    } */
+  } catch (e) {
+    logError("usePortfolioWalletTokenList", e);
+  }
+}, oneHoursInSeconds);
+
 /**
 * Gets wallet information from third party api.
 * "Information" meaning, a list of tokens and their balance for the given wallet address.
+*
+* Data is cached in a permanent disk storage.
 */
 export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDataset<PortfolioWalletTokenList> {
-  const { account } = useContext(WalletAddressContext);
+  let { account } = useContext(WalletAddressContext);
   const chainRef = useRef<ChainId>(targetChainId);
   const [walletTokens, setWalletTokens] = useState<PortfolioDataset<PortfolioWalletTokenList>>(defiBoxInitialState);
 
+  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG
+
   useEffect(() => {
-    const fetchWalletTokens = async () => {
-      try {
-        if (!account || !targetChainId)
-          return;
+    if (!account || !targetChainId)
+      return;
 
-        // Active chain changed, reset the info
-        if (chainRef.current !== targetChainId)
-          setWalletTokens(defiBoxInitialState)
+    // Active chain changed, reset the info
+    if (chainRef.current !== targetChainId)
+      setWalletTokens(defiBoxInitialState)
 
-        let supportedChain = true;
-        let data: PortfolioWalletTokenList = { total: 0, tokens: [] };
-
-        console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
-
-        const tokensResponse = await simulatedPortfolioApi_assets_tokens(account, targetChainId);
-        if (tokensResponse) {
-          console.log("tokensResponse", tokensResponse)
-          const tokens: WalletToken[] = JSON.parse(tokensResponse);
-          console.log("tokens:", tokens);
-          // TODO: Convert from api response wallet token to portfolio wallet token
-
-          const portfolioTokens: PortfolioWalletToken[] = tokens.map(t => ({
-            price: t.price,
-            value: t.balanceUSD,
-            amount: t.balance,
-            icon: t.icon,
-            symbol: t.symbol,
-          }));
-
-          data.tokens = portfolioTokens;
-          data.total = portfolioTokens.map(t => t.value).reduce((sum, value) => sum + value);
-
-          if (supportedChain) {
-            setWalletTokens({
-              loading: false,
-              supported: supportedChain,
-              data: data
-            });
-          }
-        }
-        else {
-          setWalletTokens({
-            loading: false,
-            supported: false,
-            data
-          });
-        }
-
-        /* switch (targetChainId) {
-          case ChainIds.celo:
-          case ChainIds.celotest:
-            data = await celoFetchTokenBalances(account, targetChainId)
-            break;
-          case ChainIds.esc:
-          case ChainIds.elatest:
-            data = await elastosESCFetchTokenBalances(account, targetChainId)
-            break;
-          default:
-            if (Covalent_enableNetwork(targetChainId)) {
-              data = await covalentFetchTokenBalances(account, targetChainId)
-            } else {
-              supportedChain = false;
-            }
-            break;
-        } */
-      } catch (e) {
-        logError("usePortfolioWalletTokenList", e);
-        setWalletTokens(defiBoxInitialState);
+    portfolioWalletTokenListCache.get(`${account}-${targetChainId}`, { account, targetChainId }).then(tokenList => {
+      if (tokenList) {
+        setWalletTokens({
+          loading: false,
+          supported: true,
+          data: JSON.parse(tokenList)
+        });
       }
-    }
-
-    fetchWalletTokens();
+      else {
+        setWalletTokens({ loading: false, supported: false, data: null });
+      }
+    }).catch(e => {
+      setWalletTokens(defiBoxInitialState);
+    });
   }, [account, targetChainId]);
 
   return walletTokens;
@@ -289,7 +307,7 @@ export function usePortfolioApprovalsList(chainType: ChainName): PortfolioDatase
 
         setApprovals({ loading: false, data: res.data.data });
       } catch (e) {
-        logError("useBoxApproveList", e)
+        logError("usePortfolioApprovalsList", e)
         setApprovals(approvalsInitialState)
       }
     }

@@ -1,15 +1,11 @@
 import { Column } from "@components/Column";
-import { useAvailablePortfolioProjects } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { chainIndexToId } from "../../configs/chainsConfig";
 import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
-import { PortfolioPhoneDiv } from "./PortfolioPhoneDiv";
 
 export const PortfolioSegment: FC = () => {
   const [chainIndex, setChainIndex] = useState(0);
-  const availableDefiProjects = useAvailablePortfolioProjects();
 
   function changChainIndex(index: number) {
     setChainIndex(index);
@@ -18,14 +14,7 @@ export const PortfolioSegment: FC = () => {
   return (
     <Column style={{ width: "100%" }}>
       <Wrap onIndexChange={changChainIndex} selectedIndex={chainIndex} />
-      {isMobile ? (
-        <PortfolioPhoneDiv
-          availableProjects={availableDefiProjects}
-          chainType={chainIndexToId[chainIndex]}
-        />
-      ) : (
-        <PortfolioDiv availableProjects={availableDefiProjects} chainType={chainIndexToId[chainIndex]} />
-      )}
+      <PortfolioDiv chainId={chainIndexToId[chainIndex]} />
     </Column>
   );
 }

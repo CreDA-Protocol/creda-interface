@@ -19,7 +19,7 @@ export type WalletTokensCache = {
   [address: string]: WalletTokensCacheEntries;
 }
 
-export type TinWalletAsset = {
+export type TinToken = {
   name: string; // "Tether"
   symbol: string; // "usdt"
   decimals: number; // 6
@@ -38,5 +38,5 @@ export type TinWalletAsset = {
 export type TinWalletTokensResponse = {
   statusCode: number; // 200,
   message: string; // 'Done!',
-  data: TinWalletAsset[]
+  data: TinToken[]
 }
