@@ -24,7 +24,7 @@ export async function simulatedPortfolioApi_assets_staking(walletAddress: string
   }
 }
 
-export async function simulatedPortfolioApi_assets_tokens(walletAddress: string, chainId: number) {
+export async function simulatedPortfolioApi_assets_tokens(walletAddress: string, chainId: number): Promise<string> {
   if (!walletAddress || typeof walletAddress !== "string")
     throw new Error('Missing parameter: address');
 

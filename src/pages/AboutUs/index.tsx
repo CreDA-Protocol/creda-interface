@@ -22,7 +22,7 @@ import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useOpenWarnning, useTheme } from "../../state/application/hooks";
+import { useOpenWarning, useTheme } from "../../state/application/hooks";
 
 const GradientText = styled.span`
   background: linear-gradient(360deg, #00b8ff 0%, #3466ff 103.91%);
@@ -68,7 +68,7 @@ interface AboutUsProps {
 }
 
 const AboutUs: FunctionComponent<AboutUsProps> = (props) => {
-  const hideWarning = useOpenWarnning(false);
+  const hideWarning = useOpenWarning(false);
 
   useEffect(() => {
     hideWarning();

@@ -1,9 +1,9 @@
 import CELO from "@assets/tokens/Celo (CELO).png";
 import { BigNumber } from "ethers";
 
+import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { ChainId, ChainIds, bigNumberToBalance } from "../../common/Common";
 import { TokenInfo, TokenType } from "../../model/wallet";
-import { PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 
 
 /**
@@ -68,14 +68,14 @@ async function convertResult2WalletList(tokenInfos: TokenInfo[]) {
     let amount = bigNumberToBalance(BigNumber.from(token.balance), parseInt(token.decimals));
     let value = price !== -1 ? parseFloat((price * parseFloat(amount)).toFixed(2)) : -1;
 
-    let walletToken = {
+    let walletToken: PortfolioWalletToken = {
       symbol: token.symbol,
       value: value,
       icon: CELO,
       price: price,
       priceChangePercentage24h: 0, // TODO
-      amount: amount,
-      valueBTC: 0,
+      amount: parseFloat(amount),
+      //valueBTC: 0,
     }
     if (value > 0) {
       walletList.total += value;

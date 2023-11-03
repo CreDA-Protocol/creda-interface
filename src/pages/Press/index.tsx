@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useOpenWarnning, useTheme } from "../../state/application/hooks";
+import { useOpenWarning, useTheme } from "../../state/application/hooks";
 import { news, press } from "./data";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`
@@ -184,7 +184,7 @@ const MediaTitle = styled.div`
 `;
 
 function Press(props: any) {
-  const hideWarning = useOpenWarnning(false);
+  const hideWarning = useOpenWarning(false);
 
   useEffect(() => {
     hideWarning();

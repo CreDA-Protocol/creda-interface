@@ -13,9 +13,9 @@ console.log("Fetching TIN assets (test)");
 /* simulatedPortfolioApi_assets_staking("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(stakedAssets => {
   console.log("Staked assets:", stakedAssets);
 }); */
-simulatedPortfolioApi_assets_tokens("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(tokens => {
+/* simulatedPortfolioApi_assets_tokens("0xbA1ddcB94B3F8FE5d1C0b2623cF221e099f485d1", 20).then(tokens => {
   console.log("Wallet tokens:", tokens);
-});
+}); */
 
 const oneDayInSeconds = (24 * 60 * 60);
 
@@ -32,7 +32,7 @@ export type PortfolioProjectDetails = {
   asset: number; // NOT CLEAR: it's an asset balance but what asset?
   icon: string; // project http image
   desc: string; // project description
-  farmingValue: number;
+  farmingValue: number; // user's balance total USD value
 }
 
 /**
@@ -55,12 +55,12 @@ export type PortfolioApprovals = {
 
 export type PortfolioWalletToken = {
   //valueBTC: number;
-  value: number;
+  value: number; // number of tokens (TBD?)
   icon: string; // token http image
   symbol: string;
-  price: number;
-  priceChangePercentage24h?: number;
-  amount: string;
+  price: number; // USD value of 1 token
+  priceChangePercentage24h?: number; // 0-1 percent change of the market price in the last 24h
+  amount: number; // USD total balance for the user
 }
 
 export type PortfolioWalletTokenList = {
@@ -198,9 +198,36 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
 
         const tokensResponse = await simulatedPortfolioApi_assets_tokens(account, targetChainId);
         if (tokensResponse) {
+          console.log("tokensResponse", tokensResponse)
           const tokens: WalletToken[] = JSON.parse(tokensResponse);
           console.log("tokens:", tokens);
           // TODO: Convert from api response wallet token to portfolio wallet token
+
+          const portfolioTokens: PortfolioWalletToken[] = tokens.map(t => ({
+            price: t.price,
+            value: t.balanceUSD,
+            amount: t.balance,
+            icon: t.icon,
+            symbol: t.symbol,
+          }));
+
+          data.tokens = portfolioTokens;
+          data.total = portfolioTokens.map(t => t.value).reduce((sum, value) => sum + value);
+
+          if (supportedChain) {
+            setWalletTokens({
+              loading: false,
+              supported: supportedChain,
+              data: data
+            });
+          }
+        }
+        else {
+          setWalletTokens({
+            loading: false,
+            supported: false,
+            data
+          });
         }
 
         /* switch (targetChainId) {
@@ -220,14 +247,6 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
             }
             break;
         } */
-
-        if (supportedChain) {
-          setWalletTokens({
-            loading: false,
-            supported: supportedChain,
-            data: data
-          });
-        }
       } catch (e) {
         logError("usePortfolioWalletTokenList", e);
         setWalletTokens(defiBoxInitialState);

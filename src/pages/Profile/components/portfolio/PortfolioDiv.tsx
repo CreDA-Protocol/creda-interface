@@ -28,8 +28,8 @@ export const PortfolioDiv: FC<{
 
   return (
     <Column style={{ width: "100%", marginTop: 30 }}>
-      {projectsWithAssets.map((item: any, index: number) => {
-        return <ProjectItem item={item}></ProjectItem>;
+      {projectsWithAssets.map((item, index) => {
+        return <ProjectItem item={item} key={index}></ProjectItem>;
       })}
     </Column>
   );

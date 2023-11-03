@@ -9,35 +9,35 @@ import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 
 export type CreditData = {
-    score: string,
-    address: string,
-    proofs: string[],
-    proof: string,
-    leaf: string,
+  score: string,
+  address: string,
+  proofs: string[],
+  proof: string,
+  leaf: string,
 }
 
 export type CreditResponse = {
-    code: number,
-    message: string,
-    data: CreditData
+  code: number,
+  message: string,
+  data: CreditData
 }
 
 async function getCreditInfoByApi(address: string): Promise<number> {
-    // TODO: update api url
-    const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${address}`;
-    let score = 0;
-    try {
-        let res: AxiosResponse<CreditResponse> = await axios.get(originUrl);
-        // console.log(res)
-        let data = res.data
-        if (data.code === 200) {
-            let str = data.data.score
-            score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
-        }
-    } catch (e) {
-        console.warn("getCreditInfoByApi error:", e);
+  // TODO: update api url
+  const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${address}`;
+  let score = 0;
+  try {
+    let res: AxiosResponse<CreditResponse> = await axios.get(originUrl);
+    // console.log(res)
+    let data = res.data
+    if (data.code === 200) {
+      let str = data.data.score
+      score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
     }
-    return score;
+  } catch (e) {
+    console.warn("getCreditInfoByApi error:", e);
+  }
+  return score;
 }
 
 // Get credit scores from there (if there is a data contract on the target chain), or call the backend api to get the credit score
@@ -60,7 +60,7 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
       score = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
     }
   } catch (e) {
-      console.log("getCreditScore error:", e)
+    console.log("getCreditScore error:", e)
   }
   return score;
 }

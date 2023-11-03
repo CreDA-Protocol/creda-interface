@@ -7,7 +7,7 @@ import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
 import { PortfolioPhoneDiv } from "./PortfolioPhoneDiv";
 
-export const PortfolioItem: FC = () => {
+export const PortfolioSegment: FC = () => {
   const [chainIndex, setChainIndex] = useState(0);
   const availableDefiProjects = useAvailablePortfolioProjects();
 
@@ -17,7 +17,7 @@ export const PortfolioItem: FC = () => {
 
   return (
     <Column style={{ width: "100%" }}>
-      <Wrap onIndexChange={changChainIndex} selectIndex={chainIndex} />
+      <Wrap onIndexChange={changChainIndex} selectedIndex={chainIndex} />
       {isMobile ? (
         <PortfolioPhoneDiv
           availableProjects={availableDefiProjects}

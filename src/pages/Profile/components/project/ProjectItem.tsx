@@ -2,11 +2,15 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
+import { PortfolioProjectDetails } from "@services/portfolio/portfolio.service";
+import { FC } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItem } from "./ProjectBankItem";
 
-export function ProjectItem({ item }: any) {
+export const ProjectItem: FC<{
+  item: PortfolioProjectDetails;
+}> = ({ item }) => {
   return (
     <Column style={{ width: "100%" }}>
       <RowBetween>
@@ -36,13 +40,13 @@ export function ProjectItem({ item }: any) {
       </RowBetween>
       <ProjectBankItem
         title={ProfileProjectsConfig[item.name]?.title1}
-        data={item[ProfileProjectsConfig[item.name]?.key1] || []}
+        data={(item as any)[ProfileProjectsConfig[item.name]?.key1] || []}
         name={item.name}
         tokensKey={ProfileProjectsConfig[item.name]?.tokensKey1}
       ></ProjectBankItem>
       <ProjectBankItem
         title={ProfileProjectsConfig[item.name]?.title2}
-        data={item[ProfileProjectsConfig[item.name]?.key2] || []}
+        data={(item as any)[ProfileProjectsConfig[item.name]?.key2] || []}
         name={item.name}
         tokensKey={ProfileProjectsConfig[item.name]?.tokensKey2}
       ></ProjectBankItem>

@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const setIsWalkThrough = createAction<Number>("walkthrough/setIsWalkThrough");
+export const setIsWalkThrough = createAction<number>("walkthrough/setIsWalkThrough");
 
-export const setIncrement = createAction<Number>("walkthrough/setIncrement")
-export const setDecrement = createAction<Number>("walkthrough/setDecrement")
+export const setIncrement = createAction<number>("walkthrough/setIncrement")
+export const setDecrement = createAction<number>("walkthrough/setDecrement")
 

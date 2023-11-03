@@ -8,7 +8,7 @@ import { Wrap } from "../Wrap";
 import { ApprovalDiv } from "./ApprovalDiv";
 import { ApprovalPhoneDiv } from "./ApprovalPhoneDiv";
 
-export function ApprovalItem() {
+export function ApprovalSegment() {
   const [chainIndex, setChainIndex] = useState(0);
   const approveList = usePortfolioApprovalsList(chainFromId(chainIndexToId[chainIndex]));
 
@@ -18,7 +18,7 @@ export function ApprovalItem() {
 
   return (
     <Column style={{ width: "100%" }}>
-      <Wrap onIndexChange={changeChainIndex} selectIndex={chainIndex} />
+      <Wrap onIndexChange={changeChainIndex} selectedIndex={chainIndex} />
       {isMobile ? (
         <ApprovalPhoneDiv
           data={approveList}

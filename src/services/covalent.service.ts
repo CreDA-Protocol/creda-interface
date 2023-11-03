@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers";
 import { ChainId, ChainIds, bigNumberToBalance } from "../common/Common";
-import { PortfolioWalletTokenList } from "./portfolio/portfolio.service";
+import { PortfolioWalletToken, PortfolioWalletTokenList } from "./portfolio/portfolio.service";
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
 const API_KEY = 'ckey_4d8058ee307e4d05bd2572d7a2f'; // https://www.covalenthq.com/
@@ -166,14 +166,14 @@ function convertCovalentResult2WalletList(balanceItems: CovalentTokenBalanceItem
   };
 
   for (let item of balanceItems) {
-    let walletToken = {
+    let walletToken: PortfolioWalletToken = {
       symbol: item.contract_ticker_symbol,
       value: item.quote,
       icon: item.logo_url,
       price: item.quote_rate,
       priceChangePercentage24h: 0, // TODO
-      amount: bigNumberToBalance(BigNumber.from(item.balance), item.contract_decimals),
-      valueBTC: 0,
+      amount: parseFloat(bigNumberToBalance(BigNumber.from(item.balance), item.contract_decimals)),
+      //valueBTC: 0,
     }
     walletList.total += item.quote;
     walletList.tokens.push(walletToken);

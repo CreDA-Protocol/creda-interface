@@ -3,8 +3,9 @@ import { useTheme } from "src/state/application/hooks";
 import { SegmentDiv, SegmentItem } from "./StyledComponents";
 
 export function Segment({ onSegmentSelect }: any) {
-  const [selectIndex, setSelectIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const themeDark = useTheme();
+
   return (
     <SegmentDiv
       style={{
@@ -12,9 +13,9 @@ export function Segment({ onSegmentSelect }: any) {
       }}
     >
       <SegmentItem
-        isChoose={selectIndex === 0}
+        isSelected={selectedIndex === 0}
         onClick={() => {
-          setSelectIndex(0);
+          setSelectedIndex(0);
           onSegmentSelect(0);
         }}
       >
@@ -22,9 +23,9 @@ export function Segment({ onSegmentSelect }: any) {
       </SegmentItem>
       {/*<Tooltip placement="top" title={"Coming soon..."}>*/}
       <SegmentItem
-        isChoose={selectIndex === 1}
+        isSelected={selectedIndex === 1}
         onClick={() => {
-          setSelectIndex(1);
+          setSelectedIndex(1);
           onSegmentSelect(1);
         }}
       >
@@ -32,9 +33,9 @@ export function Segment({ onSegmentSelect }: any) {
       </SegmentItem>
       {/*</Tooltip>*/}
       <SegmentItem
-        isChoose={selectIndex === 2}
+        isSelected={selectedIndex === 2}
         onClick={() => {
-          setSelectIndex(2);
+          setSelectedIndex(2);
           onSegmentSelect(2);
         }}
       >

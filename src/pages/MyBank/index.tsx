@@ -17,6 +17,8 @@ import {
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { useDaInfo, useMarketsResult } from '@services/banking.service'
+import { useCNFTInfo } from '@services/credit.service'
 import { useApprove } from '@services/tokens.service'
 import { Badge, Skeleton } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
@@ -36,12 +38,10 @@ import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useOpenWarnning, useTheme } from '../../state/application/hooks'
+import { useOpenWarning, useTheme } from '../../state/application/hooks'
 import { useAddToast } from "../../state/toast"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import { Earn } from './earn'
-import { useMarketsResult, useDaInfo } from '@services/banking.service'
-import { useCNFTInfo } from '@services/credit.service'
 
 const Body = styled(Column)`
   width:100%;
@@ -225,7 +225,7 @@ enum ButtonType {
 }
 
 function MyBank(props: any) {
-  const showWarning = useOpenWarnning(true)
+  const showWarning = useOpenWarning(true)
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
   const bankInfo = useMarketsResult();

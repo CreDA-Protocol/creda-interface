@@ -115,13 +115,13 @@ export const SegmentDiv = styled(RowFixed)`
 `;
 
 export const SegmentItem = styled(RowCenter) <{
-  isChoose?: boolean;
+  isSelected?: boolean;
 }>`
   width: 338px;
-  background: ${({ isChoose }) =>
-    isChoose ? "linear-gradient(90deg, #4a1ee1, #1890ff)" : "transparent"};
+  background: ${({ isSelected }) =>
+    isSelected ? "linear-gradient(90deg, #4a1ee1, #1890ff)" : "transparent"};
   height: 100%;
-  color: ${({ isChoose }) => (isChoose ? "white" : "#777E90")};
+  color: ${({ isSelected }) => (isSelected ? "white" : "#777E90")};
   align-items: center;
   border-radius: 20px;
   font-size: 22px;
