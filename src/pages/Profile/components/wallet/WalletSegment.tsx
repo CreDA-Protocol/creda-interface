@@ -6,7 +6,7 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowFixed, SpaceHeight, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { chainIndexToId, chainTitles } from "@pages/Profile/configs/chainsConfig";
+import { chainIndexToId, chainTitles } from "@services/chain.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -17,7 +17,8 @@ import { WalletDiv } from "./WalletDiv";
 
 export const WalletSegment: FC = () => {
   const [chainIndex, setChainIndex] = useState(0);
-  const walletList = usePortfolioWalletTokenList(chainIndexToId[chainIndex]);
+  const activeChainId = chainIndexToId[chainIndex];
+  const walletList = usePortfolioWalletTokenList(activeChainId);
   const walletListEth = usePortfolioWalletTokenList(chainIndexToId[0]);
   const walletListBsc = usePortfolioWalletTokenList(chainIndexToId[1]);
   const walletListEsc = usePortfolioWalletTokenList(chainIndexToId[2]);
@@ -228,7 +229,7 @@ export const WalletSegment: FC = () => {
           </CenterItemDiv>
         </BGDiv>
       )}
-      <WalletDiv data={walletList} chainTitle={chainTitles[chainIndexToId[chainIndex]]} />
+      <WalletDiv data={walletList} chainTitle={chainTitles[chainIndexToId[chainIndex]]} chainId={activeChainId} />
     </>
   )
 }

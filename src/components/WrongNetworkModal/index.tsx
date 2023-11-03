@@ -1,6 +1,7 @@
+import { ChainIds } from "@services/chain.service";
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import { ChainIds, switchNetwork } from '../../common/Common';
+import { switchNetwork } from '../../common/Common';
 import { BlueButton } from '../Common';
 
 export const Wrapper = styled.div<{
@@ -12,7 +13,7 @@ export const Wrapper = styled.div<{
   z-index: 700;
   width: 292px;
   outline: 0;
-  font-family:'Poppins Regular' !important; 
+  font-family:'Poppins Regular' !important;
   &:before {
     content: '';
     display: block;

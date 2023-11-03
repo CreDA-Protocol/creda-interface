@@ -1,13 +1,15 @@
 import ImageCommon from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
+import { ChainIds, chainFromId } from "@services/chain.service";
 import message from "antd/lib/message";
 import { BigNumber, ethers } from "ethers";
 import { useContext } from 'react';
 import styled from 'styled-components';
-import { ChainIds, chainFromId, createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
+import { createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
 import Modal from '../NormalModal';
+
 const Container = styled(FlexViewCenterColumn)`
   width:500px;
   padding:30px;

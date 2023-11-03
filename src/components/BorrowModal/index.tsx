@@ -1,11 +1,12 @@
 import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
+import { getPrice, getTotalBorrowLimit, getTotalDaiBalance, useDaInfo } from '@services/banking.service'
+import { chainFromId } from '@services/chain.service'
 import { useContext, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import {
   balanceToBigNumber,
-  chainFromId,
   formatPercent,
   marketsConfig
 } from "../../common/Common"
@@ -16,7 +17,6 @@ import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { LoadingCircle } from "../Common"
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
-import { useDaInfo, getPrice, getTotalBorrowLimit, getTotalDaiBalance } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;

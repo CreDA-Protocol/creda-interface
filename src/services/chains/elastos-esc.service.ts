@@ -1,5 +1,6 @@
 import ESC from "@assets/tokens/ELA.png";
-import { ChainId, ChainIds, bigNumberToBalance, formatBalance } from "@common/Common";
+import { bigNumberToBalance, formatBalance } from "@common/Common";
+import { ChainId, ChainIds } from "@services/chain.service";
 import { getCoinPrice } from "@services/glidefinance.service";
 import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import axios, { AxiosResponse } from "axios";

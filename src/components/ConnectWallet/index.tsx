@@ -1,10 +1,11 @@
 import { RowCenter } from "@components/Row";
+import { ChainIds, chainFromId } from "@services/chain.service";
 import { Dropdown } from "antd";
 import { useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "react-redux";
 import styled from "styled-components";
-import { ChainIds, chainFromId, formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
+import { formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useWalkThroughStep } from "../../state/application/hooks";
 import { isTransactionRecent, useAllTransactions, } from "../../state/transactions/hooks";
@@ -43,6 +44,10 @@ const WrongNetworkWrapper = styled.div<{
     }
   }
 `;
+
+/**
+ * Content shown from modals, for example ConnectToWalletModal.
+ */
 export default function ConnectWallet({ history, fromHome, popup }: any) {
   const { t } = useTranslation();
   const location = history?.location?.pathname;

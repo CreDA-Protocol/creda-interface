@@ -1,6 +1,7 @@
-import { ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, enableNetwork, formatBalance, getPriceByApi, logError, mathPriceTo8, walletInfo } from "@common/Common";
+import { ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, getPriceByApi, logError, mathPriceTo8, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
+import { ChainIds, chainFromId } from "@services/chain.service";
 import { BigNumber, ethers } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";

@@ -1,7 +1,7 @@
+import { chainIndexToId, chainTitles } from "@services/chain.service";
 import { Tooltip } from "antd";
 import { FC } from "react";
 import { useTheme } from "src/state/application/hooks";
-import { chainIndexToId, chainTitles } from "../configs/chainsConfig";
 import { WrapDiv, WrapItem } from "./StyledComponents";
 
 export const Wrap: FC<{

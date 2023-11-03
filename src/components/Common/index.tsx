@@ -280,19 +280,6 @@ export interface modal_type {
   children?: any
 }
 
-export function Modal({ onCancel, show, children }: modal_type) {
-  if (!show) {
-    return null
-  }
-  return (
-    <ModalView
-      onClick={onCancel}
-    >
-      {children}
-    </ModalView>
-  )
-}
-
 const PanelView = styled(FlexView)`
   height: 60px;
   border: 2px solid ${colors.main};

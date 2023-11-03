@@ -1,6 +1,7 @@
-import { ApprovalState, ChainIds, ERC20_ABI, bigNumberToBalance, chainFromId, enableNetwork, formatBalance, logError } from "@common/Common";
+import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { useContract } from "@hooks/useContract";
+import { ChainIds, chainFromId } from "@services/chain.service";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber, Contract } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";

@@ -2,6 +2,7 @@ import Loading from "@components/Loading";
 import Popups from "@components/Popups";
 import Toasts from "@components/Toasts";
 import WalletConnectModal from "@components/WalletConnectModal";
+import { ChainIds } from "@services/chain.service";
 import { Suspense, useEffect, useState } from "react";
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
@@ -9,7 +10,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSpring } from 'react-spring';
 import styled from 'styled-components';
 import {
-  ChainIds,
   createWalletConnectWeb3Provider,
   globalObj,
   provider,

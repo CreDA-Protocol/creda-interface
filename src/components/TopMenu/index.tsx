@@ -6,8 +6,9 @@ import { useTheme } from '../../state/application/hooks'
 
 import ImageCommon from '@assets/common/ImageCommon'
 import { ThemeText } from '@components/ThemeComponent'
+import { ChainIds } from "@services/chain.service"
 import { message } from "antd"
-import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from "../../common/Common"
+import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from "../../common/Common"
 import { NetworkTypeContext } from "../../contexts"
 import { ButtonClick, ButtonLink } from '../Button'
 import { RowCenter, RowFixed } from '../Row'

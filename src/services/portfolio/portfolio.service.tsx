@@ -1,4 +1,5 @@
-import { ChainId, ChainName, logError } from "@common/Common";
+import { logError } from "@common/Common";
+import { ChainId, ChainName } from "@services/chain.service";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
@@ -61,7 +62,6 @@ export type PortfolioWalletTokenList = {
 
 export type PortfolioDataset<T> = {
   loading: boolean;
-  supported?: boolean; // Whether the feature is supported by the target chain/wallet. For example, project details cannot be returned for all chains.
   data: T;
 }
 
@@ -149,7 +149,7 @@ export function usePortfolioAllWalletProjects(targetChainId: ChainId): Portfolio
   let { account } = useContext(WalletAddressContext);
   const chainRef = useRef(targetChainId);
 
-  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG
+  account = "0x56cB67C66323486c19dCB9b0c25aF376C8edE098"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
   const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioProjectDetails[]>>(stakingInitialState);
 
@@ -180,7 +180,6 @@ export function usePortfolioAllWalletProjects(targetChainId: ChainId): Portfolio
 
 const defiBoxInitialState: PortfolioDataset<PortfolioWalletTokenList> = {
   loading: true,
-  supported: false,
   data: {
     total: 0,
     tokens: [] as PortfolioWalletToken[]
@@ -262,12 +261,11 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
       if (tokenList) {
         setWalletTokens({
           loading: false,
-          supported: true,
           data: JSON.parse(tokenList)
         });
       }
       else {
-        setWalletTokens({ loading: false, supported: false, data: null });
+        setWalletTokens({ loading: false, data: null });
       }
     }).catch(e => {
       setWalletTokens(defiBoxInitialState);

@@ -9,9 +9,10 @@ import {
   TextEqure
 } from '@components/Row'
 import { TransactionResponse } from '@ethersproject/providers'
+import { ChainIds, chainFromId } from "@services/chain.service"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { ChainIds, GasInfo, balanceToBigNumber, chainFromId, formatBalance, stringReplaceSpace } from "../../common/Common"
+import { GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
 import { useContract } from "../../hooks/useContract"
