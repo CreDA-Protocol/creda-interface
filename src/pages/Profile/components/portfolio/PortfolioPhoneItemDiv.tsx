@@ -3,12 +3,15 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { useState } from "react";
+import { PortfolioProjectDetails } from "@services/portfolio/portfolio.service";
+import { FC, useState } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { Arrow, LineH, SmallIconIcon } from "../StyledComponents";
-import { ProjectBankItemMobile } from "../project/ProjectBankItemMobile";
+import { ProjectBankItemMobile } from "../bank/ProjectBankItemMobile";
 
-export function PortfolioPhoneItemDiv({ item }: any) {
+export const PortfolioPhoneItemDiv: FC<{
+  item: PortfolioProjectDetails;
+}> = ({ item }) => {
   const [showMore, setShowMore] = useState(false);
 
   return (
@@ -24,7 +27,7 @@ export function PortfolioPhoneItemDiv({ item }: any) {
         <RowFixed onClick={() => setShowMore(!showMore)}>
           <Column>
             <TextEqure fontSize={17} fontColor={"#4F56FF"} fontWeight={"bold"}>
-              ${formatBalance(item.asset)}
+              ${formatBalance(item.value)}
             </TextEqure>
             <ThemeTextEqure fontSize={17}>
               ${formatBalance(item.farmingValue)}
@@ -37,13 +40,13 @@ export function PortfolioPhoneItemDiv({ item }: any) {
         <>
           <ProjectBankItemMobile
             title={ProfileProjectsConfig[item.name]?.title1}
-            data={item[ProfileProjectsConfig[item.name]?.key1] || []}
+            data={(item as any)[ProfileProjectsConfig[item.name]?.key1] || []}
             name={item.name}
             tokensKey={ProfileProjectsConfig[item.name]?.tokensKey1}
           ></ProjectBankItemMobile>
           <ProjectBankItemMobile
             title={ProfileProjectsConfig[item.name]?.title2}
-            data={item[ProfileProjectsConfig[item.name]?.key2] || []}
+            data={(item as any)[ProfileProjectsConfig[item.name]?.key2] || []}
             name={item.name}
             tokensKey={ProfileProjectsConfig[item.name]?.tokensKey2}
           ></ProjectBankItemMobile>

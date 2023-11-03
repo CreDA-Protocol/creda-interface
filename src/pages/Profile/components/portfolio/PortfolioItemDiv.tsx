@@ -6,9 +6,9 @@ import { PortfolioProjectDetails } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { SmallIconIcon } from "../StyledComponents";
-import { ProjectBankItem } from "./ProjectBankItem";
+import { ProjectBankItem } from "../bank/ProjectBankItem";
 
-export const ProjectItem: FC<{
+export const PortfolioItemDiv: FC<{
   item: PortfolioProjectDetails;
 }> = ({ item }) => {
   return (
@@ -26,7 +26,7 @@ export const ProjectItem: FC<{
           </TextEqure>
           <SpaceWidth width={20} widthApp={0} />
           <ThemeTextEqure fontSize={18} fontWeight={"bold"}>
-            ${formatBalance(item.asset)}
+            ${formatBalance(item.value)}
           </ThemeTextEqure>
           <SpaceWidth width={50} widthApp={0} />
           <TextEqure fontSize={18} fontColor={"#777E90"} fontWeight={"bold"}>

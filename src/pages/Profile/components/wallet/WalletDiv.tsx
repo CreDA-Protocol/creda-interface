@@ -84,7 +84,7 @@ export const WalletDiv: FC<{
           </RowCenter>
         }
 
-        {!data.loading &&
+        {!data.loading && data.data &&
           data.data.tokens.map((item, index) => {
             if (hidden && item.value < 1) {
               return null

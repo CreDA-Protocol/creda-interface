@@ -54,7 +54,7 @@ export const WalletSegment: FC = () => {
                 </TextEqure>
                 <RowFixed>
                   <ThemeTextEqure fontWeight={"bold"} fontSize={30}>
-                    ${formatBalance(walletListEth.data.total)}
+                    ${formatBalance(walletListEth.data?.total)}
                   </ThemeTextEqure>
                   {/*<TextEqure style={{marginTop:10,marginLeft:10}} fontColor={'#4E55FF'} fontSize={12}>10%</TextEqure>*/}
                 </RowFixed>

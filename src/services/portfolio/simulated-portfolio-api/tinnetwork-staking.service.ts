@@ -1,7 +1,7 @@
 import { SummarizedStakedAssets, TinFarmAsset, TinFarmAssetsResponse } from "./model/tinnetwork/assets";
 import { TinFarm } from "./model/tinnetwork/farms";
 import { StakedAssetsCache } from "./model/tinnetwork/staking";
-import { getFarmsForChain, getTinFarmByShortName, isSupportedChain, tinNetworkConfig, tinRootOperationsQueue } from "./tinnetwork-base.service";
+import { getTinFarmByShortName, getTopFarmsForChain, isSupportedChain, tinNetworkConfig, tinRootOperationsQueue } from "./tinnetwork-base.service";
 
 const STAKED_ASSETS_FARMS_CACHE_DURATION_SEC = (24 * 60 * 60); // 1 day to re-check possible farms where an address has assets
 const STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC = (10 * 60); // 10 minutes to refresh value of stakes assets fo a known farm
@@ -66,14 +66,14 @@ export async function getStakedAssets(address: string, chainId: number): Promise
     // Chain id unknown yet or cache expired - fetch farms for this chains for this address.
     // We should check all farms for this chain.
     let userChains = addressCache.chains[chainId];
-    let farmsForThisChain = getFarmsForChain(chainId);
+    let farmsForThisChain = getTopFarmsForChain(chainId);
 
     console.log("Number of farms to check: " + farmsForThisChain.length);
     for (let farm of farmsForThisChain) {
       if (fetchAllFarms || !(farm.shortName in userChains.farms) || (userChains.farms[farm.shortName].assetsStaked && userChains.farms[farm.shortName].assets.updatedAt + STAKED_ASSETS_ASSETS_CACHE_DURATION_SEC < (Date.now() / 1000))) {
         console.log(`no cache or cache expired for address ${address} for chain ${chainId} for farm ${farm.shortName}`);
         // No assets fetched or expired assets, fetch them all for this chain.
-        let farmValue = await fetchFarmAssets(address, farm, chainId);
+        let { amount: farmValue, pendingAmount: farmPendingAmount } = await fetchFarmAssets(address, farm, chainId);
         if (farmValue !== null) { // null probably means error. So we just don't remember this attempt and we'll try again next time
           console.log("farmValue", farmValue);
 
@@ -84,7 +84,8 @@ export async function getStakedAssets(address: string, chainId: number): Promise
               farm: farm.shortName,
               assets: {
                 updatedAt: 0,
-                amount: 0
+                amount: 0,
+                pendingAmount: 0
               }
             }
           }
@@ -94,7 +95,8 @@ export async function getStakedAssets(address: string, chainId: number): Promise
           userFarm.assetsStaked = farmValue > 0;
           userFarm.assets = {
             updatedAt: Date.now() / 1000,
-            amount: farmValue
+            amount: farmValue,
+            pendingAmount: farmPendingAmount
           };
         }
       }
@@ -119,6 +121,7 @@ export async function getStakedAssets(address: string, chainId: number): Promise
         farmUrl: tinFarm.url,
         farmIconUrl: `https://api.tin.network/icons/farms/${tinFarm.icon}.png`,
         amountUSD: userFarm.assets.amount,
+        pendingAmountUSD: userFarm.assets.pendingAmount,
         lastUpdated: userFarm.assets.updatedAt
       }
     });
@@ -130,7 +133,7 @@ export async function getStakedAssets(address: string, chainId: number): Promise
 /**
  * Returns the total asset amount (usd) for the given address, chain and farm.
  */
-async function fetchFarmAssets(address: string, farm: TinFarm, chainId: number): Promise<number | null> {
+async function fetchFarmAssets(address: string, farm: TinFarm, chainId: number): Promise<{ amount: number; pendingAmount: number; } | null> {
   console.log(`Fetching staked assets for address ${address}, farm ${farm.shortName}, chain ${chainId}`);
 
   try {
@@ -146,6 +149,7 @@ async function fetchFarmAssets(address: string, farm: TinFarm, chainId: number):
 
       // Normally only 1 item in "data" as we filtered with a single farm but let's loop.
       let amount = 0;
+      let pendingAmount = 0; // staked amount, need to withdraw
       let iterableAssets: TinFarmAsset[] = [];
 
       // Make an asset array out of a possible "array or object"
@@ -163,11 +167,12 @@ async function fetchFarmAssets(address: string, farm: TinFarm, chainId: number):
           return null;
         }
         else {
-          amount = amount + asset.amountPrice;
+          amount += asset.amountPrice;
+          pendingAmount += asset.pendingPrice || 0;
         }
       }
 
-      return amount;
+      return { amount, pendingAmount };
     }
     else {
       console.log("fetchFarmAssets KO", response.statusText);

@@ -1,6 +1,7 @@
 export type StakedAssets = {
   updatedAt: number; // Timestamp (sec) at which the VALUE of staked assets for an address/chainid was last checked
   amount: number;
+  pendingAmount: number;
 };
 
 export type StakingFarmCacheEntry = {

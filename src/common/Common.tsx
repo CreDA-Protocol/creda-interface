@@ -450,7 +450,7 @@ export function getBuildStatus(overTime: number) {
 }
 
 export function logError(name: string, e: any) {
-  console.error(`${name}出错了,${e}`)
+  console.error(`Error in: ${name},${e}`)
 }
 
 export function getPercentFlag(percent: string | number) {
