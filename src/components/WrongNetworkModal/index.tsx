@@ -1,7 +1,7 @@
 import { ChainIds } from "@services/chain.service";
+import { switchNetwork } from "@services/network.service";
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import { switchNetwork } from '../../common/Common';
 import { BlueButton } from '../Common';
 
 export const Wrapper = styled.div<{

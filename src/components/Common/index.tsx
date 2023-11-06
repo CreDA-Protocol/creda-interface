@@ -41,7 +41,7 @@ export interface base_type {
 }
 
 export const BaseView = styled.div<base_type>`
-   margin-left:${props => props.marginLeft};
+    margin-left:${props => props.marginLeft};
     margin-right:${props => props.marginRight};
     margin-top:${props => props.marginTop};
     margin-bottom:${props => props.marginBottom};
@@ -79,6 +79,14 @@ export const FlexView = styled(BaseView)`
    display:flex;
    align-items:center;
 `
+
+export const FlexViewLeft = styled(BaseView)`
+    display:flex;
+    align-items:start;
+    justify-content:start;
+    width:100%;
+`
+
 export const FlexViewItem = styled(BaseView)`
    flex:1;
 `
@@ -120,10 +128,10 @@ export const ButtonIcon = styled.img`
 `
 export const ButtonViewSamll = styled(ButtonView)`
   height: 18px;
- font-size:10px;
- border-radius: 5px;
- max-width:100px;
- color: ${colors.white};
+  font-size:10px;
+  border-radius: 5px;
+  max-width:100px;
+  color: ${colors.white};
 `
 export const Button = React.memo(({ icon, title, style, size }: any) => {
   let Warp = ButtonView
@@ -465,10 +473,10 @@ export const TokenTitle = styled(BaseView)`
   };
 `
 export const TokenTitleItem = styled(TokenTitle)`
- font-size: 16px;
- @media (max-width: 768px) {
-  font-size: 8px;
-};
+  font-size: 16px;
+  @media (max-width: 768px) {
+    font-size: 8px;
+  };
 
 `
 export const TokenInfo = ({ symbol }: any) => {
