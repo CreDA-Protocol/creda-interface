@@ -1,7 +1,7 @@
 import { ChainId, ChainIds } from "@services/chain.service";
 import { BigNumber } from "ethers";
 import { bigNumberToBalance } from "../common/Common";
-import { PortfolioWalletToken, PortfolioWalletTokenList } from "./portfolio/portfolio.service";
+import { PortfolioWalletTokenList, PortfolioWalletToken } from "./portfolio/model/tokens";
 
 const covalentApiUrl = 'https://api.covalenthq.com/v1/';
 const API_KEY = 'ckey_4d8058ee307e4d05bd2572d7a2f'; // https://www.covalenthq.com/

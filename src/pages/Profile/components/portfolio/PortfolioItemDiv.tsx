@@ -2,14 +2,14 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { PortfolioProjectDetails } from "@services/portfolio/portfolio.service";
+import { PortfolioStakingDetails } from "@services/portfolio/model/staking";
 import { FC } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItem } from "../bank/ProjectBankItem";
 
 export const PortfolioItemDiv: FC<{
-  item: PortfolioProjectDetails;
+  item: PortfolioStakingDetails;
 }> = ({ item }) => {
   return (
     <Column style={{ width: "100%" }}>

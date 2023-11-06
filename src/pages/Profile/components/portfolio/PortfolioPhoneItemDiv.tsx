@@ -3,14 +3,14 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { PortfolioProjectDetails } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { Arrow, LineH, SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItemMobile } from "../bank/ProjectBankItemMobile";
+import { PortfolioStakingDetails } from "@services/portfolio/model/staking";
 
 export const PortfolioPhoneItemDiv: FC<{
-  item: PortfolioProjectDetails;
+  item: PortfolioStakingDetails;
 }> = ({ item }) => {
   const [showMore, setShowMore] = useState(false);
 

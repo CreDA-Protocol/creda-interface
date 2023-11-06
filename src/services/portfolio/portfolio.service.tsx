@@ -4,133 +4,72 @@ import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { PermanentCache } from "../caches/permanent-cache";
-import { simulatedPortfolioApi_assets_staking, simulatedPortfolioApi_assets_tokens } from "./simulated-portfolio-api";
-import { SummarizedStakedAssets } from "./simulated-portfolio-api/model/tinnetwork/assets";
-import { WalletToken } from "./simulated-portfolio-api/model/tinnetwork/tokens.";
+import { PortfolioApprovals } from "./model/approvals";
+import { PortfolioDataset } from "./model/dataset";
+import { PortfolioApiFarm, PortfolioApiStakedAssets, PortfolioApiWalletToken } from "./model/portfolio-api.dto";
+import { PortfolioStakingDetails } from "./model/staking";
+import { PortfolioWalletToken, PortfolioWalletTokenList } from "./model/tokens";
 
 const oneDayInSeconds = (24 * 60 * 60);
-const oneHoursInSeconds = (60 * 60);
+const oneHourInSeconds = (60 * 60);
 
-export type PortfolioAvailableProject = {
-  chainName: string; // ie: "heco". Seems to be the same as "chainType" in other UI parts
-  name: string; // ie: "supernova". Seems to be a "project" name
-}
-
-/**
- * Details about a single project, for the active wallet (ie: owned assets in that project).
- */
-export type PortfolioProjectDetails = {
-  name: string; // Project name
-  value: number; // User's balance, total USD value, available and in farming
-  farmingValue: number; // User's balance, total USD value, pending only (need to withdraw)
-  icon: string; // project http image
-  desc: string; // project description
-}
-
-/**
- * List of projects available on the third party service. These are projects we can get information
- * from for a user wallet later.
- */
-export type PortfolioAvailableProjects = {
-  [chainName: string]: PortfolioAvailableProject[];
-};
-
-/**
- * List of approvals (token spending) given to a wallet.
- * Authorization addresses are the list of apps/wallets that can spend user's tokens.
- */
-export type PortfolioApprovals = {
-  authorizations: {
-    address: string; // authorized token contract address
-  }[]
-}
-
-export type PortfolioWalletToken = {
-  //valueBTC: number;
-  value: number; // number of tokens (TBD?)
-  icon: string; // token http image
-  symbol: string;
-  price: number; // USD value of 1 token
-  priceChangePercentage24h?: number; // 0-1 percent change of the market price in the last 24h
-  amount: number; // USD total balance for the user
-}
-
-export type PortfolioWalletTokenList = {
-  total: number;
-  tokens: PortfolioWalletToken[];
-}
-
-export type PortfolioDataset<T> = {
-  loading: boolean;
-  data: T;
-}
-
-/* const portfolioProjectsCache = new PermanentCache<string, {}>("portfolio-projects-cache", async (key) => {
-  // Miss cache, when the cache cannot deliver the requested data.
+const topStakingProjectsCache = new PermanentCache<string, { chainId: ChainId }>("top-staking-projects", async (key, { chainId }) => {
   try {
-    const originUrl = `https://defi-app.whatscoin.com/dgg/account/defi?lang=cn`;
-    let res = await axios.get(originUrl);
+    const projects: PortfolioApiFarm[] = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/topfarms?chainid=${chainId}`).then((response) => response.json());
+    if (!projects)
+      return null;
 
-    let obj: PortfolioAvailableProjects = {};
-    res.data.data.forEach((item: { chainName: string; name: string }, index: number) => {
-      if (!obj[item.chainName])
-        obj[item.chainName] = [];
-
-      obj[item.chainName].push(item);
-    });
-
-    return JSON.stringify(obj);
-  } catch (e) {
-    logError("useAvailablePortfolioProjects() error:", e)
+    return JSON.stringify(projects);
+  }
+  catch (e) {
+    logError("top projects caching fetch", e);
     return null;
   }
-}, oneDayInSeconds); */
+}, oneHourInSeconds);
 
 /**
- * List of Defi projects available at the third party service, from which we can
- * get info from.
+ * Returns the list of top defi farming projects on the given chain.
  */
-/* export function useAvailablePortfolioProjects(): PortfolioAvailableProjects {
-  const [availableProjects, setAvailableProjects] = useState<PortfolioAvailableProjects>(null);
+export function useTopStakingProjects(chainId: ChainId) {
+  let { account } = useContext(WalletAddressContext);
+  const [projects, setProjects] = useState<PortfolioApiFarm[]>([]);
+
+  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
   useEffect(() => {
-    portfolioProjectsCache.get("all-projects", null, false).then(allProjectsStr => {
-      setAvailableProjects(allProjectsStr ? JSON.parse(allProjectsStr) : null);
-    })
-  }, []);
+    setProjects(null);
+    topStakingProjectsCache.get(`${chainId}`, { chainId }).then(_projects => {
+      if (_projects)
+        setProjects(JSON.parse(_projects));
+      else
+        setProjects(null);
+    });
+  }, [chainId]);
 
-  return availableProjects;
-} */
+  return projects;
+}
 
-const stakingInitialState: PortfolioDataset<PortfolioProjectDetails[]> = {
+const stakingInitialState: PortfolioDataset<PortfolioStakingDetails[]> = {
   loading: true,
   data: []
 }
 
-const portfolioUserStakingCache = new PermanentCache<string, { account: string; targetChainId: number }>("portfolio-user-staking-cache", async (key, { account, targetChainId }) => {
+const portfolioUserStakingCache = new PermanentCache<string, { account: string; chainId: number; farmId: string; }>("portfolio-user-staking-cache", async (key, { account, chainId, farmId }) => {
   // Miss cache, when the cache cannot deliver the requested data.
   try {
-    console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
+    console.log("usePortfolioWalletTokenList starting fetch for:", account, chainId);
 
-    const stakingResponse = await simulatedPortfolioApi_assets_staking(account, targetChainId);
-    if (stakingResponse) {
-      const tinStakingData: SummarizedStakedAssets[] = JSON.parse(stakingResponse);
-
-      const staking: PortfolioDataset<PortfolioProjectDetails[]> = {
-        loading: false,
-        data: []
+    const tinStakingData: PortfolioApiStakedAssets = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/staking?address=${account}&chainid=${chainId}&farmid=${farmId}`).then((response) => response.json());
+    if (tinStakingData) {
+      const stakingDetails: PortfolioStakingDetails = {
+        name: tinStakingData.farmShortName,
+        value: tinStakingData.amountUSD,
+        desc: tinStakingData.farmName,
+        icon: tinStakingData.farmIconUrl,
+        farmingValue: tinStakingData.pendingAmountUSD
       };
 
-      staking.data = tinStakingData.map(project => ({
-        name: project.farmShortName,
-        value: project.amountUSD,
-        account,
-        desc: project.farmName,
-        icon: project.farmIconUrl,
-        farmingValue: project.pendingAmountUSD
-      }));
-
-      return JSON.stringify(staking);
+      return JSON.stringify(stakingDetails);
     }
     else {
       return null;
@@ -142,38 +81,47 @@ const portfolioUserStakingCache = new PermanentCache<string, { account: string; 
 }, oneDayInSeconds);
 
 /**
- * Returns detailed information about all Defi projects a users has assets into,
- * with the balance. projectNames list must among projects returns by useAvailablePortfolioProjects()
+ * Returns detailed information about top Defi projects a users has assets into,
+ * with the balance.
  */
-export function usePortfolioAllWalletProjects(targetChainId: ChainId): PortfolioDataset<PortfolioProjectDetails[]> {
+export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<PortfolioStakingDetails[]> {
+  const topChainProjects = useTopStakingProjects(chainId); // Retrieve top projects first, so we know which ones to check for assets
   let { account } = useContext(WalletAddressContext);
-  const chainRef = useRef(targetChainId);
 
-  account = "0x56cB67C66323486c19dCB9b0c25aF376C8edE098"; // DEBUG - unknown address found on glide, has stake on arbitrum
+  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
-  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioProjectDetails[]>>(stakingInitialState);
+  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioStakingDetails[]>>(stakingInitialState);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchStaking = async () => {
       try {
-        if (!account || !targetChainId)
+        if (!account || !chainId || !topChainProjects)
           return;
 
-        if (chainRef.current !== targetChainId)
-          setWalletProjects(stakingInitialState);
+        setWalletProjects({ loading: false, data: [] });
 
-        portfolioUserStakingCache.get(`${account}-${targetChainId}`, { account, targetChainId }).then(stakingList => {
-          if (!stakingList)
-            setWalletProjects({ loading: false, data: [] });
-          else
-            setWalletProjects(JSON.parse(stakingList));
-        });
+        const stakingDetails: PortfolioStakingDetails[] = [];
+        for (const project of topChainProjects) {
+          let loadedInfo = 0;
+          portfolioUserStakingCache.get(`${account}-${chainId}-${project.shortName}`, { account, chainId: chainId, farmId: project.shortName }).then(stakingInfo => {
+            loadedInfo++;
+            if (stakingInfo) {
+              stakingDetails.push(JSON.parse(stakingInfo));
+              setWalletProjects({ loading: loadedInfo == topChainProjects.length, data: [...stakingDetails] });
+            }
+          });
+        }
       } catch (e) {
-        logError("usePortfolioAllWalletProjects()", e)
+        logError("usePortfolioUserStaking()", e)
       }
     }
-    fetchProjects();
-  }, [account, targetChainId]);
+    fetchStaking();
+
+    // IMPORTANT: Do NOT depend on chain id here because we don't want to fetch staking details for a wrong
+    // list of top projects (previous chain id). Top projects themselves already depend on chain id so we
+    // will get refreshed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, topChainProjects]);
 
   return walletProjects;
 }
@@ -192,10 +140,8 @@ const portfolioWalletTokenListCache = new PermanentCache<string, { account: stri
 
     console.log("usePortfolioWalletTokenList starting fetch for:", account, targetChainId);
 
-    const tokensResponse = await simulatedPortfolioApi_assets_tokens(account, targetChainId);
-    if (tokensResponse) {
-      const tokens: WalletToken[] = JSON.parse(tokensResponse);
-
+    const tokens: PortfolioApiWalletToken[] = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/tokens?address=${account}&chainid=${targetChainId}`).then((response) => response.json());
+    if (tokens) {
       const portfolioTokens: PortfolioWalletToken[] = tokens.map(t => ({
         price: t.price,
         value: t.balanceUSD,
@@ -234,7 +180,7 @@ const portfolioWalletTokenListCache = new PermanentCache<string, { account: stri
   } catch (e) {
     logError("usePortfolioWalletTokenList", e);
   }
-}, oneHoursInSeconds);
+}, oneHourInSeconds);
 
 /**
 * Gets wallet information from third party api.
@@ -247,7 +193,7 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
   const chainRef = useRef<ChainId>(targetChainId);
   const [walletTokens, setWalletTokens] = useState<PortfolioDataset<PortfolioWalletTokenList>>(defiBoxInitialState);
 
-  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG
+  //account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG
 
   useEffect(() => {
     if (!account || !targetChainId)
@@ -314,45 +260,3 @@ export function usePortfolioApprovalsList(chainType: ChainName): PortfolioDatase
 
   return approvals;
 }
-
-// 获取DeFiBox参与的项目列表
-/* export function useBoxProjectList(chainType: string, projectName: string): any {
-  const { chainId } = useContext(NetworkTypeContext);
-  const { account } = useContext(WalletAddressContext);
-  // const account = "0xd2050719ea37325bdb6c18a85f6c442221811fac"
-  const network = chainFromId(chainId);
-
-  const [info, setInfo] = useState({
-    loading: true,
-    data: []
-  });
-
-  useEffect(() => {
-    const getResult = async () => {
-      try {
-        if (!account || !chainType || !projectName) {
-          return;
-        }
-        // https://defi-app.whatscoin.com/dgg/account/project/heco/supernova?lang=cn&address=0xd2050719ea37325bdb6c18a85f6c442221811fac
-        // https://defi-app.whatscoin.com/dgg/account/project-v2/heco/supernova?lang=en&address=0xd2050719ea37325bdb6c18a85f6c442221811fac
-        const originUrl = `https://defi-app.whatscoin.com/dgg/account/project-v2/${chainType}/${projectName}?lang=cn&address=${account}`;
-        let res = await axios.get(originUrl)
-        // console.log(res)
-        setInfo({
-          loading: false,
-          data: res.data.data
-        })
-      } catch (e) {
-        logError("useBoxProjectList", e)
-        setInfo({
-          loading: false,
-          data: []
-        })
-      }
-    }
-    getResult()
-    // const interval = setInterval(getResult, config.refreshInterval);
-    // return () => clearInterval(interval);
-  }, [account, chainType, projectName])
-  return info;
-} */

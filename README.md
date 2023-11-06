@@ -7,6 +7,7 @@
 ### Initial setup
 
 - `npm i -D`
+- Start a local portfolio service from https://github.com/CreDA-Protocol/creda-portfolio-api and configure your .env, or directly use https://portfolio-api.creda.app
 
 ### Run for development
 

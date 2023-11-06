@@ -2,7 +2,7 @@ import ESC from "@assets/tokens/ELA.png";
 import { bigNumberToBalance, formatBalance } from "@common/Common";
 import { ChainId, ChainIds } from "@services/chain.service";
 import { getCoinPrice } from "@services/glidefinance.service";
-import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
+import { PortfolioWalletTokenList, PortfolioWalletToken } from "@services/portfolio/model/tokens";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber } from "ethers";
 import { TokenInfo, TokenType } from "src/model/wallet";

@@ -2,7 +2,7 @@ import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { ChainId } from "@services/chain.service";
-import { usePortfolioAllWalletProjects } from "@services/portfolio/portfolio.service";
+import { usePortfolioUserStaking } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { isMobile } from "react-device-detect";
 import { PortfolioItemDiv } from "./PortfolioItemDiv";
@@ -11,7 +11,7 @@ import { PortfolioPhoneItemDiv } from "./PortfolioPhoneItemDiv";
 export const PortfolioDiv: FC<{
   chainId: ChainId;
 }> = ({ chainId }) => {
-  const allProjectsDataset = usePortfolioAllWalletProjects(chainId);
+  const allProjectsDataset = usePortfolioUserStaking(chainId);
   const projects = allProjectsDataset.data;
 
   // Keep only projects with positive balance assets

@@ -1,8 +1,7 @@
 import CELO from "@assets/tokens/Celo (CELO).png";
-import { BigNumber } from "ethers";
-
 import { ChainId, ChainIds } from "@services/chain.service";
-import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
+import { PortfolioWalletToken, PortfolioWalletTokenList } from "@services/portfolio/model/tokens";
+import { BigNumber } from "ethers";
 import { bigNumberToBalance } from "../../common/Common";
 import { TokenInfo, TokenType } from "../../model/wallet";
 
