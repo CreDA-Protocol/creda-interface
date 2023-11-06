@@ -1,7 +1,5 @@
 import ImageCommon from "@assets/common/ImageCommon";
-import BNB from "@assets/tokens/Binance Coin (BNB).png";
-import ESC from "@assets/tokens/ELA.png";
-import ETH from "@assets/tokens/Ethereum (ETH).png";
+import ImageToken from "@assets/tokens/ImageToken";
 import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowFixed, SpaceHeight, SpaceWidth, TextEqure } from "@components/Row";
@@ -48,7 +46,7 @@ export const WalletSegment: FC = () => {
             }
           >
             <RowFixed>
-              <IconIcon src={ETH} />
+              <IconIcon src={ImageToken.ETH} />
               <Column>
                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                   Assets on Ethereum
@@ -72,7 +70,7 @@ export const WalletSegment: FC = () => {
             }
           >
             <RowFixed>
-              <IconIcon src={BNB} />
+              <IconIcon src={ImageToken.BSC} />
               <Column>
                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                   Assets on BSC
@@ -96,7 +94,7 @@ export const WalletSegment: FC = () => {
             }
           >
             <RowFixed>
-              <IconIcon src={ESC} />
+              <IconIcon src={ImageToken.ELA} />
               <Column>
                 <TextEqure fontColor={"#777E90"} fontSize={16}>
                   Assets on ESC

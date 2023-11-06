@@ -1,10 +1,10 @@
 import {
-    CustomGrid,
-    FontPoppins,
-    GradientButton,
-    RowBetween,
-    RowCenter,
-    SpaceWidth
+  CustomGrid,
+  FontPoppins,
+  GradientButton,
+  RowBetween,
+  RowCenter,
+  SpaceWidth
 } from "@components/Row";
 import AppBody, { MainFullBody } from "@pages/components/AppBody";
 
@@ -14,6 +14,7 @@ import { isMobile } from "react-device-detect";
 import { FlexView } from "@components/Common";
 import ConnectToWalletModal from "@components/ConnectToWalletModal";
 import { H4 } from "@components/ConnectWallet";
+import SwitchNetworkModal from "@components/SwitchNetworkModal";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
 import { chainFromId } from "@services/chain.service";
 import { useCreditInfo } from "@services/credit.service";
@@ -38,6 +39,7 @@ function Profile(props: any) {
     const showWarning = useOpenWarning(true);
     const creditInfo = useCreditInfo();
     const walkThroughStep = useWalkThroughStep();
+    const [switchNetworkModal, setSwitchNetworkModal] = useState(false);
 
     useEffect(() => {
         // if(props.location.props==='fromConnectWallet'){
@@ -59,6 +61,10 @@ function Profile(props: any) {
 
     function onSegmentSelect(index: number) {
         setSegmentIndex(index);
+    }
+
+    function switchNetwork() {
+      setSwitchNetworkModal(true)
     }
 
     // console.log("first",walkThroughStep)
@@ -155,6 +161,7 @@ function Profile(props: any) {
                                     width: !isMobile ? 162 : "fit-content",
                                     textTransform: "capitalize",
                                 }}
+                                onClick={switchNetwork}
                             >
                                 {account &&
                                     <H4>{network.toUpperCase()}</H4>
@@ -163,6 +170,12 @@ function Profile(props: any) {
                                     <H4> Not Connected</H4>
                                 }
                             </GradientButton>
+                            <SwitchNetworkModal
+                              show={switchNetworkModal}
+                              onDismiss={() => {
+                                setSwitchNetworkModal(false);
+                              }}
+                            ></SwitchNetworkModal>
                         </CustomGrid>
                     </RowBetween>
 

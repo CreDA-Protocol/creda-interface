@@ -467,6 +467,126 @@ export const ChainIdConfig: any = {
   polygon: BigNumber.from(66).toHexString(),
 }
 
+export type AddEthereumChainParameter = {
+  chainId: string; // A 0x-prefixed hexadecimal string
+  chainName: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string; // 2-6 characters long
+    decimals: 18;
+  };
+  rpcUrls: string[];
+  blockExplorerUrls?: string[];
+  iconUrls?: string[]; // Currently ignored.
+}
+
+export type NetworkConfig = {
+  chainParam: AddEthereumChainParameter,
+  icon: string,
+}
+
+export const networkConfigs: NetworkConfig[] = [
+  {
+    chainParam: {
+      chainId: '0x1',
+      chainName: 'Etherum',
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://mainnet.infura.io/v3/'],
+      blockExplorerUrls: ['https://etherscan.io/']
+    },
+    icon: ImageToken.ETH,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.arbitrum.toString(16),
+      chainName: 'Arbitrum One Mainnet',
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+      blockExplorerUrls: ['https://arbiscan.io/']
+    },
+    icon: ImageToken.ARB,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.bsc.toString(16),
+      chainName: 'Binance Smart Chain',
+      nativeCurrency: {
+        name: 'BNB',
+        symbol: 'BNB', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+      blockExplorerUrls: ['https://bscscan.com/']
+    },
+    icon: ImageToken.BSC,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.celo.toString(16),
+      chainName: 'Celo Mainnet',
+      nativeCurrency: {
+        name: 'CELO',
+        symbol: 'CELO', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://forno.celo.org'],
+      blockExplorerUrls: ['https://celoscan.io']
+    },
+    icon: ImageToken.CELO,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.celotest.toString(16),
+      chainName: 'Celo Alfajores Testnet',
+      nativeCurrency: {
+        name: 'CELO',
+        symbol: 'CELO', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
+      blockExplorerUrls: ['https://alfajores.celoscan.io']
+    },
+    icon: ImageToken.CELO,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.esc.toString(16),
+      chainName: 'ELA Smart Chain',
+      nativeCurrency: {
+        name: 'ELA',
+        symbol: 'ELA', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://api.elastos.io/esc'],
+      blockExplorerUrls: ['https://esc.elastos.io']
+    },
+    icon: ImageToken.ELA,
+  },
+  {
+    chainParam: {
+      chainId: '0x' + ChainIds.elatest.toString(16),
+      chainName: 'ESC TestNet',
+      nativeCurrency: {
+        name: 'tELA',
+        symbol: 'tELA', // 2-6 characters long
+        decimals: 18
+      },
+      rpcUrls: ['https://api-testnet.elastos.io/esc'],
+      blockExplorerUrls: ['https://esc-testnet.elastos.io/']
+    },
+    icon: ImageToken.ELA,
+  },
+]
+
+
 export function switchNetwork(chainId: string) {
   return ethereum.request({
     method: 'wallet_switchEthereumChain',
@@ -475,6 +595,17 @@ export function switchNetwork(chainId: string) {
         chainId: chainId,
       }
     ]
+  })
+}
+
+export function addNetwork(param: AddEthereumChainParameter) {
+  // TODO: it will add a new network if call wallet_addEthereumChain for ethereum.
+  if (param.chainId === '0x1') {
+    return switchNetwork(param.chainId);
+  }
+  return ethereum.request({
+    method: 'wallet_addEthereumChain',
+    params: [param]
   })
 }
 
@@ -500,7 +631,6 @@ const rpcUrls = {
 }
 const walletConnect = {
   rpc: rpcUrls,
-  //bridge: "http://192.168.31.114:5001"
   bridge: "https://walletconnect.elastos.net/v2",
 
   // Good wallet integrations such as metamask mobile are able to detect if we don't send
