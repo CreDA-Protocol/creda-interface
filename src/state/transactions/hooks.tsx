@@ -43,7 +43,6 @@ export function useTransactionAdder(): (
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
-  const network = chainFromId(chainId);
 
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
 
