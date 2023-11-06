@@ -4,12 +4,13 @@ import { Column } from "@components/Column";
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { ChainId, canFetchWalletTokens } from "@services/chain.service";
-import { PortfolioDataset, PortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { Row } from "antd";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTheme } from "styled-components";
 import { BGDiv, InputDiv, LineH, MoreIcon, SearchDiv, SearchIcon, SmallIconIcon } from "../StyledComponents";
+import { PortfolioDataset } from "@services/portfolio/model/dataset";
+import { PortfolioWalletTokenList } from "@services/portfolio/model/tokens";
 
 export const WalletDiv: FC<{
   data: PortfolioDataset<PortfolioWalletTokenList>;
