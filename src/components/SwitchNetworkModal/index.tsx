@@ -1,8 +1,8 @@
 import ImageCommon from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
+import { AddEthereumChainParameter, addNetwork, mainnetNetworkConfigs, testnetNetworkConfigs } from "@services/network.service";
 import styled from 'styled-components';
-import { AddEthereumChainParameter, addNetwork, networkConfigs } from "../../common/Common";
-import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
+import { BaseView, FlexViewBetween, FlexViewCenterColumn, FlexViewLeft } from "../Common";
 import Modal from '../NormalModal';
 
 const Container = styled(FlexViewCenterColumn)`
@@ -28,16 +28,25 @@ const SwitchTitle = styled(BaseView)`
     font-weight: 200;
     margin-top: 10px;
 `
+
+const TestNetTitle = styled(BaseView)`
+    font-size: 20px;
+    color: #fff;
+    font-weight: 200;
+    margin-top: 10px;
+    text-align: left;
+`
+
 const FlexViewWrap = styled(FlexViewBetween)`
    flex-wrap: wrap;
 `
 
-const WrapItem = styled(FlexViewCenterColumn)`
+const WrapItem = styled(FlexViewLeft)`
     border-radius: 10px;
-    width: 40%;
-    margin:auto;
+    width: 48%;
+    margin-top: 10px;
     background-color: #0c0f15;
-    height:190px;
+    height:80px;
     cursor:pointer;
     &:hover {
         background-color:#0d1119;
@@ -49,6 +58,7 @@ const WrapItem = styled(FlexViewCenterColumn)`
 const NetworkIcon = styled.img`
     width:50px;
     height:auto;
+    margin: auto 0;
     @media (max-width: 768px) {
         width:30px;
     };
@@ -58,6 +68,7 @@ const NetworkTitle = styled(BaseView)`
     color: #fff;
     font-weight: 400;
     margin-top: 20px;
+    margin-left: 5px;
     @media (max-width: 768px) {
         font-size: 16px;
     };
@@ -92,15 +103,31 @@ export default function SwitchNetworkModal({
     }
     return (
         <Modal isOpen={show} onDismiss={onDismiss} >
-            <RowCenter>
+            <RowCenter onClick={onDismiss}>
                 <Container>
                     <Logo
                         src={ImageCommon.BrandLogoDarkMode}
                     ></Logo>
-                    <SwitchTitle>Switch Network</SwitchTitle>
+                    <SwitchTitle>Select Network</SwitchTitle>
 
                     <FlexViewWrap>
-                      {networkConfigs.map(item => {
+                      {mainnetNetworkConfigs.map(item => {
+                          return <NetworkItem
+                            title={item.chainParam.chainName}
+                            icon={item.icon}
+                            onClick={() => switchNetwork(item.chainParam)}
+                          ></NetworkItem>
+                        })
+                      }
+                    </FlexViewWrap>
+
+                    <FlexViewBetween>
+                      <TestNetTitle>TestNet</TestNetTitle>
+                      {/* <Toogle>Hide TestNet</Toogle> */}
+                    </FlexViewBetween>
+
+                    <FlexViewWrap>
+                      {testnetNetworkConfigs.map(item => {
                           return <NetworkItem
                             title={item.chainParam.chainName}
                             icon={item.icon}

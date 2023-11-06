@@ -1,7 +1,8 @@
-import { ChainIdConfig, switchNetwork } from "@common/Common";
+import { ChainIdConfig } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { chainFromId } from "@services/chain.service";
+import { switchNetwork } from "@services/network.service";
 import { useContext } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import { useTheme } from "styled-components";
