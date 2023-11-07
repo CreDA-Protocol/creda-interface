@@ -1,5 +1,5 @@
-import { ChainIds } from "@services/chain.service";
-import { switchNetwork } from "@services/network.service";
+import SwitchNetworkModal from "@components/SwitchNetworkModal";
+import { useState } from "react";
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 import { BlueButton } from '../Common';
@@ -116,6 +116,7 @@ export default function WrongNetworkModal({
 }: {
   modal?: boolean
 }) {
+  const [switchNetworkModal, setSwitchNetworkModal] = useState(false);
 
   return (
     <>
@@ -124,9 +125,15 @@ export default function WrongNetworkModal({
           <Backdrop />
           <Wrapper className='walk-through-modal-wrapper' isMobile={isMobile} >
             <StyledModal >
-              <Content>{'Please switch to Arbitrium Network.'}</Content>
+              <Content>{'Please Select Network.'}</Content>
               <ButtonWrap>
-                <BlueButton onClick={() => switchNetwork(`0x${(ChainIds.arbitrum).toString(16)}`)} style={{ borderRadius: '80px' }}>Switch</BlueButton>
+                <BlueButton onClick={() => setSwitchNetworkModal(true)} style={{ borderRadius: '80px' }}>Select</BlueButton>
+                <SwitchNetworkModal
+                  show={switchNetworkModal}
+                  onDismiss={() => {
+                    setSwitchNetworkModal(false);
+                  }}
+                ></SwitchNetworkModal>
               </ButtonWrap>
             </StyledModal>
           </Wrapper>

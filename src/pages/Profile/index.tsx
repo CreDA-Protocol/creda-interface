@@ -163,8 +163,11 @@ function Profile(props: any) {
                                 }}
                                 onClick={switchNetwork}
                             >
-                                {account &&
+                                {account && network &&
                                     <H4>{network.toUpperCase()}</H4>
+                                }
+                                {account && !network &&
+                                    <H4> Wrong NetWork</H4>
                                 }
                                 {!account &&
                                     <H4> Not Connected</H4>
