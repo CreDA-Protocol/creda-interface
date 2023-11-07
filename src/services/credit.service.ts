@@ -67,6 +67,15 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
 }
 
 /**
+ * Call the backend API’s getCreditInfo() to retrieve the user's score and Merkle Proof
+ * Then, call the data contract's updateCredit()
+ */
+export function getAndUpdateCredit(): Promise<any> {
+  // TODO: wait the api
+  return Promise.resolve({hash:'0x11111111111111111111111111111111'});
+}
+
+/**
  * Get latest credit score information.
  */
 export function useCreditInfo(): any {
