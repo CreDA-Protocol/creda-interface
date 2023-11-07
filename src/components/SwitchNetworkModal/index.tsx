@@ -56,25 +56,24 @@ const WrapItem = styled(FlexViewLeft)`
     };
 `
 const NetworkIcon = styled.img`
-    width:50px;
-    height:auto;
+    width: 50px;
+    height: auto;
     margin: auto 0;
     @media (max-width: 768px) {
-        width:30px;
+        width: 30px;
     };
 `
 const NetworkTitle = styled(BaseView)`
     font-size: 20px;
     color: #fff;
     font-weight: 400;
-    margin-top: 20px;
-    margin-left: 5px;
+    margin: auto auto auto 10px;
     @media (max-width: 768px) {
         font-size: 16px;
     };
 `
 const CancelTitle = styled(BaseView)`
-    font-size: 16px;
+    font-size: 20px;
     color: #4E55FF;
     font-weight: 400;
     margin-top: 20px;
