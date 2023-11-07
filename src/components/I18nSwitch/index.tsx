@@ -115,7 +115,7 @@ export default function I18nSwitch() {
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
     <StyledMenu ref={node as any}>
       <HeaderView themeDark={themeDark} onClick={() => {
-        // toggle()
+        toggle()
       }}>
         {/*<LanIcon src={i18n.language == 'zh-CN'?ImageCommon.cn_icon:ImageCommon.en_icon}/>*/}
         {i18n.language == 'zh-CN' ? "CN" : 'EN'}
