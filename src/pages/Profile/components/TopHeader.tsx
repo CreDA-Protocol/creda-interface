@@ -8,7 +8,8 @@ import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
 import { chainFromId, chainIndexToId } from "@services/chain.service";
-import { useCNFTInfo, useCreditScore } from "@services/credit.service";
+import { useContract } from '@services/contracts.service';
+import { getAndUpdateCredit, useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
 import { FC, useContext, useEffect, useState } from "react";
@@ -20,7 +21,6 @@ import { ToastStatus, useAddToast } from "src/state/toast";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { useTheme } from "styled-components";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
-import { useContract } from '@services/contracts.service';
 
 enum StakeType {
   hidden = 0,
@@ -77,23 +77,31 @@ export const TopHeader: FC<{
       });
   }
 
-  function approve() {
+  async function syncCredit() {
     loading.show(LoadingType.confirm, `Sync`)
-    // console.log("CredaC_func", CredaContract?.creditUpdate())
-    CredaContract?.creditUpdate(GasInfo)
-      .then(async (response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: "Sync",
-        });
-        await response.wait();
-        loading.show(LoadingType.success, response.hash)
+    // TODO: we should use syncCredit.
+    // but for now, we use CredaContract on esc.
+    if (!CredaContract) {
+      let response = await getAndUpdateCredit();
+      loading.show(LoadingType.success, response?.hash)
 
-      })
-      .catch((err: any) => {
-        addToast(ToastStatus.error, err.data?.message);
-        tipError(err);
-        loading.show(LoadingType.error, err.reason || err.message)
-      });
+    } else {
+      CredaContract?.creditUpdate(GasInfo)
+        .then(async (response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: "Sync",
+          });
+          await response.wait();
+          loading.show(LoadingType.success, response.hash)
+
+        })
+        .catch((err: any) => {
+          addToast(ToastStatus.error, err.data?.message);
+          tipError(err);
+          loading.show(LoadingType.error, err.reason || err.message)
+        });
+    }
+
   }
 
   function claim() {
@@ -171,48 +179,41 @@ export const TopHeader: FC<{
             <div
               style={{
                 position: "absolute",
-                top: isMobile ? "167px" : "227px",
-                left: isMobile ? "180px" : "231px",
+                top: isMobile ? "157px" : "210px",
+                left: isMobile ? "175px" : "225px",
               }}
             >
               <TextEqure
                 fontColor={themeDark ? "white" : "black"}
                 fontSize={40}
                 fontWeight={"bold"}
+                style={{ marginLeft: isMobile ? "5px" : "15px" }}
               >
                 {scoreInfo.data <= 0
                   ? "---"
                   : formatBalance(scoreInfo.data, 0)}
               </TextEqure>
               <div></div>
-              {scoreInfo.data > 0 && <TextEqure
-                fontColor={themeDark ? "white" : "black"}
-                fontSize={20}
-                style={{ marginLeft: isMobile ? "-30px" : "-25px" }}
-              // fontWeight={"bold"}
-              >
-                Credit Score
-              </TextEqure>}
-
+              {scoreInfo.data > 0 &&
+                <TextEqure
+                  fontColor={themeDark ? "white" : "black"}
+                  fontSize={16}
+                  style={{ marginLeft: isMobile ? "-10px" : "-5px" }}
+                >
+                  Credit Score
+                </TextEqure>
+              }
+              {enableNetwork(chainId) &&
+                <WhiteButton
+                  style={{
+                    zIndex: walkThroughStep === 2 ? 700 : 0,
+                  }}
+                  onClick={syncCredit}
+                >
+                  Sync
+                </WhiteButton>
+              }
             </div>
-
-            {enableNetwork(chainId) && <div>
-              {scoreInfo.data <= 0 && (
-                <div style={{ position: "relative" }}>
-
-                  <WhiteButton
-                    style={{
-                      position: "absolute",
-                      top: isMobile ? "-195px" : "-249px",
-                      left: isMobile ? "175px" : "217px",
-                      zIndex: walkThroughStep === 2 ? 700 : 0,
-                    }}
-                    onClick={approve}
-                  >
-                    Sync
-                  </WhiteButton>
-                </div>)}
-            </div>}
           </div>
           {/* <StepTwoModalWrap isMobile={isMobile}>
                                     <WalkThroughModal
