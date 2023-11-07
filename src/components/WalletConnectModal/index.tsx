@@ -1,8 +1,9 @@
 import ImageCommon from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
 import { ChainIds, chainFromId } from "@services/chain.service";
+import { NetworkConfig, addNetwork, mainnetNetworkConfigs } from "@services/network.service";
 import message from "antd/lib/message";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
@@ -117,30 +118,13 @@ export default function WalletConnectModal({
                     message.warn("Please install MetaMask!");
                     return;
                 }
-                if ([ChainIds.arbitrum, ChainIds.ropsten, ChainIds.esc].indexOf(chainId) >= 0) {
+                if (network) {
                     ethereum.request({ method: 'eth_requestAccounts' });
                     window.location.reload()
                 } else {
-                    ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: BigNumber.from(ChainIds.arbitrum).toHexString(),
-                                chainName: 'Arbitrum',
-                                nativeCurrency: {
-                                    name: 'ETH',
-                                    symbol: 'ETH', // 2-6 characters long
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-                                blockExplorerUrls: ['https://arbiscan.io/']
-                            }
-                        ]
-                    }).then((res: any) => {
-                        //添加成功
-                    }).catch((err: any) => {
-                        //添加失败
-                    })
+                    const celoChainId = '0x' + ChainIds.celo.toString(16);
+                    let networkConfig: NetworkConfig = mainnetNetworkConfigs.find( n => n.chainParam.chainId === celoChainId);
+                    await addNetwork(networkConfig.chainParam);
                 }
             }
             onDismiss()

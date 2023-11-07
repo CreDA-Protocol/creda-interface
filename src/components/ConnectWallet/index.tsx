@@ -1,7 +1,9 @@
 import { RowCenter } from "@components/Row";
-import { ChainIds, chainFromId } from "@services/chain.service";
+import WrongNetworkModal from "@components/WrongNetworkModal";
+import { chainFromId } from "@services/chain.service";
 import { Dropdown } from "antd";
 import { useContext, useMemo, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useStore } from "react-redux";
 import styled from "styled-components";
@@ -51,12 +53,10 @@ const WrongNetworkWrapper = styled.div<{
 export default function ConnectWallet({ history, fromHome, popup }: any) {
   const { t } = useTranslation();
   const location = history?.location?.pathname;
-  // console.log("location", fromHome);
   const { chainId } = useContext(NetworkTypeContext);
   const { account, disconnect } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
   const allTransactions = useAllTransactions();
-  // console.log(chainId,"chainId")
   const sortedRecentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions);
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst);
@@ -65,53 +65,18 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   const [modal, setModal] = useState(false);
   const store = useStore();
   const walkThroughStep = useWalkThroughStep();
+
   const pending = sortedRecentTransactions
     .filter((tx) => !tx.receipt)
     .map((tx) => tx.hash);
+
   async function connectWallet() {
     globalObj.showConnectModal();
     if (fromHome) {
       history.push({ pathname: "/profile", props: "fromConnectWallet" });
     }
-    // try {
-    //     const connectProvider = await createWalletConnectWeb3Provider();
-    //     connectProvider.enable()
-    //     connectProvider.on("disconnect", ()=>{
-    //         console.log("Wallet connect disconnection event from the wallet");
-    //     })
-    //     return
-    //     // ethereum.request({ method: 'eth_requestAccounts' });
-    //     if ([ChainId.arbitrum,ChainId.ropsten].indexOf(chainId)>=0) {
-    //         ethereum.request({method: 'eth_requestAccounts'});
-    //     } else {
-    //         ethereum.request({
-    //             method: 'wallet_switchEthereumChain',
-    //             params: [
-    //                 // {
-    //                 //     chainId: BigNumber.from(421611).toHexString(),
-    //                 //     chainName: 'Arbitrum',
-    //                 //     nativeCurrency: {
-    //                 //         name: 'ETH',
-    //                 //         symbol: 'ETH', // 2-6 characters long
-    //                 //         decimals: 18
-    //                 //     },
-    //                 //     rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
-    //                 //     blockExplorerUrls: ['https://explorer5.arbitrum.io/']
-    //                 // }
-    //                 {
-    //                     chainId: BigNumber.from(ChainId.arbitrum),
-    //                 }
-    //             ]
-    //         }).then((res: any) => {
-    //             //添加成功
-    //         }).catch((err: any) => {
-    //             //添加失败
-    //         })
-    //     }
-    // }catch (e) {
-    //     logError("connectWallet",e)
-    // }
   }
+
   const items = [{
     label: 'Disconnect',
     key: '1',
@@ -120,27 +85,27 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   const menuProps = {
     items,
   };
-  if (account && [ChainIds.arbitrum, ChainIds.ropsten, ChainIds.bsc, ChainIds.heco, ChainIds.ethereum, ChainIds.esc, ChainIds.elatest, ChainIds.celo, ChainIds.celotest].indexOf(chainId) < 0) {
+
+  if (account && !network) {
     return (
       <>
-        {/* <WrongNetworkWrapper isMobile={isMobile}> */}
-        <HeaderViewWrong style={{ zIndex: 700 }}>
-          <H5>Wrong NetWork</H5>
-        </HeaderViewWrong>
-        {/* <WrongNetworkModal modal={true}/>
-      </WrongNetworkWrapper> */}
+        <WrongNetworkWrapper isMobile={isMobile}>
+          <HeaderViewWrong style={{ zIndex: 700 }}>
+            <H5>Wrong NetWork</H5>
+          </HeaderViewWrong>
+          <WrongNetworkModal modal={true}/>
+        </WrongNetworkWrapper>
       </>
     );
   }
   return (
     <>
       {account ? (
-        <Dropdown
-          menu={menuProps}
-          trigger={["hover", "click"]}
-        >
+          <Dropdown
+            menu={menuProps}
+            trigger={["hover", "click"]}
+          >
           <HeaderView>
-
             <H4>{formatAccount(account)}</H4>
 
             {/*<Arrow src={ImageCommon.ArrowDownIcon_white}/>*/}
@@ -167,32 +132,6 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
         <HeaderView onClick={connectWallet}>
           <H4>Connect Wallet</H4>
         </HeaderView>
-        // <div style={{ position: "relative" }}>
-        //       <GradientButton
-        //         style={{
-        //           width: popup ? "300px" : "",
-        //           fontSize: popup ? "20px" : "",
-        //           zIndex:walkThroughStep === 1? 700:0,
-        //           height:"30px"
-        //         }}
-        //         className="header_cnt_wal_btn"
-        //         onClick={connectWallet}
-        //       >
-        //         Connect Wallet
-        //       </GradientButton>
-        //   {/* {location === "/profile" ? (
-        //     <StepModalWrap isMobile={isMobile}>
-        //       <WalkThroughModal
-        //         currentStep={1}
-        //         title="Step 1"
-        //         content="Get your Crypto Credit Score by connecting your wallet."
-        //         steps={account?false:true}
-        //       />
-        //     </StepModalWrap>
-        //   ) : (
-        //     ""
-        //   )} */}
-        // </div>
       )}
     </>
   );

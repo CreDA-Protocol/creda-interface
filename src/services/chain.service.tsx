@@ -79,7 +79,7 @@ export const ChainIds: ChainIdList = {
 export function chainFromId(chainId: number): ChainName {
   const chain = Object.entries(ChainIds).find(([key, val]) => val === chainId)?.[0] as ChainName;
   if (!chain)
-    throw new Error(`Chain ID ${chainId} is not in the configured chains!`);
+    console.warn(`Chain ID ${chainId} is not in the configured chains!`);
 
   return chain;
 }
