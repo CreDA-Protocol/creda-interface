@@ -10,12 +10,12 @@ import {
 } from '@components/Row'
 import { TransactionResponse } from '@ethersproject/providers'
 import { ChainIds, chainFromId } from "@services/chain.service"
+import { useContract } from "@services/contracts.service"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
-import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../NormalModal'

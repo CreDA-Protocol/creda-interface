@@ -1,5 +1,5 @@
 import { Column } from "@components/Column";
-import { ChainType, chainFromId, chainIndexToId } from "@services/chain.service";
+import { ChainType, chainIndexToId } from "@services/chain.service";
 import { usePortfolioApprovalsList } from "@services/portfolio/portfolio.service";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -9,7 +9,7 @@ import { ApprovalPhoneDiv } from "./ApprovalPhoneDiv";
 
 export function ApprovalSegment() {
   const [chainIndex, setChainIndex] = useState(0);
-  const approveList = usePortfolioApprovalsList(chainFromId(chainIndexToId[chainIndex]));
+  const approveList = usePortfolioApprovalsList(chainIndexToId[chainIndex]);
 
   function changeChainIndex(index: number) {
     setChainIndex(index);

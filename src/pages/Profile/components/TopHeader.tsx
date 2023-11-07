@@ -7,7 +7,6 @@ import { GradientButton, RowBetween, RowFixed, SpaceHeight, TextEqure } from "@c
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
-import { useContract } from '@hooks/useContract';
 import { chainFromId, chainIndexToId } from "@services/chain.service";
 import { useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
@@ -21,6 +20,7 @@ import { ToastStatus, useAddToast } from "src/state/toast";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { useTheme } from "styled-components";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
+import { useContract } from '@services/contracts.service';
 
 enum StakeType {
   hidden = 0,

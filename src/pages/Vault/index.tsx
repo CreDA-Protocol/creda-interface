@@ -36,6 +36,7 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { ChainIds, chainFromId } from "@services/chain.service"
+import { useContract } from "@services/contracts.service"
 import { useCredaInfo, useUnLockInfo } from "@services/creda-token.service"
 import { useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"
 import { useHardPoolInfo, useMiningPoolInfo } from "@services/mining-staking.service"
@@ -62,7 +63,6 @@ import {
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
-import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarning, useTheme } from "../../state/application/hooks"
 import { ToastStatus, useAddToast } from "../../state/toast"

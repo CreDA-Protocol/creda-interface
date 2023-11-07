@@ -1,18 +1,18 @@
 import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useDaInfo } from '@services/banking.service'
+import { chainFromId } from '@services/chain.service'
+import { useContract } from "@services/contracts.service"
 import { useContext, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { balanceToBigNumber, marketsConfig } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { LoadingCircle } from "../Common"
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
-import { chainFromId } from '@services/chain.service'
 
 const Container = styled.div`
   height:480px;

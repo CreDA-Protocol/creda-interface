@@ -1,13 +1,11 @@
 import { logError } from "@common/Common";
-import { ChainId, ChainName } from "@services/chain.service";
-import axios from "axios";
+import { ChainId } from "@services/chain.service";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { PermanentCache } from "../caches/permanent-cache";
-import { PortfolioApprovals } from "./model/approvals";
+import { PortfolioApprovedSpender, PortfolioApprovedToken } from "./model/approvals";
 import { PortfolioDataset } from "./model/dataset";
-import { PortfolioApiFarm, PortfolioApiStakedAssets, PortfolioApiWalletToken } from "./model/portfolio-api.dto";
-import { PortfolioStakingDetails } from "./model/staking";
+import { PortfolioApiApproval, PortfolioApiFarm, PortfolioApiFarmAsset, PortfolioApiWalletToken } from "./model/portfolio-api.dto";
 import { PortfolioWalletToken, PortfolioWalletTokenList } from "./model/tokens";
 
 const oneDayInSeconds = (24 * 60 * 60);
@@ -49,7 +47,7 @@ export function useTopStakingProjects(chainId: ChainId) {
   return projects;
 }
 
-const stakingInitialState: PortfolioDataset<PortfolioStakingDetails[]> = {
+const stakingInitialState: PortfolioDataset<PortfolioApiFarmAsset[]> = {
   loading: true,
   data: []
 }
@@ -59,17 +57,17 @@ const portfolioUserStakingCache = new PermanentCache<string, { account: string; 
   try {
     console.log("usePortfolioWalletTokenList starting fetch for:", account, chainId);
 
-    const tinStakingData: PortfolioApiStakedAssets = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/staking?address=${account}&chainid=${chainId}&farmid=${farmId}`).then((response) => response.json());
+    const tinStakingData: PortfolioApiFarmAsset = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/staking?address=${account}&chainid=${chainId}&farmid=${farmId}`).then((response) => response.json());
     if (tinStakingData) {
-      const stakingDetails: PortfolioStakingDetails = {
+      /* const stakingDetails: PortfolioStakingDetails = {
         name: tinStakingData.farmShortName,
         value: tinStakingData.amountUSD,
         desc: tinStakingData.farmName,
         icon: tinStakingData.farmIconUrl,
         farmingValue: tinStakingData.pendingAmountUSD
-      };
+      }; */
 
-      return JSON.stringify(stakingDetails);
+      return JSON.stringify(tinStakingData);
     }
     else {
       return null;
@@ -84,13 +82,13 @@ const portfolioUserStakingCache = new PermanentCache<string, { account: string; 
  * Returns detailed information about top Defi projects a users has assets into,
  * with the balance.
  */
-export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<PortfolioStakingDetails[]> {
+export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<PortfolioApiFarmAsset[]> {
   const topChainProjects = useTopStakingProjects(chainId); // Retrieve top projects first, so we know which ones to check for assets
   let { account } = useContext(WalletAddressContext);
 
   account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
-  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioStakingDetails[]>>(stakingInitialState);
+  const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioApiFarmAsset[]>>(stakingInitialState);
 
   useEffect(() => {
     const fetchStaking = async () => {
@@ -100,7 +98,7 @@ export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<Port
 
         setWalletProjects({ loading: false, data: [] });
 
-        const stakingDetails: PortfolioStakingDetails[] = [];
+        const stakingDetails: PortfolioApiFarmAsset[] = [];
         for (const project of topChainProjects) {
           let loadedInfo = 0;
           portfolioUserStakingCache.get(`${account}-${chainId}-${project.shortName}`, { account, chainId: chainId, farmId: project.shortName }).then(stakingInfo => {
@@ -221,42 +219,72 @@ export function usePortfolioWalletTokenList(targetChainId: ChainId): PortfolioDa
   return walletTokens;
 }
 
-const approvalsInitialState: PortfolioDataset<PortfolioApprovals> = {
-  loading: true,
-  data: {
-    authorizations: []
+const approvalsCache = new PermanentCache<string, { account: string; chainId: ChainId }>("portfolio-approvals", async (key, { account, chainId }) => {
+  try {
+    const approvals: PortfolioApiApproval[] = await fetch(`${process.env.REACT_APP_PORTFOLIO_API_URL}/assets/approvals?address=${account}&chainid=${chainId}`).then((response) => response.json());
+    if (!approvals)
+      return null;
+
+    return JSON.stringify(approvals);
   }
+  catch (e) {
+    logError("Approvals caching fetch", e);
+    return null;
+  }
+}, oneDayInSeconds);
+
+const approvalsInitialState: PortfolioDataset<PortfolioApprovedToken[]> = {
+  loading: true,
+  data: []
 };
 
 /**
  * Gets the list of token spending approvals given by the active wallet, to third party
  * projects/apps.
  */
-export function usePortfolioApprovalsList(chainType: ChainName): PortfolioDataset<PortfolioApprovals> {
+export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<PortfolioApprovedToken[]> {
   const { account } = useContext(WalletAddressContext);
-  const chainRef = useRef(chainType);
   const [approvals, setApprovals] = useState(approvalsInitialState);
 
   useEffect(() => {
-    const fetchApprovalsInfo = async () => {
-      try {
-        if (!account || !chainType)
-          return;
+    setApprovals({ loading: true, data: [] });
 
-        if (chainRef.current !== chainType)
-          setApprovals(approvalsInitialState)
+    approvalsCache.get(`${account}-${chainId}`, { account, chainId }).then(rawApiApprovals => {
+      if (rawApiApprovals) {
+        const apiApprovals: PortfolioApiApproval[] = JSON.parse(rawApiApprovals);
 
-        const originUrl = `https://defi-app.whatscoin.com/asset/authorized/${chainType}?lang=cn&address=${account}&chain=${chainType.toUpperCase()}`;
-        let res = await axios.get(originUrl);
+        let approvedTokens: PortfolioApprovedToken[] = [];
+        for (const apiApproval of apiApprovals) {
+          const spenders: PortfolioApprovedSpender[] = [];
 
-        setApprovals({ loading: false, data: res.data.data });
-      } catch (e) {
-        logError("usePortfolioApprovalsList", e)
-        setApprovals(approvalsInitialState)
+          for (const approved of apiApproval.approved) {
+            spenders.push({
+              icon: approved.approved.farm?.icon || null,
+              name: approved.approved.farm?.name || "Unknown contract / app",
+              address: approved.approved.address,
+              exposureUsd: -1 // TODO
+            });
+          }
+
+          approvedTokens.push({
+            icon: apiApproval.contract.icon,
+            address: apiApproval.contract.address,
+            symbol: apiApproval.contract.symbol,
+            chainId,
+            sumExposureUsd: -1, // TODO
+            spenders
+          });
+        }
+
+        setApprovals({ loading: false, data: approvedTokens });
       }
-    }
-    fetchApprovalsInfo();
-  }, [account, chainType]);
+      else
+        setApprovals({ loading: false, data: null });
+    }).catch(e => {
+      logError("usePortfolioApprovalsList", e);
+      setApprovals(approvalsInitialState);
+    });
+  }, [account, chainId]);
 
   return approvals;
 }

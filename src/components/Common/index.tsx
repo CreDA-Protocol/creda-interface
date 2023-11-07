@@ -2,7 +2,7 @@ import ImageCommon from '@assets/common/ImageCommon'
 import Circle from '@assets/svg/lightcircle.svg'
 import ImageToken from '@assets/tokens/ImageToken'
 import { Lottie } from "@crello/react-lottie"
-import { useBalance } from '@services/tokens.service'
+import { useBalanceBySymbol } from '@services/tokens.service'
 import { Skeleton } from "antd"
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -421,7 +421,7 @@ const PanelItemList = styled(FlexViewBetween)`
   }
 `
 const PanelItem = ({ symbol, onSelect }: any) => {
-  const info = useBalance(symbol);
+  const info = useBalanceBySymbol(symbol);
   return (
     <PanelItemList
       onClick={() => {

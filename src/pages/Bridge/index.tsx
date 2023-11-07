@@ -15,6 +15,7 @@ import {
 import { TransactionResponse } from "@ethersproject/providers";
 import AppBody, { MainFullBody } from '@pages/components/AppBody';
 import { ChainIds, chainFromId } from "@services/chain.service";
+import { useContract } from "@services/contracts.service";
 import { useCredaInfo } from "@services/creda-token.service";
 import { useWrapAmount } from "@services/swap-bridge.service";
 import { useApprove } from "@services/tokens.service";
@@ -26,7 +27,6 @@ import styled, { css } from "styled-components";
 import { ApprovalState, GasInfo, balanceToBigNumber, colors, formatBalance } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
-import { useContract } from "../../hooks/useContract";
 import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../state/application/hooks";
 import { useAddToast } from "../../state/toast";

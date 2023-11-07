@@ -1,11 +1,11 @@
 import { ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, getPriceByApi, logError, mathPriceTo8, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { useContract } from "@hooks/useContract";
 import { ChainIds, chainFromId } from "@services/chain.service";
 import { BigNumber, ethers } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { EarnConfig } from "src/contract/ContractConfig";
+import { useContract } from "./contracts.service";
 import { getCoinPrice } from "./glidefinance.service";
 
 /**

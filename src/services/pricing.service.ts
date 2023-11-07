@@ -1,10 +1,10 @@
 import { BSC_PROVIDER, ERC20_ABI, balanceToBigNumber, bigNumberToBalance, enableNetwork, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { useContract, useContractWithProvider } from "@hooks/useContract";
 import { chainFromId } from "@services/chain.service";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
+import { useContract, useContractWithProvider } from "./contracts.service";
 
 /**
  * Gets the BSC balance in USDT, of the currently active wallet.

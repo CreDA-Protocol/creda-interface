@@ -1,3 +1,5 @@
+import { providers } from "ethers";
+
 export type ChainCapability = {
   canFetchWalletTokens: boolean; // We can fetch the list of user's tokens (wallet tab of portfolio) using the third party portfolio api
 }
@@ -84,7 +86,6 @@ export function chainFromId(chainId: number): ChainName {
   return chain;
 }
 
-
 /**
  * Mapping between chain index in the UI vs chain id
  */
@@ -116,3 +117,26 @@ export const ChainType: any = {
   CELO: 'celo',
   "Elastos ESC": "esc"
 };
+
+export const ChainRPCs: { [chainId: ChainId]: string } = {
+  [ChainIds.ethereum]: "https://eth.llamarpc.com",
+  [ChainIds.bsc]: "https://bsc-dataseed1.defibit.io",
+  [ChainIds.esc]: "https://api.trinity-tech.io/esc",
+  [ChainIds.celo]: "https://rpc.ankr.com/celo",
+  [ChainIds.polygon]: "https://polygon.llamarpc.com",
+  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc"
+};
+
+const rpcProvidersCache: { [chainId: ChainId]: providers.JsonRpcProvider } = {};
+
+export const getRPCProvider = (chainId: ChainId) => {
+  if (chainId in rpcProvidersCache)
+    return rpcProvidersCache[chainId];
+
+  if (!(chainId in ChainRPCs))
+    throw new Error(`No JSON RPC url configured for chain id ${chainId}`);
+
+  const rpcUrl = ChainRPCs[chainId];
+  rpcProvidersCache[chainId] = new providers.JsonRpcProvider(rpcUrl);
+  return rpcProvidersCache[chainId];
+}

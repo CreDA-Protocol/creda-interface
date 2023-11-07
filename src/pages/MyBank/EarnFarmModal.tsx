@@ -8,6 +8,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useIconPrice, useWalletInfo } from '@services/banking.service';
 import { chainFromId } from "@services/chain.service";
+import { useContract } from "@services/contracts.service";
 import { useApprove } from '@services/tokens.service';
 import { message } from 'antd';
 import { ethers } from 'ethers';
@@ -19,7 +20,6 @@ import {
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
-import { useContract } from "../../hooks/useContract";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useTheme } from '../../state/application/hooks';
 

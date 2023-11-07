@@ -3,12 +3,19 @@ import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { TransactionResponse } from "@ethersproject/providers";
-import { useTokenContract } from "@hooks/useContract";
+import { useTokenContract } from "@services/contracts.service";
+import { PortfolioApprovedToken } from "@services/portfolio/model/approvals";
+import { useBalance } from "@services/tokens.service";
 import { BigNumber } from "ethers";
+import { FC } from "react";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { AddressShowText, BottomRight, CancelButton, LineHNor, SmallIconIcon } from "../StyledComponents";
 
-export function ApproveItem({ item, cancel }: any) {
+export const ApproveItem: FC<{
+  item: PortfolioApprovedToken;
+  cancel: (approveCb: () => void) => void;
+}> = ({ item, cancel }) => {
+  const { loading, balance } = useBalance(item.address, item.chainId);
   const tokenContract = useTokenContract(item.address);
   const addTransaction = useTransactionAdder();
 
@@ -37,7 +44,7 @@ export function ApproveItem({ item, cancel }: any) {
                 {item.symbol}
               </TextEqure>
               <TextEqure fontColor={"#353945"} fontSize={16}>
-                {formatBalance(item.balance)} {item.symbol}
+                {!loading && <>{formatBalance(balance)} {item.symbol}</>}
               </TextEqure>
             </Column>
           </RowFixed>
@@ -46,9 +53,9 @@ export function ApproveItem({ item, cancel }: any) {
           </ThemeTextEqure>
         </RowBetween>
         <Column style={{ flex: 2 }}>
-          {item.projects.map((subItem: any, subIndex: number) => {
+          {item.spenders.map((subItem: any, subIndex: number) => {
             return (
-              <BottomRight>
+              <BottomRight key={subIndex}>
                 <RowBetween style={{ flex: 2 }}>
                   <RowFixed>
                     <SmallIconIcon src={subItem.icon} />
