@@ -2,6 +2,7 @@ import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
 import { getPrice, getTotalBorrowLimit, getTotalDaiBalance, useDaInfo } from '@services/banking.service'
 import { chainFromId } from '@services/chain.service'
+import { useContract } from "@services/contracts.service"
 import { useContext, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
@@ -11,7 +12,6 @@ import {
   marketsConfig
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'

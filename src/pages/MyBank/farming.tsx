@@ -9,6 +9,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useIconPrice } from "@services/banking.service"
 import { chainFromId } from "@services/chain.service"
+import { getContract, useContract } from "@services/contracts.service"
 import { usePositionInfo } from "@services/mining-staking.service"
 import { Tooltip } from 'antd'
 import { ethers } from 'ethers'
@@ -24,7 +25,6 @@ import {
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
-import { getContract, useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTheme } from '../../state/application/hooks'
 import AddPositionModal from './AddPositionModal'

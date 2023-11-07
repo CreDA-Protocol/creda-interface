@@ -8,6 +8,7 @@ import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useEarnInfo, useEarnResult } from '@services/banking.service'
 import { chainFromId } from "@services/chain.service"
+import { useContract } from "@services/contracts.service"
 import { useApprove } from '@services/tokens.service'
 import { useContext, useState } from 'react'
 import Countdown from 'react-countdown'
@@ -23,7 +24,6 @@ import {
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
-import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTheme } from '../../state/application/hooks'
 import { BankTopInfo } from './index'

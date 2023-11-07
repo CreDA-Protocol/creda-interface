@@ -1,5 +1,6 @@
 import USDT_icon from '@assets/tokens/USDT.png'
 import { TransactionResponse } from '@ethersproject/providers'
+import { useContract } from "@services/contracts.service"
 import { BigNumber } from "ethers"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
@@ -9,15 +10,14 @@ import {
   marketsConfig
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useContract } from "../../hooks/useContract"
 import { useTransactionAdder } from "../../state/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
 import { useDaInfo } from '@services/banking.service'
-import { Button } from "antd"
 import { chainFromId } from '@services/chain.service'
+import { Button } from "antd"
 
 const Container = styled.div`
   height:480px;

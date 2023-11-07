@@ -1,20 +1,25 @@
 import { ChainIdConfig } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
-import { chainFromId } from "@services/chain.service";
+import { ChainName, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
-import { useContext } from "react";
+import { PortfolioApprovedToken } from "@services/portfolio/model/approvals";
+import { PortfolioDataset } from "@services/portfolio/model/dataset";
+import { FC, useContext } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import { useTheme } from "styled-components";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
 
-export function ApprovalDiv({ data, netType }: any) {
+export const ApprovalDiv: FC<{
+  data: PortfolioDataset<PortfolioApprovedToken[]>;
+  netType: ChainName;
+}> = ({ data, netType }) => {
   const { chainId } = useContext(NetworkTypeContext);
   const network = chainFromId(chainId);
   const themeDark = useTheme();
 
-  function cancel(cancelApprove: any) {
+  function cancel(cancelApprove: () => void) {
     if (network === netType) {
       cancelApprove && cancelApprove();
     } else {
@@ -62,7 +67,7 @@ export function ApprovalDiv({ data, netType }: any) {
       <SpaceHeight height={30} heightApp={15} />
       <ProfileLoading loading={data.loading}></ProfileLoading>
       {!data.loading &&
-        data.data.authorizations.map((item: any, index: number) => {
+        data.data.map((item, index) => {
           return <ApproveItem item={item} cancel={cancel}></ApproveItem>;
         })}
     </BGDiv>

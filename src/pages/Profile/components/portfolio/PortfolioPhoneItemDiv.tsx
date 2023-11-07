@@ -3,14 +3,14 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
+import { PortfolioApiFarmAsset } from "@services/portfolio/model/portfolio-api.dto";
 import { FC, useState } from "react";
 import { ProfileProjectsConfig } from "../../configs/projectsConfig";
 import { Arrow, LineH, SmallIconIcon } from "../StyledComponents";
 import { ProjectBankItemMobile } from "../bank/ProjectBankItemMobile";
-import { PortfolioStakingDetails } from "@services/portfolio/model/staking";
 
 export const PortfolioPhoneItemDiv: FC<{
-  item: PortfolioStakingDetails;
+  item: PortfolioApiFarmAsset;
 }> = ({ item }) => {
   const [showMore, setShowMore] = useState(false);
 
@@ -21,16 +21,16 @@ export const PortfolioPhoneItemDiv: FC<{
         <RowFixed>
           <SmallIconIcon src={item.icon} />
           <ThemeTextEqure fontSize={17} fontWeight={"bold"}>
-            {item.desc}
+            {item.name}
           </ThemeTextEqure>
         </RowFixed>
         <RowFixed onClick={() => setShowMore(!showMore)}>
           <Column>
             <TextEqure fontSize={17} fontColor={"#4F56FF"} fontWeight={"bold"}>
-              ${formatBalance(item.value)}
+              ${formatBalance(item.amountPrice)}
             </TextEqure>
             <ThemeTextEqure fontSize={17}>
-              ${formatBalance(item.farmingValue)}
+              ${formatBalance(item.pendingPrice)}
             </ThemeTextEqure>
           </Column>
           <Arrow src={ImageCommon.ArrowDownIcon_white} />

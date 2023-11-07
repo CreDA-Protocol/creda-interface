@@ -1,15 +1,15 @@
-import { ApprovalState, bigNumberToBalance, } from "@common/Common";
+import { ApprovalState, ERC20_ABI, bigNumberToBalance, } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
-import { useTokenContract } from "@hooks/useContract";
-import { chainFromId } from "@services/chain.service";
+import { ChainId, chainFromId } from "@services/chain.service";
 import { BigNumber } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTransactionAdder } from "src/state/transactions/hooks";
+import { useChainContract, useTokenContract } from "./contracts.service";
 
 /**
  * 判断是否是 native token
@@ -50,10 +50,35 @@ export function isNativeToken(symbol: string) {
 } */
 
 /**
- * Gets the balance of a given token, for the active UI wallet, on the active UI network.
+ * Gets the balance of a given token, for the active UI wallet, on the given chain.
+ *
  * The returned balance is a number of tokens.
  */
-export function useBalance(symbol: string): any {
+export function useBalance(tokenContractAddress: string, chainId: ChainId): { loading: boolean; balance: number; } {
+  const { account } = useContext(WalletAddressContext);
+  const [balanceInfo, setBalanceInfo] = useState({ loading: true, balance: 0 });
+  const tokenContract = useChainContract(tokenContractAddress, ERC20_ABI, chainId);
+
+  useEffect(() => {
+    const fetchTokenBalance = async () => {
+      if (!account || !tokenContract)
+        return;
+
+      const res: BigNumber = await tokenContract?.balanceOf(account);
+      setBalanceInfo({ loading: false, balance: Number(bigNumberToBalance(res)) });
+    }
+    fetchTokenBalance();
+  }, [account, tokenContract]);
+
+  return balanceInfo;
+}
+
+/**
+ * Gets the balance of a given token, for the active UI wallet, on the active UI network.
+ *
+ * The returned balance is a number of tokens.
+ */
+export function useBalanceBySymbol(symbol: string): any {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);

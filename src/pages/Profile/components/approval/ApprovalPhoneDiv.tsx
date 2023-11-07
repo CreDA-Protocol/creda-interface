@@ -1,15 +1,20 @@
 import { ChainIdConfig } from "@common/Common";
-import { chainFromId } from "@services/chain.service";
+import { ChainName, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
-import { useContext } from "react";
+import { PortfolioApprovedToken } from "@services/portfolio/model/approvals";
+import { PortfolioDataset } from "@services/portfolio/model/dataset";
+import { FC, useContext } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import { ApprovalPhoneItemDiv } from "./ApprovalPhoneItemDiv";
 
-export function ApprovalPhoneDiv({ data, netType }: any) {
+export const ApprovalPhoneDiv: FC<{
+  data: PortfolioDataset<PortfolioApprovedToken[]>;
+  netType: ChainName;
+}> = ({ data, netType }) => {
   const { chainId } = useContext(NetworkTypeContext);
   const network = chainFromId(chainId);
 
-  function cancel(cancelApprove: any) {
+  function cancel(cancelApprove: () => void) {
     if (network === netType) {
       cancelApprove && cancelApprove();
     } else {
@@ -20,7 +25,7 @@ export function ApprovalPhoneDiv({ data, netType }: any) {
   return (
     <>
       {!data.loading &&
-        data.data.authorizations.map((item: any, index: number) => {
+        data.data.map((item, index) => {
           return <ApprovalPhoneItemDiv item={item} cancel={cancel} />;
         })}
     </>

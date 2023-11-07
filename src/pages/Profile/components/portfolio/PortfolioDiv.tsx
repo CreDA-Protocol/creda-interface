@@ -15,11 +15,11 @@ export const PortfolioDiv: FC<{
   const projects = allProjectsDataset.data;
 
   // Keep only projects with positive balance assets
-  const projectsWithAssets = projects?.filter(project => project?.value > 0);
+  const projectsWithAssets = projects?.filter(project => project?.amountPrice > 0);
 
   // Sort projects by asset name
   projectsWithAssets.sort((a, b) => {
-    return b.value - a.value;
+    return b.amountPrice - a.amountPrice;
   });
 
   if (allProjectsDataset.loading)

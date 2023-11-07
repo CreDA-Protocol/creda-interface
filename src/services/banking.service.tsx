@@ -1,6 +1,5 @@
 import { bigNumberToBalance, getPriceByApi, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { useTokenContract } from "@hooks/useContract";
 import { ChainIds, chainFromId } from "@services/chain.service";
 import { ContractCallContext, Multicall } from "ethereum-multicall";
 import { BigNumber } from "ethers";
@@ -8,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { BankConfig, EarnConfig } from "src/contract/ContractConfig";
 import { isNativeToken } from "./tokens.service";
+import { useTokenContract } from "./contracts.service";
 
 /**
  * 获取币种借贷信息

@@ -19,6 +19,7 @@ import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
 import { chainFromId } from "@services/chain.service"
+import { useContract } from "@services/contracts.service"
 import { useCNFTInfo } from '@services/credit.service'
 import { useApprove } from '@services/tokens.service'
 import { Badge, Skeleton } from 'antd'
@@ -36,7 +37,6 @@ import {
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
-import { useContract } from "../../hooks/useContract"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarning, useTheme } from '../../state/application/hooks'
 import { useAddToast } from "../../state/toast"
