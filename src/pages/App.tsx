@@ -134,7 +134,7 @@ export default function App() {
     checkWalletConnect();
     return () => {
       walletInfo.provider?.off("network");
-      (ethereum as any)?.off("accountsChanged", onAccountsChanged);
+      (ethereum as any)?.removeListener("accountsChanged", onAccountsChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
