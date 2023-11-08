@@ -11,8 +11,8 @@ import { useSpring } from 'react-spring';
 import styled from 'styled-components';
 import {
   createWalletConnectWeb3Provider,
+  ethereum,
   globalObj,
-  provider,
   walletInfo
 } from "../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../contexts";
@@ -120,7 +120,9 @@ export default function App() {
       }
     }
 
-    provider?.on("accountsChanged", onAccountsChanged);
+    // ethereum: injected by metamask
+    (ethereum as any)?.on("accountsChanged", onAccountsChanged);
+
     async function checkWalletConnect() {
       const connectProvider = await createWalletConnectWeb3Provider();
       if (connectProvider.connected) {
@@ -132,7 +134,7 @@ export default function App() {
     checkWalletConnect();
     return () => {
       walletInfo.provider?.off("network");
-      provider?.off("accountsChanged", onAccountsChanged);
+      (ethereum as any)?.off("accountsChanged", onAccountsChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
@@ -144,6 +146,7 @@ export default function App() {
       setTimeout(() => {
         setIsAccountLoading(false)
       }, 1000);
+
       if (!walletInfo.signer || !walletInfo.provider) {
         return;
       }
@@ -151,7 +154,6 @@ export default function App() {
       let networkInfo = await walletInfo.provider?.getNetwork();
       setChainId(networkInfo.chainId);
 
-      // console.log(networkInfo,"networkInfo")
       let addressRes = await walletInfo.signer?.getAddress();
       setAddress(addressRes);
       //  if(window.location.pathname !== '/home') {
@@ -163,17 +165,15 @@ export default function App() {
     }
   }
   function changeChainId(chainId: number) {
-    console.log(chainId, "chainId");
+    console.log("change chain Id", chainId);
     setChainId(chainId);
-
   }
 
   function changeAccount(accounts: string[]) {
-    console.log(accounts, "accounts");
+    console.log("change accounts", accounts);
     if (accounts[0] !== address && accounts.length) {
       // provider?.lookupAddress(accounts)
       setAddress(accounts[0]);
-
     } else {
       setAddress("");
     }
