@@ -96,8 +96,8 @@ export default function SwitchNetworkModal({
             await addNetwork(param);
         }
         catch (e) {
-          console.warn('switchNetwork error:', e)
-          onDismiss();
+            console.warn('switchNetwork error:', e)
+            onDismiss();
         }
     }
     return (
@@ -110,30 +110,32 @@ export default function SwitchNetworkModal({
                     <SwitchTitle>Select Network</SwitchTitle>
 
                     <FlexViewWrap>
-                      {mainnetNetworkConfigs.map(item => {
-                          return <NetworkItem
-                            title={item.chainParam.chainName}
-                            icon={item.icon}
-                            onClick={() => switchNetwork(item.chainParam)}
-                          ></NetworkItem>
+                        {mainnetNetworkConfigs.map((item, index) => {
+                            return <NetworkItem
+                                key={index}
+                                title={item.chainParam.chainName}
+                                icon={item.icon}
+                                onClick={() => switchNetwork(item.chainParam)}
+                            ></NetworkItem>
                         })
-                      }
+                        }
                     </FlexViewWrap>
 
                     <FlexViewBetween>
-                      <TestNetTitle>TestNet</TestNetTitle>
-                      {/* <Toogle>Hide TestNet</Toogle> */}
+                        <TestNetTitle>TestNet</TestNetTitle>
+                        {/* <Toogle>Hide TestNet</Toogle> */}
                     </FlexViewBetween>
 
                     <FlexViewWrap>
-                      {testnetNetworkConfigs.map(item => {
-                          return <NetworkItem
-                            title={item.chainParam.chainName}
-                            icon={item.icon}
-                            onClick={() => switchNetwork(item.chainParam)}
-                          ></NetworkItem>
+                        {testnetNetworkConfigs.map((item, index) => {
+                            return <NetworkItem
+                                key={index}
+                                title={item.chainParam.chainName}
+                                icon={item.icon}
+                                onClick={() => switchNetwork(item.chainParam)}
+                            ></NetworkItem>
                         })
-                      }
+                        }
                     </FlexViewWrap>
 
                     <CancelTitle

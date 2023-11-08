@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+/* import styled from 'styled-components'
 
 import ImageCommon from '@assets/common/ImageCommon'
 
@@ -47,3 +47,6 @@ export function DownBackground() {
     </DownBackgroundContainer>
   )
 }
+ */
+
+export default {}

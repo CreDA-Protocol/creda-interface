@@ -4,7 +4,7 @@ import ImageToken from '@assets/tokens/ImageToken'
 import { Lottie } from "@crello/react-lottie"
 import { useBalanceBySymbol } from '@services/tokens.service'
 import { Skeleton } from "antd"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useHistory } from 'react-router-dom'
 import { animated, config, useSpring } from 'react-spring'
@@ -334,7 +334,7 @@ const MaxButton = styled(FlexViewCenter)`
 `
 
 // 下拉列表组件
-export const InputPanel = ({ onChangeValue, onChangeSymbol }: any) => {
+/* export const InputPanel = ({ onChangeValue, onChangeSymbol }: any) => {
   const [show, setShow] = useState(false);
   const [item, setItem] = useState<any>({});
   const [value, setValue] = useState("");
@@ -385,7 +385,8 @@ export const InputPanel = ({ onChangeValue, onChangeSymbol }: any) => {
       ></PanelList>}
     </PanelView>
   )
-}
+} */
+
 const PanelList = ({ onChangeItem }: any) => {
   // useEffect(()=>{
   //   onChangeItem && onChangeItem(panelPairs[0])

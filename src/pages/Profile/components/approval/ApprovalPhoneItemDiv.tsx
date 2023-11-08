@@ -4,12 +4,12 @@ import { Column } from "@components/Column";
 import { RowBetween, RowFixed, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { TransactionResponse } from "@ethersproject/providers";
+import { useTokenContract } from "@services/contracts.service";
 import { BigNumber } from "ethers";
 import { useState } from "react";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { useTheme } from "styled-components";
 import { Arrow, BGDiv, CancelButton, LineH, SmallIconIcon } from "../StyledComponents";
-import { useTokenContract } from "@services/contracts.service";
 
 export function ApprovalPhoneItemDiv({ item, cancel }: any) {
   const [showMore, setShowMore] = useState(false);
@@ -81,16 +81,13 @@ export function ApprovalPhoneItemDiv({ item, cancel }: any) {
                 </RowBetween>
                 <RowBetween>
                   <TextEqure fontColor={"#777E90"} fontSize={10}>
-                    Risk exposure
+                    Exposure to spender
                   </TextEqure>
                   <ThemeTextEqure fontSize={18}>
                     ${formatBalance(subItem.exposureUsd)}
                   </ThemeTextEqure>
                 </RowBetween>
                 <RowBetween>
-                  <TextEqure fontColor={"#777E90"} fontSize={10}>
-                    Approved amount
-                  </TextEqure>
                   <ThemeTextEqure fontSize={18}>All</ThemeTextEqure>
                 </RowBetween>
                 <RowBetween style={{ overflow: "hidden" }}>

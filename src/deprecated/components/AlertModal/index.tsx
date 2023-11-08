@@ -1,4 +1,4 @@
-import ImageCommon from '@assets/common/ImageCommon';
+/* import ImageCommon from '@assets/common/ImageCommon';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import Modal from '../NormalModal';
@@ -50,7 +50,7 @@ const ContainerReveiveTop = styled.div`
   font-size:18px;
   background-color:white;
   border-radius:15px;
-  cursor: pointer; 
+  cursor: pointer;
 `
 const ContainerTitle = styled.span`
   color:white;
@@ -100,3 +100,6 @@ const colors = [
   'gold',
   'lime',
 ];
+ */
+
+export default {}
