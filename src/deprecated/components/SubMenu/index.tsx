@@ -1,10 +1,10 @@
-import { Dropdown, Menu } from 'antd';
+/* import { Dropdown, Menu } from 'antd';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
 import ImageCommon from '@assets/common/ImageCommon';
-import Row from '../Row';
+import Row from '../../../components/Row';
 const TopMenuImage = styled.img`
   width: 28px;
   height: 20px;
@@ -111,3 +111,6 @@ export default function SubMenu({ history }: any) {
     </>
   )
 }
+ */
+
+export default {}

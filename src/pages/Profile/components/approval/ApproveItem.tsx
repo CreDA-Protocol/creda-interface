@@ -1,36 +1,84 @@
+import ImageCommon from "@assets/common/ImageCommon";
 import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { TransactionResponse } from "@ethersproject/providers";
+import { ChainId } from "@services/chain.service";
 import { useTokenContract } from "@services/contracts.service";
-import { PortfolioApprovedToken } from "@services/portfolio/model/approvals";
-import { useBalance } from "@services/tokens.service";
+import { PortfolioApprovedSpender, PortfolioApprovedToken } from "@services/portfolio/model/approvals";
+import { useAllowanceInTokens, useBalance } from "@services/tokens.service";
 import { BigNumber } from "ethers";
 import { FC } from "react";
 import { useTransactionAdder } from "src/state/transactions/hooks";
 import { AddressShowText, BottomRight, CancelButton, LineHNor, SmallIconIcon } from "../StyledComponents";
 
-export const ApproveItem: FC<{
-  item: PortfolioApprovedToken;
+export const SpenderRow: FC<{
+  token: PortfolioApprovedToken;
+  spender: PortfolioApprovedSpender;
+  chainId: ChainId;
+  userTokenBalance: number; // User balance of "token", in readable format
   cancel: (approveCb: () => void) => void;
-}> = ({ item, cancel }) => {
-  const { loading, balance } = useBalance(item.address, item.chainId);
-  const tokenContract = useTokenContract(item.address);
+}> = ({ token, spender, chainId, userTokenBalance, cancel }) => {
   const addTransaction = useTransactionAdder();
+  const tokenContract = useTokenContract(spender.address); // On the active wallet network
+  const allowance = useAllowanceInTokens(token.address, spender.address, chainId);
+  const isMaxExposure = userTokenBalance <= parseInt(allowance);
 
-  function cancelApprove(spender: string) {
-    tokenContract
-      ?.approve(spender, BigNumber.from(0))
-      .then(async (response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: "Cancel Approve",
-        });
-        await response.wait();
-      })
-      .catch((err: any) => {
+  function cancelApprove(spenderAddress: string) {
+    tokenContract?.approve(spenderAddress, BigNumber.from(0)).then(async (response: TransactionResponse) => {
+      addTransaction(response, {
+        summary: "Cancel Approve",
       });
+      await response.wait();
+    }).catch((err: any) => {
+      console.error(err);
+    });
   }
+
+  return (
+    <BottomRight>
+      <RowBetween style={{ flex: 1 }}>
+        <RowFixed>
+          <SmallIconIcon src={spender.icon || ImageCommon.Unknown} />
+          <Column>
+            <ThemeTextEqure fontSize={20}>
+              {spender.name ? spender.name : "Unknown project"}
+            </ThemeTextEqure>
+            <AddressShowText
+              style={{ width: 200 }}
+              fontColor={"#777E90"}
+              fontSize={16}
+            >
+              {spender.address}
+            </AddressShowText>
+          </Column>
+        </RowFixed>
+      </RowBetween>
+      <RowFixed style={{ flex: 1, marginLeft: 10 }}>
+        <ThemeTextEqure fontSize={20}>
+          {isMaxExposure && "All your tokens"}
+          {!isMaxExposure && allowance !== null && formatBalance(allowance) + " " + token.symbol}
+        </ThemeTextEqure>
+        <SpaceWidth width={30} widthApp={35} />
+        <CancelButton
+          onClick={() => {
+            cancel(() => cancelApprove(spender.address));
+          }}
+        >
+          Cancel
+        </CancelButton>
+      </RowFixed>
+    </BottomRight>
+  );
+}
+
+export const ApproveItem: FC<{
+  token: PortfolioApprovedToken;
+  chainId: ChainId;
+  cancel: (approveCb: () => void) => void;
+}> = ({ token, chainId, cancel }) => {
+  const { loading, balance } = useBalance(token.address, token.chainId);
 
   return (
     <>
@@ -38,59 +86,22 @@ export const ApproveItem: FC<{
       <RowBetween style={{ alignItems: "flex-start" }}>
         <RowBetween style={{ flex: 1, marginRight: 24, marginTop: 10 }}>
           <RowFixed>
-            <SmallIconIcon src={item.icon} />
+            <SmallIconIcon src={token.icon} />
             <Column>
               <TextEqure fontColor={"#777E90"} fontSize={18}>
-                {item.symbol}
+                {token.symbol}
               </TextEqure>
               <TextEqure fontColor={"#353945"} fontSize={16}>
-                {!loading && <>{formatBalance(balance)} {item.symbol}</>}
+                {!loading && <>{formatBalance(balance)} {token.symbol}</>}
               </TextEqure>
             </Column>
           </RowFixed>
           <ThemeTextEqure fontSize={20}>
-            ${formatBalance(item.sumExposureUsd)}
+            ${formatBalance(token.sumExposureUsd)}
           </ThemeTextEqure>
         </RowBetween>
         <Column style={{ flex: 2 }}>
-          {item.spenders.map((subItem: any, subIndex: number) => {
-            return (
-              <BottomRight key={subIndex}>
-                <RowBetween style={{ flex: 2 }}>
-                  <RowFixed>
-                    <SmallIconIcon src={subItem.icon} />
-                    <Column>
-                      <ThemeTextEqure fontSize={20}>
-                        {subItem.name ? subItem.name : "Unknown project"}
-                      </ThemeTextEqure>
-                      <AddressShowText
-                        style={{ width: 250 }}
-                        fontColor={"#777E90"}
-                        fontSize={16}
-                      >
-                        {subItem.address}
-                      </AddressShowText>
-                    </Column>
-                  </RowFixed>
-                  <ThemeTextEqure fontSize={20}>All</ThemeTextEqure>
-                </RowBetween>
-                <RowFixed style={{ flex: 1, marginLeft: 30 }}>
-                  <SpaceWidth width={30} widthApp={35} />
-                  <ThemeTextEqure fontSize={20}>
-                    ${formatBalance(subItem.exposureUsd)}
-                  </ThemeTextEqure>
-                  <SpaceWidth width={30} widthApp={35} />
-                  <CancelButton
-                    onClick={() => {
-                      cancel(() => cancelApprove(subItem.address));
-                    }}
-                  >
-                    Cancel
-                  </CancelButton>
-                </RowFixed>
-              </BottomRight>
-            );
-          })}
+          {token.spenders.map((spender, subIndex) => <SpenderRow token={token} spender={spender} chainId={chainId} cancel={cancel} userTokenBalance={balance} key={subIndex} />)}
         </Column>
       </RowBetween>
     </>

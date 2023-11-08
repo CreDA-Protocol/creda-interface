@@ -1,7 +1,7 @@
-import ImageCommon from '@assets/common/ImageCommon'
+/* import ImageCommon from '@assets/common/ImageCommon'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import Modal from '../NormalModal'
+import Modal from '../../../components/NormalModal'
 
 const Container = styled.div`
   width:100%;
@@ -182,3 +182,6 @@ export default function MenuAppModal({
     </Modal>
   )
 }
+ */
+
+export default {}

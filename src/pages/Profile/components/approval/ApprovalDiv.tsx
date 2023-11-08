@@ -1,21 +1,20 @@
 import { ChainIdConfig } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
-import { ChainName, chainFromId } from "@services/chain.service";
+import { ChainId, ChainType, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
 import { PortfolioApprovedToken } from "@services/portfolio/model/approvals";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
-import { FC, useContext } from "react";
-import { NetworkTypeContext } from "src/contexts";
+import { FC } from "react";
 import { useTheme } from "styled-components";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
 
 export const ApprovalDiv: FC<{
   data: PortfolioDataset<PortfolioApprovedToken[]>;
-  netType: ChainName;
-}> = ({ data, netType }) => {
-  const { chainId } = useContext(NetworkTypeContext);
+  chainId: ChainId;
+}> = ({ data, chainId }) => {
+  const netType = ChainType[chainId];
   const network = chainFromId(chainId);
   const themeDark = useTheme();
 
@@ -43,7 +42,7 @@ export const ApprovalDiv: FC<{
           </TextEqure>
         </RowBetween>
         <RowBetween style={{ flex: 2 }}>
-          <RowBetween style={{ flex: 2 }}>
+          <RowBetween style={{ flex: 1 }}>
             <TextEqure
               style={{ marginLeft: 24 }}
               fontColor={"#777E90"}
@@ -51,24 +50,21 @@ export const ApprovalDiv: FC<{
             >
               Project/Contract
             </TextEqure>
-            <TextEqure fontColor={"#777E90"} fontSize={18}>
-              Approved amount
-            </TextEqure>
           </RowBetween>
           <TextEqure
             style={{ flex: 1, marginLeft: 30 }}
             fontColor={"#777E90"}
             fontSize={18}
           >
-            Risk exposure
+            Exposure to spender
           </TextEqure>
         </RowBetween>
       </RowBetween>
       <SpaceHeight height={30} heightApp={15} />
       <ProfileLoading loading={data.loading}></ProfileLoading>
       {!data.loading &&
-        data.data.map((item, index) => {
-          return <ApproveItem item={item} cancel={cancel}></ApproveItem>;
+        data.data?.map((item, index) => {
+          return <ApproveItem token={item} cancel={cancel} chainId={chainId} key={index}></ApproveItem>;
         })}
     </BGDiv>
   );

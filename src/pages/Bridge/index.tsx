@@ -424,14 +424,14 @@ const SelectChain = React.memo(({
             <FlexViewCenter>
                 <WinView>
                     <CustomIcon
-                        src={ImageCommon[coins[0].symbol]}
+                        src={(ImageCommon as any)[coins[0].symbol]}
                         size={40}
                         mSize={20}
                     ></CustomIcon>
                 </WinView>
                 <MobileView>
                     <CustomIcon
-                        src={ImageCommon[coins[0].symbol]}
+                        src={(ImageCommon as any)[coins[0].symbol]}
                         size={30}
                         mSize={20}
                     ></CustomIcon>
@@ -459,7 +459,7 @@ const SelectChain = React.memo(({
 
                                 <FlexViewCenter>
                                     <CustomIcon
-                                        src={ImageCommon[item.symbol]}
+                                        src={(ImageCommon as any)[item.symbol]}
                                         size={40}
                                     ></CustomIcon>
                                     <TitleH3>{item.title}</TitleH3>

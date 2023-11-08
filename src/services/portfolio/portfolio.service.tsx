@@ -32,7 +32,7 @@ export function useTopStakingProjects(chainId: ChainId) {
   let { account } = useContext(WalletAddressContext);
   const [projects, setProjects] = useState<PortfolioApiFarm[]>([]);
 
-  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
+  //account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
   useEffect(() => {
     setProjects(null);
@@ -86,7 +86,7 @@ export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<Port
   const topChainProjects = useTopStakingProjects(chainId); // Retrieve top projects first, so we know which ones to check for assets
   let { account } = useContext(WalletAddressContext);
 
-  account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
+  //account = "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"; // DEBUG - unknown address found on glide, has stake on arbitrum
 
   const [walletProjects, setWalletProjects] = useState<PortfolioDataset<PortfolioApiFarmAsset[]>>(stakingInitialState);
 
@@ -105,7 +105,7 @@ export function usePortfolioUserStaking(chainId: ChainId): PortfolioDataset<Port
             loadedInfo++;
             if (stakingInfo) {
               stakingDetails.push(JSON.parse(stakingInfo));
-              setWalletProjects({ loading: loadedInfo == topChainProjects.length, data: [...stakingDetails] });
+              setWalletProjects({ loading: loadedInfo !== topChainProjects.length, data: [...stakingDetails] });
             }
           });
         }
@@ -259,15 +259,14 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
 
           for (const approved of apiApproval.approved) {
             spenders.push({
-              icon: approved.approved.farm?.icon || null,
+              icon: completedTinIcon(approved.approved.farm?.icon, "project") || null,
               name: approved.approved.farm?.name || "Unknown contract / app",
               address: approved.approved.address,
-              exposureUsd: -1 // TODO
             });
           }
 
           approvedTokens.push({
-            icon: apiApproval.contract.icon,
+            icon: completedTinIcon(apiApproval.contract.icon, "token"),
             address: apiApproval.contract.address,
             symbol: apiApproval.contract.symbol,
             chainId,
@@ -287,4 +286,20 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
   }, [account, chainId]);
 
   return approvals;
+}
+
+/**
+ * Depending on the input format of a tin icon, returns a fully usable icon url.
+ */
+const completedTinIcon = (rawIcon: string, type: "token" | "project"): string => {
+  if (!rawIcon)
+    return null;
+
+  if (rawIcon.startsWith("http"))
+    return rawIcon; // coingecko, etc
+
+  if (type === "token")
+    return `https://api.tin.network/icons/tokens/${rawIcon}.webp`;
+  else
+    return `https://api.tin.network/icons/farms/${rawIcon}.png`;
 }

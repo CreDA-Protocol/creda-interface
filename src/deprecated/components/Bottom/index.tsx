@@ -1,4 +1,4 @@
-
+/* 
 import ImageCommon from '@assets/common/ImageCommon'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
@@ -72,3 +72,6 @@ export default function Bottom() {
 
   )
 }
+ */
+
+export default {}

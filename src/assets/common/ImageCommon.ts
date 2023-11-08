@@ -240,12 +240,13 @@ import theme_dark_icon from './theme_dark_icon.png';
 import theme_light_icon from './theme_light_icon.png';
 import ticketStar from './ticketStar.png';
 import top_left_bg_image from './top_left_bg_image.png';
+import Unknown from './unknown.png';
 import voice2 from './voice2.png';
 import walletconnect from './walletconnect.svg';
 import warnning_icon from './warnning_icon.png';
 import youjiantou from './youjiantou.png';
 
-const ImageCommon: any = {
+const ImageCommon = {
   Bridge_black,
   Bridge_white,
   About_black,
@@ -491,6 +492,7 @@ const ImageCommon: any = {
   icon_calc_close,
   icon_calc_exchange,
   icon_calculater,
-  AboutUsWhite
+  AboutUsWhite,
+  Unknown
 }
 export default ImageCommon;

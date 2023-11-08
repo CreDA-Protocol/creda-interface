@@ -4,7 +4,6 @@ export type PortfolioApprovedSpender = {
   icon: string;
   name: string;
   address: string; // Spender contract/project address (ie: a DEX contract)
-  exposureUsd: number; // USD amount this spender is able to spend
 }
 
 /**
