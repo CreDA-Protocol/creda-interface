@@ -11,7 +11,7 @@ import {
 } from "@components/Row";
 import { ThemeText } from "@components/ThemeComponent";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "styled-components";
+import { useTheme } from "src/state/application/hooks";
 import { BottomDiscordIcon, BottomDown, BottomFooterWrap, BottomIcon, BottomInfoDiv, BottomMediumIcon, BottomRedditIcon, FooterLink, FooterLinkWrap } from "./FooterStyles";
 
 export function DesktopFooter() {

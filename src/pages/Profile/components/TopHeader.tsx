@@ -14,12 +14,12 @@ import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.servi
 import { useApprove } from '@services/tokens.service';
 import { FC, useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { NetworkTypeContext } from "src/contexts";
+import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from 'src/contract/ContractConfig';
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
+import { useTheme } from 'src/state/application/hooks';
 import { ToastStatus, useAddToast } from "src/state/toast";
 import { useTransactionAdder } from "src/state/transactions/hooks";
-import { useTheme } from "styled-components";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
 
 enum StakeType {
@@ -33,6 +33,7 @@ export const TopHeader: FC<{
 }> = ({ walkThroughStep }) => {
   const [stopAnimation, setStopAnimation] = useState(false)
   const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
   const walletListEth = usePortfolioWalletTokenList(chainIndexToId[0]);
   const walletListBsc = usePortfolioWalletTokenList(chainIndexToId[1]);
@@ -79,12 +80,15 @@ export const TopHeader: FC<{
 
   async function syncCredit() {
     loading.show(LoadingType.confirm, `Sync`)
-    // TODO: we should use syncCredit.
+    // TODO: we should use getAndUpdateCredit.
     // but for now, we use CredaContract on esc.
     if (!CredaContract) {
-      let response = await getAndUpdateCredit();
-      loading.show(LoadingType.success, response?.hash)
-
+      try {
+        let response = await getAndUpdateCredit(account);
+        loading.show(LoadingType.success, response?.hash)
+      } catch (e) {
+        loading.show(LoadingType.error, "")
+      }
     } else {
       CredaContract?.creditUpdate(GasInfo)
         .then(async (response: TransactionResponse) => {
