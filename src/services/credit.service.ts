@@ -23,20 +23,37 @@ export type CreditResponse = {
   data: CreditData
 }
 
-async function getCreditInfoByApi(address: string): Promise<number> {
-  // TODO: update api url
-  const originUrl = `https://contracts-elamain.creda.app/api/public/home/contract/getCreditInfo?address=${address}`;
-  let score = 0;
+async function getCreditInfoByApi(address: string): Promise<CreditResponse> {
+  // The credit score is calculated based on all chains that deployed contracts.
+  const originUrl = `https://staging-api.creda.app/contract/getCreditInfo?address=${address}`;
   try {
     let res: AxiosResponse<CreditResponse> = await axios.get(originUrl);
-    // console.log(res)
-    let data = res.data
+    return res.data;
+  } catch (e) {
+    // Get exception if no credit score has been generated for new address.
+    console.warn("getCreditInfoByApi error:", e);
+  }
+
+  return null;
+}
+
+async function getCreditScoreByApi(address: string): Promise<number> {
+  let score = 0;
+  try {
+    let data = await getCreditInfoByApi(address);
+    if (!data) return score;
+
     if (data.code === 200) {
       let str = data.data.score
       score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
+    } else if (data.code === 500) {
+      // Use the default score if no credit score has been generated for new address.
+      score = 50;
+    } else {
+      console.warn("getCreditScoreByApi failed:", data);
     }
   } catch (e) {
-    console.warn("getCreditInfoByApi error:", e);
+    console.warn("getCreditScoreByApi error:", e);
   }
   return score;
 }
@@ -51,13 +68,18 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
       let info = await dataContract.getCreditInfo(account)
       // console.log('dataContract.getCreditInfo:', info, account)
       score = Number(formatBalance(info.credit, 2))
+
+      if (score === 0) {
+        // Use the default score if no credit score has been generated for new address.
+        score = 50;
+      }
     }
     else if (chainId === ChainIds.esc) {
       const creditScore = await credaContract.creditScore(account)
       // console.log('credaContract.getCreditInfo:', creditScore)
       score = Number(formatBalance(creditScore.toString(), 2))
     } else {
-      let scoreByApi = await getCreditInfoByApi(account);
+      let scoreByApi = await getCreditScoreByApi(account);
       score = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
     }
   } catch (e) {
@@ -70,8 +92,20 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
  * Call the backend API’s getCreditInfo() to retrieve the user's score and Merkle Proof
  * Then, call the data contract's updateCredit()
  */
-export function getAndUpdateCredit(): Promise<any> {
-  // TODO: wait the api
+export async function getAndUpdateCredit(address: string): Promise<any> {
+  let data = await getCreditInfoByApi(address);
+  if (!data) {
+    return;
+  }
+
+  console.log('getAndUpdateCredit:', data)
+  if (data.code === 200) {
+    // call the data contract's updateCredit()
+  } else if (data.code === 500) {
+    // new address, don't call updateCredit()
+  } else {
+    console.warn("getCreditInfoByApi failed:", data);
+  }
   return Promise.resolve({hash:'0x11111111111111111111111111111111'});
 }
 

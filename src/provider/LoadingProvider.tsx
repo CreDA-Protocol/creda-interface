@@ -155,19 +155,23 @@ function Loading({ visible, type, message, onClose }: any) {
                     >
                         Transaction Success
                     </LoadingTitle>
-                    <LoadingDesc
-                        dark={Boolean(themeDark)}
-                    >
-                        Transaction Hash: {formatAccount(message)}
-                    </LoadingDesc>
-                    <LoadingHashView
-                        dark={Boolean(themeDark)}
-                        onClick={() => {
-                            window.open(getScanLink(chainId, message, "transaction"))
-                        }}
-                    >
-                        View On {getScanName(chainId)}
-                    </LoadingHashView>
+                    {message &&
+                      <>
+                      <LoadingDesc
+                          dark={Boolean(themeDark)}
+                      >
+                          Transaction Hash: {formatAccount(message)}
+                      </LoadingDesc>
+                      <LoadingHashView
+                          dark={Boolean(themeDark)}
+                          onClick={() => {
+                              window.open(getScanLink(chainId, message, "transaction"))
+                          }}
+                      >
+                          View On {getScanName(chainId)}
+                      </LoadingHashView>
+                      </>
+                    }
                 </>}
             </LoadingContent>
         </LoadingContainer>

@@ -124,7 +124,10 @@ export const ChainRPCs: { [chainId: ChainId]: string } = {
   [ChainIds.esc]: "https://api.trinity-tech.io/esc",
   [ChainIds.celo]: "https://rpc.ankr.com/celo",
   [ChainIds.polygon]: "https://polygon.llamarpc.com",
-  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc"
+  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc",
+  // Testnet
+  [ChainIds.celotest]: "https://alfajores-forno.celo-testnet.org",
+  [ChainIds.elatest]: "https://api-testnet.elastos.io/esc",
 };
 
 const rpcProvidersCache: { [chainId: ChainId]: providers.JsonRpcProvider } = {};
