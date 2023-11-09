@@ -8,7 +8,7 @@ import { chainIndexToId, chainTitles } from "@services/chain.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { useTheme } from "styled-components";
+import { useTheme } from "src/state/application/hooks";
 import { BGDiv, CenterItemDiv, IconIcon, IconIconBlue, LineH, LineV, MoreIcon } from "../StyledComponents";
 import { Wrap } from "../Wrap";
 import { WalletDiv } from "./WalletDiv";

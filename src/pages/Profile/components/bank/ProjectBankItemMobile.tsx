@@ -1,5 +1,5 @@
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
-import { useTheme } from "styled-components";
+import { useTheme } from "src/state/application/hooks";
 import { BGDiv, PortfolioTopBg } from "../StyledComponents";
 import { ProjectBankListMobile } from "./ProjectBankListMobile";
 

@@ -5,7 +5,7 @@ import { ChainId, ChainType, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { FC } from "react";
-import { useTheme } from "styled-components";
+import { useTheme } from "src/state/application/hooks";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
