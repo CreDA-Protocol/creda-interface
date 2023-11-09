@@ -45,7 +45,7 @@ export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
 
       if ((forceUpdate || !cachedData || isExpired) && this.cacheMissCallback) {
         const value = await this.cacheMissCallback(key, customData);
-        if (value)
+        if (value !== undefined) // BEWARE: null is a valid value to cache
           await this.put(key, value);
 
         return value;

@@ -34,6 +34,7 @@ export const HECO_URL = "https://http-mainnet.hecochain.com";
 export const BSC_URL = "https://bsc-dataseed1.defibit.io/";
 export const Arbitrum_Url = "https://arb1.arbitrum.io/rpc/";
 
+// DEPRECATED - Use getRpcProvider(chainId)
 export const HECO_PROVIDER = new ethers.providers.JsonRpcProvider(HECO_URL);
 export const BSC_PROVIDER = new ethers.providers.JsonRpcProvider(BSC_URL);
 export const Arbitrum_Provider = new ethers.providers.JsonRpcProvider(Arbitrum_Url);
