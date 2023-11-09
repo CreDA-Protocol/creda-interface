@@ -46,7 +46,7 @@
     border-color:#4022F3;
 }
 
- .ant-btn-primary:hover, .ant-btn-primary:focus {
+.ant-btn-primary:hover, .ant-btn-primary:focus {
      opacity: 0.8;
      background:#4022F3;
      border-color:#4022F3;
@@ -55,8 +55,13 @@
     border-radius: 5px;
 }
 
+.ant-dropdown-menu, .ant-dropdown-menu-item {
+  border-radius: 5px;
+}
+
 /*modal*/
 [data-reach-dialog-content] {
     border-radius: 20px;
     overflow: hidden;
+    background: transparent;
 }
