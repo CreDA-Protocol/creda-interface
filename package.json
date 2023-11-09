@@ -73,6 +73,7 @@
       "react-app/jest"
     ],
     "rules": {
+      "eqeqeq": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "import/no-anonymous-default-export": "off"
     }

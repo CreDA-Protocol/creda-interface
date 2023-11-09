@@ -3,9 +3,10 @@ import { ChainId } from "@services/chain.service";
 import { useContext, useEffect, useRef, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { PermanentCache } from "../caches/permanent-cache";
-import { PortfolioApprovedSpender, PortfolioApprovedToken } from "./model/approvals";
 import { PortfolioDataset } from "./model/dataset";
 import { PortfolioApiApproval, PortfolioApiFarm, PortfolioApiFarmAsset, PortfolioApiWalletToken } from "./model/portfolio-api.dto";
+import { PortfolioApprovedSpender } from "./model/portfolio-approved-spender";
+import { PortfolioApprovedToken } from "./model/portfolio-approved-token";
 import { PortfolioWalletToken, PortfolioWalletTokenList } from "./model/tokens";
 
 const oneDayInSeconds = (24 * 60 * 60);
@@ -249,7 +250,7 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
   useEffect(() => {
     setApprovals({ loading: true, data: [] });
 
-    approvalsCache.get(`${account}-${chainId}`, { account, chainId }).then(rawApiApprovals => {
+    approvalsCache.get(`${account}-${chainId}`, { account, chainId }).then(async rawApiApprovals => {
       if (rawApiApprovals) {
         const apiApprovals: PortfolioApiApproval[] = JSON.parse(rawApiApprovals);
 
@@ -257,22 +258,9 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
         for (const apiApproval of apiApprovals) {
           const spenders: PortfolioApprovedSpender[] = [];
 
-          for (const approved of apiApproval.approved) {
-            spenders.push({
-              icon: completedTinIcon(approved.approved.farm?.icon, "project") || null,
-              name: approved.approved.farm?.name || "Unknown contract / app",
-              address: approved.approved.address,
-            });
-          }
-
-          approvedTokens.push({
-            icon: completedTinIcon(apiApproval.contract.icon, "token"),
-            address: apiApproval.contract.address,
-            symbol: apiApproval.contract.symbol,
-            chainId,
-            sumExposureUsd: -1, // TODO
-            spenders
-          });
+          const approvedToken = await PortfolioApprovedToken.fromApiApproval(apiApproval, account, chainId);
+          if (approvedToken)
+            approvedTokens.push(approvedToken);
         }
 
         setApprovals({ loading: false, data: approvedTokens });
@@ -286,20 +274,4 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
   }, [account, chainId]);
 
   return approvals;
-}
-
-/**
- * Depending on the input format of a tin icon, returns a fully usable icon url.
- */
-const completedTinIcon = (rawIcon: string, type: "token" | "project"): string => {
-  if (!rawIcon)
-    return null;
-
-  if (rawIcon.startsWith("http"))
-    return rawIcon; // coingecko, etc
-
-  if (type === "token")
-    return `https://api.tin.network/icons/tokens/${rawIcon}.webp`;
-  else
-    return `https://api.tin.network/icons/farms/${rawIcon}.png`;
 }

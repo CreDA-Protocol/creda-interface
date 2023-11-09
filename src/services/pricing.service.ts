@@ -1,15 +1,42 @@
-import { BSC_PROVIDER, ERC20_ABI, balanceToBigNumber, bigNumberToBalance, enableNetwork, logError } from "@common/Common";
+import { balanceToBigNumber, bigNumberToBalance, enableNetwork, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { chainFromId } from "@services/chain.service";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
-import { useContract, useContractWithProvider } from "./contracts.service";
+import { PermanentCache } from "./caches/permanent-cache";
+import { useContract } from "./contracts.service";
+
+const pricingCache = new PermanentCache("token-usd-prices", async (symbol) => {
+  try {
+    const info = await fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbol}&tsyms=USD`).then((response) => response.json());
+    if (info?.RAW?.[symbol]) {
+      return info.RAW[symbol]['USD'].PRICE;
+    } else {
+      return null;
+    }
+  }
+  catch (e) {
+    return null;
+  }
+}, 10 * 60); // 10 minutes cache
+
+/**
+ * Gets a token price in USD from the CryptoCompare API.
+ *
+ * TODO: cache
+ */
+export const getUSDTokenPriceBySymbol = (symbol: string): Promise<number> => {
+  if (!symbol)
+    throw new Error("Token symbol missing for getUSDTokenPriceBySymbol().");
+
+  return pricingCache.get(symbol.toUpperCase()) as Promise<number>;
+}
 
 /**
  * Gets the BSC balance in USDT, of the currently active wallet.
  */
-export function useBscUsdt(): any {
+/* export function useBscUsdt(): any {
   const contract = useContractWithProvider(ContractConfig.USDT.bsc.address, ERC20_ABI, BSC_PROVIDER)
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
@@ -38,7 +65,7 @@ export function useBscUsdt(): any {
     return () => clearInterval(interval);
   }, [contract, account])
   return data;
-}
+} */
 
 export function useSushiPrice(amount: number, path: string[]): any {
   const { chainId } = useContext(NetworkTypeContext);

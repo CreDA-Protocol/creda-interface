@@ -39,7 +39,7 @@ export function Segment({ onSegmentSelect }: any) {
           onSegmentSelect(2);
         }}
       >
-        Approval
+        Approvals
       </SegmentItem>
     </SegmentDiv>
   );

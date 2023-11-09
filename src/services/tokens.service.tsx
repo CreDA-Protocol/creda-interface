@@ -3,13 +3,13 @@ import { GlobalConfiguration } from "@common/config";
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
 import { ChainId, chainFromId, getRPCProvider } from "@services/chain.service";
-import { BigNumber, Signer, constants, providers } from "ethers";
+import { BigNumber, constants } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTransactionAdder } from "src/state/transactions/hooks";
-import { useChainContract, useContractWithProvider, useTokenContract } from "./contracts.service";
+import { getContract, useChainContract, useContractWithProvider, useTokenContract } from "./contracts.service";
 
 /**
  * 判断是否是 native token
@@ -106,6 +106,12 @@ export function useBalanceBySymbol(symbol: string): any {
   return info;
 }
 
+export const getTokenDecimals = (chainId: ChainId, tokenAddress: string): Promise<number> => {
+  const rpcProvider = getRPCProvider(chainId);
+  const tokenContract = getContract(tokenAddress, ERC20_ABI, rpcProvider);
+  return tokenContract.decimals();
+}
+
 /**
  * Returns the number of decimals for the given token on the given chain.
  *
@@ -113,24 +119,14 @@ export function useBalanceBySymbol(symbol: string): any {
  */
 export const useTokenDecimals = (tokenAddress: string, chainId: ChainId): number => {
   const [decimals, setDecimals] = useState<number>(-1);
-  const rpcProvider = getRPCProvider(chainId);
-  const tokenContract = useContractWithProvider(tokenAddress, ERC20_ABI, rpcProvider);
-  const { account } = useContext(WalletAddressContext);
 
   useEffect(() => {
-    const fetchDecimals = () => {
-      if (!account || !tokenContract)
-        return;
-
-      tokenContract.decimals().then((_decimals: number) => {
-        setDecimals(_decimals);
-      }).catch((e: any) => {
+    getTokenDecimals(chainId, tokenAddress)
+      .then(_decimals => setDecimals(_decimals))
+      .catch((e: any) => {
         console.warn("useTokenDecimals error:", e);
-        // Silent catch for some reason (legacy). But if not caught, exception happens when launching creda.
       });
-    }
-    fetchDecimals();
-  }, [account, tokenAddress, tokenContract]);
+  }, [chainId, tokenAddress]);
 
   return decimals;
 }
@@ -142,6 +138,21 @@ export const isMaxUInt256 = (value: BigNumber): boolean => {
   return value.eq(constants.MaxUint256);
 }
 
+export const fetchTokenAllowance = (tokenAddress: string, owner: string, spender: string, chainId: ChainId): Promise<BigNumber> => {
+  const rpcProvider = getRPCProvider(chainId);
+  const tokenContract = getContract(tokenAddress, ERC20_ABI, rpcProvider);
+
+  // Method code (debug): 0xdd62ed3e
+  try {
+    return tokenContract.allowance(owner, spender);
+  }
+  catch (e: any) {
+    console.warn("useAllowance error:", e);
+    // Silent catch for some reason (legacy). But if not caught, exception happens when launching creda.
+    return null;
+  };
+}
+
 /**
  * Queries the CURRENT amount of tokens authorized to be spend from user's tokens at
  * given token address, by the given spender. This can be lower than the initially approved amount
@@ -149,29 +160,20 @@ export const isMaxUInt256 = (value: BigNumber): boolean => {
  *
  * The raw (chain) allowance value is returned
  */
-export const useAllowance = (tokenAddress: string, spender: string, signerOrProvider?: Signer | providers.BaseProvider): BigNumber => {
+export const useTokenAllowance = (tokenAddress: string, spender: string, chainId: ChainId): BigNumber => {
   const [allowance, setAllowance] = useState<BigNumber>(null);
-  const tokenContract = useContractWithProvider(tokenAddress, ERC20_ABI, signerOrProvider);
+  const rpcProvider = getRPCProvider(chainId);
+  const tokenContract = useContractWithProvider(tokenAddress, ERC20_ABI, rpcProvider);
   const { account } = useContext(WalletAddressContext);
 
   useEffect(() => {
-    // console.log("useAllowance called", tokenAddress, account, spender, signerOrProvider);
-
-    const fetchAllowance = () => {
-      if (!account || !tokenContract || !spender)
-        return;
-
-      // Method code (debug): 0xdd62ed3e
-      tokenContract.allowance(account, spender).then((res: BigNumber) => {
-        // console.log("GOT ALLOWANCE", res.toString());
-        setAllowance(res);
-      }).catch((e: any) => {
-        console.warn("useAllowance error:", e);
-        // Silent catch for some reason (legacy). But if not caught, exception happens when launching creda.
-      });
+    if (!account || !tokenAddress || !spender || !chainId) {
+      setAllowance(null);
+      return;
     }
-    fetchAllowance();
-  }, [account, tokenAddress, spender, tokenContract]);
+
+    fetchTokenAllowance(tokenAddress, account, spender, chainId).then(_allowance => setAllowance(_allowance));
+  }, [account, tokenAddress, spender, tokenContract, chainId]);
 
   return allowance;
 };
@@ -181,8 +183,7 @@ export const useAllowance = (tokenAddress: string, spender: string, signerOrProv
  */
 export const useAllowanceInTokens = (tokenAddress: string, spender: string, chainId: ChainId): string => {
   const [allowanceInTokens, setAllowanceInTokens] = useState<string>(null);
-  const rpcProvider = getRPCProvider(chainId);
-  const allowance = useAllowance(tokenAddress, spender, rpcProvider);
+  const allowance = useTokenAllowance(tokenAddress, spender, chainId);
   const decimals = useTokenDecimals(tokenAddress, chainId);
 
   useEffect(() => {
@@ -200,8 +201,9 @@ export const useAllowanceInTokens = (tokenAddress: string, spender: string, chai
  */
 export function useApprove(tokenAddress: string, spender: string, approvedIfTokenContractMissing = false): [ApprovalState, () => Promise<void>] {
   const loading = useContext(LoadingContext)
+  const { chainId } = useContext(NetworkTypeContext);
   const tokenContract = useTokenContract(tokenAddress);
-  const currentAllowance = useAllowance(tokenAddress, spender)
+  const currentAllowance = useTokenAllowance(tokenAddress, spender, chainId);
   // const pendingApproval = useHasPendingApproval(tokenContract?.address, spender)
   // check the current approval status
   // const approvalState: ApprovalState = useMemo(() => {
