@@ -372,7 +372,7 @@ export function newTransactionsFirst(a: TransactionDetails, b: TransactionDetail
 }
 
 export function formatAccount(account: string) {
-  return account.slice(0, 4) + '****' + account.slice(-4);
+  return account.slice(0, 7) + '****' + account.slice(-5);
 }
 
 export enum BuildStatus {
