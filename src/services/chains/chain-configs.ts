@@ -1,5 +1,5 @@
 import ImageToken from "@assets/tokens/ImageToken";
-import { ChainIdList, ChainId } from "./chain.service";
+import { ChainId, ChainIdList } from "./chain.service";
 
 export const ChainIds: ChainIdList = {
   ethereum: 1,
@@ -144,7 +144,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
   {
     chainParam: {
       chainId: '0x' + ChainIds.esc.toString(16),
-      chainName: 'ELA Smart Chain',
+      chainName: 'Elastos Smart Chain',
       nativeCurrency: {
         name: 'ELA',
         symbol: 'ELA', // 2-6 characters long
