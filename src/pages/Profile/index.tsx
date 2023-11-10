@@ -1,10 +1,10 @@
 import {
-  CustomGrid,
-  FontPoppins,
-  GradientButton,
-  RowBetween,
-  RowCenter,
-  SpaceWidth
+    CustomGrid,
+    FontPoppins,
+    GradientButton,
+    RowBetween,
+    RowCenter,
+    SpaceWidth
 } from "@components/Row";
 import AppBody, { MainFullBody } from "@pages/components/AppBody";
 
@@ -24,7 +24,7 @@ import { useOpenWarning, useWalkThroughStep } from "../../state/application/hook
 import { Segment } from "./components/Segment";
 import { Body } from './components/StyledComponents';
 import { TopHeader } from "./components/TopHeader";
-import { ApprovalSegment } from "./components/approval/ApprovalSegment";
+import { ApprovalSegment } from "./components/approvals/ApprovalSegment";
 import { BindInput } from "./components/did/BindInput";
 import { CopyAccount } from "./components/did/CopyAccount";
 import { PortfolioSegment } from "./components/portfolio/PortfolioSegment";
@@ -64,7 +64,7 @@ function Profile(props: any) {
     }
 
     function switchNetwork() {
-      setSwitchNetworkModal(true)
+        setSwitchNetworkModal(true)
     }
 
     // console.log("first",walkThroughStep)
@@ -174,10 +174,10 @@ function Profile(props: any) {
                                 }
                             </GradientButton>
                             <SwitchNetworkModal
-                              show={switchNetworkModal}
-                              onDismiss={() => {
-                                setSwitchNetworkModal(false);
-                              }}
+                                show={switchNetworkModal}
+                                onDismiss={() => {
+                                    setSwitchNetworkModal(false);
+                                }}
                             ></SwitchNetworkModal>
                         </CustomGrid>
                     </RowBetween>

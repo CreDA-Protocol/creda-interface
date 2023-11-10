@@ -2,6 +2,7 @@ import { ChainId } from "@lychees/uniscam-sdk";
 import { getUSDTokenPriceBySymbol } from "@services/pricing.service";
 import { fetchTokenBalance } from "@services/tokens.service";
 import { BehaviorSubject } from "rxjs";
+import { deletePortfolioApprovalCache } from "../portfolio.service";
 import { PortfolioApiApproval } from "./portfolio-api.dto";
 import { PortfolioApprovedSpender } from "./portfolio-approved-spender";
 
@@ -93,5 +94,13 @@ export class PortfolioApprovedToken {
 
     // Real exposure is the MIN of what user has and what spenders can spend
     this.sumExposureUsd$.next(Math.min(userUSDBalance, totalSpendersExposureUSD));
+  }
+
+  /**
+   * Deletes the spender from the local model.
+   */
+  public removeSpender(spender: PortfolioApprovedSpender) {
+    this.spenders.next(this.spenders.value.filter(s => s.address !== spender.address));
+    deletePortfolioApprovalCache(this.account, this.chainId);
   }
 }

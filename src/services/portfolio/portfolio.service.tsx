@@ -261,3 +261,11 @@ export function usePortfolioApprovalsList(chainId: ChainId): PortfolioDataset<Po
 
   return approvals;
 }
+
+/**
+ * Delete the current client cache for approvals, for the given account/chain.
+ * Use for example after cancelling token spending approval.
+ */
+export function deletePortfolioApprovalCache(account: string, chainId: ChainId) {
+  approvalsCache.delete(`${account}-${chainId}`);
+}
