@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useOpenWarning, useTheme } from "../../state/application/hooks";
+import { useOpenWarning, useTheme } from "../../states/application/hooks";
 import { news, press } from "./data";
 
 const Container = styled.div<{ themeDark?: boolean | null }>`

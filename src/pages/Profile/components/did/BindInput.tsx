@@ -8,9 +8,9 @@ import { useContract } from "@services/contracts.service";
 import { useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
-import { useTheme } from "src/state/application/hooks";
-import { ToastStatus, useAddToast } from "src/state/toast";
-import { useTransactionAdder } from "src/state/transactions/hooks";
+import { useTheme } from "src/states/application/hooks";
+import { ToastStatus, useAddToast } from "src/states/toast";
+import { useTransactionAdder } from "src/states/transactions/hooks";
 import styled from "styled-components";
 
 //bind input

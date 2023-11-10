@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   useChangeTemeDark,
   useTheme
-} from "../../state/application/hooks";
+} from "../../states/application/hooks";
 
 const HeaderView = styled.div`
   cursor: pointer;

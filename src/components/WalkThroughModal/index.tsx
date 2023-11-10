@@ -1,13 +1,13 @@
+import { useCreditInfo } from '@services/credit.service';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { WalletAddressContext } from '../../contexts';
-import { useWalkThrough, useWalkThroughStep } from '../../state/application/hooks';
-import { setDecrement, setIncrement } from '../../state/walkthrough/actions';
+import { useWalkThrough, useWalkThroughStep } from '../../states/application/hooks';
+import { setDecrement, setIncrement } from '../../states/walkthrough/actions';
 import { BlueButton } from '../Common';
-import { useCreditInfo } from '@services/credit.service';
 
 export const Wrapper = styled.div<{
   walkThroughStep: Number | null,

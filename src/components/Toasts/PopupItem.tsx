@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { X } from 'react-feather'
-import { useSpring } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 import styled, { ThemeContext } from 'styled-components'
-import { animated } from 'react-spring'
+import { ToastStatus, usePopToast } from "../../states/toast"
 import ToastPopup from './TransactionPopup'
-import {ToastStatus, usePopToast} from "../../state/toast";
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -42,10 +41,10 @@ const Fader = styled.div`
 const AnimatedFader = animated(Fader)
 const removeAfterMs = 3000
 export default function ToastItem({
-    type,
+  type,
   content,
 }: {
-  type:ToastStatus,
+  type: ToastStatus,
   content: string
 }) {
   const popToast = usePopToast()
@@ -73,7 +72,7 @@ export default function ToastItem({
 
   return (
     <Popup>
-      <StyledClose color={theme.text2} onClick={popToast}/>
+      <StyledClose color={theme.text2} onClick={popToast} />
       {popupContent}
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
     </Popup>

@@ -6,10 +6,11 @@ import message from "antd/lib/message";
 import { ethers } from "ethers";
 import { useContext } from 'react';
 import styled from 'styled-components';
-import { createWalletConnectWeb3Provider, ethereum, logError, walletInfo } from "../../common/Common";
+import { ethereum, logError, walletInfo } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
 import Modal from '../NormalModal';
+import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 
 const Container = styled(FlexViewCenterColumn)`
   width:500px;
@@ -123,7 +124,7 @@ export default function WalletConnectModal({
                     window.location.reload()
                 } else {
                     const celoChainId = '0x' + ChainIds.celo.toString(16);
-                    let networkConfig: NetworkConfig = mainnetNetworkConfigs.find( n => n.chainParam.chainId === celoChainId);
+                    let networkConfig: NetworkConfig = mainnetNetworkConfigs.find(n => n.chainParam.chainId === celoChainId);
                     await addNetwork(networkConfig.chainParam);
                 }
             }

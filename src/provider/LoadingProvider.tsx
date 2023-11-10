@@ -9,7 +9,7 @@ import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import { colors, formatAccount } from "../common/Common";
 import { NetworkTypeContext } from "../contexts";
-import { useTheme } from "../state/application/hooks";
+import { useTheme } from "../states/application/hooks";
 import { getScanLink, getScanName } from "../utils";
 
 export enum LoadingType {
@@ -156,21 +156,21 @@ function Loading({ visible, type, message, onClose }: any) {
                         Transaction Success
                     </LoadingTitle>
                     {message &&
-                      <>
-                      <LoadingDesc
-                          dark={Boolean(themeDark)}
-                      >
-                          Transaction Hash: {formatAccount(message)}
-                      </LoadingDesc>
-                      <LoadingHashView
-                          dark={Boolean(themeDark)}
-                          onClick={() => {
-                              window.open(getScanLink(chainId, message, "transaction"))
-                          }}
-                      >
-                          View On {getScanName(chainId)}
-                      </LoadingHashView>
-                      </>
+                        <>
+                            <LoadingDesc
+                                dark={Boolean(themeDark)}
+                            >
+                                Transaction Hash: {formatAccount(message)}
+                            </LoadingDesc>
+                            <LoadingHashView
+                                dark={Boolean(themeDark)}
+                                onClick={() => {
+                                    window.open(getScanLink(chainId, message, "transaction"))
+                                }}
+                            >
+                                View On {getScanName(chainId)}
+                            </LoadingHashView>
+                        </>
                     }
                 </>}
             </LoadingContent>

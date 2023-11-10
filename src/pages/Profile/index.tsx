@@ -20,7 +20,7 @@ import { chainFromId } from "@services/chain.service";
 import { useCreditInfo } from "@services/credit.service";
 import { formatAccount } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import { useOpenWarning, useWalkThroughStep } from "../../state/application/hooks";
+import { useOpenWarning, useWalkThroughStep } from "../../states/application/hooks";
 import { Segment } from "./components/Segment";
 import { Body } from './components/StyledComponents';
 import { TopHeader } from "./components/TopHeader";

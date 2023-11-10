@@ -1,5 +1,6 @@
 import ERC20_ABI from "@abi/generic/ERC20.json"
 import ImageCommon from '@assets/common/ImageCommon'
+import { balanceToBigNumber, bigNumberToBalance, mathPriceTo8, walletInfo } from "@common/Common"
 import { Column } from '@components/Column'
 import { CardPair, CardPairCustom, LoadingRow } from '@components/Common'
 import Row, { GradientButton, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHeight, SpaceWidth, Text, TextEqure } from '@components/Row'
@@ -7,7 +8,7 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
-import { useIconPrice } from "@services/banking.service"
+import { MyBankAssetFarmingIcon, useIconPrice } from "@services/banking.service"
 import { chainFromId } from "@services/chain.service"
 import { getContract, useContract } from "@services/contracts.service"
 import { usePositionInfo } from "@services/mining-staking.service"
@@ -15,23 +16,15 @@ import { Tooltip } from 'antd'
 import { ethers } from 'ethers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import styled from 'styled-components'
-import {
-  MyBankAssetFarmingIcon,
-  balanceToBigNumber,
-  bigNumberToBalance,
-  mathPriceTo8,
-  walletInfo
-} from "../../common/Common"
+import styled from "styled-components"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useTheme } from '../../state/application/hooks'
+import { useTheme } from '../../states/application/hooks'
 import AddPositionModal from './AddPositionModal'
 import EarnFarmModal from './EarnFarmModal'
 import RemovePositionModal from './RemovePositionModal'
 import { BankTopInfo } from './index'
-
 
 const Body = styled(Column)`
   width:100%;

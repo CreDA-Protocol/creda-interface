@@ -28,9 +28,9 @@ import { ApprovalState, GasInfo, balanceToBigNumber, colors, formatBalance } fro
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
-import { useTheme } from "../../state/application/hooks";
-import { useAddToast } from "../../state/toast";
-import { useTransactionAdder } from "../../state/transactions/hooks";
+import { useTheme } from "../../states/application/hooks";
+import { useAddToast } from "../../states/toast";
+import { useTransactionAdder } from "../../states/transactions/hooks";
 
 function Bridge(props: any) {
     const isDark = useTheme()

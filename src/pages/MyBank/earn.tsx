@@ -6,7 +6,7 @@ import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqur
 import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
-import { useEarnInfo, useEarnResult } from '@services/banking.service'
+import { MyBankAssetPriceIcons, useEarnInfo, useEarnResult } from '@services/banking.service'
 import { chainFromId } from "@services/chain.service"
 import { useContract } from "@services/contracts.service"
 import { useApprove } from '@services/tokens.service'
@@ -16,7 +16,6 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import {
   ApprovalState,
-  MyBankAssetPriceIcons,
   balanceToBigNumber,
   formatBalance,
   formatPercent,
@@ -25,7 +24,7 @@ import {
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useTheme } from '../../state/application/hooks'
+import { useTheme } from '../../states/application/hooks'
 import { BankTopInfo } from './index'
 
 const Body = styled(Column)`

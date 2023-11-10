@@ -10,7 +10,7 @@ import {
   marketsConfig
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useTransactionAdder } from "../../state/transactions/hooks"
+import { useTransactionAdder } from "../../states/transactions/hooks"
 import Modal from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'

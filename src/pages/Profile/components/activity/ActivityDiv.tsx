@@ -7,7 +7,7 @@ import {
 } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { useState } from "react";
-import { useTheme } from "src/state/application/hooks";
+import { useTheme } from "src/states/application/hooks";
 import styled from "styled-components";
 import { BGDiv, LineH, WrapDiv } from "../StyledComponents";
 

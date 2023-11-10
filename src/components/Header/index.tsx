@@ -13,7 +13,7 @@ import {
   useTheme,
   useWalkThroughStep,
   useWarning,
-} from "../../state/application/hooks"
+} from "../../states/application/hooks"
 import ConnectWallet from '../ConnectWallet'
 import I18nSwitch from '../I18nSwitch'
 import ThemeIcon, { DarkBtn, LightBtn, fullMoonSvg, halfMoonSvg } from '../ThemeIcon'

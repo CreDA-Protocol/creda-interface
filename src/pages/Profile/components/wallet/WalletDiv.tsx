@@ -9,7 +9,7 @@ import { PortfolioWalletTokenList } from "@services/portfolio/model/tokens";
 import { Row } from "antd";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { useTheme } from "src/state/application/hooks";
+import { useTheme } from "src/states/application/hooks";
 import { BGDiv, InputDiv, LineH, MoreIcon, SearchDiv, SearchIcon, SmallIconIcon } from "../StyledComponents";
 
 export const WalletDiv: FC<{

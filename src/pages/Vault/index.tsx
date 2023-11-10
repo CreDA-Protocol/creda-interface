@@ -35,10 +35,11 @@ import StakeModal from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC } from "@services/banking.service"
 import { ChainIds, chainFromId } from "@services/chain.service"
 import { useContract } from "@services/contracts.service"
 import { useCredaInfo, useUnLockInfo } from "@services/creda-token.service"
-import { useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"
+import { getNFTCardBgImage, useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"
 import { useHardPoolInfo, useMiningPoolInfo } from "@services/mining-staking.service"
 import { useApprove } from "@services/tokens.service"
 import { Badge, Button, Skeleton, Tooltip, message } from 'antd'
@@ -52,21 +53,18 @@ import {
   ApprovalState,
   GasInfo,
   MiningPool,
-  MyBankAssetPriceIcons,
-  MyBankAssetPriceIconsESC,
   balanceToBigNumber,
   colors,
   formatBalance,
   formatPercent,
-  getNFTCardBgImage,
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useOpenWarning, useTheme } from "../../state/application/hooks"
-import { ToastStatus, useAddToast } from "../../state/toast"
-import { useTransactionAdder } from "../../state/transactions/hooks"
+import { useOpenWarning, useTheme } from "../../states/application/hooks"
+import { ToastStatus, useAddToast } from "../../states/toast"
+import { useTransactionAdder } from "../../states/transactions/hooks"
 import BorrowCollateralModal from './BorrowCollateralModal'
 
 const Body = styled(Column)`
@@ -941,6 +939,7 @@ function HardMiningPoolView({ hardpoolAction }: any) {
   const themeDark = useTheme()
   const { chainId } = useContext(NetworkTypeContext);
   const [claimable, setClaimable] = useState<{ [key: string]: number }>({})
+
   let hardPools = MyBankAssetPriceIcons
   if (chainId === ChainIds.esc) {
     hardPools = MyBankAssetPriceIconsESC

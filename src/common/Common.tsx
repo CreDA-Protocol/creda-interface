@@ -1,26 +1,17 @@
-import ImageCommon from '@assets/common/ImageCommon';
-import DAIIcon from '@assets/tokens/Dai (DAI).png';
-import ETHIcon from '@assets/tokens/Ethereum (ETH).png';
 import ImageToken from "@assets/tokens/ImageToken";
-import USDTIcon from '@assets/tokens/Tether (USDT).png';
-import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
-import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import { TransactionDetails } from "../state/transactions/reducer";
+import { TransactionDetails } from "../states/transactions/reducer";
 
 import CompoundLens_ABI from "@abi/banking/CompoundLens.json";
 import Comptroller_ABI from "@abi/banking/Comptroller.json";
 import ERC20_ABI from "@abi/generic/ERC20.json";
 import qERC20_ABI from '@abi/generic/qERC20.json';
 import PriceOracle_ABI from "@abi/swap/PriceOracle.json";
-import { ChainId } from '@lychees/uniscam-sdk';
 import { ChainIds } from '@services/chain.service';
 
 export { CompoundLens_ABI, Comptroller_ABI, ERC20_ABI, PriceOracle_ABI, qERC20_ABI };
 
-//export const ethereum = (window as any).ethereum;
 export const ethereum = window.ethereum;
 
 export const provider = ethereum ? new ethers.providers.Web3Provider(ethereum, "any") : null;
@@ -29,15 +20,6 @@ export const walletInfo = {
   provider: provider,
   signer: provider?.getSigner()
 }
-// 通过定制 URL 连接 :
-export const HECO_URL = "https://http-mainnet.hecochain.com";
-export const BSC_URL = "https://bsc-dataseed1.defibit.io/";
-export const Arbitrum_Url = "https://arb1.arbitrum.io/rpc/";
-
-// DEPRECATED - Use getRpcProvider(chainId)
-export const HECO_PROVIDER = new ethers.providers.JsonRpcProvider(HECO_URL);
-export const BSC_PROVIDER = new ethers.providers.JsonRpcProvider(BSC_URL);
-export const Arbitrum_Provider = new ethers.providers.JsonRpcProvider(Arbitrum_Url);
 
 export const colors = {
   cardBg: '#061B2B',
@@ -317,32 +299,6 @@ export const getCurrencyFormatted = (num: string | number, decimals = 2) => {
 }
 
 
-/**
- * Tells if the "My bank" menu is available on the UI for the given chain.
- */
-export function bankIsEnabledOnChain(chainId: ChainId): boolean {
-  switch (chainId) {
-    case ChainIds.esc:
-    case ChainIds.arbitrum:
-      return true;
-    default:
-      return false;
-  }
-}
-
-/**
- * Tells if the "Vault" menu is available on the UI for the given chain.
- */
-export function vaultIsEnabledOnChain(chainId: ChainId): boolean {
-  switch (chainId) {
-    case ChainIds.esc:
-    case ChainIds.arbitrum:
-      return true;
-    default:
-      return false;
-  }
-}
-
 // chainId
 /* export const chainIdConfig: any = {
   [ChainId.esc]: "esc",
@@ -461,204 +417,18 @@ export function tipError(e: any) {
   // message.error(e?.message)
 }
 
-export const ChainIdConfig: any = {
-  eth: "0x1",
-  bsc: BigNumber.from(56).toHexString(),
-  heco: BigNumber.from(128).toHexString(),
-  polygon: BigNumber.from(66).toHexString(),
-}
-
+// TOOD: why does this method use a verb without doing any action?
 export function enableNetwork(chainId: number) {
   if (chainId === ChainIds.arbitrum || chainId === ChainIds.esc || chainId === ChainIds.elatest || chainId === ChainIds.celo || chainId === ChainIds.celotest) {
     return true
   }
   return false
 }
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const MiningPool = ["CPUSDC", "CPUSDT", "CPWBTC", "CPDAI"]
 // export const MiningPool = ["CREDA"]
-const rpcUrls = {
-  // TODO: add others
-  20: "https://api.elastos.io/esc",           // Elastos mainnet
-  21: "https://api-testnet.elastos.io/eth",       // Elastos testnet
-  128: "https://heconode.ifoobar.com",             // HECO mainnet
-  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc",        // Arbitrum
-  56: "https://bsc-dataseed1.binance.org/",        // BSC
-  42220: "https://forno.celo.org",        // Celo
-  44787: "https://alfajores-forno.celo-testnet.org",        // Celo testnet
-}
-const walletConnect = {
-  rpc: rpcUrls,
-  bridge: "https://walletconnect.elastos.net/v2",
-
-  // Good wallet integrations such as metamask mobile are able to detect if we don't send
-  // a chainId manually and automatically return the network selected by users in the wallet.
-  // Though, most other wallets such as TokenPocket consider that if no chainId is given by us,
-  // they simply return chainId 1 (ethereum mainnet) which is not what we want.
-  // Our solution is therefore to force the chainId to HECO for now.
-  chainId: ChainIds.arbitrum,
-  networkId: ChainIds.arbitrum,
-  qrcode: true,
-  clientMeta: {
-    name: "CREDA.app",
-    description: "CREDA - A DeFi app powered by CREDA Team",
-    url: "https://creda.app",
-    icons: [
-      "https://creda.app/favicon.ico"
-    ]
-  }
-}
-export const createWalletConnectWeb3Provider = async function () {
-
-  //  Create WalletConnect Provider
-  let provider = new WalletConnectProvider(walletConnect);
-
-  return provider;
-}
 
 export const globalObj: any = global
-export const globalObject: any = global
-
-
-export function getNFTCardBgImage(type: string) {
-  switch (type) {
-    case '1': {
-      return ImageCommon.NFT_LV1
-    }
-    case '2': {
-      return ImageCommon.NFT_LV2
-    }
-    case '3': {
-      return ImageCommon.NFT_LV3
-    }
-    case '4': {
-      return ImageCommon.NFT_LV4
-    }
-    case '5': {
-      return ImageCommon.NFT_LV5
-    }
-    default: {
-      return ImageCommon.NFT_LV1
-    }
-  }
-}
-
-export function getRandom(num: number) {
-  return Math.floor(Math.random() * num);
-}
-
-
-export const MyBankAssetPriceIcons = [
-  {
-    name: 'USDC',
-    icon: USDCIcon,
-  },
-  {
-    name: 'USDT',
-    icon: USDTIcon,
-  },
-
-  // {
-  //   name:'UNI',
-  //   icon:UNIIcon,
-  // },
-  {
-    name: 'WBTC',
-    icon: WBTCIcon,
-  },
-  {
-    name: 'DAI',
-    icon: DAIIcon,
-  },
-  {
-    name: 'LINK',
-    icon: ImageToken.LINK,
-  },
-  // {
-  //   name:'ETH',
-  //   icon:ETHIcon,
-  // },
-  // {
-  //   name:'LINK',
-  //   icon:LINKIcon,
-  // },
-  // {
-  //   name:'SUSHI',
-  //   icon:SUSHIIcon,
-  // }
-]
-
-export const MyBankAssetPriceIconsESC = [
-  {
-    name: 'ELA',
-    icon: ImageToken.ELA,
-  },
-  {
-    name: 'USDC',
-    icon: USDCIcon,
-  },
-  {
-    name: 'FILDA',
-    icon: ImageToken.FILDA,
-  },
-  {
-    name: 'GLIDE',
-    icon: ImageToken.GLIDE,
-  },
-  {
-    name: 'ELK',
-    icon: ImageToken.GLIDE,
-  },
-]
-export const MyBankAssetFarmingIcon = [
-  {
-    name1: 'ETH',
-    icon1: ETHIcon,
-    name2: 'USDT',
-    icon2: USDTIcon,
-    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0xcb0e5bfa72bbb4d16ab5aa0c60601c438f04b4ad',
-    Fee: 51.49,
-    APR: 5.23,
-    APY: (17.56 + 20.41) / 2,
-    line_pre: 51.49 + 5.23
-  },
-  {
-    name1: 'ETH',
-    icon1: ETHIcon,
-    name2: 'USDC',
-    icon2: USDCIcon,
-    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x905dfcd5649217c42684f23958568e533c711aa3',
-    Fee: 52.25,
-    APR: 0.64,
-    APY: (17.56 + 9.69) / 2,
-    line_pre: 52.25 + 0.64
-  },
-  {
-    name1: 'ETH',
-    icon1: ETHIcon,
-    name2: 'DAI',
-    icon2: DAIIcon,
-    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x692a0b300366d1042679397e40f3d2cb4b8f7d30',
-    Fee: 32.67,
-    APR: 14.02,
-    APY: (17.56 + 18.72) / 2,
-    line_pre: 32.67 + 14.02
-  }
-]
-export function getPriceByApi(symbol: string): Promise<number> {
-  return new Promise((resolve, reject) => {
-    fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbol}&tsyms=USD`)
-      .then((response) => response.json())
-      .then(res => {
-        resolve(res.RAW[symbol]["USD"].PRICE || 0)
-      })
-      .catch(err => {
-        console.log(err)
-        resolve(0)
-      })
-  })
-}
 
 export const GasInfo = {
   gasLimit: 1000000

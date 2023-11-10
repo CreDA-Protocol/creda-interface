@@ -11,7 +11,7 @@ import { animated, config, useSpring } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 import { colors, formatBalance, panelPairs } from '../../common/Common'
 import ContractConfig from '../../contract/ContractConfig'
-import { useTheme } from "../../state/application/hooks"
+import { useTheme } from "../../states/application/hooks"
 
 export const Content = styled.div`
   width:100%;
