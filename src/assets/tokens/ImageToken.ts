@@ -22,9 +22,7 @@ import bUSD from "./bUSD.png";
 import CreDa from "./creda.png";
 import sCASH from "./sCASH.png";
 
-
-
-const ImageToken:any = {
+const ImageToken: any = {
     ARB,
     ELK,
     GLIDE,
@@ -32,7 +30,7 @@ const ImageToken:any = {
     USDT,
     sCASH,
     CreDa,
-    CREDA:CreDa,
+    CREDA: CreDa,
     HECO,
     BSC,
     bCASH,
@@ -45,10 +43,10 @@ const ImageToken:any = {
     USDC,
     WBTC,
     WEPIGGY,
-    CPETH:ETH,
-    CPUSDT:USDT,
-    CPUSDC:USDC,
-    CPWBTC:WBTC,
+    CPETH: ETH,
+    CPUSDT: USDT,
+    CPUSDC: USDC,
+    CPWBTC: WBTC,
     DAI,
     UNI,
     LINK,

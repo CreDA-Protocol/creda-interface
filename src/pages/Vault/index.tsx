@@ -15,11 +15,9 @@ import {
   MobileView,
   WinView
 } from '@components/Common'
-import { H4 } from "@components/ConnectWallet"
 import CustomStakeModal from "@components/CustomStakeModal"
+import { NetworkInfo } from "@components/NetworkInfo"
 import {
-  CustomGrid,
-  FontPoppins,
   GradientButton,
   GradientGaryButton,
   RowBetween,
@@ -500,14 +498,15 @@ function Vault(props: any) {
             paddingBottom: isMobile ? 20 : 40
           }}>
             <ThemeTextEqure fontSize={32} fontWeight={'bold'}>Vault</ThemeTextEqure>
-            <CustomGrid style={{ marginRight: 'unset', textAlign: 'right' }} templateColumns={'1fr 1fr'} mobTemplateColumns={'1fr 1fr'} columnGap={15} mobColumnGap={15}>
+            <NetworkInfo />
+            {/* <CustomGrid style={{ marginRight: 'unset', textAlign: 'right' }} templateColumns={'1fr 1fr'} mobTemplateColumns={'1fr 1fr'} columnGap={15} mobColumnGap={15}>
               <FontPoppins>
                 <ThemeText fontSize={22} style={{ fontWeight: 800 }} >Network</ThemeText>
               </FontPoppins>
               <GradientButton className="network_title" style={{ width: !isMobile ? 162 : 'auto', textTransform: 'capitalize' }}>
                 <H4>{network.toUpperCase()}</H4>
               </GradientButton>
-            </CustomGrid>
+            </CustomGrid> */}
           </RowBetween>
           <TopItemDiv>
             <ColorDiv>

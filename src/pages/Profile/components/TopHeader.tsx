@@ -8,6 +8,7 @@ import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
 import { chainIndexToId } from "@services/chains/chain-configs";
+import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
 import { getAndUpdateCredit, getNFTCardBgImage, useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
@@ -21,7 +22,6 @@ import { useTheme } from 'src/states/application/hooks';
 import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
-import { chainFromId } from '@services/chains/chain.service';
 
 enum StakeType {
   hidden = 0,
@@ -148,7 +148,7 @@ export const TopHeader: FC<{
   }, [stopAnimation])
 
   return (
-    <section style={{ position: "relative" }}>
+    <section style={{ position: "relative", width: "100%" }}>
       <TopItemDiv
         style={{
           display: "flex",
