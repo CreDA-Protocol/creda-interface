@@ -9,6 +9,7 @@ import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTransactionAdder } from "src/state/transactions/hooks";
+import { PermanentCache } from "./caches/permanent-cache";
 import { getContract, useChainContract, useContractWithProvider, useTokenContract } from "./contracts.service";
 
 /**
@@ -23,52 +24,37 @@ export function isNativeToken(symbol: string) {
 }
 
 /**
- * 获取余额
+ * Gets the balance of a given token, for a given wallet account, on the given chain.
+ * The returned balance is a number of tokens.
  */
-/* export function useBalance(symbol: string): string {
-    const { chainId } = useContext(NetworkTypeContext);
-    const { account } = useContext(WalletAddressContext);
-    const network = chainFromId(chainId);
-    const [balance, setBlance] = useState("");
-    const tokenContract = useTokenContract(ContractConfig[symbol][network]?.address);
+export const fetchTokenBalance = async (account: string, tokenContractAddress: string, chainId: ChainId): Promise<number> => {
+  const rpcProvider = getRPCProvider(chainId);
+  const tokenContract = getContract(tokenContractAddress, ERC20_ABI, rpcProvider);
 
-    useEffect(() => {
-        const getResult = () => {
-            if (!account || !tokenContract) {
-                return;
-            }
-            // console.log(symbol,tokenContract,account,"++++++")
-            tokenContract?.balanceOf(account)
-                .then((res: BigNumber) => {
-                    setBlance(bigNumberToBalance(res));
-                })
-        }
-        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
-        return () => clearInterval(interval);
-    }, [account, tokenContract])
-    return balance;
-} */
+  const res: BigNumber = await tokenContract?.balanceOf(account);
+  if (!res)
+    return null;
+
+  return parseFloat(bigNumberToBalance(res));
+}
 
 /**
  * Gets the balance of a given token, for the active UI wallet, on the given chain.
- *
  * The returned balance is a number of tokens.
  */
-export function useBalance(tokenContractAddress: string, chainId: ChainId): { loading: boolean; balance: number; } {
+export function useTokenBalance(tokenContractAddress: string, chainId: ChainId): { loading: boolean; balance: number; } {
   const { account } = useContext(WalletAddressContext);
   const [balanceInfo, setBalanceInfo] = useState({ loading: true, balance: 0 });
   const tokenContract = useChainContract(tokenContractAddress, ERC20_ABI, chainId);
 
   useEffect(() => {
-    const fetchTokenBalance = async () => {
-      if (!account || !tokenContract)
-        return;
+    if (!account || !tokenContract || !chainId)
+      return;
 
-      const res: BigNumber = await tokenContract?.balanceOf(account);
-      setBalanceInfo({ loading: false, balance: Number(bigNumberToBalance(res)) });
-    }
-    fetchTokenBalance();
-  }, [account, tokenContract]);
+    fetchTokenBalance(account, tokenContractAddress, chainId).then(balance => {
+      setBalanceInfo({ loading: false, balance });
+    });
+  }, [account, tokenContract, tokenContractAddress, chainId]);
 
   return balanceInfo;
 }
@@ -106,10 +92,14 @@ export function useBalanceBySymbol(symbol: string): any {
   return info;
 }
 
-export const getTokenDecimals = (chainId: ChainId, tokenAddress: string): Promise<number> => {
+const decimalsCache = new PermanentCache<number, { chainId: ChainId; tokenAddress: string }>("token-decimals", async (key, { chainId, tokenAddress }) => {
   const rpcProvider = getRPCProvider(chainId);
   const tokenContract = getContract(tokenAddress, ERC20_ABI, rpcProvider);
   return tokenContract.decimals();
+}, 30 * 24 * 60 * 60); // 30 days. in theory ERC20 tokens config never changes
+
+export const getTokenDecimals = (chainId: ChainId, tokenAddress: string): Promise<number> => {
+  return decimalsCache.get(`${tokenAddress}${chainId}`, { chainId, tokenAddress });
 }
 
 /**

@@ -6,8 +6,15 @@ import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { PermanentCache } from "./caches/permanent-cache";
 import { useContract } from "./contracts.service";
+import { getCoinPrice } from "./glidefinance.service";
 
-const pricingCache = new PermanentCache("token-usd-prices", async (symbol) => {
+// Method able to deliver a price for a given token symbol.
+type PricingProvider = (symbol: string) => Promise<number>;
+
+/**
+ * Default pricing provider for all tokens that don't specify a custom one.
+ */
+const defaultPricingProvider: PricingProvider = async (symbol: string): Promise<number> => {
   try {
     const info = await fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbol}&tsyms=USD`).then((response) => response.json());
     if (info?.RAW?.[symbol]) {
@@ -19,6 +26,14 @@ const pricingCache = new PermanentCache("token-usd-prices", async (symbol) => {
   catch (e) {
     return null;
   }
+}
+
+const pricingCache = new PermanentCache("token-usd-prices", async (symbol) => {
+  // If there is a custom pricing provider defined, use it. Otherwise use the default provider
+  if (symbol in customPricings)
+    return customPricings[symbol](symbol);
+  else
+    return defaultPricingProvider(symbol);
 }, 10 * 60); // 10 minutes cache
 
 /**
@@ -32,6 +47,35 @@ export const getUSDTokenPriceBySymbol = (symbol: string): Promise<number> => {
 
   return pricingCache.get(symbol.toUpperCase()) as Promise<number>;
 }
+
+const glidePricingProvider: PricingProvider = async (symbol: string): Promise<number> => {
+  // Glide API takes token addresses as input. Glide is always on ESC, so we get the contract config for ESC...
+  const tokenAddress = ContractConfig[symbol]["esc"]?.address.toLowerCase();
+  if (!tokenAddress)
+    return null;
+
+  const prices = await getCoinPrice(JSON.stringify([tokenAddress]));
+  if (prices?.length > 0) {
+    return parseFloat(prices[0].derivedUSD);
+  }
+
+  return null;
+}
+
+/**
+ * List of tokens that require a special way to get fetched, with their custom pricing provider attached.
+ */
+const customPricings: { [symbol: string]: PricingProvider } = {
+  "CREDA": glidePricingProvider,
+  "GLIDE": glidePricingProvider,
+  "ELK": glidePricingProvider
+}
+
+/*
+
+TODO: CREDA PRICE FROM GLIDE
+
+ */
 
 /**
  * Gets the BSC balance in USDT, of the currently active wallet.
@@ -93,7 +137,7 @@ export function useSushiPrice(amount: number, path: string[]): any {
           loading: false,
         })
       } catch (e) {
-        logError("useCNFTInfo", e)
+        logError("useSushiPrice", e)
       }
     };
     getResult()

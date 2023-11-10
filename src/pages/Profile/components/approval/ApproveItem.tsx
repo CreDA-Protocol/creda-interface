@@ -9,7 +9,7 @@ import { ChainId } from "@services/chain.service";
 import { useTokenContract } from "@services/contracts.service";
 import { PortfolioApprovedSpender } from "@services/portfolio/model/portfolio-approved-spender";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
-import { useBalance } from "@services/tokens.service";
+import { useTokenBalance } from "@services/tokens.service";
 import { BigNumber } from "ethers";
 import { FC } from "react";
 import { useTransactionAdder } from "src/state/transactions/hooks";
@@ -61,14 +61,10 @@ export const SpenderRow: FC<{
       <RowFixed style={{ flex: 1, marginLeft: 10 }}>
         <ThemeTextEqure fontSize={20}>
           {isMaxExposure && "All your tokens"}
-          {!isMaxExposure && allowance !== null && formatBalance(allowance) + " " + token.symbol}
+          {!isMaxExposure && allowance !== null && formatBalance(allowance) + " " + token.symbol.toUpperCase()}
         </ThemeTextEqure>
         <SpaceWidth width={30} widthApp={35} />
-        <CancelButton
-          onClick={() => {
-            cancel(() => cancelApprove(spender.address));
-          }}
-        >
+        <CancelButton onClick={() => { cancel(() => cancelApprove(spender.address)); }}>
           Cancel
         </CancelButton>
       </RowFixed>
@@ -81,7 +77,7 @@ export const ApproveItem: FC<{
   chainId: ChainId;
   cancel: (approveCb: () => void) => void;
 }> = ({ token, chainId, cancel }) => {
-  const { loading, balance } = useBalance(token.address, token.chainId);
+  const { loading, balance } = useTokenBalance(token.address, token.chainId);
   const [spenders] = useBehaviorSubject(token.spenders);
   const [sumExposureUsd] = useBehaviorSubject(token.sumExposureUsd$);
 
@@ -91,7 +87,7 @@ export const ApproveItem: FC<{
       <RowBetween style={{ alignItems: "flex-start" }}>
         <RowBetween style={{ flex: 1, marginRight: 24, marginTop: 10 }}>
           <RowFixed>
-            <SmallIconIcon src={token.icon} />
+            <SmallIconIcon src={token.icon || ImageCommon.Unknown} />
             <Column>
               <TextEqure fontColor={"#777E90"} fontSize={18}>
                 {token?.symbol?.toUpperCase()}
@@ -102,7 +98,8 @@ export const ApproveItem: FC<{
             </Column>
           </RowFixed>
           <ThemeTextEqure fontSize={20}>
-            ${formatBalance(sumExposureUsd)}
+            {sumExposureUsd === null && "N/A"}
+            {sumExposureUsd !== null && "$" + formatBalance(sumExposureUsd)}
           </ThemeTextEqure>
         </RowBetween>
         <Column style={{ flex: 2 }}>

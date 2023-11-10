@@ -18,7 +18,7 @@ export const PortfolioDiv: FC<{
   const projectsWithAssets = projects?.filter(project => project?.amountPrice > 0);
 
   // Sort projects by asset name
-  projectsWithAssets.sort((a, b) => {
+  projectsWithAssets?.sort((a, b) => {
     return b.amountPrice - a.amountPrice;
   });
 
@@ -33,7 +33,7 @@ export const PortfolioDiv: FC<{
       {isMobile && projectsWithAssets?.length > 0 && projectsWithAssets.map((item, index) => {
         return <PortfolioPhoneItemDiv item={item} key={index}></PortfolioPhoneItemDiv>;
       })}
-      {projectsWithAssets.length === 0 && <ThemeTextEqure fontSize={18} fontWeight={"bold"} style={{ textAlign: "center" }}>
+      {projectsWithAssets?.length === 0 && <ThemeTextEqure fontSize={18} fontWeight={"bold"} style={{ textAlign: "center" }}>
         No asset found in top 10 Defi projects.
       </ThemeTextEqure>}
     </Column >

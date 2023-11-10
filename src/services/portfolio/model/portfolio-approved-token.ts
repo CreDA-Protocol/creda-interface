@@ -1,5 +1,6 @@
 import { ChainId } from "@lychees/uniscam-sdk";
 import { getUSDTokenPriceBySymbol } from "@services/pricing.service";
+import { fetchTokenBalance } from "@services/tokens.service";
 import { BehaviorSubject } from "rxjs";
 import { PortfolioApiApproval } from "./portfolio-api.dto";
 import { PortfolioApprovedSpender } from "./portfolio-approved-spender";
@@ -27,19 +28,35 @@ export class PortfolioApprovedToken {
   public account: string; // User account used to check for approvals
   public chainId: ChainId; // Chain ID used to check for approvals
 
+  constructor() {
+    // Every time an allowance value of one of the spenders changes, compute the exposure value
+    this.spenders.subscribe(spenders => {
+      spenders?.forEach(spender => spender.allowance$.subscribe(() => this.updateExposureUSD()));
+    });
+  }
+
   public static async fromApiApproval(apiApproval: PortfolioApiApproval, account: string, chainId: ChainId): Promise<PortfolioApprovedToken> {
     const token: PortfolioApprovedToken = new PortfolioApprovedToken();
 
-    // Looks like an invalid token info we got from the approval api (happens with TIN)
-    if (!apiApproval.contract.address || !apiApproval.contract.symbol)
+    if (!apiApproval.contract)
       return null;
 
-    token.icon = apiApproval.contract.icon;
-    token.address = apiApproval.contract.address;
-    token.symbol = apiApproval.contract.symbol;
-    token.chainId = chainId;
+    if (typeof apiApproval.contract === "string") {
+      // For now we don't handle contracts that don't come with enough info. We could fetch symbol from chain though.
+      return null;
+    }
+    else {
+      // Full contract object
+      // Looks like an invalid token info we got from the approval api (happens with TIN)
+      if (!apiApproval.contract.address || !apiApproval.contract.symbol)
+        return null;
 
-    console.log("token.symbol", token.symbol)
+      token.icon = apiApproval.contract.icon;
+      token.address = apiApproval.contract.address;
+      token.symbol = apiApproval.contract.symbol;
+    }
+
+    token.chainId = chainId;
 
     const spenders: PortfolioApprovedSpender[] = [];
     for (const approved of apiApproval.approved) {
@@ -54,20 +71,27 @@ export class PortfolioApprovedToken {
     return token;
   }
 
-  constructor() {
-    // Every time an allowance value of one of the spenders changes, compute the exposure value
-    this.spenders.subscribe(spenders => {
-      spenders?.forEach(spender => spender.allowance$.subscribe(() => this.updateExposureUSD()));
-    });
-  }
-
+  /**
+   * Based on spenders allowance status, compute the total amount of US user can loose on this token.
+   */
   private async updateExposureUSD() {
-    for (const spender of this.spenders.value) {
-      const price = await getUSDTokenPriceBySymbol(this.symbol);
-      console.log("PRICE", this.symbol, price);
-      // TODO: get token market price
-      // TODO: get token user balance
-      // TODO: multiply balance by price, multiply lalowance by price -> exposure is the MIN of both
+    const price = await getUSDTokenPriceBySymbol(this.symbol);
+    const balance = await fetchTokenBalance(this.account, this.address, this.chainId);
+    const userUSDBalance = balance * price;
+
+    if (price === null || balance === null) {
+      // Unable to know, UI will have to display that
+      this.sumExposureUsd$.next(null);
+      return;
     }
+
+    let totalSpendersExposureUSD = 0;
+    for (const spender of this.spenders.value) {
+      const spenderAllowanceUSD = parseFloat(spender.allowance$.value) * price;
+      totalSpendersExposureUSD += spenderAllowanceUSD;
+    }
+
+    // Real exposure is the MIN of what user has and what spenders can spend
+    this.sumExposureUsd$.next(Math.min(userUSDBalance, totalSpendersExposureUSD));
   }
 }
