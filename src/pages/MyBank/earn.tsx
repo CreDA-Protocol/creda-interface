@@ -1,11 +1,11 @@
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 import { Column, ColumnCenter } from '@components/Column'
 import { LoadingRow } from "@components/Common"
-import CustomStakeModal from "@components/CustomStakeModal"
-import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
+import { CustomStakeModal } from "@components/CustomStakeModal"
+import { Row, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
 import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
-import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetPriceIcons, useEarnInfo, useEarnResult } from '@services/banking.service'
 import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
@@ -22,7 +22,7 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
+import { ContractConfig, EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTheme } from '../../states/application/hooks'
 import { BankTopInfo } from './index'

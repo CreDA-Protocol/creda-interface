@@ -1,6 +1,6 @@
 import { H4 } from "@components/ConnectWallet";
 import { CustomGrid, FontPoppins, GradientButton } from "@components/Row";
-import SwitchNetworkModal from "@components/SwitchNetworkModal";
+import { SwitchNetworkModal } from "@components/SwitchNetworkModal";
 import { ThemeText } from "@components/ThemeComponent";
 import { chainFromId } from "@services/chains/chain.service";
 import { FC, useContext, useState } from "react";

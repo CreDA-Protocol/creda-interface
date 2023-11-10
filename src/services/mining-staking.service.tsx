@@ -3,7 +3,7 @@ import { GlobalConfiguration } from "@common/config";
 import { BigNumber, ethers } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig, { EarnConfig } from "src/contract/ContractConfig";
+import { ContractConfig, EarnConfig } from "src/contract/ContractConfig";
 import { useContract } from "./contracts.service";
 import { getCoinPrice } from "./glidefinance.service";
 import { getPriceByApi } from "./pricing.service";

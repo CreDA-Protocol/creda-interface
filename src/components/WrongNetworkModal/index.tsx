@@ -1,4 +1,4 @@
-import SwitchNetworkModal from "@components/SwitchNetworkModal";
+import { SwitchNetworkModal } from "@components/SwitchNetworkModal";
 import { useState } from "react";
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
@@ -111,7 +111,7 @@ const Headerdiv = styled.div`
   background: linear-gradient( 90deg,#4a1ee1,#1890ff);
   `;
 
-export default function WrongNetworkModal({
+export function WrongNetworkModal({
   modal
 }: {
   modal?: boolean

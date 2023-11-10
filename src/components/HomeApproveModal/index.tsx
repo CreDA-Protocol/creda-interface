@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import { useTranslation } from 'react-i18next'
 import { Button, SpaceHeight, Text } from '@components/Row'
 import { ExternalLink } from '../../theme'
-import Modal from '../Modal'
+import { Modal } from '../Modal'
 
 const WarningContainer = styled.div`
   width: 100%;
@@ -13,7 +13,7 @@ const WarningContainer = styled.div`
   overflow: auto;
 `
 
-export default function HomeApproveModal({
+export function HomeApproveModal({
   isOpen,
   onConfirm
 }: {

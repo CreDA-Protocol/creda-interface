@@ -1,5 +1,5 @@
 import { RowCenter } from "@components/Row";
-import WrongNetworkModal from "@components/WrongNetworkModal";
+import { WrongNetworkModal } from "@components/WrongNetworkModal";
 import { chainFromId } from "@services/chains/chain.service";
 import { Dropdown } from "antd";
 import { useContext, useMemo, useState } from "react";
@@ -12,7 +12,7 @@ import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useWalkThroughStep } from "../../states/application/hooks";
 import { isTransactionRecent, useAllTransactions, } from "../../states/transactions/hooks";
 import { base_type } from "../Common";
-import Loader from "../Loader";
+import { Loader } from "../Loader";
 
 const StepModalWrap = styled.div<{
   isMobile: boolean | null;
@@ -50,7 +50,7 @@ const WrongNetworkWrapper = styled.div<{
 /**
  * Content shown from modals, for example ConnectToWalletModal.
  */
-export default function ConnectWallet({ history, fromHome, popup }: any) {
+export function ConnectWallet({ history, fromHome, popup }: any) {
   const { t } = useTranslation();
   const location = history?.location?.pathname;
   const { chainId } = useContext(NetworkTypeContext);

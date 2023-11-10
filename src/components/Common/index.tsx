@@ -1,6 +1,6 @@
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 import Circle from '@assets/svg/lightcircle.svg'
-import ImageToken from '@assets/tokens/ImageToken'
+import { ImageToken } from '@assets/tokens/ImageToken'
 import { Lottie } from "@crello/react-lottie"
 import { useBalanceBySymbol } from '@services/tokens.service'
 import { Skeleton } from "antd"
@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { animated, config, useSpring } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 import { colors, formatBalance, panelPairs } from '../../common/Common'
-import ContractConfig from '../../contract/ContractConfig'
+import { ContractConfig } from '../../contract/ContractConfig'
 import { useTheme } from "../../states/application/hooks"
 
 export const Content = styled.div`

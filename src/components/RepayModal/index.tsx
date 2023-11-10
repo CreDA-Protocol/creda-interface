@@ -11,7 +11,7 @@ import {
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import { useTransactionAdder } from "../../states/transactions/hooks"
-import Modal from '../Alert'
+import { AlertModal } from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
@@ -84,7 +84,7 @@ const MaxButton = styled.div`
   };
 `
 
-export default function RepayModal({
+export function RepayModal({
   isOpen,
   onDismiss,
   symbol,
@@ -131,7 +131,7 @@ export default function RepayModal({
       })
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
+    <AlertModal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
       <Container>
         <ColumnBetween>
           <div>
@@ -205,7 +205,7 @@ export default function RepayModal({
           </RowBetween>
         </ColumnBetween>
       </Container>
-    </Modal>
+    </AlertModal>
   )
 }
 const ReapyAllButton = styled(Button)`

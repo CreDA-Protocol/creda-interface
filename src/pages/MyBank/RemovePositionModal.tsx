@@ -1,9 +1,9 @@
-import ImageCommon from '@assets/common/ImageCommon';
+import { ImageCommon } from '@assets/common/ImageCommon';
 import { ButtonNormal } from '@components/Button';
 import { Column, ColumnCenter } from '@components/Column';
 import { CardPair } from '@components/Common';
-import Modal from '@components/NormalModal';
-import Row, { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
+import { NormalModal } from '@components/NormalModal';
+import { Row, RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { chainFromId } from '@services/chains/chain.service';
 import { useContext, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -13,7 +13,6 @@ import {
   mathPriceTo6
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-;
 
 export const DrawButton = styled.div`
   color:white;
@@ -123,7 +122,7 @@ const WhiteView = styled(RowFixed)`
 const BackButton = styled(ButtonNormal)`
 `
 
-export default function RemovePositionModal({
+export function RemovePositionModal({
   isOpen,
   onDismiss,
   pairInfo,
@@ -148,7 +147,7 @@ export default function RemovePositionModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={() => { }}>
+    <NormalModal isOpen={isOpen} onDismiss={() => { }}>
       <ColumnCenter>
         <MainView>
           <Column style={{ width: '100%' }}>
@@ -203,7 +202,7 @@ export default function RemovePositionModal({
           </Container>
         </MainView>
       </ColumnCenter>
-    </Modal>
+    </NormalModal>
   )
 }
 

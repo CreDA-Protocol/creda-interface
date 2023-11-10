@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { ApprovalState, balanceToBigNumber, bigNumberToBalance, marketsConfig } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useTransactionAdder } from "../../states/transactions/hooks";
-import Modal from '../Alert';
+import { AlertModal } from '../Alert';
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column';
 import { LoadingCircle } from "../Common";
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row';
@@ -80,7 +80,7 @@ const MaxButton = styled.div`
   };
 `
 
-export default function DepositMdoal({
+export function DepositMdoal({
   isOpen,
   onDismiss,
   symbol,
@@ -126,7 +126,7 @@ export default function DepositMdoal({
       })
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
+    <AlertModal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
       <Container>
         <ColumnBetween>
           <div>
@@ -180,6 +180,6 @@ export default function DepositMdoal({
           </RowFixed>
         </ColumnBetween>
       </Container>
-    </Modal>
+    </AlertModal>
   )
 }

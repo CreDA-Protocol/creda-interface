@@ -4,7 +4,7 @@ import { animated, useSpring } from 'react-spring'
 import styled, { ThemeContext } from 'styled-components'
 import { PopupContent } from '../../states/application/actions'
 import { useRemovePopup } from '../../states/application/hooks'
-import TransactionPopup from './TransactionPopup'
+import { TransactionPopup } from './TransactionPopup'
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -41,7 +41,7 @@ const Fader = styled.div`
 
 const AnimatedFader = animated(Fader)
 
-export default function PopupItem({
+export function PopupItem({
   removeAfterMs,
   content,
   popKey

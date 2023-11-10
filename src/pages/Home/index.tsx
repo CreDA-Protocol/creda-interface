@@ -1,5 +1,5 @@
 import { BgImages } from "@assets/bgImages/bgImages"
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 import anim1 from '@assets/lottie/CreDa_website_animation1.json'
 import anim2 from '@assets/lottie/CreDa_website_animation2-wallets.json'
 import mobile_anim2 from '@assets/lottie/CreDa_website_animation2_resizeForMobile.json'
@@ -9,11 +9,12 @@ import anim4 from '@assets/lottie/CreDa_website_animation4.json'
 import mobile_anim4 from '@assets/lottie/CreDa_website_animation4_mobileview.json'
 import { Base } from "@components/Button"
 import { Column, ColumnCenter } from '@components/Column'
-import Row, {
+import {
   ContentParagraph,
   CustomGrid,
   FontPoppins,
   GradientButton,
+  Row,
   RowBetween,
   RowCenter,
   SpaceHeight,

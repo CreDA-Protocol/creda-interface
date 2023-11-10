@@ -2,7 +2,7 @@ import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import { ApprovalState, GasInfo, balanceToBigNumber, enableNetwork, formatBalance, tipError } from "@common/Common";
 import { Column } from "@components/Column";
 import { BlueButton, FlexView, WhiteButton } from "@components/Common";
-import CustomStakeModal from '@components/CustomStakeModal';
+import { CustomStakeModal } from '@components/CustomStakeModal';
 import { GradientButton, RowBetween, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
@@ -16,7 +16,7 @@ import { useApprove } from '@services/tokens.service';
 import { FC, useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig from 'src/contract/ContractConfig';
+import { ContractConfig } from 'src/contract/ContractConfig';
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTheme } from 'src/states/application/hooks';
 import { ToastStatus, useAddToast } from "src/states/toast";
@@ -57,6 +57,7 @@ export const TopHeader: FC<{
     ContractConfig.CreditNFT[network]?.address,
     ContractConfig.CreditNFT[network]?.abi || ContractConfig.CreditNFT.abi
   );
+  const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
 
   function mintCNFT() {
     if (approval !== ApprovalState.APPROVED && enableNetwork(chainId)) {
@@ -87,6 +88,32 @@ export const TopHeader: FC<{
       try {
         let response = await getAndUpdateCredit(account);
         loading.show(LoadingType.success, response?.hash)
+
+        // let score = "0x0040006300320032000000000000000000000000000000000000000000000000";
+        // let proofs = ["0x6c175eae9fc392828d79fbd0c0925e46c7630973c18f0d76fbe87dfa27810643",
+        //   "0x81b27f0c69ed57855b93bc44745e496b0c2f8128ffb04d585f857514c6cc0e87",
+        //   "0x2bac129261e988fc5851346ee53fd74accfa9cc56d8a5e6854e1b7fa1514f1cb",
+        //   "0x041cff512dfb534c7ee8bd9371a33f435dbb58553ba44d4e7c51b911f0b4e29b",
+        //   "0xe7e0f6ffd8b7a3f38a7ffb77d045f70ee688599f1c6fe64f67795d74078baa2f",
+        //   "0x6db74a378b7fdbc6ee362c10f9bf32b78326959619492de2470d2bfce2ad984e",
+        //   "0x5261233cb9f97a1c17ab6fdda613a22dcd77859c02ff5225eeb3a3fde66baadf"
+        // ]
+
+        // DataContract?.updateCredit(account, score, proofs, GasInfo)
+        // .then(async (response: TransactionResponse) => {
+        //   addTransaction(response, {
+        //     summary: "Sync",
+        //   });
+        //   await response.wait();
+        //   loading.show(LoadingType.success, response.hash)
+
+        // })
+        // .catch((err: any) => {
+        //   addToast(ToastStatus.error, err.data?.message);
+        //   tipError(err);
+        //   loading.show(LoadingType.error, err.reason || err.message)
+        // });
+
       } catch (e) {
         loading.show(LoadingType.error, "")
       }
@@ -209,14 +236,22 @@ export const TopHeader: FC<{
                 </TextEqure>
               }
               {enableNetwork(chainId) &&
-                <WhiteButton
-                  style={{
-                    zIndex: walkThroughStep === 2 ? 700 : 0,
-                  }}
-                  onClick={syncCredit}
-                >
-                  Sync
-                </WhiteButton>
+              <RowFixed
+                style={{
+                  width: "100%",
+                  justifyContent: isMobile ? "space-between" : "flex-start",
+                }}
+              >
+                  <WhiteButton
+                    style={{
+                      zIndex: walkThroughStep === 2 ? 700 : 0,
+                    }}
+                    onClick={syncCredit}
+                  >
+                    Sync
+                  </WhiteButton>
+                  {/* <IconIcon style={{ width: '35px'}} src={ImageToken.ETH} /> */}
+                </RowFixed>
               }
             </div>
           </div>

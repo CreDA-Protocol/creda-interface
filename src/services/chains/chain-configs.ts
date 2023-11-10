@@ -1,4 +1,4 @@
-import ImageToken from "@assets/tokens/ImageToken";
+import { ImageToken } from "@assets/tokens/ImageToken";
 import { ChainId, ChainIdList } from "./chain.service";
 
 export const ChainIds: ChainIdList = {

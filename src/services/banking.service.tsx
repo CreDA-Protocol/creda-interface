@@ -1,43 +1,38 @@
-import DAIIcon from '@assets/tokens/Dai (DAI).png';
-import ETHIcon from '@assets/tokens/Ethereum (ETH).png';
-import ImageToken from "@assets/tokens/ImageToken";
-import USDTIcon from '@assets/tokens/Tether (USDT).png';
-import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
-import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
+import { ImageToken } from "@assets/tokens/ImageToken";
 import { bigNumberToBalance, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { ContractCallContext, Multicall } from "ethereum-multicall";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig, { BankConfig, EarnConfig } from "src/contract/ContractConfig";
+import { BankConfig, ContractConfig, EarnConfig } from "src/contract/ContractConfig";
+import { ChainIds } from './chains/chain-configs';
+import { chainFromId } from './chains/chain.service';
 import { useTokenContract } from "./contracts.service";
 import { getPriceByApi } from './pricing.service';
 import { isNativeToken } from "./tokens.service";
-import { ChainIds } from './chains/chain-configs';
-import { chainFromId } from './chains/chain.service';
 
 export const MyBankAssetPriceIcons = [
   {
     name: 'USDC',
-    icon: USDCIcon,
+    icon: ImageToken.USDCIcon,
   },
   {
     name: 'USDT',
-    icon: USDTIcon,
+    icon: ImageToken.USDTIcon,
   },
 
   // {
   //   name:'UNI',
-  //   icon:UNIIcon,
+  //   icon:ImageToken.UNIIcon,
   // },
   {
     name: 'WBTC',
-    icon: WBTCIcon,
+    icon: ImageToken.WBTCIcon,
   },
   {
     name: 'DAI',
-    icon: DAIIcon,
+    icon: ImageToken.DAIIcon,
   },
   {
     name: 'LINK',
@@ -45,15 +40,15 @@ export const MyBankAssetPriceIcons = [
   },
   // {
   //   name:'ETH',
-  //   icon:ETHIcon,
+  //   icon:ImageToken.ETHIcon,
   // },
   // {
   //   name:'LINK',
-  //   icon:LINKIcon,
+  //   icon:ImageToken.LINKIcon,
   // },
   // {
   //   name:'SUSHI',
-  //   icon:SUSHIIcon,
+  //   icon:ImageToken.SUSHIIcon,
   // }
 ];
 
@@ -65,7 +60,7 @@ export const MyBankAssetPriceIconsESC = [
   },
   {
     name: 'USDC',
-    icon: USDCIcon,
+    icon: ImageToken.USDCIcon,
   },
   {
     name: 'FILDA',
@@ -84,9 +79,9 @@ export const MyBankAssetPriceIconsESC = [
 export const MyBankAssetFarmingIcon = [
   {
     name1: 'ETH',
-    icon1: ETHIcon,
+    icon1: ImageToken.ETHIcon,
     name2: 'USDT',
-    icon2: USDTIcon,
+    icon2: ImageToken.USDTIcon,
     linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0xcb0e5bfa72bbb4d16ab5aa0c60601c438f04b4ad',
     Fee: 51.49,
     APR: 5.23,
@@ -95,9 +90,9 @@ export const MyBankAssetFarmingIcon = [
   },
   {
     name1: 'ETH',
-    icon1: ETHIcon,
+    icon1: ImageToken.ETHIcon,
     name2: 'USDC',
-    icon2: USDCIcon,
+    icon2: ImageToken.USDCIcon,
     linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x905dfcd5649217c42684f23958568e533c711aa3',
     Fee: 52.25,
     APR: 0.64,
@@ -106,9 +101,9 @@ export const MyBankAssetFarmingIcon = [
   },
   {
     name1: 'ETH',
-    icon1: ETHIcon,
+    icon1: ImageToken.ETHIcon,
     name2: 'DAI',
-    icon2: DAIIcon,
+    icon2: ImageToken.DAIIcon,
     linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x692a0b300366d1042679397e40f3d2cb4b8f7d30',
     Fee: 32.67,
     APR: 14.02,

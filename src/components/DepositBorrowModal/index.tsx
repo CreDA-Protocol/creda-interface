@@ -1,13 +1,13 @@
 import USDT_icon from '@assets/tokens/USDT.png'
+import { useDaInfo } from '@services/banking.service'
 import { BigNumber } from "ethers"
 import { useCallback, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { bigNumberToBalance, formatPercent } from "../../common/Common"
-import Modal from '../Alert'
+import { AlertModal } from '../Alert'
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
-import { useDaInfo } from '@services/banking.service'
 
 const Container = styled.div`
   height:480px;
@@ -74,7 +74,7 @@ const MaxButton = styled.div`
   };
 `
 
-export default function DepositBorrowModal({
+export function DepositBorrowModal({
   isOpen,
   onConfirm,
   onDismiss,
@@ -124,7 +124,7 @@ export default function DepositBorrowModal({
     return borrowSafeMax
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={handleDismiss} maxHeight={468}>
+    <AlertModal isOpen={isOpen} onDismiss={handleDismiss} maxHeight={468}>
       <Container>
         <ColumnBetween>
           <div>
@@ -186,6 +186,6 @@ export default function DepositBorrowModal({
           </RowFixed>
         </ColumnBetween>
       </Container>
-    </Modal>
+    </AlertModal>
   )
 }

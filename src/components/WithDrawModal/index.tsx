@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { balanceToBigNumber, marketsConfig } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useTransactionAdder } from "../../states/transactions/hooks";
-import Modal from '../Alert';
+import { AlertModal } from '../Alert';
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column';
 import { LoadingCircle } from "../Common";
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row';
@@ -79,7 +79,7 @@ const MaxButton = styled.div`
   };
 `
 
-export default function WithdrawModal({
+export function WithdrawModal({
   isOpen,
   onDismiss,
   symbol,
@@ -124,7 +124,7 @@ export default function WithdrawModal({
       })
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
+    <AlertModal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
       <Container>
         <ColumnBetween>
           <div>
@@ -178,6 +178,6 @@ export default function WithdrawModal({
           </RowFixed>
         </ColumnBetween>
       </Container>
-    </Modal>
+    </AlertModal>
   )
 }

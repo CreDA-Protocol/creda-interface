@@ -1,5 +1,5 @@
-import ImageCommon from "@assets/common/ImageCommon";
-import ImageToken from "@assets/tokens/ImageToken";
+import { ImageCommon } from "@assets/common/ImageCommon";
+import { ImageToken } from "@assets/tokens/ImageToken";
 import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowFixed, SpaceHeight, SpaceWidth, TextEqure } from "@components/Row";

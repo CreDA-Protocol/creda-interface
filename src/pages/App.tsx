@@ -1,7 +1,7 @@
-import Loading from "@components/Loading";
-import Popups from "@components/Popups";
-import Toasts from "@components/Toasts";
-import WalletConnectModal from "@components/WalletConnectModal";
+import { Loading } from "@components/Loading";
+import { Popups } from "@components/Popups";
+import { Toasts } from "@components/Toasts";
+import { WalletConnectModal } from "@components/WalletConnectModal";
 import { Suspense, useEffect, useState } from "react";
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
@@ -15,11 +15,11 @@ import {
 } from "../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../contexts";
 import "../i18n";
-import LoadingProvider from "../provider/LoadingProvider";
+import { LoadingProvider } from "../provider/LoadingProvider";
 import store from "../states";
 import ApplicationUpdater from "../states/application/updater";
-import TransactionUpdater from "../states/transactions/updater";
-import ThemeProvider from "../theme";
+import Updater from "../states/transactions/updater";
+import { ThemeProvider } from "../theme";
 import AboutUs from "./AboutUs";
 import { RedirectPathToHomeOnly } from "./Home/redirects";
 import Press from "./Press";
@@ -184,7 +184,7 @@ export default function App() {
     return (
       <>
         <ApplicationUpdater />
-        <TransactionUpdater />
+        <Updater />
       </>
     );
   }

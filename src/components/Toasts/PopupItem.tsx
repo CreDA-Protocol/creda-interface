@@ -3,7 +3,7 @@ import { X } from 'react-feather'
 import { animated, useSpring } from 'react-spring'
 import styled, { ThemeContext } from 'styled-components'
 import { ToastStatus, usePopToast } from "../../states/toast"
-import ToastPopup from './TransactionPopup'
+import { ToastPopup } from './ToastPopup'
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -40,7 +40,7 @@ const Fader = styled.div`
 
 const AnimatedFader = animated(Fader)
 const removeAfterMs = 3000
-export default function ToastItem({
+export function ToastItem({
   type,
   content,
 }: {

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useToasts } from '../../states/application/hooks'
 import { AutoColumn } from '../Column'
-import ToastItem from './PopupItem'
+import { ToastItem } from './PopupItem'
 
 const MobilePopupWrapper = styled.div<{ height: string | number }>`
   position: fixed;
@@ -42,7 +42,7 @@ const FixedPopupColumn = styled(AutoColumn) <{ extraPadding: boolean }>`
   `};
 `
 
-export default function Toasts() {
+export function Toasts() {
   // get all popups
   const activeToasts = useToasts()
 

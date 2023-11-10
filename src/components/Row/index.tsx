@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Box } from 'rebass/styled-components'
-import {Button as RebassButton} from "rebass";
+import { Button as RebassButton } from "rebass";
+import { Box } from 'rebass/styled-components';
+import styled from 'styled-components';
 export const Base = styled(RebassButton)<{
   padding?: string
   width?: string
@@ -56,7 +56,7 @@ export const ButtonClick = styled(Base)`
   pointer-events:${props=>props.disabled?"none":"auto"};
   opacity:${props=>props.disabled?0.5:1};
 `
-const Row = styled(Box)<{ align?: string; padding?: string; border?: string; borderRadius?: string }>`
+export const Row = styled(Box)<{ align?: string; padding?: string; border?: string; borderRadius?: string }>`
   position: relative;
   width: 100%;
   display: flex;
@@ -84,7 +84,7 @@ export const RowFlat = styled.div`
 export const FontPoppins = styled.span`
   font-family: 'Poppins Regular';
   > * {
-    font-family: 'Poppins Regular' !important;  
+    font-family: 'Poppins Regular' !important;
   }
 `
 
@@ -208,7 +208,7 @@ export const LinearView = styled.div<{
     padding-right:${({ paddingH }) => `${paddingH ? paddingH / 2 : 10}px`};
     padding-top:${({ paddingV }) => `${paddingV ? paddingV / 2 : 10}px`};
     padding-bottom:${({ paddingV }) => `${paddingV ? paddingV / 2 : 10}px`};
-  };  
+  };
 `
 
 
@@ -224,7 +224,7 @@ export const LinearText = styled.div<{
   -webkit-text-fill-color:transparent;
   @media (max-width: 768px) {
     font-size:${({ fontSize }) => `${fontSize ? fontSize / 2 : 10}px`};
-  };  
+  };
 `
 export const ButtonImage = styled.img<{
   margin?:string;
@@ -265,7 +265,7 @@ export const Button = styled.div<{
   opacity:${props=>props.disabled?0.8:1};
   @media (max-width: 768px) {
     font-size:${({ fontSize }) => `${fontSize ? fontSize / 2 : 10}px`};
-  };  
+  };
 `
 export const SpaceHeight = styled.div<{
   height:number;
@@ -294,7 +294,7 @@ export const Image = styled.img<{
   @media (max-width: 768px) {
     width:${({ size }) => `${size ? size / 2 : 10}px`};
     height:${({ size }) => `${size ?size / 2 : 10}px`};
-  };  
+  };
 `
 
 export const ImageCustom = styled.img<{
@@ -306,7 +306,7 @@ export const ImageCustom = styled.img<{
   @media (max-width: 768px) {
     width:${({ width }) => `${width ? width / 2 : 10}px`};
     height:${({ height }) => `${height ? height / 2 : 10}px`};
-  };  
+  };
 `
 
 export const Text = styled.span<{
@@ -412,4 +412,3 @@ export const GradientGaryButton = styled(ButtonClick)`
 //     height: 38px;
 //   }
 // }
-export default Row

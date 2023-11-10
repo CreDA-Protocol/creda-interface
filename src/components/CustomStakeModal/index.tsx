@@ -6,7 +6,7 @@ import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import Modal from '../NormalModal'
+import { NormalModal } from '../NormalModal'
 
 const Container = styled.div`
   width:400px;
@@ -75,7 +75,7 @@ enum ButtonType {
   cancel = 0,
   confirm = 1
 }
-export default function CustomStakeModal({
+export function CustomStakeModal({
   show = true,
   onDismiss,
   title,
@@ -120,7 +120,7 @@ export default function CustomStakeModal({
 
   }
   return (
-    <Modal isOpen={show} onDismiss={onDismiss} >
+    <NormalModal isOpen={show} onDismiss={onDismiss} >
       <RowCenter>
         <Container>
           <RowCenter>
@@ -146,6 +146,6 @@ export default function CustomStakeModal({
           </RowCenter>
         </Container>
       </RowCenter>
-    </Modal>
+    </NormalModal>
   )
 }

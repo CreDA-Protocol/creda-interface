@@ -22,7 +22,7 @@ import bUSD from "./bUSD.png";
 import CreDa from "./creda.png";
 import sCASH from "./sCASH.png";
 
-const ImageToken: any = {
+export const ImageToken:any = {
     ARB,
     ELK,
     GLIDE,
@@ -52,4 +52,3 @@ const ImageToken: any = {
     LINK,
     SUSHI
 }
-export default ImageToken;

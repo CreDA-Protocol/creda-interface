@@ -1,4 +1,4 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
 import { ChainIds, NetworkConfig, mainnetNetworkConfigs } from "@services/chains/chain-configs";
 import { addNetwork, chainFromId } from "@services/chains/chain.service";
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { ethereum, logError, walletInfo } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
-import Modal from '../NormalModal';
+import { NormalModal } from '../NormalModal';
 
 const Container = styled(FlexViewCenterColumn)`
   width:500px;
@@ -78,7 +78,7 @@ enum ConnectType {
     metamask = 0,
     walletconnect = 1
 }
-export default function WalletConnectModal({
+export function WalletConnectModal({
     show = true,
     onDismiss,
     changeChainId,
@@ -135,7 +135,7 @@ export default function WalletConnectModal({
         }
     }
     return (
-        <Modal isOpen={show} onDismiss={onDismiss} >
+        <NormalModal isOpen={show} onDismiss={onDismiss} >
             <RowCenter>
                 <Container>
                     <Logo
@@ -163,7 +163,7 @@ export default function WalletConnectModal({
                     >Later</LaterTitle>
                 </Container>
             </RowCenter>
-        </Modal>
+        </NormalModal>
     )
 }
 

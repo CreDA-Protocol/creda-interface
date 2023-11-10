@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 // import { useActiveWeb3React } from '../../hooks'
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 
 const HeaderView = styled.div`
   cursor:pointer;
@@ -23,7 +23,7 @@ const Arrow = styled.img`
 `
 
 
-export default function Setting() {
+export function Setting() {
   return <HeaderView onClick={() => {
 
   }}>

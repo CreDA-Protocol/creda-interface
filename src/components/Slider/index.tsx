@@ -27,7 +27,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
 
     &:hover,
     &:focus {
-      
+
     }
   }
 
@@ -41,7 +41,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
 
     &:hover,
     &:focus {
-      
+
     }
   }
 
@@ -54,7 +54,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
 
     &:hover,
     &:focus {
-      
+
     }
   }
 
@@ -96,7 +96,7 @@ interface InputSliderProps {
   size?: number
 }
 
-export default function Slider({ value, onChange, min = 0, step = 1, max = 100, size = 20 }: InputSliderProps) {
+export function Slider({ value, onChange, min = 0, step = 1, max = 100, size = 20 }: InputSliderProps) {
   const changeCallback = useCallback(
     e => {
       onChange(parseInt(e.target.value))

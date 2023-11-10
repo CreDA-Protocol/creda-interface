@@ -1,15 +1,15 @@
-import ImageCommon from '@assets/common/ImageCommon';
+import { ImageCommon } from '@assets/common/ImageCommon';
 import { ButtonNormal } from '@components/Button';
 import { Column, ColumnCenter } from '@components/Column';
 import { CardPair, LoadingRow } from '@components/Common';
-import Modal from '@components/NormalModal';
-import Row, { RowBetween, RowCenter, RowEnd, RowFixed, SpaceHeight, Text } from '@components/Row';
+import { NormalModal } from '@components/NormalModal';
+import { Row, RowBetween, RowCenter, RowEnd, RowFixed, SpaceHeight, Text } from '@components/Row';
+import { useWalletInfo } from '@services/banking.service';
 import { useState } from 'react';
 import styled from 'styled-components';
 import {
   mathPriceTo4
 } from "../../common/Common";
-import { useWalletInfo } from '@services/banking.service';
 
 export const DrawButton = styled.div`
   color:white;
@@ -117,7 +117,7 @@ const WhiteView = styled(RowBetween)`
 const BackButton = styled(ButtonNormal)`
 `
 
-export default function AddPositionModal({
+export function AddPositionModal({
   isOpen,
   onDismiss,
   onAdd,
@@ -134,7 +134,7 @@ export default function AddPositionModal({
   const walletInfo = useWalletInfo()
 
   return (
-    <Modal isOpen={isOpen} onDismiss={() => { }}>
+    <NormalModal isOpen={isOpen} onDismiss={() => { }}>
       <ColumnCenter>
         <MainView>
           <Column style={{ width: '100%' }}>
@@ -195,7 +195,7 @@ export default function AddPositionModal({
           </Container>
         </MainView>
       </ColumnCenter>
-    </Modal>
+    </NormalModal>
   )
 }
 

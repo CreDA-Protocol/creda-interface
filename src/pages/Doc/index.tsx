@@ -1,6 +1,6 @@
 // import styled from 'styled-components'
-// import ImageCommon from '@assets/common/ImageCommon'
-import AppBody, { MainFullBody } from '@pages/components/AppBody';
+// import { ImageCommon } from '@assets/common/ImageCommon'
+import { AppBody, MainFullBody } from '@pages/components/AppBody';
 
 function Doc(props: any) {
   return (

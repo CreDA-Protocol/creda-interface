@@ -1,6 +1,6 @@
 /* import styled from 'styled-components'
 
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 
 const BackgroundContainer = styled.div`
   position: fixed;
@@ -35,7 +35,7 @@ const DownBackgroundContainer = styled.div`
     background-size:cover;
   };
 `
-export default function Background() {
+export function Background() {
   return (
     <BackgroundContainer>
     </BackgroundContainer>

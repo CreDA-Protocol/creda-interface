@@ -117,7 +117,7 @@ const Headerdiv = styled.div`
   background: linear-gradient( 90deg,#4a1ee1,#1890ff);
   `;
 
-export default function WalkThroughModal({
+export function WalkThroughModal({
   currentStep,
   Test,
   title,

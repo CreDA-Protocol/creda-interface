@@ -3,7 +3,7 @@ import Comptroller_ABI from "@abi/banking/Comptroller.json";
 import ERC20_ABI from "@abi/generic/ERC20.json";
 import qERC20_ABI from '@abi/generic/qERC20.json';
 import PriceOracle_ABI from "@abi/swap/PriceOracle.json";
-import ImageToken from "@assets/tokens/ImageToken";
+import { ImageToken } from "@assets/tokens/ImageToken";
 import { ChainIds } from "@services/chains/chain-configs";
 import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';

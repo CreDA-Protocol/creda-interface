@@ -171,7 +171,7 @@ export const DarkBtn = styled.div`
   }
 `;
 
-export default function ThemeIcon() {
+export function ThemeIcon() {
   const toggleDark = useChangeTemeDark();
 
   const themeIsDark = useTheme();

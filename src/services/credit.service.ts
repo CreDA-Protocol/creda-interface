@@ -1,12 +1,12 @@
-import ImageCommon from '@assets/common/ImageCommon';
+import { ImageCommon } from '@assets/common/ImageCommon';
 import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import axios, { AxiosResponse } from "axios";
-import { BigNumber, Contract } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig from "src/contract/ContractConfig";
+import { ContractConfig } from "src/contract/ContractConfig";
 import { useContract } from "./contracts.service";
 import { ChainIds } from './chains/chain-configs';
 import { chainFromId } from './chains/chain.service';
@@ -23,6 +23,11 @@ export type CreditResponse = {
   code: number,
   message: string,
   data: CreditData
+}
+
+export type CreditDataFromContract = {
+  creditScore: number, // disable number
+  timestamp: string,
 }
 
 export function getNFTCardBgImage(type: string) {
@@ -69,8 +74,7 @@ async function getCreditScoreByApi(address: string): Promise<number> {
     if (!data) return score;
 
     if (data.code === 200) {
-      let str = data.data.score
-      score = Number(str.slice(2, 6)) + Number(str.slice(6, 10)) + Number(str.slice(10, 14)) + Number(str.slice(14, 18))
+      score = getDisableScore(data.data.score);
     } else if (data.code === 500) {
       // Use the default score if no credit score has been generated for new address.
       score = 50;
@@ -83,21 +87,31 @@ async function getCreditScoreByApi(address: string): Promise<number> {
   return score;
 }
 
-// Get credit scores from there (if there is a data contract on the target chain), or call the backend api to get the credit score
+
+async function getCreditDataByContract(address: string, dataContract: Contract): Promise<CreditDataFromContract> {
+  if (!address || !dataContract) {
+    throw Error("Invalid parameter");
+  }
+
+  let info = await dataContract.getCreditInfo(address)
+  let score = getDisableScore(info.credit);
+  let timestamp = bigNumberToBalance(info.timestamp, 0)
+
+  let creditData: CreditDataFromContract = {
+    creditScore: score,
+    timestamp: timestamp
+  }
+  return creditData;
+}
+
+// Get credit scores from data contract (if there is a data contract on the target chain), or call the backend api to get the credit score
 // TODO: don't use credaContract
 async function getCreditScore(account: string, chainId: number, credaContract: Contract | null, dataContract: Contract | null): Promise<number> {
   let score = 0;
   try {
     if (dataContract) {
-      // TODO: We get credit from backend api, then call updateCredit to update data to dataContract.
-      let info = await dataContract.getCreditInfo(account)
-      // console.log('dataContract.getCreditInfo:', info, account)
-      score = Number(formatBalance(info.credit, 2))
-
-      if (score === 0) {
-        // Use the default score if no credit score has been generated for new address.
-        score = 50;
-      }
+      let creditData = await getCreditDataByContract(account, dataContract);
+      score = creditData.creditScore;
     }
     else if (chainId === ChainIds.esc) {
       const creditScore = await credaContract.creditScore(account)
@@ -222,10 +236,20 @@ export function useCreditScore(): any {
   return info;
 }
 
-// TODO: why get core by address? Fake score?
+// TODO: why get score by address? Fake score?
 function calcScore(account: string): number {
   const res = Number(account).toFixed(2).slice(2, 4)
   return Number(res) + 150
+}
+
+/**
+ * Convert the score that get from api or contract into a displayable number
+ * @param score
+ * @returns
+ */
+function getDisableScore(score: string): number {
+  let paddedHexNumber = ethers.utils.hexZeroPad(score, 32);
+  return Number(paddedHexNumber.slice(2, 6)) + Number(paddedHexNumber.slice(6, 10)) + Number(paddedHexNumber.slice(10, 14)) + Number(paddedHexNumber.slice(14, 18))
 }
 
 /**

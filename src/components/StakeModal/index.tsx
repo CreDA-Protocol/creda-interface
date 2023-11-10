@@ -9,17 +9,17 @@ import {
   TextEqure
 } from '@components/Row'
 import { TransactionResponse } from '@ethersproject/providers'
+import { ChainIds } from '@services/chains/chain-configs'
+import { chainFromId } from '@services/chains/chain.service'
 import { useContract } from "@services/contracts.service"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import ContractConfig from "../../contract/ContractConfig"
+import { ContractConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTransactionAdder } from "../../states/transactions/hooks"
-import Modal from '../NormalModal'
-import { ChainIds } from '@services/chains/chain-configs'
-import { chainFromId } from '@services/chains/chain.service'
+import { NormalModal } from '../NormalModal'
 
 const Container = styled.div`
   width:400px;
@@ -84,7 +84,7 @@ const CancelButton = styled(BlueButton)`
   border:1px solid #777E90;
   color:#777E90;
 `
-export default function StakeModal({
+export function StakeModal({
   isOpen,
   onDismiss,
   title,
@@ -160,7 +160,7 @@ export default function StakeModal({
     setInput(maxNum + "")
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} >
+    <NormalModal isOpen={isOpen} onDismiss={onDismiss} >
       <RowCenter>
         <Container>
           <RowCenter>
@@ -186,6 +186,6 @@ export default function StakeModal({
           </RowCenter>
         </Container>
       </RowCenter>
-    </Modal>
+    </NormalModal>
   )
 }

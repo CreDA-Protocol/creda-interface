@@ -3,8 +3,8 @@ import { isMobile } from 'react-device-detect';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 
-import ImageCommon from '@assets/common/ImageCommon';
-import Row from '../../../components/Row';
+import { ImageCommon } from '@assets/common/ImageCommon';
+import { Row } from '../../../components/Row';
 const TopMenuImage = styled.img`
   width: 28px;
   height: 20px;
@@ -23,7 +23,7 @@ const TopMenuButtonImage = styled.img`
   margin-left:20px
 `
 
-export default function SubMenu({ history }: any) {
+export function SubMenu({ history }: any) {
   const { t } = useTranslation();
 
   function onPush(index: number) {

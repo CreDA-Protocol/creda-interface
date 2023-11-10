@@ -1,15 +1,4 @@
 // Token logos
-import ELA from '@assets/tokens/ELA.png';
-import ELK from '@assets/tokens/ELK.png';
-import FILDA from '@assets/tokens/FILDA.png';
-import GLIDE from '@assets/tokens/GLIDE.png';
-import IFNT from '@assets/tokens/IFNT.png';
-import ImageToken from "@assets/tokens/ImageToken";
-import MAN from '@assets/tokens/MAN.png';
-import USDT from '@assets/tokens/USDT.png';
-import bCASH from '@assets/tokens/bCASH.png';
-import bUSD from '@assets/tokens/bUSD.png';
-import sCASH from '@assets/tokens/sCASH.png';
 
 // Generic token contracts
 import ERC20_ABI from "@abi/generic/ERC20.json";
@@ -67,6 +56,7 @@ import Items_ABI from '@abi/gaming/Items.json';
 import Production_ABI from '@abi/gaming/Production.json'; // Also seems related to gaming
 import WarshipExplore_ABI from '@abi/gaming/WarshipExplore.json';
 import WarshipNFT_ABI from '@abi/gaming/WarshipNFT.json';
+import { ImageToken } from "@assets/tokens/ImageToken";
 import { ChainName } from '@services/chains/chain.service';
 
 type ChainContractConfig = {
@@ -89,7 +79,7 @@ type ContractsConfig = {
   [contractName: string]: ContractItemConfig;
 }
 
-const ContractConfig: ContractsConfig = {
+export const ContractConfig: ContractsConfig = {
   WCREDA: {
     symbol: "WCREDA",
     abi: ERC20_ABI,
@@ -153,7 +143,7 @@ const ContractConfig: ContractsConfig = {
   PersonalDataMinePoolPlus: {
     symbol: "PersonalDataMinePoolPlus",
     address: "0x8F4f826C28bC6588c44aAd45c467f8123079507f",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     abi: PersonalDataMinePoolPlus_ABI,
     heco: {
       address: "0x9dBEa32d045535b9b6061BAC1CAB764178C61fcB"
@@ -180,7 +170,7 @@ const ContractConfig: ContractsConfig = {
   PersonalDataMinePoolFix: {
     symbol: "PersonalDataMinePoolFix",
     address: "0x8F4f826C28bC6588c44aAd45c467f8123079507f",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     abi: PersonalDataMinePoolFix_ABI,
     heco: {
       address: "0x9dBEa32d045535b9b6061BAC1CAB764178C61fcB"
@@ -240,7 +230,7 @@ const ContractConfig: ContractsConfig = {
   APIConsumer: {
     symbol: "APIConsumer",
     address: "0x8F4f826C28bC6588c44aAd45c467f8123079507f",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     abi: APIConsumer_ABI,
     heco: {
       address: "0x9dBEa32d045535b9b6061BAC1CAB764178C61fcB"
@@ -405,7 +395,7 @@ const ContractConfig: ContractsConfig = {
   USDT: {
     symbol: "USDT",
     address: "0x764acca5f51f83fc0561808c432823df8a135b86",
-    icon: USDT,
+    icon: ImageToken.USDT,
     heco: {
       address: "0xa71edc38d189767582c38a3145b5873052c3e47a"
     },
@@ -474,7 +464,7 @@ const ContractConfig: ContractsConfig = {
   sCASH: {
     symbol: "sCASH",
     address: "0xb6ccFA7Ef3a295932536E0988CffD85228cB177c",
-    icon: sCASH,
+    icon: ImageToken.sCASH,
     heco: {
       address: "0xb6ccFA7Ef3a295932536E0988CffD85228cB177c"
     },
@@ -497,7 +487,7 @@ const ContractConfig: ContractsConfig = {
   IFNT: {
     symbol: "IFNT",
     address: "0x246ccCb62DBCB08b4aBD33790e61068C3f507940",
-    icon: IFNT,
+    icon: ImageToken.IFNT,
     abi: IFNT_ABI,
     heco: {
       address: "0x7d4c107ec8fd251fd39c32199c70b76eae4e67c1"
@@ -521,12 +511,12 @@ const ContractConfig: ContractsConfig = {
   MAN: {
     symbol: "MAN",
     address: "0x7a45d615f26da940ffff43eca1274d8ea116ce0c",
-    icon: MAN,
+    icon: ImageToken.MAN,
   },
   FILDA: {
     symbol: "FILDA",
     address: "0xb9ae03e3320235d3a8ae537f87ff8529b445b590",
-    icon: FILDA,
+    icon: ImageToken.FILDA,
     esc: {
       address: "0x00e71352c91ff5b820ab4df08bb47653db4e32c0",
     },
@@ -537,7 +527,7 @@ const ContractConfig: ContractsConfig = {
   GLIDE: {
     symbol: "GLIDE",
     address: "0xb9ae03e3320235d3a8ae537f87ff8529b445b590",
-    icon: GLIDE,
+    icon: ImageToken.GLIDE,
     esc: {
       address: "0xd39ec832ff1caafab2729c76ddeac967abca8f27",
     },
@@ -548,7 +538,7 @@ const ContractConfig: ContractsConfig = {
   ELK: {
     symbol: "ELK",
     address: "0xeeeeeb57642040be42185f49c52f7e9b38f8eeee",
-    icon: ELK,
+    icon: ImageToken.ELK,
     esc: {
       address: "0xeeeeeb57642040be42185f49c52f7e9b38f8eeee",
     },
@@ -559,7 +549,7 @@ const ContractConfig: ContractsConfig = {
   ELA: {
     symbol: "ELA",
     address: "0xb9ae03e3320235d3a8ae537f87ff8529b445b590",
-    icon: ELA,
+    icon: ImageToken.ELA,
     esc: {
       address: "0x517E9e5d46C1EA8aB6f78677d6114Ef47F71f6c4",
     },
@@ -570,7 +560,7 @@ const ContractConfig: ContractsConfig = {
   wELA: {
     symbol: "wELA",
     address: "0x517E9e5d46C1EA8aB6f78677d6114Ef47F71f6c4",
-    icon: ELA,
+    icon: ImageToken.ELA,
     esc: {
       address: "0x517E9e5d46C1EA8aB6f78677d6114Ef47F71f6c4",
     },
@@ -581,7 +571,7 @@ const ContractConfig: ContractsConfig = {
   HT: {
     symbol: "HT",
     address: "0xeceefC50f9aAcF0795586Ed90a8b9E24f55Ce3F3",
-    icon: ELA,
+    icon: ImageToken.ELA,
   },
   CREDA: {
     symbol: "CREDA",
@@ -601,7 +591,7 @@ const ContractConfig: ContractsConfig = {
   InitialMint: {
     symbol: "InitialMint",
     address: "0x71E1EF01428138e516a70bA227659936B40f0138",
-    icon: FILDA,
+    icon: ImageToken.FILDA,
     abi: InitialMint_ABI,
     esc: {
       address: "0x9979B5a517cB99FD3f3b9F30c552F994eB214685",
@@ -618,7 +608,7 @@ const ContractConfig: ContractsConfig = {
   CredaPool: {
     symbol: "CredaPool",
     address: "0xcD798F3C4CD9d228334E9EC470ddFB65c65fB9a6",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: Creda_ABI,
     esc: {
       address: "0x6e548f0980E6b3B7292dC782Bd8Eafb6fbE29a95",
@@ -630,7 +620,7 @@ const ContractConfig: ContractsConfig = {
   CredaTestPlus: {
     symbol: "CredaTestPlus",
     address: "0x4424068eaFc8aE5f2d59e08073D0b79783C3dC69",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: CredaTestPlus_ABI,
     esc: {
       address: "0x169C567505ed15308089A7147D98c376D6695082",
@@ -642,7 +632,7 @@ const ContractConfig: ContractsConfig = {
   NFTStore: {
     symbol: "NFTStore",
     address: "0x8373dD0dADC1e73BAd7F9cC9145f50cd4097fBe9",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: NFTStore_ABI,
     esc: {
       address: "0x8373dD0dADC1e73BAd7F9cC9145f50cd4097fBe9",
@@ -654,7 +644,7 @@ const ContractConfig: ContractsConfig = {
   CreditNFT: {
     symbol: "CreditNFT",
     address: "0x2784D32751419630972E161939a89e9e63419659",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: CreditNFT_ABI,
     esc: {
       address: "0x0E0e0fCb700c3CfEe1AeEa5c1d7A21dd90d1ce7E",
@@ -678,7 +668,7 @@ const ContractConfig: ContractsConfig = {
   DataContract: {
     symbol: "DataContract",
     address: "0x878063db2d3d54e4F18e7bC448FA56A0e111C054",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: DataContract_ABI,
     elatest: {
       address: "0x36aFfC79ABBd2F8Aaf32800A1333c524aF3bCE79",
@@ -691,7 +681,7 @@ const ContractConfig: ContractsConfig = {
   InitializeAddress: {
     symbol: "InitializeAddress",
     address: "0x0D11db38B0E352B21192364822BdF375CcF03d69",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: InitializeAddress_ABI,
     heco: {
       address: "0x0D11db38B0E352B21192364822BdF375CcF03d69"
@@ -715,7 +705,7 @@ const ContractConfig: ContractsConfig = {
   Items: {
     symbol: "Items",
     address: "0xC855f9ffd49062eE100d13B709d88783ae6f8f5F",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: Items_ABI,
     heco: {
       address: "0xC855f9ffd49062eE100d13B709d88783ae6f8f5F"
@@ -739,7 +729,7 @@ const ContractConfig: ContractsConfig = {
   GameBuild: {
     symbol: "GameBuild",
     address: "0xdD46E97B595c30C08c8958e30B3A3A489424f37C",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: GameBuild_ABI,
     heco: {
       address: "0xdD46E97B595c30C08c8958e30B3A3A489424f37C"
@@ -763,7 +753,7 @@ const ContractConfig: ContractsConfig = {
   Vault: {
     symbol: "Vault",
     address: "0xFF22b592542fa60045a453E092afda3013ab271b",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: Vault_ABI,
     heco: {
       address: "0xFF22b592542fa60045a453E092afda3013ab271b"
@@ -787,7 +777,7 @@ const ContractConfig: ContractsConfig = {
   Collections: {
     symbol: "Collections",
     address: "0x3846F47042f5681e0E2ffF4b37D3CcA970d801BE",
-    icon: MAN,
+    icon: ImageToken.MAN,
     abi: Collection_ABI,
     heco: {
       address: "0x3846F47042f5681e0E2ffF4b37D3CcA970d801BE"
@@ -811,7 +801,7 @@ const ContractConfig: ContractsConfig = {
   IFNT_USDT_LP: {
     symbol: "IFNT_USDT_LP",
     address: "0x8F4f826C28bC6588c44aAd45c467f8123079507f",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     heco: {
       address: "0x9dBEa32d045535b9b6061BAC1CAB764178C61fcB"
     },
@@ -834,7 +824,7 @@ const ContractConfig: ContractsConfig = {
   ETH_CREDA_LP: {
     symbol: "ETH_CREDA_LP",
     address: "0x8F4f826C28bC6588c44aAd45c467f8123079507f",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     heco: {
       address: "0x9dBEa32d045535b9b6061BAC1CAB764178C61fcB"
     },
@@ -998,7 +988,7 @@ const ContractConfig: ContractsConfig = {
   bUSD: {
     symbol: "bUSD",
     address: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-    icon: bUSD,
+    icon: ImageToken.bUSD,
     heco: {
       address: "0xe9e7cea3dedca5984780bafc599bd69add087d56"
     },
@@ -1021,7 +1011,7 @@ const ContractConfig: ContractsConfig = {
   bCASH: {
     symbol: "bCASH",
     address: "0x1Ce5eC42c7bf29eB0CB733045aAfDe275c0dC7E7",
-    icon: bCASH,
+    icon: ImageToken.bCASH,
     heco: {
       address: "0x1Ce5eC42c7bf29eB0CB733045aAfDe275c0dC7E7"
     },
@@ -1508,4 +1498,3 @@ export const EarnConfig: any = {
     }
   }
 }
-export default ContractConfig;
