@@ -1,29 +1,28 @@
-import { ChainIdConfig } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ChainId, ChainType, chainFromId } from "@services/chain.service";
+import { ChainId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
-import { FC } from "react";
+import { FC, useContext } from "react";
+import { NetworkTypeContext } from "src/contexts";
 import { useTheme } from "src/state/application/hooks";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
 
 export const ApprovalDiv: FC<{
   data: PortfolioDataset<PortfolioApprovedToken[]>;
-  chainId: ChainId;
+  chainId: ChainId; // Chain ID for which we are showing approvals
 }> = ({ data, chainId }) => {
-  const netType = ChainType[chainId];
-  const network = chainFromId(chainId);
+  const { chainId: activeChainId } = useContext(NetworkTypeContext);
   const themeDark = useTheme();
 
   function cancel(cancelApprove: () => void) {
-    if (network === netType) {
+    if (chainId === activeChainId) {
       cancelApprove && cancelApprove();
     } else {
-      switchNetwork(ChainIdConfig[netType]);
+      switchNetwork(chainId);
     }
   }
 

@@ -1,23 +1,23 @@
-import { ChainIdConfig } from "@common/Common";
-import { ChainId, ChainType, chainFromId } from "@services/chain.service";
+import { ChainId, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
-import { FC } from "react";
-import { ApprovalPhoneItemDiv } from "./ApprovalPhoneItemDiv";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
+import { FC, useContext } from "react";
+import { NetworkTypeContext } from "src/contexts";
+import { ApprovalPhoneItemDiv } from "./ApprovalPhoneItemDiv";
 
 export const ApprovalPhoneDiv: FC<{
   data: PortfolioDataset<PortfolioApprovedToken[]>;
   chainId: ChainId;
 }> = ({ data, chainId }) => {
-  const netType = ChainType[chainId];
+  const { chainId: activeChainId } = useContext(NetworkTypeContext);
   const network = chainFromId(chainId);
 
   function cancel(cancelApprove: () => void) {
-    if (network === netType) {
+    if (chainId === activeChainId) {
       cancelApprove && cancelApprove();
     } else {
-      switchNetwork(ChainIdConfig[netType]);
+      switchNetwork(chainId);
     }
   }
 

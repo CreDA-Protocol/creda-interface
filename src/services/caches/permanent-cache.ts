@@ -68,6 +68,11 @@ export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
     this.getListener(key).next(value);
   }
 
+  public async delete(key: string) {
+    const storageKey = this.getStorageKey(key);
+    await this.db.delete<StoredItem<DataType>>(storageKey);
+  }
+
   /**
    * Returns a subject that gets updated when an entry changes
    */

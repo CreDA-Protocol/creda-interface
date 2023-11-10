@@ -1,6 +1,6 @@
 import ImageToken from "@assets/tokens/ImageToken";
 import { ethereum } from "@common/Common";
-import { ChainIds } from "./chain.service";
+import { ChainId, ChainIds } from "./chain.service";
 
 export type AddEthereumChainParameter = {
   chainId: string; // A 0x-prefixed hexadecimal string
@@ -125,12 +125,12 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
 ]
 
 
-export function switchNetwork(chainId: string) {
+export function switchNetwork(chainId: ChainId) {
   return ethereum.request({
     method: 'wallet_switchEthereumChain',
     params: [
       {
-        chainId: chainId,
+        chainId: "0x" + chainId.toString(16),
       }
     ]
   })
@@ -139,7 +139,7 @@ export function switchNetwork(chainId: string) {
 export function addNetwork(param: AddEthereumChainParameter) {
   // TODO: it will add a new network if call wallet_addEthereumChain for ethereum.
   if (param.chainId === '0x1') {
-    return switchNetwork(param.chainId);
+    return switchNetwork(parseInt(param.chainId));
   }
   return ethereum.request({
     method: 'wallet_addEthereumChain',

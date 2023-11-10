@@ -60,4 +60,14 @@ export class PromisifiedIndexedDB {
       });
     });
   }
+
+  public delete<T>(key: string): Promise<void> {
+    return this.getObjectStore('readwrite').then((store) => {
+      return new Promise((resolve, reject) => {
+        const request = store.delete(key);
+        request.onerror = (): void => reject(request.error);
+        request.onsuccess = (): void => resolve();
+      });
+    });
+  }
 }

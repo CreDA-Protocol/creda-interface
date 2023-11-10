@@ -87,66 +87,68 @@ export const WalletDiv: FC<{
           </RowCenter>
         }
 
-        {!data.loading && data.data &&
-          data.data.tokens.map((item, index) => {
-            if (hidden && item.value < 1) {
-              return null
-            }
-            return (
-              <Row key={index}>
-                <LineH />
-                <RowBetween>
-                  <RowFixed style={{ flex: 0.5 }}>
-                    <SmallIconIcon src={item.icon} />
-                    <Column>
-                      <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                        {item.symbol}
-                      </ThemeTextEqure>
-                      <TextEqure fontColor={"#777E90"} fontSize={14}>
-                        {chainTitle}
-                      </TextEqure>
-                    </Column>
-                  </RowFixed>
-                  {!isMobile && (
-                    <Column style={{ alignItems: "flex-end", flex: 1 }}>
-                      <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                        ${formatPositiveNumber(item.price)}
-                      </ThemeTextEqure>
-                      {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
+        {!data.loading && data.data?.tokens.length === 0 && <ThemeTextEqure fontSize={18} fontWeight={"bold"} style={{ textAlign: "center", marginTop: 30 }}>
+          No asset on this network.
+        </ThemeTextEqure>}
+        {!data.loading && data.data?.tokens.map((item, index) => {
+          if (hidden && item.value < 1) {
+            return null
+          }
+          return (
+            <Row key={index}>
+              <LineH />
+              <RowBetween>
+                <RowFixed style={{ flex: 0.5 }}>
+                  <SmallIconIcon src={item.icon} />
+                  <Column>
+                    <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                      {item.symbol}
+                    </ThemeTextEqure>
+                    <TextEqure fontColor={"#777E90"} fontSize={14}>
+                      {chainTitle}
+                    </TextEqure>
+                  </Column>
+                </RowFixed>
+                {!isMobile && (
+                  <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                    <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                      ${formatPositiveNumber(item.price)}
+                    </ThemeTextEqure>
+                    {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                                           {formatBalance(item.priceChangePercentage24h)}%
                                       </TextEqure> */}
-                    </Column>
-                  )}
-                  {!isMobile && (
-                    <Column style={{ alignItems: "flex-end", flex: 1 }}>
-                      <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                        {formatBalance(item.amount)} {item.symbol}
-                      </ThemeTextEqure>
-                      {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
+                  </Column>
+                )}
+                {!isMobile && (
+                  <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                    <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                      {formatBalance(item.amount)} {item.symbol}
+                    </ThemeTextEqure>
+                    {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                         &nbsp;
                       </TextEqure> */}
-                    </Column>
-                  )}
-                  <Row style={{ alignItems: "flex-start", flex: 1 }}>
-                    <Column style={{ alignItems: "flex-end", flex: 1 }}>
-                      <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
-                        ${formatPositiveNumber(item.value)}
-                      </ThemeTextEqure>
-                      {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
+                  </Column>
+                )}
+                <Row style={{ alignItems: "flex-start", flex: 1 }}>
+                  <Column style={{ alignItems: "flex-end", flex: 1 }}>
+                    <ThemeTextEqure fontWeight={"bold"} fontSize={14}>
+                      ${formatPositiveNumber(item.value)}
+                    </ThemeTextEqure>
+                    {/* <TextEqure fontColor={"#777E90"} fontSize={14}>
                         {formatBalance(item.valueBTC)} BTC
                       </TextEqure> */}
-                    </Column>
-                    {isMobile && (
-                      <MoreIcon
-                        style={{ marginLeft: 10 }}
-                        src={ImageCommon.icon_more_icon}
-                      />
-                    )}
-                  </Row>
-                </RowBetween>
-              </Row>
-            );
-          })}
+                  </Column>
+                  {isMobile && (
+                    <MoreIcon
+                      style={{ marginLeft: 10 }}
+                      src={ImageCommon.icon_more_icon}
+                    />
+                  )}
+                </Row>
+              </RowBetween>
+            </Row>
+          );
+        })}
       </Column>
       <SpaceHeight height={40} heightApp={20} />
       <RowCenter>
