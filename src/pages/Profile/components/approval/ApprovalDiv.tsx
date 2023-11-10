@@ -1,14 +1,15 @@
 import { ChainIdConfig } from "@common/Common";
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
+import { ThemeTextEqure } from "@components/ThemeComponent";
 import { ChainId, ChainType, chainFromId } from "@services/chain.service";
 import { switchNetwork } from "@services/network.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
+import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
 import { FC } from "react";
 import { useTheme } from "src/state/application/hooks";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
-import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
 
 export const ApprovalDiv: FC<{
   data: PortfolioDataset<PortfolioApprovedToken[]>;
@@ -62,10 +63,12 @@ export const ApprovalDiv: FC<{
       </RowBetween>
       <SpaceHeight height={30} heightApp={15} />
       <ProfileLoading loading={data.loading}></ProfileLoading>
-      {!data.loading &&
-        data.data?.map((item, index) => {
-          return <ApproveItem token={item} cancel={cancel} chainId={chainId} key={index}></ApproveItem>;
-        })}
+      {!data.loading && data.data?.map((item, index) => {
+        return <ApproveItem token={item} cancel={cancel} chainId={chainId} key={index}></ApproveItem>;
+      })}
+      {!data.loading && data.data?.length === 0 && <ThemeTextEqure fontSize={18} fontWeight={"bold"} style={{ textAlign: "center" }}>
+        Nothing approved on this network, all good.
+      </ThemeTextEqure>}
     </BGDiv>
   );
 }

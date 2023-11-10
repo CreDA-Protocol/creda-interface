@@ -98,7 +98,7 @@ export type PortfolioApiApprovedSpender = {
 }
 
 export type PortfolioApiApproval = {
-  contract: PortfolioApiSpendableContract;
+  contract: string | PortfolioApiSpendableContract;
   approved: PortfolioApiApprovedSpender[];
   wallet: string; // "0x0b93af06e1a7b7b5b00f9a229727855d693fb5fe"
 }
