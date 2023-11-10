@@ -1,7 +1,7 @@
 // import { useActiveWeb3React } from '../../hooks'
 import {
   useTheme
-} from "../../state/application/hooks";
+} from "../../states/application/hooks";
 import { Text, TextEqure } from "../Row";
 
 export const ThemeText = (props: any) => {

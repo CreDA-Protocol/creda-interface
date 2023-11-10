@@ -17,7 +17,7 @@ import { GasInfo, balanceToBigNumber, formatBalance, stringReplaceSpace } from "
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useTransactionAdder } from "../../state/transactions/hooks"
+import { useTransactionAdder } from "../../states/transactions/hooks"
 import Modal from '../NormalModal'
 
 const Container = styled.div`

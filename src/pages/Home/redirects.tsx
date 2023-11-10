@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
-import { AppDispatch } from '../../state'
-import { ApplicationModal, setOpenModal } from '../../state/application/actions'
+import { AppDispatch } from '../../states'
+import { ApplicationModal, setOpenModal } from '../../states/application/actions'
 
 // Redirects to swap but only replace the pathname
 export function RedirectPathToHomeOnly({ location }: RouteComponentProps) {

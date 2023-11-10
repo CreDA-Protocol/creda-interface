@@ -9,8 +9,8 @@ import { useStore } from "react-redux";
 import styled from "styled-components";
 import { formatAccount, globalObj, newTransactionsFirst, } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import { useWalkThroughStep } from "../../state/application/hooks";
-import { isTransactionRecent, useAllTransactions, } from "../../state/transactions/hooks";
+import { useWalkThroughStep } from "../../states/application/hooks";
+import { isTransactionRecent, useAllTransactions, } from "../../states/transactions/hooks";
 import { base_type } from "../Common";
 import Loader from "../Loader";
 
@@ -93,7 +93,7 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
           <HeaderViewWrong style={{ zIndex: 700 }}>
             <H5>Wrong NetWork</H5>
           </HeaderViewWrong>
-          <WrongNetworkModal modal={true}/>
+          <WrongNetworkModal modal={true} />
         </WrongNetworkWrapper>
       </>
     );
@@ -101,10 +101,10 @@ export default function ConnectWallet({ history, fromHome, popup }: any) {
   return (
     <>
       {account ? (
-          <Dropdown
-            menu={menuProps}
-            trigger={["hover", "click"]}
-          >
+        <Dropdown
+          menu={menuProps}
+          trigger={["hover", "click"]}
+        >
           <HeaderView>
             <H4>{formatAccount(account)}</H4>
 

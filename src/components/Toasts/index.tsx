@@ -1,6 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
-import {useActivePopups, useToasts} from '../../state/application/hooks'
+import { useToasts } from '../../states/application/hooks'
 import { AutoColumn } from '../Column'
 import ToastItem from './PopupItem'
 
@@ -30,7 +29,7 @@ const MobilePopupInner = styled.div`
   }
 `
 
-const FixedPopupColumn = styled(AutoColumn)<{ extraPadding: boolean }>`
+const FixedPopupColumn = styled(AutoColumn) <{ extraPadding: boolean }>`
   position: fixed;
   top: ${({ extraPadding }) => (extraPadding ? '108px' : '88px')};
   right: 1rem;
@@ -53,7 +52,7 @@ export default function Toasts() {
     <>
       <FixedPopupColumn gap="20px" extraPadding={true}>
         {activeToasts.map(item => (
-          <ToastItem type={item.type} content={item.content}/>
+          <ToastItem type={item.type} content={item.content} />
         ))}
       </FixedPopupColumn>
       <MobilePopupWrapper height={activeToasts?.length > 0 ? 'fit-content' : 0}>
@@ -61,8 +60,8 @@ export default function Toasts() {
           {activeToasts // reverse so new items up front
             .slice(0)
             .reverse()
-            .map((item:any) => (
-              <ToastItem type={item.type} content={item.content}/>
+            .map((item: any) => (
+              <ToastItem type={item.type} content={item.content} />
             ))}
         </MobilePopupInner>
       </MobilePopupWrapper>

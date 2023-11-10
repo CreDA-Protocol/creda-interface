@@ -2,6 +2,8 @@ import { providers } from "ethers";
 
 export type ChainCapability = {
   canFetchWalletTokens: boolean; // We can fetch the list of user's tokens (wallet tab of portfolio) using the third party portfolio api
+  hasBankFeature: boolean; // Whether to show the bank screen or not
+  hasVaultFeature: boolean; // Whether to show the "vault" screen or not
 }
 
 /**
@@ -11,45 +13,86 @@ const chainCapabilities: {
   [chainId in ChainName]: ChainCapability;
 } = {
   ethereum: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   arbitrum: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: true,
+    hasVaultFeature: true
   },
   esc: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: true,
+    hasVaultFeature: true
   },
   elatest: {
-    canFetchWalletTokens: false
+    canFetchWalletTokens: false,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   heco: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   hecotest: {
-    canFetchWalletTokens: false
+    canFetchWalletTokens: false,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   bsc: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   local: {
-    canFetchWalletTokens: false
+    canFetchWalletTokens: false,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   polygon: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   ropsten: {
-    canFetchWalletTokens: false
+    canFetchWalletTokens: false,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   celo: {
-    canFetchWalletTokens: true
+    canFetchWalletTokens: true,
+    hasBankFeature: false,
+    hasVaultFeature: false
   },
   celotest: {
-    canFetchWalletTokens: false
+    canFetchWalletTokens: false,
+    hasBankFeature: false,
+    hasVaultFeature: false
   }
 };
 
+/**
+ * Tells if we are able to retrieve portfolio wallet tokens list through third party provider or not.
+ */
 export function canFetchWalletTokens(chainId: ChainId) {
   return chainCapabilities[chainFromId(chainId)].canFetchWalletTokens;
+}
+
+/**
+ * Tells if the "My bank" menu is available on the UI for the given chain.
+ */
+export function bankIsEnabledOnChain(chainId: ChainId): boolean {
+  return chainCapabilities[chainFromId(chainId)].hasBankFeature;
+}
+
+/**
+ * Tells if the "Vault" menu is available on the UI for the given chain.
+ */
+export function vaultIsEnabledOnChain(chainId: ChainId): boolean {
+  return chainCapabilities[chainFromId(chainId)].hasVaultFeature;
 }
 
 export type ChainName = 'arbitrum' | 'esc' | 'elatest' | 'heco' | 'hecotest' | 'bsc' | 'local' | 'polygon' | 'ethereum' | 'ropsten' | 'celo' | 'celotest';
@@ -118,6 +161,9 @@ export const ChainType: any = {
   "Elastos ESC": "esc"
 };
 
+/**
+ * JSON RPC URL for each supported chain.
+ */
 export const ChainRPCs: { [chainId: ChainId]: string } = {
   [ChainIds.ethereum]: "https://eth.llamarpc.com",
   [ChainIds.bsc]: "https://bsc-dataseed1.defibit.io",

@@ -1,4 +1,4 @@
-import { ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, getPriceByApi, logError, mathPriceTo8, walletInfo } from "@common/Common";
+import { ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError, mathPriceTo8, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { ChainIds, chainFromId } from "@services/chain.service";
 import { BigNumber, ethers } from "ethers";
@@ -7,100 +7,7 @@ import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { EarnConfig } from "src/contract/ContractConfig";
 import { useContract } from "./contracts.service";
 import { getCoinPrice } from "./glidefinance.service";
-
-/**
- * 获取收益信息
- */
-/* export function useMiningInfo(): any {
-    const { chainId } = useContext(NetworkTypeContext);
-    const { account } = useContext(WalletAddressContext);
-    const network = chainFromId(chainId);
-
-    const [info, setInfo] = useState({});
-    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-    const credaPlusContract = useContract(ContractConfig.CredaTestPlus[network]?.address, ContractConfig.CredaTestPlus.abi);
-    // console.log(credaContract,"credaContract")
-    useEffect(() => {
-        const getResult = async () => {
-            if (!account || !credaContract) {
-                return;
-            }
-            const speedRes: BigNumber = await credaContract?.miningSpeed(account);
-            const earnedRes: BigNumber = await credaPlusContract?.earned(account);
-            let obj = {
-                speed: bigNumberToBalance(speedRes, 6),
-                earned: bigNumberToBalance(earnedRes)
-            }
-            setInfo(obj);
-        }
-        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
-        return () => clearInterval(interval);
-    }, [account, credaContract, credaPlusContract])
-
-    return info;
-} */
-
-// /**
-//  * 获取质押
-//  */
-// export function useStake(symbol: string): string {
-//     const {chainId} = useActiveWeb3React()
-//     const network = NetWorkConfig[chainId || ChainId.ESC];
-//     const [balance, setBlance] = useState("");
-//     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-//     const {account} = useActiveWeb3React();
-//
-//     useEffect(() => {
-//         const getResult = () => {
-//             if (!account || !credaContract) {
-//                 return;
-//             }
-//             credaContract?.balanceOf(ContractConfig[symbol][network]?.address, account)
-//                 .then((res: BigNumber) => {
-//                     setBlance(bigNumberToBalance(res));
-//                 })
-//         }
-//         const interval = setInterval(getResult, config.refreshInterval);
-//         return () => clearInterval(interval);
-//     }, [account, credaContract])
-//     return balance;
-// }
-//
-/**
- * 获取质押
- */
-/* export function useStakeV2(symbol: string): any {
-    const { chainId } = useContext(NetworkTypeContext);
-    const { account } = useContext(WalletAddressContext);
-    const network = chainFromId(chainId);
-
-    const [info, setInfo] = useState({
-        loading: true,
-        stake: 0,
-        stakeBg: BigNumber.from(0)
-    });
-    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-
-    useEffect(() => {
-        const getResult = () => {
-            if (!account || !credaContract) {
-                return;
-            }
-            credaContract?.balanceOf(ContractConfig[symbol][network]?.address, account)
-                .then((res: BigNumber) => {
-                    setInfo({
-                        loading: false,
-                        stake: Number(bigNumberToBalance(res)),
-                        stakeBg: res
-                    });
-                })
-        }
-        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
-        return () => clearInterval(interval);
-    }, [account, credaContract, network, symbol])
-    return info;
-} */
-
+import { getPriceByApi } from "./pricing.service";
 
 /**
  * 获取softlaunch信息
@@ -346,3 +253,96 @@ export function usePoolInfo(tokenA: string, tokenB: string) {
   }, [account, factoryContract, network, routerContract, tokenA, tokenB])
   return info;
 }
+
+/**
+ * 获取收益信息
+ */
+/* export function useMiningInfo(): any {
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
+    const network = chainFromId(chainId);
+
+    const [info, setInfo] = useState({});
+    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
+    const credaPlusContract = useContract(ContractConfig.CredaTestPlus[network]?.address, ContractConfig.CredaTestPlus.abi);
+    // console.log(credaContract,"credaContract")
+    useEffect(() => {
+        const getResult = async () => {
+            if (!account || !credaContract) {
+                return;
+            }
+            const speedRes: BigNumber = await credaContract?.miningSpeed(account);
+            const earnedRes: BigNumber = await credaPlusContract?.earned(account);
+            let obj = {
+                speed: bigNumberToBalance(speedRes, 6),
+                earned: bigNumberToBalance(earnedRes)
+            }
+            setInfo(obj);
+        }
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
+        return () => clearInterval(interval);
+    }, [account, credaContract, credaPlusContract])
+
+    return info;
+} */
+
+// /**
+//  * 获取质押
+//  */
+// export function useStake(symbol: string): string {
+//     const {chainId} = useActiveWeb3React()
+//     const network = NetWorkConfig[chainId || ChainId.ESC];
+//     const [balance, setBlance] = useState("");
+//     const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
+//     const {account} = useActiveWeb3React();
+//
+//     useEffect(() => {
+//         const getResult = () => {
+//             if (!account || !credaContract) {
+//                 return;
+//             }
+//             credaContract?.balanceOf(ContractConfig[symbol][network]?.address, account)
+//                 .then((res: BigNumber) => {
+//                     setBlance(bigNumberToBalance(res));
+//                 })
+//         }
+//         const interval = setInterval(getResult, config.refreshInterval);
+//         return () => clearInterval(interval);
+//     }, [account, credaContract])
+//     return balance;
+// }
+//
+/**
+ * 获取质押
+ */
+/* export function useStakeV2(symbol: string): any {
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
+    const network = chainFromId(chainId);
+
+    const [info, setInfo] = useState({
+        loading: true,
+        stake: 0,
+        stakeBg: BigNumber.from(0)
+    });
+    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
+
+    useEffect(() => {
+        const getResult = () => {
+            if (!account || !credaContract) {
+                return;
+            }
+            credaContract?.balanceOf(ContractConfig[symbol][network]?.address, account)
+                .then((res: BigNumber) => {
+                    setInfo({
+                        loading: false,
+                        stake: Number(bigNumberToBalance(res)),
+                        stakeBg: res
+                    });
+                })
+        }
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
+        return () => clearInterval(interval);
+    }, [account, credaContract, network, symbol])
+    return info;
+} */

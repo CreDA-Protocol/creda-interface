@@ -21,7 +21,7 @@ import {
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
-import { useTheme } from '../../state/application/hooks';
+import { useTheme } from '../../states/application/hooks';
 
 export const DrawButton = styled.div`
   color:white;

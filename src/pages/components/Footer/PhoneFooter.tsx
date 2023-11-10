@@ -3,7 +3,7 @@ import { Column } from "@components/Column";
 import { ButtonClick, CustomGrid, RowFixed, SpaceHeight, SpaceWidth, Text, WrapMaxWidth } from "@components/Row";
 import { ThemeText } from "@components/ThemeComponent";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "src/state/application/hooks";
+import { useTheme } from "src/states/application/hooks";
 import { BottomDiscordIcon, BottomDown, BottomFooterWrap, BottomIcon, BottomInfoDiv, BottomMediumIcon, BottomRedditIcon, FooterLink, FooterLinkWrap } from "./FooterStyles";
 
 export function PhoneFooter() {

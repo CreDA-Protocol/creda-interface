@@ -7,7 +7,7 @@ import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
 import { FC, useContext } from "react";
 import { NetworkTypeContext } from "src/contexts";
-import { useTheme } from "src/state/application/hooks";
+import { useTheme } from "src/states/application/hooks";
 import { BGDiv } from "../StyledComponents";
 import { ApproveItem } from "./ApproveItem";
 

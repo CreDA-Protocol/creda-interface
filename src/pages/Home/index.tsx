@@ -28,7 +28,7 @@ import { isMobile } from 'react-device-detect'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { WalletAddressContext } from "../../contexts"
-import { useOpenWarning, useTheme } from "../../state/application/hooks"
+import { useOpenWarning, useTheme } from "../../states/application/hooks"
 
 export const ButtonClick = styled(Base)`
   padding: 0;

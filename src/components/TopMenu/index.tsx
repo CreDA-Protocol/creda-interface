@@ -1,15 +1,13 @@
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 // import { useActiveWeb3React } from '../../hooks'
-import { useTranslation } from 'react-i18next'
-import { useTheme } from '../../state/application/hooks'
-
 import ImageCommon from '@assets/common/ImageCommon'
 import { ThemeText } from '@components/ThemeComponent'
-import { ChainIds } from "@services/chain.service"
+import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chain.service"
 import { message } from "antd"
-import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from "../../common/Common"
-import { NetworkTypeContext } from "../../contexts"
+import { useTranslation } from 'react-i18next'
+import { NetworkTypeContext } from 'src/contexts'
+import { useTheme } from '../../states/application/hooks'
 import { ButtonClick, ButtonLink } from '../Button'
 import { RowCenter, RowFixed } from '../Row'
 

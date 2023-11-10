@@ -48,6 +48,21 @@ export const getUSDTokenPriceBySymbol = (symbol: string): Promise<number> => {
   return pricingCache.get(symbol.toUpperCase()) as Promise<number>;
 }
 
+// DEPRECATED - REWORK TO USE getUSDTokenPriceBySymbol()
+export function getPriceByApi(symbol: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbol}&tsyms=USD`)
+      .then((response) => response.json())
+      .then(res => {
+        resolve(res.RAW[symbol]["USD"].PRICE || 0)
+      })
+      .catch(err => {
+        console.log(err)
+        resolve(0)
+      })
+  })
+}
+
 const glidePricingProvider: PricingProvider = async (symbol: string): Promise<number> => {
   // Glide API takes token addresses as input. Glide is always on ESC, so we get the contract config for ESC...
   const tokenAddress = ContractConfig[symbol]["esc"]?.address.toLowerCase();

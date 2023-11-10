@@ -1,4 +1,10 @@
-import { bigNumberToBalance, getPriceByApi, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
+import DAIIcon from '@assets/tokens/Dai (DAI).png';
+import ETHIcon from '@assets/tokens/Ethereum (ETH).png';
+import ImageToken from "@assets/tokens/ImageToken";
+import USDTIcon from '@assets/tokens/Tether (USDT).png';
+import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
+import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
+import { bigNumberToBalance, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { ChainIds, chainFromId } from "@services/chain.service";
 import { ContractCallContext, Multicall } from "ethereum-multicall";
@@ -6,8 +12,109 @@ import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { BankConfig, EarnConfig } from "src/contract/ContractConfig";
-import { isNativeToken } from "./tokens.service";
 import { useTokenContract } from "./contracts.service";
+import { isNativeToken } from "./tokens.service";
+import { getPriceByApi } from './pricing.service';
+
+export const MyBankAssetPriceIcons = [
+  {
+    name: 'USDC',
+    icon: USDCIcon,
+  },
+  {
+    name: 'USDT',
+    icon: USDTIcon,
+  },
+
+  // {
+  //   name:'UNI',
+  //   icon:UNIIcon,
+  // },
+  {
+    name: 'WBTC',
+    icon: WBTCIcon,
+  },
+  {
+    name: 'DAI',
+    icon: DAIIcon,
+  },
+  {
+    name: 'LINK',
+    icon: ImageToken.LINK,
+  },
+  // {
+  //   name:'ETH',
+  //   icon:ETHIcon,
+  // },
+  // {
+  //   name:'LINK',
+  //   icon:LINKIcon,
+  // },
+  // {
+  //   name:'SUSHI',
+  //   icon:SUSHIIcon,
+  // }
+];
+
+
+export const MyBankAssetPriceIconsESC = [
+  {
+    name: 'ELA',
+    icon: ImageToken.ELA,
+  },
+  {
+    name: 'USDC',
+    icon: USDCIcon,
+  },
+  {
+    name: 'FILDA',
+    icon: ImageToken.FILDA,
+  },
+  {
+    name: 'GLIDE',
+    icon: ImageToken.GLIDE,
+  },
+  {
+    name: 'ELK',
+    icon: ImageToken.GLIDE,
+  },
+];
+
+export const MyBankAssetFarmingIcon = [
+  {
+    name1: 'ETH',
+    icon1: ETHIcon,
+    name2: 'USDT',
+    icon2: USDTIcon,
+    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0xcb0e5bfa72bbb4d16ab5aa0c60601c438f04b4ad',
+    Fee: 51.49,
+    APR: 5.23,
+    APY: (17.56 + 20.41) / 2,
+    line_pre: 51.49 + 5.23
+  },
+  {
+    name1: 'ETH',
+    icon1: ETHIcon,
+    name2: 'USDC',
+    icon2: USDCIcon,
+    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x905dfcd5649217c42684f23958568e533c711aa3',
+    Fee: 52.25,
+    APR: 0.64,
+    APY: (17.56 + 9.69) / 2,
+    line_pre: 52.25 + 0.64
+  },
+  {
+    name1: 'ETH',
+    icon1: ETHIcon,
+    name2: 'DAI',
+    icon2: DAIIcon,
+    linkUrl: 'https://analytics-arbitrum.sushi.com/pairs/0x692a0b300366d1042679397e40f3d2cb4b8f7d30',
+    Fee: 32.67,
+    APR: 14.02,
+    APY: (17.56 + 18.72) / 2,
+    line_pre: 32.67 + 14.02
+  }
+];
 
 /**
  * 获取币种借贷信息

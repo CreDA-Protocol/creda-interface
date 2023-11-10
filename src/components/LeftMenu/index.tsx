@@ -1,11 +1,10 @@
 import ImageCommon from '@assets/common/ImageCommon';
-import { ChainIds } from "@services/chain.service";
+import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chain.service";
 import { Tooltip, message } from "antd";
 import React, { useContext, useEffect, useState } from 'react';
+import { NetworkTypeContext, WalletAddressContext } from 'src/contexts';
 import styled from 'styled-components';
-import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from '../../common/Common';
-import { NetworkTypeContext, WalletAddressContext } from '../../contexts';
-import { useTheme, useWalkThroughStep } from '../../state/application/hooks';
+import { useTheme, useWalkThroughStep } from '../../states/application/hooks';
 import { Column, ColumnCenter } from '../Column';
 import { RowCenter, RowFixed, Text } from '../Row';
 

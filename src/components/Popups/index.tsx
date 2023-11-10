@@ -1,6 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
-import { useActivePopups } from '../../state/application/hooks'
+import { useActivePopups } from '../../states/application/hooks'
 import { AutoColumn } from '../Column'
 import PopupItem from './PopupItem'
 
@@ -29,7 +28,7 @@ const MobilePopupInner = styled.div`
   }
 `
 
-const FixedPopupColumn = styled(AutoColumn)<{ extraPadding: boolean }>`
+const FixedPopupColumn = styled(AutoColumn) <{ extraPadding: boolean }>`
   position: fixed;
   top: ${({ extraPadding }) => (extraPadding ? '108px' : '88px')};
   right: 1rem;

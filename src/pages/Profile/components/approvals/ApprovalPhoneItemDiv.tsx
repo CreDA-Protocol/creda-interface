@@ -7,8 +7,8 @@ import { TransactionResponse } from "@ethersproject/providers";
 import { useTokenContract } from "@services/contracts.service";
 import { BigNumber } from "ethers";
 import { useState } from "react";
-import { useTheme } from "src/state/application/hooks";
-import { useTransactionAdder } from "src/state/transactions/hooks";
+import { useTheme } from "src/states/application/hooks";
+import { useTransactionAdder } from "src/states/transactions/hooks";
 import { Arrow, BGDiv, CancelButton, LineH, SmallIconIcon } from "../StyledComponents";
 
 export function ApprovalPhoneItemDiv({ item, cancel }: any) {

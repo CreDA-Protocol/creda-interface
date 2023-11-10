@@ -8,7 +8,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
-import { useTransactionAdder } from "src/state/transactions/hooks";
+import { useTransactionAdder } from "src/states/transactions/hooks";
 import { PermanentCache } from "./caches/permanent-cache";
 import { getContract, useChainContract, useContractWithProvider, useTokenContract } from "./contracts.service";
 

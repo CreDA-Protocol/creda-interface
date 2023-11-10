@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { X } from 'react-feather'
-import { useSpring } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 import styled, { ThemeContext } from 'styled-components'
-import { animated } from 'react-spring'
-import { PopupContent } from '../../state/application/actions'
-import { useRemovePopup } from '../../state/application/hooks'
+import { PopupContent } from '../../states/application/actions'
+import { useRemovePopup } from '../../states/application/hooks'
 import TransactionPopup from './TransactionPopup'
 
 export const StyledClose = styled(X)`

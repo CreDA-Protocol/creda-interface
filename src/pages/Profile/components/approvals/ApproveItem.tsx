@@ -13,7 +13,7 @@ import { useTokenBalance } from "@services/tokens.service";
 import { BigNumber } from "ethers";
 import { FC, useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";
-import { useTransactionAdder } from "src/state/transactions/hooks";
+import { useTransactionAdder } from "src/states/transactions/hooks";
 import { AddressShowText, BottomRight, CancelButton, LineHNor, SmallIconIcon } from "../StyledComponents";
 
 export const SpenderRow: FC<{

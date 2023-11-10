@@ -1,3 +1,4 @@
+import ImageCommon from '@assets/common/ImageCommon';
 import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { ChainIds, chainFromId } from "@services/chain.service";
@@ -21,6 +22,29 @@ export type CreditResponse = {
   code: number,
   message: string,
   data: CreditData
+}
+
+export function getNFTCardBgImage(type: string) {
+  switch (type) {
+    case '1': {
+      return ImageCommon.NFT_LV1
+    }
+    case '2': {
+      return ImageCommon.NFT_LV2
+    }
+    case '3': {
+      return ImageCommon.NFT_LV3
+    }
+    case '4': {
+      return ImageCommon.NFT_LV4
+    }
+    case '5': {
+      return ImageCommon.NFT_LV5
+    }
+    default: {
+      return ImageCommon.NFT_LV1
+    }
+  }
 }
 
 async function getCreditInfoByApi(address: string): Promise<CreditResponse> {
@@ -106,7 +130,7 @@ export async function getAndUpdateCredit(address: string): Promise<any> {
   } else {
     console.warn("getCreditInfoByApi failed:", data);
   }
-  return Promise.resolve({hash:'0x11111111111111111111111111111111'});
+  return Promise.resolve({ hash: '0x11111111111111111111111111111111' });
 }
 
 /**

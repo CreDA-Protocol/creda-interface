@@ -10,7 +10,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSpring } from 'react-spring';
 import styled from 'styled-components';
 import {
-  createWalletConnectWeb3Provider,
   ethereum,
   globalObj,
   walletInfo
@@ -18,9 +17,9 @@ import {
 import { NetworkTypeContext, WalletAddressContext } from "../contexts";
 import "../i18n";
 import LoadingProvider from "../provider/LoadingProvider";
-import store from "../state";
-import ApplicationUpdater from "../state/application/updater";
-import TransactionUpdater from "../state/transactions/updater";
+import store from "../states";
+import ApplicationUpdater from "../states/application/updater";
+import TransactionUpdater from "../states/transactions/updater";
 import ThemeProvider from "../theme";
 import AboutUs from "./AboutUs";
 import { RedirectPathToHomeOnly } from "./Home/redirects";
@@ -28,6 +27,7 @@ import Press from "./Press";
 import News from "./Press/News";
 
 import "@assets/css/custom.css";
+import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 import { Footer } from "./components/Footer/Footer";
 
 const AppWrapper = styled.div`

@@ -20,7 +20,7 @@ import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
 import { chainFromId } from "@services/chain.service"
 import { useContract } from "@services/contracts.service"
-import { useCNFTInfo } from '@services/credit.service'
+import { getNFTCardBgImage, useCNFTInfo } from '@services/credit.service'
 import { useApprove } from '@services/tokens.service'
 import { Badge, Skeleton } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
@@ -31,16 +31,15 @@ import {
   balanceToBigNumber,
   formatBalance,
   formatPercent,
-  getNFTCardBgImage,
   platforms,
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
-import { useOpenWarning, useTheme } from '../../state/application/hooks'
-import { useAddToast } from "../../state/toast"
-import { useTransactionAdder } from "../../state/transactions/hooks"
+import { useOpenWarning, useTheme } from '../../states/application/hooks'
+import { useAddToast } from "../../states/toast"
+import { useTransactionAdder } from "../../states/transactions/hooks"
 import { Earn } from './earn'
 
 const Body = styled(Column)`

@@ -5,8 +5,8 @@ import i18n from '../../i18n'
 import ImageCommon from '@assets/common/ImageCommon'
 import { RowCenter } from '@components/Row'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useTheme, useToggleModal } from '../../state/application/hooks'
+import { ApplicationModal } from '../../states/application/actions'
+import { useModalOpen, useTheme, useToggleModal } from '../../states/application/hooks'
 
 
 const StyledMenu = styled.div`

@@ -37,6 +37,9 @@
       "@hooks/*": [
         "./src/hooks/*"
       ],
+      "@states/*": [
+        "src/states/*"
+      ],
       "@pages/*": [
         "./src/pages/*"
       ],

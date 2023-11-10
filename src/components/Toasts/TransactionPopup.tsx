@@ -1,6 +1,6 @@
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled from 'styled-components'
-import { ToastStatus } from "../../state/toast"
+import { ToastStatus } from "../../states/toast"
 import { TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'

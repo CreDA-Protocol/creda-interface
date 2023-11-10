@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTheme } from "src/state/application/hooks";
+import { useTheme } from "src/states/application/hooks";
 import { SegmentDiv, SegmentItem } from "./StyledComponents";
 
 export function Segment({ onSegmentSelect }: any) {
