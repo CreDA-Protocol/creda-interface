@@ -9,7 +9,6 @@ import {
   TextEqure
 } from '@components/Row'
 import { TransactionResponse } from '@ethersproject/providers'
-import { ChainIds, chainFromId } from "@services/chain.service"
 import { useContract } from "@services/contracts.service"
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
@@ -19,6 +18,8 @@ import ContractConfig from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useTransactionAdder } from "../../states/transactions/hooks"
 import Modal from '../NormalModal'
+import { ChainIds } from '@services/chains/chain-configs'
+import { chainFromId } from '@services/chains/chain.service'
 
 const Container = styled.div`
   width:400px;

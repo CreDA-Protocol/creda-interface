@@ -1,14 +1,13 @@
-import ImageToken from "@assets/tokens/ImageToken";
-import { BigNumber, ethers } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import { TransactionDetails } from "../states/transactions/reducer";
-
 import CompoundLens_ABI from "@abi/banking/CompoundLens.json";
 import Comptroller_ABI from "@abi/banking/Comptroller.json";
 import ERC20_ABI from "@abi/generic/ERC20.json";
 import qERC20_ABI from '@abi/generic/qERC20.json';
 import PriceOracle_ABI from "@abi/swap/PriceOracle.json";
-import { ChainIds } from '@services/chain.service';
+import ImageToken from "@assets/tokens/ImageToken";
+import { ChainIds } from "@services/chains/chain-configs";
+import { BigNumber, ethers } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { TransactionDetails } from "../states/transactions/reducer";
 
 export { CompoundLens_ABI, Comptroller_ABI, ERC20_ABI, PriceOracle_ABI, qERC20_ABI };
 

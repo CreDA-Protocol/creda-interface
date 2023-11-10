@@ -1,5 +1,5 @@
 import { bigNumberToBalance } from "@common/Common";
-import { ChainId } from "@services/chain.service";
+import { ChainId } from "@services/chains/chain.service";
 import { fetchTokenAllowance, getTokenDecimals } from "@services/tokens.service";
 import { AdvancedBehaviorSubject } from "src/model/advanced-behavior-subject";
 import { PortfolioApiApprovedSpender } from "./portfolio-api.dto";

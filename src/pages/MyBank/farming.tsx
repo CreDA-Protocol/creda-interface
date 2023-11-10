@@ -9,7 +9,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetFarmingIcon, useIconPrice } from "@services/banking.service"
-import { chainFromId } from "@services/chain.service"
+import { chainFromId } from "@services/chains/chain.service"
 import { getContract, useContract } from "@services/contracts.service"
 import { usePositionInfo } from "@services/mining-staking.service"
 import { Tooltip } from 'antd'

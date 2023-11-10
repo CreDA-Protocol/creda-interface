@@ -1,11 +1,11 @@
-import { TransactionResponse } from '@ethersproject/providers'
-import { chainFromId } from '@services/chain.service'
-import { useCallback, useContext, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { AppDispatch, AppState } from '../index'
-import { addTransaction } from './actions'
-import { TransactionDetails } from './reducer'
+import { TransactionResponse } from '@ethersproject/providers';
+import { chainFromId } from '@services/chains/chain.service';
+import { useCallback, useContext, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
+import { AppDispatch, AppState } from '../index';
+import { addTransaction } from './actions';
+import { TransactionDetails } from './reducer';
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (

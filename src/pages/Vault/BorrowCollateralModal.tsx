@@ -5,7 +5,7 @@ import { Column, ColumnCenter } from '@components/Column';
 import Modal from '@components/NormalModal';
 import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '@components/Row';
 import { TransactionResponse } from '@ethersproject/providers';
-import { chainFromId } from '@services/chain.service';
+import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from "@services/contracts.service";
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
@@ -15,6 +15,7 @@ import {
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import ContractConfig from "../../contract/ContractConfig";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
+;
 
 const Container = styled.div`
   display:flex;

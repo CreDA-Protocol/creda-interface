@@ -7,7 +7,7 @@ import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetPriceIcons, useEarnInfo, useEarnResult } from '@services/banking.service'
-import { chainFromId } from "@services/chain.service"
+import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
 import { useApprove } from '@services/tokens.service'
 import { useContext, useState } from 'react'

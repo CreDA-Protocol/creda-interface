@@ -1,7 +1,7 @@
 import { Column } from "@components/Column";
 import { ProfileLoading } from "@components/Common";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ChainId } from "@services/chain.service";
+import { ChainId } from "@services/chains/chain.service";
 import { usePortfolioUserStaking } from "@services/portfolio/portfolio.service";
 import { FC } from "react";
 import { isMobile } from "react-device-detect";

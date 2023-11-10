@@ -14,7 +14,6 @@ import {
 } from "@components/Common";
 import { TransactionResponse } from "@ethersproject/providers";
 import AppBody, { MainFullBody } from '@pages/components/AppBody';
-import { ChainIds, chainFromId } from "@services/chain.service";
 import { useContract } from "@services/contracts.service";
 import { useCredaInfo } from "@services/creda-token.service";
 import { useWrapAmount } from "@services/swap-bridge.service";
@@ -31,6 +30,8 @@ import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../states/application/hooks";
 import { useAddToast } from "../../states/toast";
 import { useTransactionAdder } from "../../states/transactions/hooks";
+import { ChainIds } from "@services/chains/chain-configs";
+import { chainFromId } from "@services/chains/chain.service";
 
 function Bridge(props: any) {
     const isDark = useTheme()

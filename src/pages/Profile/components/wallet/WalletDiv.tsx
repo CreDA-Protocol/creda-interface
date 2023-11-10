@@ -3,7 +3,7 @@ import { formatBalance, formatPositiveNumber } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ChainId, canFetchWalletTokens } from "@services/chain.service";
+import { ChainId, canFetchWalletTokens } from "@services/chains/chain.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { PortfolioWalletTokenList } from "@services/portfolio/model/tokens";
 import { Row } from "antd";

@@ -1,7 +1,6 @@
 import ImageCommon from '@assets/common/ImageCommon'
 import { Column } from '@components/Column'
 import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '@components/Row'
-import { ChainIds } from "@services/chain.service"
 import { message } from "antd"
 import { useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -18,6 +17,7 @@ import ConnectWallet from '../ConnectWallet'
 import I18nSwitch from '../I18nSwitch'
 import ThemeIcon, { DarkBtn, LightBtn, fullMoonSvg, halfMoonSvg } from '../ThemeIcon'
 import TopMenu from '../TopMenu'
+import { ChainIds } from '@services/chains/chain-configs'
 
 const MenuToggleWrap = styled.div`
   display: flex;

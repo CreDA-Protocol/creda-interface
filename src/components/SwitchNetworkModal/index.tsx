@@ -1,9 +1,11 @@
 import ImageCommon from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
-import { AddEthereumChainParameter, addNetwork, mainnetNetworkConfigs, testnetNetworkConfigs } from "@services/network.service";
+import { FC } from "react";
 import styled from 'styled-components';
 import { BaseView, FlexViewBetween, FlexViewCenterColumn, FlexViewLeft } from "../Common";
 import Modal from '../NormalModal';
+import { AddEthereumChainParameter, mainnetNetworkConfigs, testnetNetworkConfigs } from "@services/chains/chain-configs";
+import { addNetwork } from "@services/chains/chain.service";
 
 const Container = styled(FlexViewCenterColumn)`
   width:600px;
@@ -16,7 +18,6 @@ const Container = styled(FlexViewCenterColumn)`
     padding:15px;
     width:90%;
   };
-
 `
 const Logo = styled.img`
     width:200px;
@@ -28,7 +29,6 @@ const SwitchTitle = styled(BaseView)`
     font-weight: 200;
     margin-top: 10px;
 `
-
 const TestNetTitle = styled(BaseView)`
     font-size: 20px;
     color: #fff;
@@ -36,11 +36,9 @@ const TestNetTitle = styled(BaseView)`
     margin-top: 10px;
     text-align: left;
 `
-
 const FlexViewWrap = styled(FlexViewBetween)`
    flex-wrap: wrap;
 `
-
 const WrapItem = styled(FlexViewLeft)`
     border-radius: 10px;
     width: 48%;
@@ -83,10 +81,7 @@ const CancelTitle = styled(BaseView)`
     };
 `
 
-export default function SwitchNetworkModal({
-    show = true,
-    onDismiss,
-}: {
+export default function SwitchNetworkModal({ show = true, onDismiss }: {
     show?: boolean
     onDismiss: () => void,
 }) {
@@ -100,6 +95,7 @@ export default function SwitchNetworkModal({
             onDismiss();
         }
     }
+
     return (
         <Modal isOpen={show} onDismiss={onDismiss} >
             <RowCenter onClick={onDismiss}>
@@ -138,21 +134,17 @@ export default function SwitchNetworkModal({
                         }
                     </FlexViewWrap>
 
-                    <CancelTitle
-                        onClick={onDismiss}
-                    >Cancel</CancelTitle>
+                    <CancelTitle onClick={onDismiss}>Cancel</CancelTitle>
                 </Container>
             </RowCenter>
         </Modal>
     )
 }
 
-function NetworkItem({ title, icon, onClick }: any) {
+const NetworkItem: FC<{ title: string; icon: string; onClick: () => void }> = ({ title, icon, onClick }) => {
     return (
         <WrapItem onClick={onClick}>
-            <NetworkIcon
-                src={icon}
-            ></NetworkIcon>
+            <NetworkIcon src={icon} />
             <NetworkTitle>{title}</NetworkTitle>
         </WrapItem>
     )

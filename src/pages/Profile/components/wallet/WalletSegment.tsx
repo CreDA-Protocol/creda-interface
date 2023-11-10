@@ -4,7 +4,6 @@ import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowFixed, SpaceHeight, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { chainIndexToId, chainTitles } from "@services/chain.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { FC, useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -12,6 +11,7 @@ import { useTheme } from "src/states/application/hooks";
 import { BGDiv, CenterItemDiv, IconIcon, IconIconBlue, LineH, LineV, MoreIcon } from "../StyledComponents";
 import { Wrap } from "../Wrap";
 import { WalletDiv } from "./WalletDiv";
+import { chainIndexToId, chainTitles } from "@services/chains/chain-configs";
 
 export const WalletSegment: FC = () => {
   const [chainIndex, setChainIndex] = useState(0);

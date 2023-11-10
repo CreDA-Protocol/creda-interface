@@ -1,6 +1,6 @@
 import { bigNumberToBalance, enableNetwork, logError, mathPriceTo8 } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";

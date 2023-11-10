@@ -1,9 +1,10 @@
 import React from 'react';
+import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
-import { CookiesProvider } from 'react-cookie';
+
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>

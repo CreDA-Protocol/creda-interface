@@ -1,8 +1,7 @@
 import { ProfileLoading } from "@components/Common";
 import { RowBetween, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { ChainId } from "@services/chain.service";
-import { switchNetwork } from "@services/network.service";
+import { ChainId, switchNetwork } from "@services/chains/chain.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
 import { FC, useContext } from "react";

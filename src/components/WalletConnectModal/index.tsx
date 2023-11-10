@@ -1,7 +1,8 @@
 import ImageCommon from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
-import { ChainIds, chainFromId } from "@services/chain.service";
-import { NetworkConfig, addNetwork, mainnetNetworkConfigs } from "@services/network.service";
+import { ChainIds, NetworkConfig, mainnetNetworkConfigs } from "@services/chains/chain-configs";
+import { addNetwork, chainFromId } from "@services/chains/chain.service";
+import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 import message from "antd/lib/message";
 import { ethers } from "ethers";
 import { useContext } from 'react';
@@ -10,7 +11,6 @@ import { ethereum, logError, walletInfo } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { BaseView, FlexViewBetween, FlexViewCenterColumn } from "../Common";
 import Modal from '../NormalModal';
-import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 
 const Container = styled(FlexViewCenterColumn)`
   width:500px;

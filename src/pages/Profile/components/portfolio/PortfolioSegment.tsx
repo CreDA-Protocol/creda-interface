@@ -1,8 +1,8 @@
 import { Column } from "@components/Column";
-import { chainIndexToId } from "@services/chain.service";
 import { FC, useState } from "react";
 import { Wrap } from "../Wrap";
 import { PortfolioDiv } from "./PortfolioDiv";
+import { chainIndexToId } from "@services/chains/chain-configs";
 
 export const PortfolioSegment: FC = () => {
   const [chainIndex, setChainIndex] = useState(0);

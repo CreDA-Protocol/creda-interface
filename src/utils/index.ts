@@ -3,7 +3,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
-import { ChainIdList, ChainIds } from "@services/chain.service"
+import { ChainIds } from '@services/chains/chain-configs'
+import { ChainIdList } from "@services/chains/chain.service"
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {

@@ -7,7 +7,7 @@ import { GradientButton, RowBetween, RowFixed, SpaceHeight, TextEqure } from "@c
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
-import { chainFromId, chainIndexToId } from "@services/chain.service";
+import { chainIndexToId } from "@services/chains/chain-configs";
 import { useContract } from '@services/contracts.service';
 import { getAndUpdateCredit, getNFTCardBgImage, useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
@@ -21,6 +21,7 @@ import { useTheme } from 'src/states/application/hooks';
 import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";
 import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
+import { chainFromId } from '@services/chains/chain.service';
 
 enum StakeType {
   hidden = 0,

@@ -2,7 +2,6 @@ import Loading from "@components/Loading";
 import Popups from "@components/Popups";
 import Toasts from "@components/Toasts";
 import WalletConnectModal from "@components/WalletConnectModal";
-import { ChainIds } from "@services/chain.service";
 import { Suspense, useEffect, useState } from "react";
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
@@ -27,6 +26,7 @@ import Press from "./Press";
 import News from "./Press/News";
 
 import "@assets/css/custom.css";
+import { ChainIds } from "@services/chains/chain-configs";
 import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 import { Footer } from "./components/Footer/Footer";
 
@@ -106,7 +106,8 @@ export default function App() {
       if (oldNetwork) {
         // loadData();
         // console.log("刷新了")
-        window.location.replace("/home")
+        //window.location.replace("/home")
+        window.location.reload(); // Reload current page, don't always return to home in case we changed network from any page.
       }
     });
 

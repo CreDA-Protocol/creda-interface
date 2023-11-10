@@ -16,7 +16,7 @@ import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
 import { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
 import { useDaInfo } from '@services/banking.service'
-import { chainFromId } from '@services/chain.service'
+import { chainFromId } from '@services/chains/chain.service'
 import { Button } from "antd"
 
 const Container = styled.div`

@@ -1,5 +1,5 @@
 import ImageCommon from '@assets/common/ImageCommon';
-import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chain.service";
+import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chains/chain.service";
 import { Tooltip, message } from "antd";
 import React, { useContext, useEffect, useState } from 'react';
 import { NetworkTypeContext, WalletAddressContext } from 'src/contexts';
@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useTheme, useWalkThroughStep } from '../../states/application/hooks';
 import { Column, ColumnCenter } from '../Column';
 import { RowCenter, RowFixed, Text } from '../Row';
+import { ChainIds } from '@services/chains/chain-configs';
 
 const HeaderFrame = styled.div`
   flex-direction: column;

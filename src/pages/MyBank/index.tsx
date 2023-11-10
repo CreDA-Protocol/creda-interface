@@ -18,7 +18,7 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
-import { chainFromId } from "@services/chain.service"
+import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
 import { getNFTCardBgImage, useCNFTInfo } from '@services/credit.service'
 import { useApprove } from '@services/tokens.service'
