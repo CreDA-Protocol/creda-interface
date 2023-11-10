@@ -5,7 +5,7 @@ import { addNetwork, chainFromId } from "@services/chains/chain.service";
 import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
 import message from "antd/lib/message";
 import { ethers } from "ethers";
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import styled from 'styled-components';
 import { ethereum, logError, walletInfo } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
@@ -167,14 +167,10 @@ export function WalletConnectModal({
     )
 }
 
-function WalletItem({ title, icon, onClick }: any) {
+const WalletItem: FC<{ title: string; icon: string; onClick: () => void }> = ({ title, icon, onClick }) => {
     return (
-        <WrapItem
-            onClick={onClick}
-        >
-            <WalletIcon
-                src={icon}
-            ></WalletIcon>
+        <WrapItem onClick={onClick}>
+            <WalletIcon src={icon} />
             <WalletTitle>{title}</WalletTitle>
         </WrapItem>
     )
