@@ -3,7 +3,7 @@ import { GlobalConfiguration } from "@common/config";
 import { chainFromId } from "@services/chains/chain.service";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig from "src/contract/ContractConfig";
+import { ContractConfig } from "src/contract/ContractConfig";
 import { PermanentCache } from "./caches/permanent-cache";
 import { useContract } from "./contracts.service";
 import { getCoinPrice } from "./glidefinance.service";

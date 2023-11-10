@@ -1,4 +1,4 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { formatBalance } from "@common/Common";
 import { Column } from "@components/Column";
 import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";

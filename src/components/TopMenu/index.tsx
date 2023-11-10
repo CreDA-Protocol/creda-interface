@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 // import { useActiveWeb3React } from '../../hooks'
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 import { ThemeText } from '@components/ThemeComponent'
 import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chains/chain.service"
 import { message } from "antd"
@@ -123,7 +123,7 @@ const HeaderLink = styled.div`
   }
 `
 
-export default function TopMenu({ history }: any) {
+export function TopMenu({ history }: any) {
   const { chainId } = useContext(NetworkTypeContext);
   const [isHome] = useState(history.location.pathname == '/home')
   const [isMediaPage] = useState(history.location.pathname == '/news-and-media')

@@ -9,7 +9,7 @@ const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
 `
 
-export default function ToastPopup({
+export function ToastPopup({
   type,
   content
 }: {

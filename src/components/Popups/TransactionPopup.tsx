@@ -8,13 +8,12 @@ import { ExternalLink, TYPE } from '../../theme';
 import { getScanLink, getScanName } from '../../utils';
 import { AutoColumn } from '../Column';
 import { AutoRow } from '../Row';
-;
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
 `
 
-export default function TransactionPopup({
+export function TransactionPopup({
   hash,
   success,
   summary

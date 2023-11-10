@@ -1,9 +1,9 @@
 import { Body, FlexView } from "@components/Common";
-import ConnectToWalletModal from "@components/ConnectToWalletModal";
+import { ConnectToWalletModal } from "@components/ConnectToWalletModal";
 import { NetworkInfo } from "@components/NetworkInfo";
 import { RowBetween, RowCenter, SpaceWidth } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import AppBody, { MainFullBody } from "@pages/components/AppBody";
+import { AppBody, MainFullBody } from "@pages/components/AppBody";
 import { useCreditInfo } from "@services/credit.service";
 import { useOpenWarning, useWalkThroughStep } from "@states/application/hooks";
 import { useContext, useEffect, useState } from "react";

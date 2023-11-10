@@ -246,7 +246,7 @@ import walletconnect from './walletconnect.svg';
 import warnning_icon from './warnning_icon.png';
 import youjiantou from './youjiantou.png';
 
-const ImageCommon = {
+export const ImageCommon = {
   Bridge_black,
   Bridge_white,
   About_black,
@@ -495,4 +495,3 @@ const ImageCommon = {
   AboutUsWhite,
   Unknown
 }
-export default ImageCommon;

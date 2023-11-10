@@ -4,7 +4,7 @@ import { chainFromId } from "@services/chains/chain.service";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig from "src/contract/ContractConfig";
+import { ContractConfig } from "src/contract/ContractConfig";
 import { useContract, useTokenContract } from "./contracts.service";
 
 /**

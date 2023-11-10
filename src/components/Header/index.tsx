@@ -1,4 +1,4 @@
-import ImageCommon from '@assets/common/ImageCommon'
+import { ImageCommon } from '@assets/common/ImageCommon'
 import { Column } from '@components/Column'
 import { FontPoppins, GradientButton, RowBetween, RowEnd, RowFixed, Text, TextEqure } from '@components/Row'
 import { message } from "antd"
@@ -13,10 +13,10 @@ import {
   useWalkThroughStep,
   useWarning,
 } from "../../states/application/hooks"
-import ConnectWallet from '../ConnectWallet'
+import { ConnectWallet } from '../ConnectWallet'
 import I18nSwitch from '../I18nSwitch'
-import ThemeIcon, { DarkBtn, LightBtn, fullMoonSvg, halfMoonSvg } from '../ThemeIcon'
-import TopMenu from '../TopMenu'
+import { DarkBtn, LightBtn, ThemeIcon, fullMoonSvg, halfMoonSvg } from '../ThemeIcon'
+import { TopMenu } from '../TopMenu'
 import { ChainIds } from '@services/chains/chain-configs'
 
 const MenuToggleWrap = styled.div`
@@ -182,7 +182,7 @@ const menus = [
   // }
 ];
 
-export default function Header({ history }: any) {
+export function Header({ history }: any) {
   // const [changeColor,setChangeColor] = useState(false)
   // useEffect(()=>{
   //   window.addEventListener('scroll',onScroll)

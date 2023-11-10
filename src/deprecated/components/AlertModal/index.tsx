@@ -1,7 +1,7 @@
-/* import ImageCommon from '@assets/common/ImageCommon';
+/* import { ImageCommon } from '@assets/common/ImageCommon';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
-import Modal from '../NormalModal';
+import { NormalModal } from '../NormalModal';
 
 const Container = styled.div`
   width:100%;
@@ -63,7 +63,7 @@ const ContainerTitle = styled.span`
   };
   text-align:center
 `
-export default function AlertModal({
+export function AlertModal({
   isOpen,
   onDismiss,
   title,
@@ -74,14 +74,14 @@ export default function AlertModal({
 }) {
   const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onDismiss={() => { }} >
+    <NormalModal isOpen={isOpen} onDismiss={() => { }} >
       <Container>
         <ContainerTop>
           <ContainerTitle>{title}</ContainerTitle>
           <ContainerReveiveTop onClick={onDismiss}>{t("i see")}</ContainerReveiveTop>
         </ContainerTop>
       </Container>
-    </Modal>
+    </NormalModal>
   )
 }
 

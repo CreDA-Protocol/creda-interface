@@ -2,8 +2,8 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { provider } from "../../common/Common"
 import { NetworkTypeContext } from "../../contexts"
-import useDebounce from '../../hooks/useDebounce'
-import useIsWindowVisible from '../../hooks/useIsWindowVisible'
+import { useDebounce } from '../../hooks/useDebounce'
+import { useIsWindowVisible } from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 
 export default function Updater(): null {

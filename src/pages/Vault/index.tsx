@@ -1,6 +1,6 @@
 import { QuestionCircleOutlined } from "@ant-design/icons/lib"
-import ImageCommon from "@assets/common/ImageCommon"
-import ImageToken from "@assets/tokens/ImageToken"
+import { ImageCommon } from "@assets/common/ImageCommon"
+import { ImageToken } from "@assets/tokens/ImageToken"
 import { Column, ColumnBetween, ColumnCenter } from '@components/Column'
 import {
   BaseView,
@@ -15,7 +15,7 @@ import {
   MobileView,
   WinView
 } from '@components/Common'
-import CustomStakeModal from "@components/CustomStakeModal"
+import { CustomStakeModal } from "@components/CustomStakeModal"
 import { NetworkInfo } from "@components/NetworkInfo"
 import {
   GradientButton,
@@ -29,10 +29,10 @@ import {
   Text,
   TextEqure
 } from '@components/Row'
-import StakeModal from '@components/StakeModal'
+import { StakeModal } from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
-import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC } from "@services/banking.service"
 import { ChainIds } from "@services/chains/chain-configs"
 import { chainFromId } from "@services/chains/chain.service"
@@ -59,12 +59,12 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import ContractConfig, { EarnConfig } from "../../contract/ContractConfig"
+import { ContractConfig, EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarning, useTheme } from "../../states/application/hooks"
 import { ToastStatus, useAddToast } from "../../states/toast"
 import { useTransactionAdder } from "../../states/transactions/hooks"
-import BorrowCollateralModal from './BorrowCollateralModal'
+import { BorrowCollateralModal } from './BorrowCollateralModal'
 
 const Body = styled(Column)`
   width:100%;

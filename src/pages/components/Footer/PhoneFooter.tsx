@@ -1,4 +1,4 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { Column } from "@components/Column";
 import { ButtonClick, CustomGrid, RowFixed, SpaceHeight, SpaceWidth, Text, WrapMaxWidth } from "@components/Row";
 import { ThemeText } from "@components/ThemeComponent";

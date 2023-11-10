@@ -6,7 +6,7 @@ import { ChainId, chainFromId, getRPCProvider } from "@services/chains/chain.ser
 import { BigNumber, constants } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
-import ContractConfig from "src/contract/ContractConfig";
+import { ContractConfig } from "src/contract/ContractConfig";
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTransactionAdder } from "src/states/transactions/hooks";
 import { PermanentCache } from "./caches/permanent-cache";

@@ -1,8 +1,8 @@
-import ImageCommon from '@assets/common/ImageCommon';
-import ImageToken from '@assets/tokens/ImageToken';
+import { ImageCommon } from '@assets/common/ImageCommon';
+import { ImageToken } from '@assets/tokens/ImageToken';
 import { ButtonNormal } from '@components/Button';
 import { Column, ColumnCenter } from '@components/Column';
-import Modal from '@components/NormalModal';
+import { NormalModal } from '@components/NormalModal';
 import { GradientButton, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '@components/Row';
 import { TransactionResponse } from '@ethersproject/providers';
 import { chainFromId } from '@services/chains/chain.service';
@@ -13,7 +13,7 @@ import {
   colors
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import ContractConfig from "../../contract/ContractConfig";
+import { ContractConfig } from "../../contract/ContractConfig";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 ;
 
@@ -105,7 +105,7 @@ const MaxButton = styled(ColumnCenter)`
 `
 const BackButton = styled(ButtonNormal)`
 `
-export default function BorrowCollateralModal({
+export function BorrowCollateralModal({
   isOpen,
   onDismiss,
   type
@@ -138,7 +138,7 @@ export default function BorrowCollateralModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={() => { }}>
+    <NormalModal isOpen={isOpen} onDismiss={() => { }}>
       <RowCenter>
         <Container>
           <RowFixed>
@@ -187,7 +187,7 @@ export default function BorrowCollateralModal({
           <BottomButton>enter amount</BottomButton>
         </Container>
       </RowCenter>
-    </Modal>
+    </NormalModal>
   )
 }
 const des1 = 'Tip:You can maximize your position and borrow more leverage. Make sure to keep your health factor high enough or you might be liquidated'

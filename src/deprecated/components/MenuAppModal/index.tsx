@@ -1,7 +1,7 @@
-/* import ImageCommon from '@assets/common/ImageCommon'
+/* import { ImageCommon } from '@assets/common/ImageCommon'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import Modal from '../../../components/NormalModal'
+import { NormalModal } from '../../../components/NormalModal'
 
 const Container = styled.div`
   width:100%;
@@ -159,7 +159,7 @@ const StyledNavLink = styled(NavLink).attrs({
   flex-direction: row;
   justify-content:center
 `
-export default function MenuAppModal({
+export function MenuAppModal({
   isOpen,
   onDismiss,
 }: {
@@ -168,7 +168,7 @@ export default function MenuAppModal({
 }) {
 
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} >
+    <NormalModal isOpen={isOpen} onDismiss={onDismiss} >
       <Container>
         <ContainerClose src={ImageCommon.close_app} onClick={onDismiss} />
         <UniIcon src={ImageCommon.whitelogo} />
@@ -179,7 +179,7 @@ export default function MenuAppModal({
         <StyledNavLink onClick={onDismiss} to={'/whitehold'} >Whitehold</StyledNavLink>
         <StyledNavLink onClick={onDismiss} to={'/infinite'} >INFINITE</StyledNavLink>
       </Container>
-    </Modal>
+    </NormalModal>
   )
 }
  */

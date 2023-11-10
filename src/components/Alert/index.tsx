@@ -72,7 +72,7 @@ interface ModalProps {
   children?: React.ReactNode
 }
 
-export default function Modal({
+export function AlertModal({
   isOpen,
   onDismiss,
   minHeight = false,

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useActivePopups } from '../../states/application/hooks'
 import { AutoColumn } from '../Column'
-import PopupItem from './PopupItem'
+import { PopupItem } from './PopupItem'
 
 const MobilePopupWrapper = styled.div<{ height: string | number }>`
   position: relative;
@@ -41,7 +41,7 @@ const FixedPopupColumn = styled(AutoColumn) <{ extraPadding: boolean }>`
   `};
 `
 
-export default function Popups() {
+export function Popups() {
   // get all popups
   const activePopups = useActivePopups()
 

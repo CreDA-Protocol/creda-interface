@@ -15,7 +15,7 @@ import {
   troyTohid,
   williamZhijunZhang
 } from "@assets/aboutUs";
-import Modal from "@components/Modal";
+import { Modal } from "@components/Modal";
 import { FontPoppins } from "@components/Row";
 import { MainFullBody } from "@pages/components/AppBody";
 import { CSSProperties, FunctionComponent, useEffect, useState } from "react";

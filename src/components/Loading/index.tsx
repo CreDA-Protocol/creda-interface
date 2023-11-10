@@ -1,7 +1,7 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import styled from "styled-components";
 
-export default function Loading() {
+export function Loading() {
   return (
     <Container>
       <Logo src={ImageCommon.credaLogoForDark}></Logo>

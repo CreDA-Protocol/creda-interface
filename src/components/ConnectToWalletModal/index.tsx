@@ -1,5 +1,5 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
-import Modal from '@components/Alert';
+import { AlertModal } from '@components/Alert';
 import { RowCenter } from '@components/Row';
 import { Lottie } from '@crello/react-lottie';
 import { chainFromId } from '@services/chains/chain.service';
@@ -8,9 +8,7 @@ import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { FlexViewBetween } from '../Common';
-import ConnectWallet from '../ConnectWallet';
-;
-
+import { ConnectWallet } from '../ConnectWallet';
 
 const Container = styled.div`
 display:flex;
@@ -41,7 +39,7 @@ const LaterTitle = styled.label`
         font-size: 14px;
     };
 `
-export default function ConnectToWalletModal({
+export function ConnectToWalletModal({
   show = true,
   onDismiss,
 }: {
@@ -53,7 +51,7 @@ export default function ConnectToWalletModal({
   const network = chainFromId(chainId);
 
   return (
-    <Modal isOpen={show} onDismiss={onDismiss} /* prop={'fromprofile'} */>
+    <AlertModal isOpen={show} onDismiss={onDismiss} /* prop={'fromprofile'} */>
       <RowCenter>
         <Container>
           <FlexViewBetween style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -86,7 +84,7 @@ export default function ConnectToWalletModal({
           <LaterTitle onClick={onDismiss}>Skip</LaterTitle>
         </Container>
       </RowCenter>
-    </Modal>
+    </AlertModal>
   )
 }
 

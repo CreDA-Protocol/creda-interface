@@ -1,8 +1,8 @@
-/* 
-import ImageCommon from '@assets/common/ImageCommon'
+/*
+import { ImageCommon } from '@assets/common/ImageCommon'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
-import Row, { Image, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
+import { Image, Row, RowBetween, RowCenter, SpaceHeight, SpaceWidth, Text } from '../Row'
 
 const HeaderFrame = styled.div`
   align-items: center;
@@ -36,7 +36,7 @@ const ConnectImage = styled(Image)`
   cursor:pointer
 `
 
-export default function Bottom() {
+export function Bottom() {
   return (
     <>
       {

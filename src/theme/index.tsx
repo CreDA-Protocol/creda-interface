@@ -1,11 +1,11 @@
-import React, { useMemo,useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { Text, TextProps } from 'rebass'
 import styled, {
+  DefaultTheme,
   ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
-  css,
-  DefaultTheme
+  css
 } from 'styled-components'
-import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 export * from './components'
@@ -119,7 +119,7 @@ export function theme(darkMode: boolean, animation: boolean): DefaultTheme {
   }
 }
 
-export default function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [darkMode,setDarkMode] = useState(false);
   const enableAnimation = true;
 

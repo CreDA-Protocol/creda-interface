@@ -1,8 +1,8 @@
-import ImageCommon from '@assets/common/ImageCommon';
+import { ImageCommon } from '@assets/common/ImageCommon';
 import { ButtonNormal } from '@components/Button';
 import { Column, ColumnCenter } from '@components/Column';
 import { CardPair, LoadingRow } from '@components/Common';
-import Modal from '@components/NormalModal';
+import { NormalModal } from '@components/NormalModal';
 import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/Row';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -19,7 +19,7 @@ import {
   balanceToBigNumber,
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import ContractConfig from "../../contract/ContractConfig";
+import { ContractConfig } from "../../contract/ContractConfig";
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider";
 import { useTheme } from '../../states/application/hooks';
 
@@ -131,7 +131,7 @@ const BackButton = styled(ButtonNormal)`
 `
 
 let segment = 0
-export default function EarnFarmModal({
+export function EarnFarmModal({
   isOpen,
   onDismiss,
   pairInfo
@@ -267,7 +267,7 @@ export default function EarnFarmModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={() => { }}>
+    <NormalModal isOpen={isOpen} onDismiss={() => { }}>
       <ColumnCenter>
         <MainView>
           <Column style={{ width: '100%' }}>
@@ -417,7 +417,7 @@ export default function EarnFarmModal({
           </Container>
         </MainView>
       </ColumnCenter>
-    </Modal>
+    </NormalModal>
   )
 }
 

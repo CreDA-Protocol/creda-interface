@@ -1,6 +1,7 @@
 import USDT_icon from '@assets/tokens/USDT.png';
 import { TransactionResponse } from '@ethersproject/providers';
 import { getPrice, getTotalBorrowLimit, getTotalDaiBalance, useDaInfo } from '@services/banking.service';
+import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from "@services/contracts.service";
 import { useContext, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -12,11 +13,10 @@ import {
 } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { useTransactionAdder } from "../../states/transactions/hooks";
-import Modal from '../Alert';
+import { AlertModal } from '../Alert';
 import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column';
 import { LoadingCircle } from "../Common";
 import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row';
-import { chainFromId } from '@services/chains/chain.service';
 
 const Container = styled.div`
   height:480px;
@@ -83,7 +83,7 @@ const MaxButton = styled.div`
   };
 `
 
-export default function BorrowModal({
+export function BorrowModal({
   isOpen,
   onDismiss,
   symbol,
@@ -149,7 +149,7 @@ export default function BorrowModal({
       })
   }
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
+    <AlertModal isOpen={isOpen} onDismiss={onDismiss} maxHeight={468}>
       <Container>
         <ColumnBetween>
           <div>
@@ -209,6 +209,6 @@ export default function BorrowModal({
           </RowFixed>
         </ColumnBetween>
       </Container>
-    </Modal>
+    </AlertModal>
   )
 }

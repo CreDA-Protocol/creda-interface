@@ -1,19 +1,19 @@
-// import styled from 'styled-components'
-// import ImageCommon from '@assets/common/ImageCommon'
-import ImageCommon from "@assets/common/ImageCommon";
-import ImageToken from "@assets/tokens/ImageToken";
+import { ImageCommon } from "@assets/common/ImageCommon";
+import { ImageToken } from "@assets/tokens/ImageToken";
 import {
-    CustomIcon,
-    FlexView,
-    FlexViewAround,
-    FlexViewBetween,
-    FlexViewCenter,
-    FlexViewCenterColumn,
-    MobileView,
-    WinView
+  CustomIcon,
+  FlexView,
+  FlexViewAround,
+  FlexViewBetween,
+  FlexViewCenter,
+  FlexViewCenterColumn,
+  MobileView,
+  WinView
 } from "@components/Common";
 import { TransactionResponse } from "@ethersproject/providers";
-import AppBody, { MainFullBody } from '@pages/components/AppBody';
+import { AppBody, MainFullBody } from '@pages/components/AppBody';
+import { ChainIds } from "@services/chains/chain-configs";
+import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
 import { useCredaInfo } from "@services/creda-token.service";
 import { useWrapAmount } from "@services/swap-bridge.service";
@@ -25,13 +25,11 @@ import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import { ApprovalState, GasInfo, balanceToBigNumber, colors, formatBalance } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
-import ContractConfig from "../../contract/ContractConfig";
+import { ContractConfig } from "../../contract/ContractConfig";
 import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../states/application/hooks";
 import { useAddToast } from "../../states/toast";
 import { useTransactionAdder } from "../../states/transactions/hooks";
-import { ChainIds } from "@services/chains/chain-configs";
-import { chainFromId } from "@services/chains/chain.service";
 
 function Bridge(props: any) {
     const isDark = useTheme()

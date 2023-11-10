@@ -1,4 +1,4 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { tipError } from "@common/Common";
 import { FlexView } from "@components/Common";
 import { GradientButton } from "@components/Row";
@@ -7,7 +7,7 @@ import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
 import { useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";
-import ContractConfig from "src/contract/ContractConfig";
+import { ContractConfig } from "src/contract/ContractConfig";
 import { useTheme } from "src/states/application/hooks";
 import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";

@@ -1,10 +1,9 @@
-import ImageCommon from '@assets/common/ImageCommon'
-import ImageToken from '@assets/tokens/ImageToken'
-import CREDAIcon from '@assets/tokens/creda.png'
+import { ImageCommon } from '@assets/common/ImageCommon'
+import { ImageToken } from '@assets/tokens/ImageToken'
 import { Column } from '@components/Column'
 import { RowBetween, RowFixed, SpaceHeight } from '@components/Row'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
-import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC } from '@services/banking.service'
 import { ChainIds } from '@services/chains/chain-configs'
 import { chainFromId } from '@services/chains/chain.service'
@@ -14,7 +13,7 @@ import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 import { formatBalance } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import ContractConfig from '../../contract/ContractConfig'
+import { ContractConfig } from '../../contract/ContractConfig'
 import { GlidePrice, getCoinPrice } from '../../services/glidefinance.service'
 import { useTheme } from '../../states/application/hooks'
 import { BankTopInfo } from './index'
@@ -216,7 +215,7 @@ function Earn() {
     <WarpView>
       {chainId !== ChainIds.esc && <WarpSubView>
         <RowFixed>
-          <IconIcon src={CREDAIcon} />
+          <IconIcon src={ImageToken.CREDA} />
           <ThemeText fontSize={24}>CREDA</ThemeText>
         </RowFixed>
         <ThemeText fontSize={24}>${Number(sushiPrice.to).toFixed(2)}</ThemeText>

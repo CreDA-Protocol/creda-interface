@@ -31,7 +31,7 @@ export function useLoadingContext() {
     return loadingContext
 }
 
-export default function LoadingProvider({ children }: any) {
+export function LoadingProvider({ children }: any) {
     const [visible, setVisible] = useState(false)
     const [type, setType] = useState(LoadingType.confirm)
     const [message, setMessage] = useState("")

@@ -1,4 +1,4 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { FlexView } from "@components/Common";
 import { message } from "antd";
 import copy from "copy-to-clipboard";

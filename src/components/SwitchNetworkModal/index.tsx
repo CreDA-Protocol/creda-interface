@@ -1,11 +1,11 @@
-import ImageCommon from "@assets/common/ImageCommon";
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { RowCenter } from '@components/Row';
+import { AddEthereumChainParameter, mainnetNetworkConfigs, testnetNetworkConfigs } from "@services/chains/chain-configs";
+import { addNetwork } from "@services/chains/chain.service";
 import { FC } from "react";
 import styled from 'styled-components';
 import { BaseView, FlexViewBetween, FlexViewCenterColumn, FlexViewLeft } from "../Common";
-import Modal from '../NormalModal';
-import { AddEthereumChainParameter, mainnetNetworkConfigs, testnetNetworkConfigs } from "@services/chains/chain-configs";
-import { addNetwork } from "@services/chains/chain.service";
+import { NormalModal } from '../NormalModal';
 
 const Container = styled(FlexViewCenterColumn)`
   width:600px;
@@ -81,7 +81,7 @@ const CancelTitle = styled(BaseView)`
     };
 `
 
-export default function SwitchNetworkModal({ show = true, onDismiss }: {
+export function SwitchNetworkModal({ show = true, onDismiss }: {
     show?: boolean
     onDismiss: () => void,
 }) {
@@ -97,7 +97,7 @@ export default function SwitchNetworkModal({ show = true, onDismiss }: {
     }
 
     return (
-        <Modal isOpen={show} onDismiss={onDismiss} >
+        <NormalModal isOpen={show} onDismiss={onDismiss} >
             <RowCenter onClick={onDismiss}>
                 <Container>
                     <Logo
@@ -137,7 +137,7 @@ export default function SwitchNetworkModal({ show = true, onDismiss }: {
                     <CancelTitle onClick={onDismiss}>Cancel</CancelTitle>
                 </Container>
             </RowCenter>
-        </Modal>
+        </NormalModal>
     )
 }
 

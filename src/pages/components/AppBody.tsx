@@ -1,4 +1,4 @@
-import Header from "@components/Header";
+import { Header } from "@components/Header";
 import LeftMenu from '@components/LeftMenu';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
@@ -35,7 +35,7 @@ export const MainFullBodyDiv = styled.div`
   overflow:unset
 `
 
-export default function AppBody({ children, history }: { children: React.ReactNode, history: any }) {
+export function AppBody({ children, history }: { children: React.ReactNode, history: any }) {
   const themeDark = useTheme()
 
   return <BodyWrapper style={{

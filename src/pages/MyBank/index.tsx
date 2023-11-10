@@ -1,8 +1,8 @@
-import ImageCommon from '@assets/common/ImageCommon'
-import ImageToken from '@assets/tokens/ImageToken'
+import { ImageCommon } from '@assets/common/ImageCommon'
+import { ImageToken } from '@assets/tokens/ImageToken'
 import { Column } from '@components/Column'
 import { BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView } from '@components/Common'
-import CustomStakeModal from "@components/CustomStakeModal"
+import { CustomStakeModal } from "@components/CustomStakeModal"
 import { NetworkInfo } from '@components/NetworkInfo'
 import {
   GradientButton,
@@ -16,7 +16,7 @@ import {
 } from '@components/Row'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
-import AppBody, { MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/components/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
 import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
@@ -35,7 +35,7 @@ import {
   tipError
 } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import ContractConfig, { BankConfig, EarnConfig } from "../../contract/ContractConfig"
+import { BankConfig, ContractConfig, EarnConfig } from "../../contract/ContractConfig"
 import { LoadingContext, LoadingType } from "../../provider/LoadingProvider"
 import { useOpenWarning, useTheme } from '../../states/application/hooks'
 import { useAddToast } from "../../states/toast"
