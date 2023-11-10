@@ -2,8 +2,8 @@ import ImageCommon from '@assets/common/ImageCommon'
 import ImageToken from '@assets/tokens/ImageToken'
 import { Column } from '@components/Column'
 import { BaseView, CardPair, FlexView, LgWhiteButton, LoadingRow, MobileView, WinView } from '@components/Common'
-import { H4, HeaderView } from "@components/ConnectWallet"
 import CustomStakeModal from "@components/CustomStakeModal"
+import { NetworkInfo } from '@components/NetworkInfo'
 import {
   GradientButton,
   RowBetween,
@@ -299,9 +299,7 @@ export function BankTopInfo() {
         {/*  message.success('copy success')*/}
         {/*}} src={ImageCommon.CopyIcon}/>*/}
       </FlexView>
-      <HeaderView>
-        <H4>{network}</H4>
-      </HeaderView>
+      <NetworkInfo />
     </RowBetween>
     <TopDiv>
       <TopLeftDiv>
