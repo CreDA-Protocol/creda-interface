@@ -1,5 +1,5 @@
 import { logError } from "@common/Common";
-import { ChainId } from "@services/chain.service";
+import { ChainId } from "@services/chains/chain.service";
 import { useContext, useEffect, useState } from "react";
 import { WalletAddressContext } from "src/contexts";
 import { PermanentCache } from "../caches/permanent-cache";

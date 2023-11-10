@@ -1,8 +1,8 @@
-import { chainIndexToId, chainTitles } from "@services/chain.service";
 import { Tooltip } from "antd";
 import { FC } from "react";
 import { useTheme } from "src/states/application/hooks";
 import { WrapDiv, WrapItem } from "./StyledComponents";
+import { chainIndexToId, chainTitles } from "@services/chains/chain-configs";
 
 export const Wrap: FC<{
   onIndexChange: (newIndex: number) => any;

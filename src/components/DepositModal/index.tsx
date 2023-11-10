@@ -1,19 +1,19 @@
-import USDT_icon from '@assets/tokens/USDT.png'
-import { TransactionResponse } from '@ethersproject/providers'
-import { chainFromId } from '@services/chain.service'
-import { useContract } from "@services/contracts.service"
-import { useApprove } from '@services/tokens.service'
-import { BigNumber } from "ethers"
-import { useContext, useState } from 'react'
-import { isMobile } from 'react-device-detect'
-import styled from 'styled-components'
-import { ApprovalState, balanceToBigNumber, bigNumberToBalance, marketsConfig } from "../../common/Common"
-import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
-import { useTransactionAdder } from "../../states/transactions/hooks"
-import Modal from '../Alert'
-import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column'
-import { LoadingCircle } from "../Common"
-import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row'
+import USDT_icon from '@assets/tokens/USDT.png';
+import { TransactionResponse } from '@ethersproject/providers';
+import { chainFromId } from '@services/chains/chain.service';
+import { useContract } from "@services/contracts.service";
+import { useApprove } from '@services/tokens.service';
+import { BigNumber } from "ethers";
+import { useContext, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import styled from 'styled-components';
+import { ApprovalState, balanceToBigNumber, bigNumberToBalance, marketsConfig } from "../../common/Common";
+import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
+import { useTransactionAdder } from "../../states/transactions/hooks";
+import Modal from '../Alert';
+import { ColumnBetween, ColumnCenter, ColumnEnd } from '../Column';
+import { LoadingCircle } from "../Common";
+import { Button, Image, RowCenter, RowFixed, SpaceHeight, SpaceWidth, Text } from '../Row';
 
 const Container = styled.div`
   height:480px;

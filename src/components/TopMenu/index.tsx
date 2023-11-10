@@ -3,13 +3,14 @@ import styled from 'styled-components'
 // import { useActiveWeb3React } from '../../hooks'
 import ImageCommon from '@assets/common/ImageCommon'
 import { ThemeText } from '@components/ThemeComponent'
-import { ChainIds, bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chain.service"
+import { bankIsEnabledOnChain, vaultIsEnabledOnChain } from "@services/chains/chain.service"
 import { message } from "antd"
 import { useTranslation } from 'react-i18next'
 import { NetworkTypeContext } from 'src/contexts'
 import { useTheme } from '../../states/application/hooks'
 import { ButtonClick, ButtonLink } from '../Button'
 import { RowCenter, RowFixed } from '../Row'
+import { ChainIds } from '@services/chains/chain-configs'
 
 const DropFlyWrap = styled.div`
   position: relative;

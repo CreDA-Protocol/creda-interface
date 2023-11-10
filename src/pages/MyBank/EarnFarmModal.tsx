@@ -7,7 +7,7 @@ import { RowBetween, RowCenter, RowFixed, SpaceHeight, Text } from '@components/
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useIconPrice, useWalletInfo } from '@services/banking.service';
-import { chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
 import { useApprove } from '@services/tokens.service';
 import { message } from 'antd';

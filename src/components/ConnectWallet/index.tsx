@@ -1,6 +1,6 @@
 import { RowCenter } from "@components/Row";
 import WrongNetworkModal from "@components/WrongNetworkModal";
-import { chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { Dropdown } from "antd";
 import { useContext, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";

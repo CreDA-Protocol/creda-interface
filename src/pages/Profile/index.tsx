@@ -16,7 +16,7 @@ import ConnectToWalletModal from "@components/ConnectToWalletModal";
 import { H4 } from "@components/ConnectWallet";
 import SwitchNetworkModal from "@components/SwitchNetworkModal";
 import { ThemeText, ThemeTextEqure } from "@components/ThemeComponent";
-import { chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { useCreditInfo } from "@services/credit.service";
 import { formatAccount } from "../../common/Common";
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";

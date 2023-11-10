@@ -1,4 +1,4 @@
-import { ChainIds } from "@services/chain.service";
+import { ChainIds } from "@services/chains/chain-configs";
 import React from "react";
 
 export const WalletAddressContext = React.createContext({

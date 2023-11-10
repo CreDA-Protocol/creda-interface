@@ -2,7 +2,7 @@ import { ApprovalState, ERC20_ABI, bigNumberToBalance, } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
-import { ChainId, chainFromId, getRPCProvider } from "@services/chain.service";
+import { ChainId, chainFromId, getRPCProvider } from "@services/chains/chain.service";
 import { BigNumber, constants } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";

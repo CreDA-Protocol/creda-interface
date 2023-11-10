@@ -1,11 +1,12 @@
 import { balanceToBigNumber, bigNumberToBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { ChainIds, chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { useContract } from "./contracts.service";
+import { ChainIds } from "./chains/chain-configs";
 
 // 获取跨链数量
 export function useWrapAmount(): any {

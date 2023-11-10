@@ -1,5 +1,5 @@
 import ERC20_ABI from "@abi/generic/ERC20.json";
-import { ChainId, getRPCProvider } from "@services/chain.service";
+import { ChainId, getRPCProvider } from "@services/chains/chain.service";
 import { Contract, Signer, ethers, providers } from "ethers";
 import { useMemo } from "react";
 import { walletInfo } from "../common/Common";

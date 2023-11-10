@@ -1,12 +1,12 @@
 import { ButtonClick } from '@components/Button'
 import { RowCenter, RowEnd, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
-import { ChainIds, chainFromId } from "@services/chain.service"
+import { ChainIds } from '@services/chains/chain-configs'
+import { chainFromId } from '@services/chains/chain.service'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { formatBalance, stringReplaceSpace } from "../../common/Common"
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts"
 import Modal from '../NormalModal'
-
 
 const Container = styled.div`
   width:400px;

@@ -1,5 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { ChainIds, ChainRPCs } from "./chain.service";
+import { ChainRPCs, ChainIds } from "./chains/chain-configs";
 
 const walletConnect = {
   rpc: ChainRPCs,

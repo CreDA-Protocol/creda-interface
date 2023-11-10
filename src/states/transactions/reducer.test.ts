@@ -1,7 +1,7 @@
-import { ChainIds } from "@services/chain.service";
 import { createStore, Store } from 'redux';
 import { addTransaction, clearAllTransactions } from './actions';
 import reducer, { initialState, TransactionState } from './reducer';
+import { ChainIds } from '@services/chains/chain-configs';
 
 describe('transaction reducer', () => {
   let store: Store<TransactionState>

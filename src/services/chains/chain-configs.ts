@@ -1,6 +1,70 @@
 import ImageToken from "@assets/tokens/ImageToken";
-import { ethereum } from "@common/Common";
-import { ChainId, ChainIds } from "./chain.service";
+import { ChainIdList, ChainId } from "./chain.service";
+
+export const ChainIds: ChainIdList = {
+  ethereum: 1,
+  ropsten: 3,
+  esc: 20,
+  elatest: 21,
+  heco: 128,
+  hecotest: 256,
+  bsc: 56,
+  local: 1337,
+  polygon: 137,
+  arbitrum: 42161,
+  //kovan: 42,
+  //rinkeby: 4,
+  //goerli: 5,
+  celo: 42220,
+  celotest: 44787
+}
+
+/**
+ * Mapping between chain index in the UI vs chain id
+ */
+export const chainIndexToId: ChainId[] = [
+  ChainIds.ethereum, // "Ethereum",
+  ChainIds.bsc, // "BSC",
+  ChainIds.esc, // "Elastos ESC",
+  ChainIds.celo, // "CELO",
+  // ChainIds.heco, // "HECO", hide
+  ChainIds.arbitrum, // "Arbitrum",
+  ChainIds.polygon, // "Polygon",
+];
+
+export const chainTitles: { [chainId: ChainId]: string } = {
+  [ChainIds.ethereum]: "Ethereum",
+  [ChainIds.bsc]: "BSC",
+  [ChainIds.esc]: "Elastos ESC",
+  [ChainIds.celo]: "CELO",
+  [ChainIds.heco]: "HECO",
+  [ChainIds.polygon]: "Polygon",
+  [ChainIds.arbitrum]: "Arbitrum"
+};
+
+export const ChainType: any = {
+  Ethereum: "eth",
+  HECO: "heco",
+  Polygon: "polygon",
+  BSC: "bsc",
+  CELO: 'celo',
+  "Elastos ESC": "esc"
+};
+
+/**
+ * JSON RPC URL for each supported chain.
+ */
+export const ChainRPCs: { [chainId: ChainId]: string } = {
+  [ChainIds.ethereum]: "https://eth.llamarpc.com",
+  [ChainIds.bsc]: "https://bsc-dataseed1.defibit.io",
+  [ChainIds.esc]: "https://api.trinity-tech.io/esc",
+  [ChainIds.celo]: "https://rpc.ankr.com/celo",
+  [ChainIds.polygon]: "https://polygon.llamarpc.com",
+  [ChainIds.arbitrum]: "https://arb1.arbitrum.io/rpc",
+  // Testnet
+  [ChainIds.celotest]: "https://alfajores-forno.celo-testnet.org",
+  [ChainIds.elatest]: "https://api-testnet.elastos.io/esc",
+};
 
 export type AddEthereumChainParameter = {
   chainId: string; // A 0x-prefixed hexadecimal string
@@ -30,7 +94,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'ETH', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://mainnet.infura.io/v3/'],
+      rpcUrls: [ChainRPCs[ChainIds.ethereum]],
       blockExplorerUrls: ['https://etherscan.io/']
     },
     icon: ImageToken.ETH,
@@ -44,7 +108,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'ETH', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+      rpcUrls: [ChainRPCs[ChainIds.arbitrum]],
       blockExplorerUrls: ['https://arbiscan.io/']
     },
     icon: ImageToken.ARB,
@@ -58,7 +122,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'BNB', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+      rpcUrls: [ChainRPCs[ChainIds.bsc]],
       blockExplorerUrls: ['https://bscscan.com/']
     },
     icon: ImageToken.BSC,
@@ -72,7 +136,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'CELO', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://forno.celo.org'],
+      rpcUrls: [ChainRPCs[ChainIds.celo]],
       blockExplorerUrls: ['https://celoscan.io']
     },
     icon: ImageToken.CELO,
@@ -86,7 +150,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'ELA', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://api.elastos.io/esc'],
+      rpcUrls: [ChainRPCs[ChainIds.esc]],
       blockExplorerUrls: ['https://esc.elastos.io']
     },
     icon: ImageToken.ELA,
@@ -103,7 +167,7 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'CELO', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
+      rpcUrls: [ChainRPCs[ChainIds.celotest]],
       blockExplorerUrls: ['https://alfajores.celoscan.io']
     },
     icon: ImageToken.CELO,
@@ -117,32 +181,9 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
         symbol: 'tELA', // 2-6 characters long
         decimals: 18
       },
-      rpcUrls: ['https://api-testnet.elastos.io/esc'],
+      rpcUrls: [ChainRPCs[ChainIds.elatest]],
       blockExplorerUrls: ['https://esc-testnet.elastos.io/']
     },
     icon: ImageToken.ELA,
   },
 ]
-
-
-export function switchNetwork(chainId: ChainId) {
-  return ethereum.request({
-    method: 'wallet_switchEthereumChain',
-    params: [
-      {
-        chainId: "0x" + chainId.toString(16),
-      }
-    ]
-  })
-}
-
-export function addNetwork(param: AddEthereumChainParameter) {
-  // TODO: it will add a new network if call wallet_addEthereumChain for ethereum.
-  if (param.chainId === '0x1') {
-    return switchNetwork(parseInt(param.chainId));
-  }
-  return ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [param]
-  })
-}

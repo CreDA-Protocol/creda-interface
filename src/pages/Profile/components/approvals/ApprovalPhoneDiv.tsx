@@ -1,5 +1,4 @@
-import { ChainId, chainFromId } from "@services/chain.service";
-import { switchNetwork } from "@services/network.service";
+import { ChainId, chainFromId, switchNetwork } from "@services/chains/chain.service";
 import { PortfolioDataset } from "@services/portfolio/model/dataset";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";
 import { FC, useContext } from "react";

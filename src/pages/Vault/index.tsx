@@ -36,7 +36,8 @@ import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
 import AppBody, { MainFullBody } from '@pages/components/AppBody'
 import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC } from "@services/banking.service"
-import { ChainIds, chainFromId } from "@services/chain.service"
+import { ChainIds } from "@services/chains/chain-configs"
+import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
 import { useCredaInfo, useUnLockInfo } from "@services/creda-token.service"
 import { getNFTCardBgImage, useCNFTInfo, useCnetWorkInfo, useCreditInfo } from "@services/credit.service"

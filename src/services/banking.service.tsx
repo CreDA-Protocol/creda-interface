@@ -6,15 +6,16 @@ import USDCIcon from '@assets/tokens/USD Coin (USDC).png';
 import WBTCIcon from '@assets/tokens/Wrapped Bitcoin (WBTC).png';
 import { bigNumberToBalance, logError, marketsConfig, multiCallConfig, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { ChainIds, chainFromId } from "@services/chain.service";
 import { ContractCallContext, Multicall } from "ethereum-multicall";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig, { BankConfig, EarnConfig } from "src/contract/ContractConfig";
 import { useTokenContract } from "./contracts.service";
-import { isNativeToken } from "./tokens.service";
 import { getPriceByApi } from './pricing.service';
+import { isNativeToken } from "./tokens.service";
+import { ChainIds } from './chains/chain-configs';
+import { chainFromId } from './chains/chain.service';
 
 export const MyBankAssetPriceIcons = [
   {

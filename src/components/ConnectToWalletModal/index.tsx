@@ -2,13 +2,14 @@ import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import Modal from '@components/Alert';
 import { RowCenter } from '@components/Row';
 import { Lottie } from '@crello/react-lottie';
-import { chainFromId } from '@services/chain.service';
+import { chainFromId } from '@services/chains/chain.service';
 import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 import { NetworkTypeContext, WalletAddressContext } from "../../contexts";
 import { FlexViewBetween } from '../Common';
 import ConnectWallet from '../ConnectWallet';
+;
 
 
 const Container = styled.div`

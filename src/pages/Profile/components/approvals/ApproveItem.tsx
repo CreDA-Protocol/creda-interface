@@ -5,7 +5,7 @@ import { RowBetween, RowFixed, SpaceWidth, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useBehaviorSubject } from "@hooks/useBehaviorSubject";
-import { ChainId } from "@services/chain.service";
+import { ChainId } from "@services/chains/chain.service";
 import { useTokenContract } from "@services/contracts.service";
 import { PortfolioApprovedSpender } from "@services/portfolio/model/portfolio-approved-spender";
 import { PortfolioApprovedToken } from "@services/portfolio/model/portfolio-approved-token";

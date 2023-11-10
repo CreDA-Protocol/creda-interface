@@ -1,7 +1,6 @@
 import ImageCommon from '@assets/common/ImageCommon';
 import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { ChainIds, chainFromId } from "@services/chain.service";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber, Contract } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
@@ -9,6 +8,8 @@ import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import ContractConfig from "src/contract/ContractConfig";
 import { useContract } from "./contracts.service";
+import { ChainIds } from './chains/chain-configs';
+import { chainFromId } from './chains/chain.service';
 
 export type CreditData = {
   score: string,

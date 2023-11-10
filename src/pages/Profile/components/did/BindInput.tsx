@@ -3,7 +3,7 @@ import { tipError } from "@common/Common";
 import { FlexView } from "@components/Common";
 import { GradientButton } from "@components/Row";
 import { TransactionResponse } from "@ethersproject/providers";
-import { chainFromId } from "@services/chain.service";
+import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
 import { useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";

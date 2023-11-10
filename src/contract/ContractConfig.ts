@@ -67,7 +67,7 @@ import Items_ABI from '@abi/gaming/Items.json';
 import Production_ABI from '@abi/gaming/Production.json'; // Also seems related to gaming
 import WarshipExplore_ABI from '@abi/gaming/WarshipExplore.json';
 import WarshipNFT_ABI from '@abi/gaming/WarshipNFT.json';
-import { ChainName } from '@services/chain.service';
+import { ChainName } from '@services/chains/chain.service';
 
 type ChainContractConfig = {
   address: string;
