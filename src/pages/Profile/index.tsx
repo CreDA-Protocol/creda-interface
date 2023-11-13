@@ -3,7 +3,7 @@ import { ConnectToWalletModal } from "@components/ConnectToWalletModal";
 import { NetworkInfo } from "@components/NetworkInfo";
 import { RowBetween, RowCenter, SpaceWidth } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
-import { AppBody, MainFullBody } from "@pages/components/AppBody";
+import { AppBody, MainFullBody } from "@pages/AppBody";
 import { useCreditInfo } from "@services/credit.service";
 import { useOpenWarning, useWalkThroughStep } from "@states/application/hooks";
 import { useContext, useEffect, useState } from "react";
@@ -25,6 +25,8 @@ function Profile(props: any) {
     const showWarning = useOpenWarning(true);
     const creditInfo = useCreditInfo();
     const walkThroughStep = useWalkThroughStep();
+
+    console.log("xxxx", !account && !isaccountLoading && (walkThroughStep === 5 || walkThroughStep === 1))
 
     useEffect(() => {
         // if(props.location.props==='fromConnectWallet'){
@@ -48,36 +50,16 @@ function Profile(props: any) {
         setSegmentIndex(index);
     }
 
-
-    // console.log("first",walkThroughStep)
     return (
         <MainFullBody history={props.history}>
             {
-                props.location.props !== "fromConnectWallet" ? (
-                    <>
-                        {!account && !account ? (
-                            <>
-                                {isaccountLoading ? (
-                                    ""
-                                ) : (
-                                    <>
-                                        {walkThroughStep !== 5 && walkThroughStep !== 1 ? (
-                                            ""
-                                        ) : (
-                                            <ConnectToWalletModal
-                                                show={connectToModal}
-                                                onDismiss={() => setConnectToModal(false)}
-                                            />)
-                                        }
-                                    </>)
-                                }
-                            </>) : <></>
-                        }
-                    </>
-                ) : (
-                    ""
-                )
+                props.location.props !== "fromConnectWallet" &&
+                <ConnectToWalletModal
+                    show={!account && !isaccountLoading && connectToModal && (walkThroughStep === 5 || walkThroughStep === 1)}
+                    onDismiss={() => { setConnectToModal(false) }}
+                />
             }
+
             <AppBody history={props.history}>
                 <Body style={{ width: '100%', paddingRight: 20 }}>
                     <RowBetween

@@ -3,7 +3,7 @@ import LeftMenu from '@components/LeftMenu';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
-import { useTheme } from "../../states/application/hooks";
+import { useTheme } from "../states/application/hooks";
 
 const BodyWrapper = styled.div`
   overflow: unset;

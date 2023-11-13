@@ -23,7 +23,7 @@ import {
 } from '@components/Row'
 import { ThemeText } from '@components/ThemeComponent'
 import { Lottie } from "@crello/react-lottie"
-import { MainFullBody } from '@pages/components/AppBody'
+import { MainFullBody } from '@pages/AppBody'
 import { useContext, useEffect, useRef } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useTranslation } from 'react-i18next'

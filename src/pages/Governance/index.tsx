@@ -1,6 +1,4 @@
-// import styled from 'styled-components'
-// import { ImageCommon } from '@assets/common/ImageCommon'
-import { AppBody, MainFullBody } from '@pages/components/AppBody';
+import { MainFullBody, AppBody } from "@pages/AppBody";
 
 function Governance(props: any) {
   return (

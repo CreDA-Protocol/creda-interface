@@ -1,17 +1,16 @@
 import { ImageCommon } from "@assets/common/ImageCommon";
 import { ImageToken } from "@assets/tokens/ImageToken";
 import {
-  CustomIcon,
-  FlexView,
-  FlexViewAround,
-  FlexViewBetween,
-  FlexViewCenter,
-  FlexViewCenterColumn,
-  MobileView,
-  WinView
+    CustomIcon,
+    FlexView,
+    FlexViewAround,
+    FlexViewBetween,
+    FlexViewCenter,
+    FlexViewCenterColumn,
+    MobileView,
+    WinView
 } from "@components/Common";
 import { TransactionResponse } from "@ethersproject/providers";
-import { AppBody, MainFullBody } from '@pages/components/AppBody';
 import { ChainIds } from "@services/chains/chain-configs";
 import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
@@ -30,6 +29,7 @@ import { LoadingType, useLoadingContext } from "../../provider/LoadingProvider";
 import { useTheme } from "../../states/application/hooks";
 import { useAddToast } from "../../states/toast";
 import { useTransactionAdder } from "../../states/transactions/hooks";
+import { MainFullBody, AppBody } from "@pages/AppBody";
 
 function Bridge(props: any) {
     const isDark = useTheme()

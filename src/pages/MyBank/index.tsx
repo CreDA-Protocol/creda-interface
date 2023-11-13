@@ -16,7 +16,7 @@ import {
 } from '@components/Row'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
-import { AppBody, MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/AppBody'
 import { useDaInfo, useMarketsResult } from '@services/banking.service'
 import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"

@@ -7,7 +7,7 @@ import { GradientButton, Row, RowBetween, RowCenter, RowFixed, RowFlat, SpaceHei
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { AppBody, MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/AppBody'
 import { MyBankAssetFarmingIcon, useIconPrice } from "@services/banking.service"
 import { chainFromId } from "@services/chains/chain.service"
 import { getContract, useContract } from "@services/contracts.service"

@@ -32,7 +32,7 @@ import {
 import { StakeModal } from '@components/StakeModal'
 import { ThemeText, ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from '@ethersproject/providers'
-import { AppBody, MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/AppBody'
 import { MyBankAssetPriceIcons, MyBankAssetPriceIconsESC } from "@services/banking.service"
 import { ChainIds } from "@services/chains/chain-configs"
 import { chainFromId } from "@services/chains/chain.service"
