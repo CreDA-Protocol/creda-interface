@@ -4,7 +4,7 @@ import { AddEthereumChainParameter, mainnetNetworkConfigs, testnetNetworkConfigs
 import { addNetwork } from "@services/chains/chain.service";
 import { FC } from "react";
 import styled from 'styled-components';
-import { BaseView, FlexViewBetween, FlexViewCenterColumn, FlexViewLeft } from "../Common";
+import { BaseView, FlexViewBetween, FlexViewCenter, FlexViewCenterColumn, FlexViewLeft } from "../Common";
 import { NormalModal } from '../NormalModal';
 
 const Container = styled(FlexViewCenterColumn)`
@@ -20,8 +20,7 @@ const Container = styled(FlexViewCenterColumn)`
   };
 `
 const Logo = styled.img`
-    width:200px;
-    height:auto;
+    height:50px;
 `
 const SwitchTitle = styled(BaseView)`
     font-size: 24px;
@@ -33,8 +32,8 @@ const TestNetTitle = styled(BaseView)`
     font-size: 20px;
     color: #fff;
     font-weight: 200;
-    margin-top: 10px;
-    text-align: left;
+    margin-top: 40px;
+    text-align: center;
 `
 const FlexViewWrap = styled(FlexViewBetween)`
    flex-wrap: wrap;
@@ -44,7 +43,8 @@ const WrapItem = styled(FlexViewLeft)`
     width: 48%;
     margin-top: 10px;
     background-color: #0c0f15;
-    height:80px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor:pointer;
     &:hover {
         background-color:#0d1119;
@@ -54,15 +54,14 @@ const WrapItem = styled(FlexViewLeft)`
     };
 `
 const NetworkIcon = styled.img`
-    width: 50px;
-    height: auto;
+    height: 35px;
     margin: auto 0;
     @media (max-width: 768px) {
-        width: 30px;
+        width: 24px;
     };
 `
 const NetworkTitle = styled(BaseView)`
-    font-size: 20px;
+    font-size: 16px;
     color: #fff;
     font-weight: 400;
     margin: auto auto auto 10px;
@@ -100,9 +99,7 @@ export function SwitchNetworkModal({ show = true, onDismiss }: {
         <NormalModal isOpen={show} onDismiss={onDismiss} >
             <RowCenter onClick={onDismiss}>
                 <Container>
-                    <Logo
-                        src={ImageCommon.BrandLogoDarkMode}
-                    ></Logo>
+                    <Logo src={ImageCommon.BrandLogoDarkMode} />
                     <SwitchTitle>Select Network</SwitchTitle>
 
                     <FlexViewWrap>
@@ -117,10 +114,9 @@ export function SwitchNetworkModal({ show = true, onDismiss }: {
                         }
                     </FlexViewWrap>
 
-                    <FlexViewBetween>
-                        <TestNetTitle>TestNet</TestNetTitle>
-                        {/* <Toogle>Hide TestNet</Toogle> */}
-                    </FlexViewBetween>
+                    <FlexViewCenter>
+                        <TestNetTitle>Test networks</TestNetTitle>
+                    </FlexViewCenter>
 
                     <FlexViewWrap>
                         {testnetNetworkConfigs.map((item, index) => {

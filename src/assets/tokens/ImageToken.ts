@@ -1,4 +1,4 @@
-import ARB from './Arbitrum.svg';
+import ARB from './Arbitrum.png';
 import BSC from "./BSC.png";
 import CELO from "./Celo (CELO).png";
 import LINK from './Chainlink (LINK).png';
@@ -22,7 +22,7 @@ import bUSD from "./bUSD.png";
 import CreDa from "./creda.png";
 import sCASH from "./sCASH.png";
 
-export const ImageToken:any = {
+export const ImageToken: any = {
     ARB,
     ELK,
     GLIDE,
