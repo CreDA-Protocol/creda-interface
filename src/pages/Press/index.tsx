@@ -1,6 +1,6 @@
 import { BgImages } from "@assets/bgImages/bgImages";
 import { FontPoppins, GradientButton } from "@components/Row";
-import { MainFullBody } from "@pages/components/AppBody";
+import { MainFullBody } from "@pages/AppBody";
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";

@@ -28,7 +28,7 @@ import News from "./Press/News";
 import "@assets/css/custom.css";
 import { ChainIds } from "@services/chains/chain-configs";
 import { createWalletConnectWeb3Provider } from "@services/wallet-connect.service";
-import { Footer } from "./components/Footer/Footer";
+import { Footer } from "../components/Footer/Footer";
 
 const AppWrapper = styled.div`
   display: flex;

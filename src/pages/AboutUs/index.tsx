@@ -17,7 +17,7 @@ import {
 } from "@assets/aboutUs";
 import { Modal } from "@components/Modal";
 import { FontPoppins } from "@components/Row";
-import { MainFullBody } from "@pages/components/AppBody";
+import { MainFullBody } from "@pages/AppBody";
 import { CSSProperties, FunctionComponent, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";

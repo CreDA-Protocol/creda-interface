@@ -5,7 +5,7 @@ import { CustomStakeModal } from "@components/CustomStakeModal"
 import { Row, RowBetween, RowCenter, RowFixed, SpaceHeight, SpaceWidth, TextEqure } from '@components/Row'
 import { ThemeTextEqure } from '@components/ThemeComponent'
 import { TransactionResponse } from "@ethersproject/providers"
-import { AppBody, MainFullBody } from '@pages/components/AppBody'
+import { AppBody, MainFullBody } from '@pages/AppBody'
 import { MyBankAssetPriceIcons, useEarnInfo, useEarnResult } from '@services/banking.service'
 import { chainFromId } from "@services/chains/chain.service"
 import { useContract } from "@services/contracts.service"
