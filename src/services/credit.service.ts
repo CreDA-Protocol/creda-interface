@@ -21,6 +21,10 @@ export type CreditData = {
   leaf: string,
 }
 
+export type CreditDataLocal = CreditData & {
+  disableScore?: number
+}
+
 /**
  * API response format for the oracle API
  */
@@ -72,24 +76,27 @@ async function getCreditInfoByApi(address: string): Promise<CreditOracleResponse
   return null;
 }
 
-async function getCreditScoreByApi(address: string): Promise<number> {
-  let score = 0;
+async function getCreditScoreByApi(address: string): Promise<CreditDataLocal> {
+  let creditData: CreditDataLocal = null;
   try {
     let data = await getCreditInfoByApi(address);
-    if (!data) return score;
+    creditData = data.data;
 
+    let disableScore = 0;
     if (data.code === 200) {
-      score = getDisableScore(data.data.score);
+      disableScore = getDisableScore(data.data.score);
     } else if (data.code === 500) {
       // Use the default score if no credit score has been generated for new address.
-      score = 50;
+      disableScore = 50;
     } else {
       console.warn("getCreditScoreByApi failed:", data);
     }
+
+    creditData.disableScore = disableScore;
   } catch (e) {
     console.warn("getCreditScoreByApi error:", e);
   }
-  return score;
+  return creditData;
 }
 
 
@@ -114,7 +121,7 @@ async function getCreditDataByContract(address: string, dataContract: Contract):
 async function getCreditScore(account: string, chainId: number, credaContract: Contract | null, dataContract: Contract | null): Promise<CreditDataFromContract> {
   let creditDataFromContract: CreditDataFromContract = {
     creditScore: 0,
-    timestamp: null
+    timestamp: 0
   };
   try {
     if (dataContract) {
@@ -126,34 +133,13 @@ async function getCreditScore(account: string, chainId: number, credaContract: C
       creditDataFromContract.creditScore = Number(formatBalance(creditScore.toString(), 2))
     } else {
       // TODO: remove it
-      let scoreByApi = await getCreditScoreByApi(account);
-      creditDataFromContract.creditScore = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
+      let creditData = await getCreditScoreByApi(account);
+      creditDataFromContract.creditScore = creditData.disableScore <= 0 ? calcScore(account) : creditData.disableScore;
     }
   } catch (e) {
     console.log("getCreditScore error:", e)
   }
   return creditDataFromContract;
-}
-
-/**
- * Call the backend API’s getCreditInfo() to retrieve the user's score and Merkle Proof
- * Then, call the data contract's updateCredit()
- */
-export async function getAndUpdateCredit(address: string): Promise<any> {
-  let data = await getCreditInfoByApi(address);
-  if (!data) {
-    return;
-  }
-
-  console.log('getAndUpdateCredit:', data)
-  if (data.code === 200) {
-    // call the data contract's updateCredit()
-  } else if (data.code === 500) {
-    // new address, don't call updateCredit()
-  } else {
-    console.warn("getCreditInfoByApi failed:", data);
-  }
-  return Promise.resolve({ hash: '0x11111111111111111111111111111111' });
 }
 
 /**
@@ -214,7 +200,7 @@ export function useCreditInfo(): any {
 /**
  * Get Credit Score
  */
-export function useCreditScore(): any {
+export function useContractCreditScore(): any {
   const { chainId } = useContext(NetworkTypeContext);
   const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
@@ -238,12 +224,54 @@ export function useCreditScore(): any {
           timestamp: creditData.timestamp
         })
       } catch (e) {
-        logError("useCreditScore", e)
+        logError("useContractCreditScore", e)
       }
     };
     getResult()
     const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
     return () => clearInterval(interval);
+  }, [account, CredaContract, DataContract, chainId])
+  return info;
+}
+
+export type APICreditScoreInfo = {
+  loading: boolean;
+  data: CreditDataLocal;
+}
+
+/**
+ * Get Credit Data from backend api
+ */
+export function useAPICreditScore(): APICreditScoreInfo {
+  const { chainId } = useContext(NetworkTypeContext);
+  const { account } = useContext(WalletAddressContext);
+  const network = chainFromId(chainId);
+  const CredaContract = useContract(ContractConfig.InitialMint[network]?.address, ContractConfig.InitialMint[network]?.abi)
+  const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
+  const [info, setInfo] = useState({
+    loading: true,
+    data: null,
+  });
+  useEffect(() => {
+    const getResult = async () => {
+      try {
+        if (!account) {
+          return;
+        }
+        let creditInfo = await getCreditScoreByApi(account);
+        if (!creditInfo) return;
+        setInfo({
+          loading: false,
+          data: creditInfo,
+        })
+      } catch (e) {
+        logError("useAPICreditScore", e)
+      }
+    };
+    getResult()
+    // The score is updated once a day
+    // const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
+    // return () => clearInterval(interval);
   }, [account, CredaContract, DataContract, chainId])
   return info;
 }

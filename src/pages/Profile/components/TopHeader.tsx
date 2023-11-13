@@ -10,7 +10,7 @@ import { TransactionResponse } from "@ethersproject/providers";
 import { ChainIcons, chainIndexToId } from "@services/chains/chain-configs";
 import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
-import { getAndUpdateCredit, getNFTCardBgImage, useAPIMerkleRootInfo, useCNFTInfo, useCreditScore } from "@services/credit.service";
+import { getNFTCardBgImage, useAPICreditScore, useAPIMerkleRootInfo, useCNFTInfo, useContractCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
 import moment from 'moment';
@@ -40,7 +40,8 @@ export const TopHeader: FC<{
   const walletListEth = usePortfolioWalletTokenList(chainIndexToId[0]);
   const walletListBsc = usePortfolioWalletTokenList(chainIndexToId[1]);
   const walletListEsc = usePortfolioWalletTokenList(chainIndexToId[2]);
-  const scoreInfo = useCreditScore()
+  const scoreInfo = useContractCreditScore()
+  const credaInfoFromApi = useAPICreditScore()
   const addTransaction = useTransactionAdder();
   const addToast = useAddToast();
   const loading = useContext(LoadingContext)
@@ -88,40 +89,30 @@ export const TopHeader: FC<{
     loading.show(LoadingType.confirm, `Sync`)
     // TODO: we should use getAndUpdateCredit.
     // but for now, we use CredaContract on esc.
-    if (!CredaContract) {
+    if (DataContract) {
       try {
-        let response = await getAndUpdateCredit(account);
-        loading.show(LoadingType.success, response?.hash)
+        if (!credaInfoFromApi || !credaInfoFromApi.data) {
+          loading.show(LoadingType.success, null)
+          return;
+        }
 
-        // let score = "0x0040006300320032000000000000000000000000000000000000000000000000";
-        // let proofs = ["0x6c175eae9fc392828d79fbd0c0925e46c7630973c18f0d76fbe87dfa27810643",
-        //   "0x81b27f0c69ed57855b93bc44745e496b0c2f8128ffb04d585f857514c6cc0e87",
-        //   "0x2bac129261e988fc5851346ee53fd74accfa9cc56d8a5e6854e1b7fa1514f1cb",
-        //   "0x041cff512dfb534c7ee8bd9371a33f435dbb58553ba44d4e7c51b911f0b4e29b",
-        //   "0xe7e0f6ffd8b7a3f38a7ffb77d045f70ee688599f1c6fe64f67795d74078baa2f",
-        //   "0x6db74a378b7fdbc6ee362c10f9bf32b78326959619492de2470d2bfce2ad984e",
-        //   "0x5261233cb9f97a1c17ab6fdda613a22dcd77859c02ff5225eeb3a3fde66baadf"
-        // ]
-
-        // DataContract?.updateCredit(account, score, proofs, GasInfo)
-        // .then(async (response: TransactionResponse) => {
-        //   addTransaction(response, {
-        //     summary: "Sync",
-        //   });
-        //   await response.wait();
-        //   loading.show(LoadingType.success, response.hash)
-
-        // })
-        // .catch((err: any) => {
-        //   addToast(ToastStatus.error, err.data?.message);
-        //   tipError(err);
-        //   loading.show(LoadingType.error, err.reason || err.message)
-        // });
-
+        DataContract?.updateCredit(account, credaInfoFromApi.data.score, credaInfoFromApi.data.proofs, GasInfo)
+        .then(async (response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: "Sync",
+          });
+          await response.wait();
+          loading.show(LoadingType.success, response.hash)
+        })
+        .catch((err: any) => {
+          addToast(ToastStatus.error, err.data?.message);
+          tipError(err);
+          loading.show(LoadingType.error, err.reason || err.message)
+        });
       } catch (e) {
         loading.show(LoadingType.error, "")
       }
-    } else {
+    } else if (CredaContract) {
       CredaContract?.creditUpdate(GasInfo)
         .then(async (response: TransactionResponse) => {
           addTransaction(response, {
@@ -137,7 +128,6 @@ export const TopHeader: FC<{
           loading.show(LoadingType.error, err.reason || err.message)
         });
     }
-
   }
 
   function claim() {
@@ -215,7 +205,7 @@ export const TopHeader: FC<{
             <div
               style={{
                 position: "absolute",
-                top: isMobile ? "157px" : "210px",
+                top: isMobile ? "147px" : "195px",
                 left: isMobile ? "160px" : "200px",
               }}
             >
@@ -230,19 +220,36 @@ export const TopHeader: FC<{
                   </ThemeTextEqure>
                 </RowFixed>
               }
+              {credaInfoFromApi.data &&
+                <RowFixed>
+                  <ThemeTextEqure
+                    fontSize={26}
+                    fontWeight={"bold"}
+                  >
+                    { credaInfoFromApi.data.disableScore }
+                  </ThemeTextEqure>
+                  <ColumnFixed style={{ marginLeft: "10px" }}>
+                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>Latest</ThemeTextEqure>
+                    {apiMerkleRootInfo?.timestamp &&
+                      <ThemeTextEqure fontSize={10} fontWeight={'400'}>{ apiMerkleRootInfo?.timestamp.format("YYYY-MM-DD") }</ThemeTextEqure>
+                    }
+                  </ColumnFixed>
+                </RowFixed>
+              }
+
               <RowFixed>
                 <ThemeTextEqure
-                  fontSize={40}
+                  fontSize={26}
                   fontWeight={"bold"}
                 >
                   {scoreInfo.data <= 0
                     ? "---"
                     : formatBalance(scoreInfo.data, 0)}
                 </ThemeTextEqure>
-                <ColumnFixed>
+                <ColumnFixed style={{ marginLeft: "10px" }}>
                   <ThemeTextEqure fontSize={14} fontWeight={'400'}>On Chain</ThemeTextEqure>
                   {scoreInfo.timestamp &&
-                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD")}</ThemeTextEqure>
+                    <ThemeTextEqure fontSize={10} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD")}</ThemeTextEqure>
                   }
                 </ColumnFixed>
               </RowFixed>
