@@ -4,9 +4,11 @@ import { GlobalConfiguration } from "@common/config";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber, Contract, ethers } from "ethers";
 import { formatUnits, toUtf8String } from "ethers/lib/utils";
+import moment, { Moment } from 'moment';
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import { ContractConfig } from "src/contract/ContractConfig";
+import { PermanentCache } from './caches/permanent-cache';
 import { ChainIds } from './chains/chain-configs';
 import { chainFromId } from './chains/chain.service';
 import { useContract } from "./contracts.service";
@@ -19,10 +21,13 @@ export type CreditData = {
   leaf: string,
 }
 
-export type CreditResponse = {
+/**
+ * API response format for the oracle API
+ */
+export type CreditOracleResponse<T> = {
   code: number,
   message: string,
-  data: CreditData
+  data: T;
 }
 
 export type CreditDataFromContract = {
@@ -53,11 +58,11 @@ export function getNFTCardBgImage(type: string) {
   }
 }
 
-async function getCreditInfoByApi(address: string): Promise<CreditResponse> {
+async function getCreditInfoByApi(address: string): Promise<CreditOracleResponse<CreditData>> {
   // The credit score is calculated based on all chains that deployed contracts.
   const originUrl = `https://staging-api.creda.app/contract/getCreditInfo?address=${address}`;
   try {
-    let res: AxiosResponse<CreditResponse> = await axios.get(originUrl);
+    let res: AxiosResponse<CreditOracleResponse<CreditData>> = await axios.get(originUrl);
     return res.data;
   } catch (e) {
     // Get exception if no credit score has been generated for new address.
@@ -367,32 +372,6 @@ export function useCnetWorkInfo(id: number): any {
 }
 
 /**
- * 获取信用分数
- */
-/* export function useCreditPoints(): string {
-    const { chainId } = useContext(NetworkTypeContext);
-    const { account } = useContext(WalletAddressContext);
-    const network = chainFromId(chainId);
-    const [points, setPoints] = useState("");
-    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
-    useEffect(() => {
-        const getResult = () => {
-            if (!account || !credaContract) {
-                return;
-            }
-            credaContract?.creditPoint(account)
-                .then((res: BigNumber) => {
-                    setPoints(bigNumberToBalance(res));
-                })
-        }
-        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
-        return () => clearInterval(interval);
-    }, [account, credaContract])
-    return points;
-} */
-
-
-/**
  * 获取是否授权过获取信用分数
  */
 export function useApproveCredit(): number {
@@ -420,6 +399,86 @@ export function useApproveCredit(): number {
   }, [chainId, account, credaContract])
   return approve;
 }
+
+type GetMerkleRootResponse = {
+  dateRef: string; //  "20231112",
+  root: string; // "0x1c414d99fad7352817933075b7bea8583dec7c5940f1c0c146bbe655dfb92722"
+}
+
+export type MerkleRootInfo = {
+  root: string;
+  timestamp: Moment; // Date (no time value) at which the merkle root was last generated.
+}
+
+const merkleRootInfoCache = new PermanentCache<GetMerkleRootResponse, {}>("merkle-root-info", async key => {
+  const originUrl = `https://staging-api.creda.app/contract/getMerkleRoot`;
+  try {
+    let res: AxiosResponse<CreditOracleResponse<GetMerkleRootResponse>> = await axios.get(originUrl);
+    return res.data?.data;
+  } catch (e) {
+    console.warn("getMerkleRoot error:", e);
+    return null;
+  }
+}, 30 * 60); // 30 minutes cache
+
+/**
+ * Returns the most recent merkle root (root itself + computation time) information from the API.
+ * Note: computation time is approximate and only for display because the API only return the date,
+ * not the time.
+ */
+const getLatestMerkleRootInfo = (): Promise<MerkleRootInfo> => {
+  return merkleRootInfoCache.get("info").then(async data => {
+    if (!data)
+      return null;
+
+    // Score is computed at dateRef's YYYYMMDD's 1am every day. So let's do a bit of gymnastic to convert
+    // this value into user's current timezone's date/time
+    const chinaOffset = 8; // UTC+8 / china
+    // Represent the date  and add the 1 AM time info (china time)
+    const timestamp = moment(data.dateRef, 'YYYYMMDD').hours(1).minutes(0).seconds(0);
+    timestamp.utcOffset(chinaOffset * 60);
+
+    return {
+      root: data.root,
+      timestamp
+    }
+  });
+}
+
+export const useAPIMerkleRootInfo = (): MerkleRootInfo => {
+  const [info, setInfo] = useState<MerkleRootInfo>(null);
+
+  useEffect(() => {
+    getLatestMerkleRootInfo().then(_info => setInfo(_info));
+  }, []);
+
+  return info;
+}
+
+/**
+ * 获取信用分数
+ */
+/* export function useCreditPoints(): string {
+    const { chainId } = useContext(NetworkTypeContext);
+    const { account } = useContext(WalletAddressContext);
+    const network = chainFromId(chainId);
+    const [points, setPoints] = useState("");
+    const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
+    useEffect(() => {
+        const getResult = () => {
+            if (!account || !credaContract) {
+                return;
+            }
+            credaContract?.creditPoint(account)
+                .then((res: BigNumber) => {
+                    setPoints(bigNumberToBalance(res));
+                })
+        }
+        const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
+        return () => clearInterval(interval);
+    }, [account, credaContract])
+    return points;
+} */
 
 /**
 * 获取卡片信息

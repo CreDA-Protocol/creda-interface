@@ -10,7 +10,7 @@ import { TransactionResponse } from "@ethersproject/providers";
 import { ChainIcons, chainIndexToId } from "@services/chains/chain-configs";
 import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
-import { getAndUpdateCredit, getNFTCardBgImage, useCNFTInfo, useCreditScore } from "@services/credit.service";
+import { getAndUpdateCredit, getNFTCardBgImage, useAPIMerkleRootInfo, useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
 import moment from 'moment';
@@ -59,6 +59,9 @@ export const TopHeader: FC<{
     ContractConfig.CreditNFT[network]?.abi || ContractConfig.CreditNFT.abi
   );
   const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
+  const apiMerkleRootInfo = useAPIMerkleRootInfo();
+
+  console.log("Latest merkle root date:", apiMerkleRootInfo?.timestamp?.toLocaleString());
 
   function mintCNFT() {
     if (approval !== ApprovalState.APPROVED && enableNetwork(chainId)) {

@@ -3,9 +3,9 @@ import moment from 'moment';
 import Queue from 'promise-queue';
 import { BehaviorSubject } from 'rxjs';
 
-const CACHE_VERSION = 2; // Versionning to allow "wiping" existing cache in case of internal breaking format change.
+const CACHE_VERSION = 3; // Versionning to allow "wiping" existing cache in case of internal breaking format change.
 
-type CacheMissCallback<DataType extends IDBValidKey, CustomDataType> = (key: string, customData?: CustomDataType) => Promise<DataType>;
+type CacheMissCallback<DataType extends object, CustomDataType> = (key: string, customData?: CustomDataType) => Promise<DataType> | DataType;
 
 /**
  * Internal storage representation to hold additional information such as the expiration date
@@ -26,20 +26,20 @@ type StoredItem<DataType extends IDBValidKey> = {
  *
  * Indexed db is used instead of local storage so we have no disk space limitation.
  */
-export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
+export class PermanentCache<DataType extends object, CustomDataType> {
   private db: PromisifiedIndexedDB;
   private queue = new Queue(1); // TODO: one queue per key to not block different picture urls sequencially
 
   private listeners: { [key: string]: BehaviorSubject<DataType> } = {};
 
-  constructor(storeName: string, private cacheMissCallback?: CacheMissCallback<DataType, CustomDataType>, private expireAfterSeconds?: number) {
+  constructor(storeName: string, private cacheMissCallback: CacheMissCallback<DataType, CustomDataType>, private expireAfterSeconds: number) {
     this.db = new PromisifiedIndexedDB(storeName);
   }
 
   public async get(key: string, customData?: CustomDataType, forceUpdate = false): Promise<DataType> {
     return this.queue.add(async () => {
       const storageKey = this.getStorageKey(key);
-      const cachedData = await this.db.get<StoredItem<DataType>>(storageKey);
+      const cachedData = await this.db.get<StoredItem<string>>(storageKey);
 
       const isExpired = cachedData?.expirationDate && moment().isAfter(cachedData.expirationDate);
 
@@ -51,7 +51,7 @@ export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
         return value;
       }
 
-      return cachedData?.data;
+      return cachedData?.data ? JSON.parse(cachedData?.data) : cachedData?.data// Return cachedData?.data if cachedData?.data is falsy because we need to preserve null vs undefined
     });
   }
 
@@ -61,8 +61,8 @@ export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
    */
   public async put(key: string, value: DataType): Promise<void> {
     const storageKey = this.getStorageKey(key);
-    await this.db.put<StoredItem<DataType>>(storageKey, {
-      data: value,
+    await this.db.put<StoredItem<string>>(storageKey, {
+      data: JSON.stringify(value),
       expirationDate: this.expireAfterSeconds ? moment().add(this.expireAfterSeconds, "seconds").toISOString() : null
     });
     this.getListener(key).next(value);
@@ -70,7 +70,7 @@ export class PermanentCache<DataType extends IDBValidKey, CustomDataType> {
 
   public async delete(key: string) {
     const storageKey = this.getStorageKey(key);
-    await this.db.delete<StoredItem<DataType>>(storageKey);
+    await this.db.delete<StoredItem<string>>(storageKey);
   }
 
   /**
