@@ -1,20 +1,17 @@
 import { Body, FlexView } from "@components/Common";
 import { ConnectToWalletModal } from "@components/ConnectToWalletModal";
 import { NetworkInfo } from "@components/NetworkInfo";
-import { RowBetween, RowCenter, SpaceWidth } from "@components/Row";
+import { RowBetween, RowCenter } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { AppBody, MainFullBody } from "@pages/AppBody";
 import { useCreditInfo } from "@services/credit.service";
 import { useOpenWarning, useWalkThroughStep } from "@states/application/hooks";
 import { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { formatAccount } from "../../common/Common";
 import { WalletAddressContext } from "../../contexts";
 import { Segment } from "./components/Segment";
 import { TopHeader } from "./components/TopHeader";
 import { ApprovalSegment } from "./components/approvals/ApprovalSegment";
-import { CopyAccount } from "./components/did/CopyAccount";
-import { DIDBinding } from "./components/did/DIDBinding";
 import { PortfolioSegment } from "./components/portfolio/PortfolioSegment";
 import { WalletSegment } from "./components/wallet/WalletSegment";
 
@@ -48,8 +45,6 @@ function Profile(props: any) {
         setSegmentIndex(index);
     }
 
-    console.log("creditInfo", creditInfo)
-
     return (
         <MainFullBody history={props.history}>
             {
@@ -73,7 +68,8 @@ function Profile(props: any) {
                             <ThemeTextEqure fontSize={32} fontWeight={"bold"}>
                                 Profile
                             </ThemeTextEqure>
-                            <SpaceWidth width={30} widthApp={15} />
+                            {/* Hide DID things for now until CreDA DID architecture is fully defined */}
+                            {/* <SpaceWidth width={30} widthApp={15} />
                             {creditInfo.did ? (
                                 <CopyAccount
                                     account={
@@ -93,7 +89,7 @@ function Profile(props: any) {
                                 ></CopyAccount>
                             ) : (
                                 <DIDBinding></DIDBinding>
-                            )}
+                            )} */}
                         </FlexView>
                         <NetworkInfo />
                     </RowBetween>
