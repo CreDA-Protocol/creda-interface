@@ -18,18 +18,13 @@ export class PromisifiedIndexedDB {
 
       request.onerror = (): void => reject(request.error);
       request.onsuccess = (): void => {
-        // If the store is already created, resolve right now, we are ready.
-        // Otherwise, resolve in "upgrade".
-        if (request.result.objectStoreNames.contains(storeName))
-          resolve(request.result);
+        //if (request.result.objectStoreNames.contains(storeName))
+        resolve(request.result);
       }
 
-      request.onupgradeneeded = (): void => {
-        // If the store does exist, this upgrade method is called, so we resolve only here
-        // because we don't want callers to call get/put before the store is actually created.
+      request.onupgradeneeded = (ev): void => {
         if (!request.result.objectStoreNames.contains(storeName))
           request.result.createObjectStore(storeName);
-        resolve(request.result);
       };
     });
   }

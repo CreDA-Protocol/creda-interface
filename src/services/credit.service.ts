@@ -60,9 +60,9 @@ export function getNFTCardBgImage(type: string) {
 
 async function getCreditInfoByApi(address: string): Promise<CreditOracleResponse<CreditData>> {
   // The credit score is calculated based on all chains that deployed contracts.
-  const originUrl = `https://staging-api.creda.app/contract/getCreditInfo?address=${address}`;
   try {
-    let res: AxiosResponse<CreditOracleResponse<CreditData>> = await axios.get(originUrl);
+    const url = `${process.env.REACT_APP_ORACLE_API}/contract/getCreditInfo?address=${address}`;
+    let res: AxiosResponse<CreditOracleResponse<CreditData>> = await axios.get(url);
     return res.data;
   } catch (e) {
     // Get exception if no credit score has been generated for new address.
@@ -411,13 +411,13 @@ export type MerkleRootInfo = {
 }
 
 const merkleRootInfoCache = new PermanentCache<GetMerkleRootResponse, {}>("merkle-root-info", async key => {
-  const originUrl = `https://staging-api.creda.app/contract/getMerkleRoot`;
   try {
-    let res: AxiosResponse<CreditOracleResponse<GetMerkleRootResponse>> = await axios.get(originUrl);
+    const url = `${process.env.REACT_APP_ORACLE_API}/contract/getMerkleRoot`;
+    let res: AxiosResponse<CreditOracleResponse<GetMerkleRootResponse>> = await axios.get(url);
     return res.data?.data;
   } catch (e) {
     console.warn("getMerkleRoot error:", e);
-    return null;
+    return undefined; // not null, to prevent caching
   }
 }, 30 * 60); // 30 minutes cache
 
@@ -435,6 +435,7 @@ const getLatestMerkleRootInfo = (): Promise<MerkleRootInfo> => {
     // this value into user's current timezone's date/time
     const chinaOffset = 8; // UTC+8 / china
     // Represent the date  and add the 1 AM time info (china time)
+    // NOTE: WE ARE ACTUALLY NOT SO SURE THE SCORE IS COMPUTED AT 1AM CHINA TIMEZONE...
     const timestamp = moment(data.dateRef, 'YYYYMMDD').hours(1).minutes(0).seconds(0);
     timestamp.utcOffset(chinaOffset * 60);
 
