@@ -92,14 +92,15 @@ export function useBalanceBySymbol(symbol: string): any {
   return info;
 }
 
-const decimalsCache = new PermanentCache<number, { chainId: ChainId; tokenAddress: string }>("token-decimals", async (key, { chainId, tokenAddress }) => {
+const decimalsCache = new PermanentCache<{ decimals: number }, { chainId: ChainId; tokenAddress: string }>("token-decimals", async (key, { chainId, tokenAddress }) => {
   const rpcProvider = getRPCProvider(chainId);
   const tokenContract = getContract(tokenAddress, ERC20_ABI, rpcProvider);
-  return tokenContract.decimals();
+  return { decimals: await tokenContract.decimals() };
 }, 30 * 24 * 60 * 60); // 30 days. in theory ERC20 tokens config never changes
 
-export const getTokenDecimals = (chainId: ChainId, tokenAddress: string): Promise<number> => {
-  return decimalsCache.get(`${tokenAddress}${chainId}`, { chainId, tokenAddress });
+export const getTokenDecimals = async (chainId: ChainId, tokenAddress: string): Promise<number> => {
+  const result = await decimalsCache.get(`${tokenAddress}${chainId}`, { chainId, tokenAddress });
+  return result?.decimals;
 }
 
 /**

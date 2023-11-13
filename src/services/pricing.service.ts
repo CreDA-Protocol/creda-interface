@@ -28,24 +28,25 @@ const defaultPricingProvider: PricingProvider = async (symbol: string): Promise<
   }
 }
 
-const pricingCache = new PermanentCache("token-usd-prices", async (symbol) => {
+const pricingCache = new PermanentCache<{ price: number }, {}>("token-usd-prices", async (symbol) => {
   // If there is a custom pricing provider defined, use it. Otherwise use the default provider
   if (symbol in customPricings)
-    return customPricings[symbol](symbol);
-  else
-    return defaultPricingProvider(symbol);
+    return { price: await customPricings[symbol](symbol) };
+  else {
+    const price = await defaultPricingProvider(symbol);
+    return { price };
+  }
 }, 10 * 60); // 10 minutes cache
 
 /**
  * Gets a token price in USD from the CryptoCompare API.
- *
- * TODO: cache
  */
-export const getUSDTokenPriceBySymbol = (symbol: string): Promise<number> => {
+export const getUSDTokenPriceBySymbol = async (symbol: string): Promise<number> => {
   if (!symbol)
     throw new Error("Token symbol missing for getUSDTokenPriceBySymbol().");
 
-  return pricingCache.get(symbol.toUpperCase()) as Promise<number>;
+  const pricing = await pricingCache.get(symbol.toUpperCase());
+  return pricing?.price;
 }
 
 // DEPRECATED - REWORK TO USE getUSDTokenPriceBySymbol()
