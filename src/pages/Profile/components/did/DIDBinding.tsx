@@ -23,21 +23,25 @@ export const DIDBinding: FC = () => {
   const network = chainFromId(chainId);
   const APIContract = useContract(ContractConfig.APIConsumer[network]?.address, ContractConfig.APIConsumer.abi);
 
-  function bindDID(did: string) {
-    APIContract?.bindAddress(did)
-      .then(async (response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: "Bind DID",
-        });
-        await response.wait();
-      })
-      .catch((err: any) => {
-        addToast(ToastStatus.error, err.data?.message);
-        tipError(err);
-      });
-  }
+  const bindDID = (did: string) => {
+    console.log("Binding DID", did);
 
-  console.log("edit", editing)
+    if (!APIContract) {
+      addToast(ToastStatus.error, "DID feature not supported on this network");
+      return;
+    }
+
+    APIContract?.bindAddress(did).then(async (response: TransactionResponse) => {
+      addTransaction(response, {
+        summary: "Bind DID",
+      });
+      await response.wait();
+    }).catch((err: any) => {
+      console.error("DID Binding failure:", err);
+      addToast(ToastStatus.error, err.data?.message);
+      tipError(err);
+    });
+  }
 
   if (!editing)
     return <EditIcon src={ImageCommon.icon_edit} onClick={() => setEditing(true)} />
@@ -50,11 +54,7 @@ export const DIDBinding: FC = () => {
         onChange={(e) => setInput(e.target.value)}
         value={input}
       ></BInput>
-      <GradientButton
-        onClick={() => {
-          bindDID && bindDID(input);
-        }}
-      >
+      <GradientButton onClick={() => { bindDID(input) }}>
         Confirm
       </GradientButton>
     </FlexView>
