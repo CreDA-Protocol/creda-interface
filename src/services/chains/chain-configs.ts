@@ -102,7 +102,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
   {
     chainParam: {
       chainId: '0x' + ChainIds.arbitrum.toString(16),
-      chainName: 'Arbitrum One Mainnet',
+      chainName: 'Arbitrum One',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH', // 2-6 characters long
@@ -130,7 +130,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
   {
     chainParam: {
       chainId: '0x' + ChainIds.celo.toString(16),
-      chainName: 'Celo Mainnet',
+      chainName: 'Celo',
       nativeCurrency: {
         name: 'CELO',
         symbol: 'CELO', // 2-6 characters long
@@ -175,7 +175,7 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
   {
     chainParam: {
       chainId: '0x' + ChainIds.elatest.toString(16),
-      chainName: 'ESC TestNet',
+      chainName: 'Elastos ESC Testnet',
       nativeCurrency: {
         name: 'tELA',
         symbol: 'tELA', // 2-6 characters long
