@@ -23,3 +23,18 @@
 
 - `npm install -g serve`
 - `serve -s build`
+
+### Deployment steps
+
+See [creda-home](https://github.com/CreDA-Protocol/creda-home) repo for more details about servers/infrastructure.
+
+Note: no need to build, the deployment script does the prod build
+
+- Make sure to deploy the [CreDA portfolio api](https://github.com/CreDA-Protocol/creda-portfolio-api) first.
+- Configure your local ~/.ssh/config with a host named "credafront" with an authorized public key to the server
+- `deployment/deploy.sh`
+
+**Verify deployment status**
+
+- ssh root@credafront
+- tail -f /var/log/nginx/access.log
