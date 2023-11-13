@@ -1,18 +1,19 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import { ApprovalState, GasInfo, balanceToBigNumber, enableNetwork, formatBalance, tipError } from "@common/Common";
-import { Column } from "@components/Column";
+import { Column, ColumnFixed } from "@components/Column";
 import { BlueButton, FlexView, WhiteButton } from "@components/Common";
 import { CustomStakeModal } from '@components/CustomStakeModal';
 import { GradientButton, RowBetween, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
-import { chainIndexToId } from "@services/chains/chain-configs";
+import { ChainIcons, chainIndexToId } from "@services/chains/chain-configs";
 import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
 import { getAndUpdateCredit, getNFTCardBgImage, useCNFTInfo, useCreditScore } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
+import moment from 'moment';
 import { FC, useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
@@ -21,7 +22,7 @@ import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTheme } from 'src/states/application/hooks';
 import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";
-import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
+import { ColorDiv, ColorDivNoBorder, IconIcon, NFTBgImage, TopItemDiv } from "./StyledComponents";
 
 enum StakeType {
   hidden = 0,
@@ -212,36 +213,44 @@ export const TopHeader: FC<{
               style={{
                 position: "absolute",
                 top: isMobile ? "157px" : "210px",
-                left: isMobile ? "175px" : "225px",
+                left: isMobile ? "160px" : "200px",
               }}
             >
-              <TextEqure
-                fontColor={themeDark ? "white" : "black"}
-                fontSize={40}
-                fontWeight={"bold"}
-                style={{ marginLeft: isMobile ? "5px" : "15px" }}
-              >
-                {scoreInfo.data <= 0
-                  ? "---"
-                  : formatBalance(scoreInfo.data, 0)}
-              </TextEqure>
               <div></div>
               {scoreInfo.data > 0 &&
-                <TextEqure
-                  fontColor={themeDark ? "white" : "black"}
+              <RowFixed>
+                <ThemeTextEqure
                   fontSize={16}
-                  style={{ marginLeft: isMobile ? "-10px" : "-5px" }}
+                  style={{ marginLeft: isMobile ? "15px" : "20px" }}
                 >
                   Credit Score
-                </TextEqure>
+                </ThemeTextEqure>
+              </RowFixed>
               }
+              <RowFixed>
+                <ThemeTextEqure
+                  fontSize={40}
+                  fontWeight={"bold"}
+                >
+                  {scoreInfo.data <= 0
+                    ? "---"
+                    : formatBalance(scoreInfo.data, 0)}
+                </ThemeTextEqure>
+                <ColumnFixed>
+                  <ThemeTextEqure fontSize={14} fontWeight={'400'}>On Chain</ThemeTextEqure>
+                  {scoreInfo.timestamp &&
+                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>{ moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD") }</ThemeTextEqure>
+                  }
+                </ColumnFixed>
+              </RowFixed>
+
               {enableNetwork(chainId) &&
-              <RowFixed
-                style={{
-                  width: "100%",
-                  justifyContent: isMobile ? "space-between" : "flex-start",
-                }}
-              >
+                <RowFixed
+                  style={{
+                    width: "100%",
+                    justifyContent: isMobile ? "space-between" : "flex-start",
+                  }}
+                >
                   <WhiteButton
                     style={{
                       zIndex: walkThroughStep === 2 ? 700 : 0,
@@ -250,7 +259,7 @@ export const TopHeader: FC<{
                   >
                     Sync
                   </WhiteButton>
-                  {/* <IconIcon style={{ width: '35px'}} src={ImageToken.ETH} /> */}
+                  <IconIcon style={{ width: '30px', marginLeft: '5px' }} src={ChainIcons[chainId]} />
                 </RowFixed>
               }
             </div>

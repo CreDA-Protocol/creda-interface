@@ -3,13 +3,13 @@ import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBala
 import { GlobalConfiguration } from "@common/config";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber, Contract, ethers } from "ethers";
-import { toUtf8String } from "ethers/lib/utils";
+import { formatUnits, toUtf8String } from "ethers/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import { ContractConfig } from "src/contract/ContractConfig";
-import { useContract } from "./contracts.service";
 import { ChainIds } from './chains/chain-configs';
 import { chainFromId } from './chains/chain.service';
+import { useContract } from "./contracts.service";
 
 export type CreditData = {
   score: string,
@@ -27,7 +27,7 @@ export type CreditResponse = {
 
 export type CreditDataFromContract = {
   creditScore: number, // disable number
-  timestamp: string,
+  timestamp: number,
 }
 
 export function getNFTCardBgImage(type: string) {
@@ -95,7 +95,7 @@ async function getCreditDataByContract(address: string, dataContract: Contract):
 
   let info = await dataContract.getCreditInfo(address)
   let score = getDisableScore(info.credit);
-  let timestamp = bigNumberToBalance(info.timestamp, 0)
+  let timestamp = Number(formatUnits(info.timestamp, 0))
 
   let creditData: CreditDataFromContract = {
     creditScore: score,
@@ -106,25 +106,28 @@ async function getCreditDataByContract(address: string, dataContract: Contract):
 
 // Get credit scores from data contract (if there is a data contract on the target chain), or call the backend api to get the credit score
 // TODO: don't use credaContract
-async function getCreditScore(account: string, chainId: number, credaContract: Contract | null, dataContract: Contract | null): Promise<number> {
-  let score = 0;
+async function getCreditScore(account: string, chainId: number, credaContract: Contract | null, dataContract: Contract | null): Promise<CreditDataFromContract> {
+  let creditDataFromContract: CreditDataFromContract = {
+    creditScore: 0,
+    timestamp: null
+  };
   try {
     if (dataContract) {
-      let creditData = await getCreditDataByContract(account, dataContract);
-      score = creditData.creditScore;
+      creditDataFromContract = await getCreditDataByContract(account, dataContract);
     }
     else if (chainId === ChainIds.esc) {
       const creditScore = await credaContract.creditScore(account)
       // console.log('credaContract.getCreditInfo:', creditScore)
-      score = Number(formatBalance(creditScore.toString(), 2))
+      creditDataFromContract.creditScore = Number(formatBalance(creditScore.toString(), 2))
     } else {
+      // TODO: remove it
       let scoreByApi = await getCreditScoreByApi(account);
-      score = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
+      creditDataFromContract.creditScore = scoreByApi <= 0 ? calcScore(account) : scoreByApi;
     }
   } catch (e) {
     console.log("getCreditScore error:", e)
   }
-  return score;
+  return creditDataFromContract;
 }
 
 /**
@@ -159,6 +162,7 @@ export function useCreditInfo(): any {
   const [info, setInfo] = useState({
     loading: true,
     score: 0,
+    timestamp: 0,
     earn: 0,
     did: ""
   });
@@ -183,10 +187,11 @@ export function useCreditInfo(): any {
           did = await APIContract.getDidByAddress(account)
         } catch { }
 
-        let score = await getCreditScore(account, chainId, CredaContract, DataContract);
+        let creditData = await getCreditScore(account, chainId, CredaContract, DataContract);
         setInfo({
           loading: false,
-          score: score,
+          score: creditData.creditScore,
+          timestamp: creditData.timestamp,
           earn: Number(bigNumberToBalance(earn)),
           did: did.length === 66 ? btoa(did) : (!did ? did : toUtf8String(did))
         })
@@ -213,6 +218,7 @@ export function useCreditScore(): any {
   const [info, setInfo] = useState({
     loading: true,
     data: 0,
+    timestamp: 0,
   });
   useEffect(() => {
     const getResult = async () => {
@@ -220,10 +226,11 @@ export function useCreditScore(): any {
         if (!account || (!CredaContract && !DataContract)) {
           return;
         }
-        let score = await getCreditScore(account, chainId, CredaContract, DataContract);
+        let creditData = await getCreditScore(account, chainId, CredaContract, DataContract);
         setInfo({
           loading: false,
-          data: score
+          data: creditData.creditScore,
+          timestamp: creditData.timestamp
         })
       } catch (e) {
         logError("useCreditScore", e)

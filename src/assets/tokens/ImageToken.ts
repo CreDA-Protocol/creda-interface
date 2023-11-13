@@ -11,6 +11,7 @@ import GLIDE from './GLIDE.png';
 import HECO from "./HECO.png";
 import IFNT from "./IFNT.png";
 import MAN from "./MAN.png";
+import POLYGON from "./Polygon (MATIC).png";
 import SUSHI from './SushiSwap (SUSHI).png';
 import USDC from "./USDC.png";
 import USDT from "./USDT.png";
@@ -50,5 +51,6 @@ export const ImageToken: any = {
     DAI,
     UNI,
     LINK,
+    POLYGON,
     SUSHI
 }

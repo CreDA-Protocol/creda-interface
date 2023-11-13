@@ -66,6 +66,21 @@ export const ChainRPCs: { [chainId: ChainId]: string } = {
   [ChainIds.elatest]: "https://api-testnet.elastos.io/esc",
 };
 
+/**
+ * Chain icon for each supported chain.
+ */
+export const ChainIcons: { [chainId: ChainId]: string } = {
+  [ChainIds.ethereum]: ImageToken.ETH,
+  [ChainIds.bsc]: ImageToken.BSC,
+  [ChainIds.esc]: ImageToken.ELA,
+  [ChainIds.celo]: ImageToken.CELO,
+  [ChainIds.polygon]: ImageToken.POLYGON,
+  [ChainIds.arbitrum]: ImageToken.ARB,
+  // Testnet
+  [ChainIds.celotest]: ImageToken.CELO,
+  [ChainIds.elatest]: ImageToken.ELA,
+};
+
 export type AddEthereumChainParameter = {
   chainId: string; // A 0x-prefixed hexadecimal string
   chainName: string;
@@ -97,7 +112,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.ethereum]],
       blockExplorerUrls: ['https://etherscan.io/']
     },
-    icon: ImageToken.ETH,
+    icon: ChainIcons[ChainIds.ethereum],
   },
   {
     chainParam: {
@@ -111,7 +126,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.arbitrum]],
       blockExplorerUrls: ['https://arbiscan.io/']
     },
-    icon: ImageToken.ARB,
+    icon: ChainIcons[ChainIds.arbitrum],
   },
   {
     chainParam: {
@@ -125,7 +140,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.bsc]],
       blockExplorerUrls: ['https://bscscan.com/']
     },
-    icon: ImageToken.BSC,
+    icon: ChainIcons[ChainIds.bsc],
   },
   {
     chainParam: {
@@ -139,7 +154,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.celo]],
       blockExplorerUrls: ['https://celoscan.io']
     },
-    icon: ImageToken.CELO,
+    icon: ChainIcons[ChainIds.celo],
   },
   {
     chainParam: {
@@ -153,7 +168,7 @@ export const mainnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.esc]],
       blockExplorerUrls: ['https://esc.elastos.io']
     },
-    icon: ImageToken.ELA,
+    icon: ChainIcons[ChainIds.esc],
   },
 ]
 
@@ -170,7 +185,7 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.celotest]],
       blockExplorerUrls: ['https://alfajores.celoscan.io']
     },
-    icon: ImageToken.CELO,
+    icon: ChainIcons[ChainIds.celotest],
   },
   {
     chainParam: {
@@ -184,6 +199,6 @@ export const testnetNetworkConfigs: NetworkConfig[] = [
       rpcUrls: [ChainRPCs[ChainIds.elatest]],
       blockExplorerUrls: ['https://esc-testnet.elastos.io/']
     },
-    icon: ImageToken.ELA,
+    icon: ChainIcons[ChainIds.elatest],
   },
 ]
