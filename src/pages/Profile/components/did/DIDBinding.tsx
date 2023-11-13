@@ -5,7 +5,7 @@ import { GradientButton } from "@components/Row";
 import { TransactionResponse } from "@ethersproject/providers";
 import { chainFromId } from "@services/chains/chain.service";
 import { useContract } from "@services/contracts.service";
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { NetworkTypeContext } from "src/contexts";
 import { ContractConfig } from "src/contract/ContractConfig";
 import { useTheme } from "src/states/application/hooks";
@@ -13,9 +13,8 @@ import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";
 import styled from "styled-components";
 
-//bind input
-export function BindInput() {
-  const [edit, setEdit] = useState(false);
+export const DIDBinding: FC = () => {
+  const [editing, setEditing] = useState(false);
   const [input, setInput] = useState("");
   const themeDark = useTheme();
   const addTransaction = useTransactionAdder();
@@ -25,7 +24,6 @@ export function BindInput() {
   const APIContract = useContract(ContractConfig.APIConsumer[network]?.address, ContractConfig.APIConsumer.abi);
 
   function bindDID(did: string) {
-    // console.log(APIContract);
     APIContract?.bindAddress(did)
       .then(async (response: TransactionResponse) => {
         addTransaction(response, {
@@ -39,14 +37,10 @@ export function BindInput() {
       });
   }
 
-  if (!edit) {
-    return (
-      <EditIcon
-        src={ImageCommon.icon_edit}
-        onClick={() => setEdit(true)}
-      ></EditIcon>
-    );
-  }
+  console.log("edit", editing)
+
+  if (!editing)
+    return <EditIcon src={ImageCommon.icon_edit} onClick={() => setEditing(true)} />
 
   return (
     <FlexView>

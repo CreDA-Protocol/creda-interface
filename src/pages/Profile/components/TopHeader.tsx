@@ -190,7 +190,7 @@ export const TopHeader: FC<{
           <div
             style={{
               position: "absolute",
-              zIndex: walkThroughStep === 2 ? 700 : 0,
+              zIndex: walkThroughStep === 2 ? 700 : -1, // -1 z-index because the lotti animation would go over the DID editing area added above
               left: isMobile ? "9%" : "50%",
               transform: isMobile
                 ? "translate(-17%,-5px)"

@@ -13,8 +13,8 @@ import { WalletAddressContext } from "../../contexts";
 import { Segment } from "./components/Segment";
 import { TopHeader } from "./components/TopHeader";
 import { ApprovalSegment } from "./components/approvals/ApprovalSegment";
-import { BindInput } from "./components/did/BindInput";
 import { CopyAccount } from "./components/did/CopyAccount";
+import { DIDBinding } from "./components/did/DIDBinding";
 import { PortfolioSegment } from "./components/portfolio/PortfolioSegment";
 import { WalletSegment } from "./components/wallet/WalletSegment";
 
@@ -25,8 +25,6 @@ function Profile(props: any) {
     const showWarning = useOpenWarning(true);
     const creditInfo = useCreditInfo();
     const walkThroughStep = useWalkThroughStep();
-
-    console.log("xxxx", !account && !isaccountLoading && (walkThroughStep === 5 || walkThroughStep === 1))
 
     useEffect(() => {
         // if(props.location.props==='fromConnectWallet'){
@@ -50,6 +48,8 @@ function Profile(props: any) {
         setSegmentIndex(index);
     }
 
+    console.log("creditInfo", creditInfo)
+
     return (
         <MainFullBody history={props.history}>
             {
@@ -68,6 +68,7 @@ function Profile(props: any) {
                             paddingBottom: isMobile ? 20 : 40,
                         }}
                     >
+                        {/* Page heading + DID settings */}
                         <FlexView>
                             <ThemeTextEqure fontSize={32} fontWeight={"bold"}>
                                 Profile
@@ -91,7 +92,7 @@ function Profile(props: any) {
                                     }
                                 ></CopyAccount>
                             ) : (
-                                <BindInput></BindInput>
+                                <DIDBinding></DIDBinding>
                             )}
                         </FlexView>
                         <NetworkInfo />
