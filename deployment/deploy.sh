@@ -6,12 +6,12 @@ set -e # Stop on error
 APP_NAME=creda
 
 # Build and copy to remote
-npm run build
+# TEMP npm run build
 tar zcvf ${APP_NAME}.tar.gz build
-scp ${APP_NAME}.tar.gz creda:~/
+scp ${APP_NAME}.tar.gz credafront:~/
 
 # Execute remote deployment
-ssh root@creda 'bash -s' < deployment/deploy_on_server.sh
+ssh root@credafront 'bash -s' < deployment/deploy_to_server.sh
 
 rm -f ${APP_NAME}.tar.gz
 
