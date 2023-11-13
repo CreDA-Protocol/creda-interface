@@ -190,7 +190,7 @@ export const TopHeader: FC<{
           <div
             style={{
               position: "absolute",
-              zIndex: walkThroughStep === 2 ? 700 : -1, // -1 z-index because the lotti animation would go over the DID editing area added above
+              zIndex: walkThroughStep === 2 ? 700 : 0,
               left: isMobile ? "9%" : "50%",
               transform: isMobile
                 ? "translate(-17%,-5px)"
@@ -218,14 +218,14 @@ export const TopHeader: FC<{
             >
               <div></div>
               {scoreInfo.data > 0 &&
-              <RowFixed>
-                <ThemeTextEqure
-                  fontSize={16}
-                  style={{ marginLeft: isMobile ? "15px" : "20px" }}
-                >
-                  Credit Score
-                </ThemeTextEqure>
-              </RowFixed>
+                <RowFixed>
+                  <ThemeTextEqure
+                    fontSize={16}
+                    style={{ marginLeft: isMobile ? "15px" : "20px" }}
+                  >
+                    Credit Score
+                  </ThemeTextEqure>
+                </RowFixed>
               }
               <RowFixed>
                 <ThemeTextEqure
@@ -239,7 +239,7 @@ export const TopHeader: FC<{
                 <ColumnFixed>
                   <ThemeTextEqure fontSize={14} fontWeight={'400'}>On Chain</ThemeTextEqure>
                   {scoreInfo.timestamp &&
-                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>{ moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD") }</ThemeTextEqure>
+                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD")}</ThemeTextEqure>
                   }
                 </ColumnFixed>
               </RowFixed>

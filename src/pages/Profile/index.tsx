@@ -69,7 +69,7 @@ function Profile(props: any) {
                         }}
                     >
                         {/* Page heading + DID settings */}
-                        <FlexView>
+                        <FlexView style={{ zIndex: 1 }}>
                             <ThemeTextEqure fontSize={32} fontWeight={"bold"}>
                                 Profile
                             </ThemeTextEqure>
