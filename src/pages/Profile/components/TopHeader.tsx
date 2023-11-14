@@ -210,18 +210,16 @@ export const TopHeader: FC<{
               }}
             >
               <div></div>
-              {scoreInfo.data > 0 &&
-                <RowFixed>
-                  <ThemeTextEqure
-                    fontSize={16}
-                    style={{ marginLeft: isMobile ? "15px" : "20px" }}
-                  >
-                    Credit Score
-                  </ThemeTextEqure>
-                </RowFixed>
-              }
+              <RowFixed>
+                <ThemeTextEqure
+                  fontSize={16}
+                  style={{ marginLeft: isMobile ? "15px" : "20px" }}
+                >
+                  Credit Score
+                </ThemeTextEqure>
+              </RowFixed>
               {credaInfoFromApi.data &&
-                <RowFixed>
+                <RowFixed style={{ height: "40px" }}>
                   <ThemeTextEqure
                     fontSize={26}
                     fontWeight={"bold"}
@@ -231,13 +229,13 @@ export const TopHeader: FC<{
                   <ColumnFixed style={{ marginLeft: "10px" }}>
                     <ThemeTextEqure fontSize={14} fontWeight={'400'}>Latest</ThemeTextEqure>
                     {apiMerkleRootInfo?.timestamp &&
-                      <ThemeTextEqure fontSize={10} fontWeight={'400'}>{ apiMerkleRootInfo?.timestamp.format("YYYY-MM-DD") }</ThemeTextEqure>
+                      <ThemeTextEqure fontSize={10} fontWeight={'400'}>{ apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD") }</ThemeTextEqure>
                     }
                   </ColumnFixed>
                 </RowFixed>
               }
 
-              <RowFixed>
+              <RowFixed style={{ height: "40px" }}>
                 <ThemeTextEqure
                   fontSize={26}
                   fontWeight={"bold"}
@@ -248,8 +246,8 @@ export const TopHeader: FC<{
                 </ThemeTextEqure>
                 <ColumnFixed style={{ marginLeft: "10px" }}>
                   <ThemeTextEqure fontSize={14} fontWeight={'400'}>On Chain</ThemeTextEqure>
-                  {scoreInfo.timestamp &&
-                    <ThemeTextEqure fontSize={10} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY-MM-DD")}</ThemeTextEqure>
+                  {scoreInfo.timestamp > 0 &&
+                    <ThemeTextEqure fontSize={10} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY.MM.DD")}</ThemeTextEqure>
                   }
                 </ColumnFixed>
               </RowFixed>
