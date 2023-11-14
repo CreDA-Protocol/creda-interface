@@ -289,7 +289,7 @@ function calcScore(account: string): number {
  */
 function getDisableScore(score: string): number {
   let paddedHexNumber = ethers.utils.hexZeroPad(score, 32);
-  return Number(paddedHexNumber.slice(2, 6)) + Number(paddedHexNumber.slice(6, 10)) + Number(paddedHexNumber.slice(10, 14)) + Number(paddedHexNumber.slice(14, 18))
+  return parseInt(paddedHexNumber.slice(2, 6), 16) + parseInt(paddedHexNumber.slice(6, 10), 16) + parseInt(paddedHexNumber.slice(10, 14), 16) + parseInt(paddedHexNumber.slice(14, 18), 16)
 }
 
 /**
