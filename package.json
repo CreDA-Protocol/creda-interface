@@ -61,7 +61,8 @@
   },
   "scripts": {
     "start": "react-app-rewired --openssl-legacy-provider start",
-    "build": "rm -rf build && cross-env GENERATE_SOURCEMAP=false react-app-rewired --openssl-legacy-provider build",
+    "build:staging": "rm -rf build && env-cmd -f .env.staging cross-env GENERATE_SOURCEMAP=false react-app-rewired --openssl-legacy-provider build",
+    "build:prod": "rm -rf build && env-cmd -f .env.prod cross-env GENERATE_SOURCEMAP=false react-app-rewired --openssl-legacy-provider build",
     "build:view": "cross-env GENERATE_SOURCEMAP=false ANALYZER=true react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
@@ -107,6 +108,7 @@
     "compression-webpack-plugin": "6",
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
+    "env-cmd": "^10.1.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "react-app-rewired": "^2.2.1",
     "react-scripts": "5.0.1",
