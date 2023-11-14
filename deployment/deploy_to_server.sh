@@ -18,10 +18,14 @@ if [[ ! " ${VALID_TARGETS[@]} " =~ " ${TARGET} " ]]; then
   exit 1
 fi
 
-cd ~/
-tar zxvf ${APP_NAME}.tar.gz
 FULL_APP_NAME=${APP_NAME}-${TARGET}
+DEPLOYMENT_PATH="/var/www/html/${FULL_APP_NAME}"
+
+cd ~/
+tar zxvf ${FULL_APP_NAME}.tar.gz
+# Temporary backup, just in case
 sudo mv /var/www/html/${FULL_APP_NAME} /var/www/html/.bak/${FULL_APP_NAME}${SUFFIX}
-sudo mv ~/build /var/www/html/${FULL_APP_NAME}
+echo "Deploying code at ${DEPLOYMENT_PATH}"
+sudo mv ~/build ${DEPLOYMENT_PATH}
 
 echo "End of server side deployment"

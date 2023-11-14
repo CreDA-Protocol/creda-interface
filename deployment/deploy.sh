@@ -20,20 +20,22 @@ if [[ ! " ${VALID_TARGETS[@]} " =~ " ${TARGET} " ]]; then
   exit 1
 fi
 
+FULL_APP_NAME=${APP_NAME}-${TARGET}
+
 # Build and copy to remote
 echo "Building app"
 npm run build
 echo "Creating deployment archive file"
-tar zcvf ${APP_NAME}.tar.gz build
+tar zcvf ${FULL_APP_NAME}.tar.gz build
 echo "Uploading html/js archive to server"
-scp ${APP_NAME}.tar.gz credafront:~/
+scp ${FULL_APP_NAME}.tar.gz credafront:~/
 
 # Execute remote deployment
 echo "Executing deployment to server"
 ssh root@credafront "bash -s ${TARGET}" < deployment/deploy_to_server.sh
 
-rm -f ${APP_NAME}.tar.gz
+rm -f ${FULL_APP_NAME}.tar.gz
 
 echo "Deployment complete"
 echo "Server source code is at: /var/www/html/"
-echo "Server nginx config is at: /etc/nginx/conf.d/creda-interface.conf"
+echo "Server nginx config is at: /etc/nginx/conf.d/creda-interface-${TARGET}.conf"

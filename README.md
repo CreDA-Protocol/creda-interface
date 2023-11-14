@@ -32,9 +32,14 @@ Note: no need to build, the deployment script does the prod build
 
 - Make sure to deploy the [CreDA portfolio api](https://github.com/CreDA-Protocol/creda-portfolio-api) first.
 - Configure your local ~/.ssh/config with a host named "credafront" with an authorized public key to the server
-- `deployment/deploy.sh`
+- `deployment/deploy.sh staging|prod`
 
 **Verify deployment status**
 
 - ssh root@credafront
 - tail -f /var/log/nginx/access.log
+
+### Certbot SSL certificate generation
+
+- Make sure the DNS is pointing to the server, then:
+- `certbot --nginx -d staging.creda.app`
