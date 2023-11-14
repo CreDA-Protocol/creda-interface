@@ -22,11 +22,20 @@ fi
 
 FULL_APP_NAME=${APP_NAME}-${TARGET}
 
-# Build and copy to remote
-echo "Building app"
-npm run build
+# Build the right target
+echo "Building ${TARGET}"
+case $TARGET in
+  staging)
+    npm run build:staging
+    ;;
+  prod)
+    npm run build:prod
+    ;;
+esac
+
 echo "Creating deployment archive file"
 tar zcvf ${FULL_APP_NAME}.tar.gz build
+
 echo "Uploading html/js archive to server"
 scp ${FULL_APP_NAME}.tar.gz credafront:~/
 
