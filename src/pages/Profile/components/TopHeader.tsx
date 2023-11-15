@@ -1,28 +1,28 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
 import { ApprovalState, GasInfo, balanceToBigNumber, enableNetwork, formatBalance, tipError } from "@common/Common";
-import { Column, ColumnFixed } from "@components/Column";
-import { BlueButton, FlexView, WhiteButton } from "@components/Common";
+import { Column } from "@components/Column";
+import { BlueButton, FlexView } from "@components/Common";
 import { CustomStakeModal } from '@components/CustomStakeModal';
 import { GradientButton, RowBetween, RowFixed, SpaceHeight, TextEqure } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
-import { ChainIcons, chainIndexToId } from "@services/chains/chain-configs";
+import { chainIndexToId } from "@services/chains/chain-configs";
 import { chainFromId } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
-import { getNFTCardBgImage, useAPICreditScore, useAPIMerkleRootInfo, useCNFTInfo, useContractCreditScore } from "@services/credit.service";
+import { getNFTCardBgImage, useCNFTInfo } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
 import { useApprove } from '@services/tokens.service';
-import moment from 'moment';
 import { FC, useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
+import { NetworkTypeContext } from "src/contexts";
 import { ContractConfig } from 'src/contract/ContractConfig';
 import { LoadingContext, LoadingType } from "src/provider/LoadingProvider";
 import { useTheme } from 'src/states/application/hooks';
 import { ToastStatus, useAddToast } from "src/states/toast";
 import { useTransactionAdder } from "src/states/transactions/hooks";
-import { ColorDiv, ColorDivNoBorder, IconIcon, NFTBgImage, TopItemDiv } from "./StyledComponents";
+import { Score } from './Score';
+import { ColorDiv, ColorDivNoBorder, NFTBgImage, TopItemDiv } from "./StyledComponents";
 
 enum StakeType {
   hidden = 0,
@@ -35,13 +35,11 @@ export const TopHeader: FC<{
 }> = ({ walkThroughStep }) => {
   const [stopAnimation, setStopAnimation] = useState(false)
   const { chainId } = useContext(NetworkTypeContext);
-  const { account } = useContext(WalletAddressContext);
   const network = chainFromId(chainId);
   const walletListEth = usePortfolioWalletTokenList(chainIndexToId[0]);
   const walletListBsc = usePortfolioWalletTokenList(chainIndexToId[1]);
   const walletListEsc = usePortfolioWalletTokenList(chainIndexToId[2]);
-  const scoreInfo = useContractCreditScore()
-  const credaInfoFromApi = useAPICreditScore()
+
   const addTransaction = useTransactionAdder();
   const addToast = useAddToast();
   const loading = useContext(LoadingContext)
@@ -59,10 +57,6 @@ export const TopHeader: FC<{
     ContractConfig.CreditNFT[network]?.address,
     ContractConfig.CreditNFT[network]?.abi || ContractConfig.CreditNFT.abi
   );
-  const DataContract = useContract(ContractConfig.DataContract[network]?.address, ContractConfig.DataContract.abi)
-  const apiMerkleRootInfo = useAPIMerkleRootInfo();
-
-  console.log("Latest merkle root date:", apiMerkleRootInfo?.timestamp?.toLocaleString());
 
   function mintCNFT() {
     if (approval !== ApprovalState.APPROVED && enableNetwork(chainId)) {
@@ -85,50 +79,7 @@ export const TopHeader: FC<{
       });
   }
 
-  async function syncCredit() {
-    loading.show(LoadingType.confirm, `Sync`)
-    // TODO: we should use getAndUpdateCredit.
-    // but for now, we use CredaContract on esc.
-    if (DataContract) {
-      try {
-        if (!credaInfoFromApi || !credaInfoFromApi.data) {
-          loading.show(LoadingType.success, null)
-          return;
-        }
 
-        DataContract?.updateCredit(account, credaInfoFromApi.data.score, credaInfoFromApi.data.proofs, GasInfo)
-        .then(async (response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: "Sync",
-          });
-          await response.wait();
-          loading.show(LoadingType.success, response.hash)
-        })
-        .catch((err: any) => {
-          addToast(ToastStatus.error, err.data?.message);
-          tipError(err);
-          loading.show(LoadingType.error, err.reason || err.message)
-        });
-      } catch (e) {
-        loading.show(LoadingType.error, "")
-      }
-    } else if (CredaContract) {
-      CredaContract?.creditUpdate(GasInfo)
-        .then(async (response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: "Sync",
-          });
-          await response.wait();
-          loading.show(LoadingType.success, response.hash)
-
-        })
-        .catch((err: any) => {
-          addToast(ToastStatus.error, err.data?.message);
-          tipError(err);
-          loading.show(LoadingType.error, err.reason || err.message)
-        });
-    }
-  }
 
   function claim() {
     CredaContract?.claim()
@@ -202,6 +153,8 @@ export const TopHeader: FC<{
               }}
               width={isMobile ? "416px" : "534px"}
               height={"auto"} />
+
+            {/* Credit score information + sync button */}
             <div
               style={{
                 position: "absolute",
@@ -209,67 +162,7 @@ export const TopHeader: FC<{
                 left: isMobile ? "160px" : "200px",
               }}
             >
-              <div></div>
-              <RowFixed>
-                <ThemeTextEqure
-                  fontSize={16}
-                  style={{ marginLeft: isMobile ? "15px" : "20px" }}
-                >
-                  Credit Score
-                </ThemeTextEqure>
-              </RowFixed>
-              {credaInfoFromApi.data &&
-                <RowFixed style={{ height: "40px" }}>
-                  <ThemeTextEqure
-                    fontSize={26}
-                    fontWeight={"bold"}
-                  >
-                    { credaInfoFromApi.data.disableScore }
-                  </ThemeTextEqure>
-                  <ColumnFixed style={{ marginLeft: "10px" }}>
-                    <ThemeTextEqure fontSize={14} fontWeight={'400'}>Latest</ThemeTextEqure>
-                    {apiMerkleRootInfo?.timestamp &&
-                      <ThemeTextEqure fontSize={10} fontWeight={'400'}>{ apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD") }</ThemeTextEqure>
-                    }
-                  </ColumnFixed>
-                </RowFixed>
-              }
-
-              <RowFixed style={{ height: "40px" }}>
-                <ThemeTextEqure
-                  fontSize={26}
-                  fontWeight={"bold"}
-                >
-                  {scoreInfo.data <= 0
-                    ? "---"
-                    : formatBalance(scoreInfo.data, 0)}
-                </ThemeTextEqure>
-                <ColumnFixed style={{ marginLeft: "10px" }}>
-                  <ThemeTextEqure fontSize={14} fontWeight={'400'}>On Chain</ThemeTextEqure>
-                  {scoreInfo.timestamp > 0 &&
-                    <ThemeTextEqure fontSize={10} fontWeight={'400'}>{moment.unix(scoreInfo.timestamp).format("YYYY.MM.DD")}</ThemeTextEqure>
-                  }
-                </ColumnFixed>
-              </RowFixed>
-
-              {enableNetwork(chainId) &&
-                <RowFixed
-                  style={{
-                    width: "100%",
-                    justifyContent: isMobile ? "space-between" : "flex-start",
-                  }}
-                >
-                  <WhiteButton
-                    style={{
-                      zIndex: walkThroughStep === 2 ? 700 : 0,
-                    }}
-                    onClick={syncCredit}
-                  >
-                    Sync
-                  </WhiteButton>
-                  <IconIcon style={{ width: '30px', marginLeft: '5px' }} src={ChainIcons[chainId]} />
-                </RowFixed>
-              }
+              <Score walkThroughStep={walkThroughStep} />
             </div>
           </div>
           {/* <StepTwoModalWrap isMobile={isMobile}>
@@ -293,18 +186,18 @@ export const TopHeader: FC<{
           <Column style={{ zIndex: 1 }}>
             <TextEqure fontSize={18}>
               Credit NFT {enableNetwork(chainId) ? (`CREDA:
-                                                                                    ${cnftInfo.loading ? "-" : formatBalance(cnftInfo.amount, 2)}
-                                    `) : ""}
+                 ${cnftInfo.loading ? "-" : formatBalance(cnftInfo.amount, 2)}
+              `) : ""}
               {/* <Tooltip
-                                            color="#3e3b3b"
-                                            placement="right"
-                                            title={"Lorem Ipsum"}
-                                            >
-                                            <img
-                                                style={{ height: "16px", marginLeft: "5px" }}
-                                                src={ImageCommon.ExclamtionLight}
-                                            ></img>
-                                            </Tooltip> */}
+                  color="#3e3b3b"
+                  placement="right"
+                  title={"Lorem Ipsum"}
+                  >
+                  <img
+                      style={{ height: "16px", marginLeft: "5px" }}
+                      src={ImageCommon.ExclamtionLight}
+                  ></img>
+                  </Tooltip> */}
             </TextEqure>
             <SpaceHeight height={20} heightApp={10} />
             <RowBetween>
@@ -320,13 +213,8 @@ export const TopHeader: FC<{
               </FlexView>
               {cnftInfo.no <= 0 && (
                 <div style={{ position: "relative" }}>
-                  <GradientButton
-                    style={{ zIndex: walkThroughStep === 3 ? 700 : 0 }}
-                    onClick={mintCNFT}
-                  >
-                    {enableNetwork(chainId) ? (approval === ApprovalState.APPROVED
-                      ? "Mint"
-                      : "Approve") : "Mint"}
+                  <GradientButton style={{ zIndex: walkThroughStep === 3 ? 700 : 0 }} onClick={mintCNFT}>
+                    {enableNetwork(chainId) ? (approval === ApprovalState.APPROVED ? "Mint" : "Approve") : "Mint"}
                   </GradientButton>
                   {/* <StepThreeModalWrap isMobile={isMobile}>
                           <WalkThroughModal

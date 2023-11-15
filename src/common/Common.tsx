@@ -416,7 +416,18 @@ export function tipError(e: any) {
   // message.error(e?.message)
 }
 
-// TOOD: why does this method use a verb without doing any action?
+/**
+ * TODO: why does this method use a verb without doing any action?
+ * TODO: this method is called from various kind of unrelated (?) features:
+ * - score component, to know if we can "sync"
+ * - top header, to know if we can "mint cnft"
+ * - useCredaInfo() to know if we can get info about CREDA tokens
+ * - useUnLockInfo() to know if we can unlock CREDA tokens
+ * - useCreditInfo() to know if we can get credit info
+ * - useCNFTInfo() to know if we can get cnft info
+ * - useMiningPoolInfo() and useHardPoolInfo() to know if we can get staking info
+ * - useSushiPrice() to know if we can get sushi price
+ */
 export function enableNetwork(chainId: number) {
   if (chainId === ChainIds.arbitrum || chainId === ChainIds.esc || chainId === ChainIds.elatest || chainId === ChainIds.celo || chainId === ChainIds.celotest) {
     return true
