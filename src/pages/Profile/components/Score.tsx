@@ -1,11 +1,11 @@
-import { GasInfo, enableNetwork, formatBalance, tipError } from "@common/Common";
+import { GasInfo, formatBalance, tipError } from "@common/Common";
 import { ColumnFixed } from "@components/Column";
 import { WhiteButton } from "@components/Common";
 import { RowFixed } from "@components/Row";
 import { ThemeTextEqure } from "@components/ThemeComponent";
 import { TransactionResponse } from "@ethersproject/providers";
 import { ChainIcons } from "@services/chains/chain-configs";
-import { chainFromId } from '@services/chains/chain.service';
+import { chainFromId, chainSupportsCNFT } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
 import { useAPICreditScore, useAPIMerkleRootInfo, useContractCreditScore } from "@services/credit.service";
 import moment from "moment";
@@ -116,7 +116,7 @@ export const Score: FC<{
     </RowFixed>
 
     {/*  SYNC Button */}
-    {enableNetwork(chainId) &&
+    {chainSupportsCNFT(chainId) &&
       <RowFixed style={{ width: "100%", justifyContent: isMobile ? "space-between" : "flex-start", alignSelf: 'center', marginTop: 6 }}
       >
         <WhiteButton style={{ zIndex: walkThroughStep === 2 ? 700 : 0, }} onClick={syncCredit}>

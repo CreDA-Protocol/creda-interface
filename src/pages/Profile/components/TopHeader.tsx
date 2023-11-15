@@ -1,5 +1,5 @@
 import creditScore from '@assets/lottie/CreDa_creditScore_animation.json';
-import { ApprovalState, GasInfo, balanceToBigNumber, enableNetwork, formatBalance, tipError } from "@common/Common";
+import { ApprovalState, GasInfo, balanceToBigNumber, formatBalance, tipError } from "@common/Common";
 import { Column } from "@components/Column";
 import { BlueButton, FlexView } from "@components/Common";
 import { CustomStakeModal } from '@components/CustomStakeModal';
@@ -8,7 +8,7 @@ import { ThemeTextEqure } from "@components/ThemeComponent";
 import { Lottie } from "@crello/react-lottie";
 import { TransactionResponse } from "@ethersproject/providers";
 import { chainIndexToId } from "@services/chains/chain-configs";
-import { chainFromId } from '@services/chains/chain.service';
+import { chainFromId, chainSupportsCNFT } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
 import { getNFTCardBgImage, useCNFTInfo } from "@services/credit.service";
 import { usePortfolioWalletTokenList } from "@services/portfolio/portfolio.service";
@@ -59,7 +59,7 @@ export const TopHeader: FC<{
   );
 
   function mintCNFT() {
-    if (approval !== ApprovalState.APPROVED && enableNetwork(chainId)) {
+    if (approval !== ApprovalState.APPROVED && chainSupportsCNFT(chainId)) {
       approveCallback();
       return;
     }
@@ -185,7 +185,7 @@ export const TopHeader: FC<{
           <NFTBgImage src={getNFTCardBgImage(cnftInfo.lv)} />
           <Column style={{ zIndex: 1 }}>
             <TextEqure fontSize={18}>
-              Credit NFT {enableNetwork(chainId) ? (`CREDA:
+              Credit NFT {chainSupportsCNFT(chainId) ? (`CREDA:
                  ${cnftInfo.loading ? "-" : formatBalance(cnftInfo.amount, 2)}
               `) : ""}
               {/* <Tooltip
@@ -214,7 +214,7 @@ export const TopHeader: FC<{
               {cnftInfo.no <= 0 && (
                 <div style={{ position: "relative" }}>
                   <GradientButton style={{ zIndex: walkThroughStep === 3 ? 700 : 0 }} onClick={mintCNFT}>
-                    {enableNetwork(chainId) ? (approval === ApprovalState.APPROVED ? "Mint" : "Approve") : "Mint"}
+                    {chainSupportsCNFT(chainId) ? (approval === ApprovalState.APPROVED ? "Mint" : "Approve") : "Mint"}
                   </GradientButton>
                   {/* <StepThreeModalWrap isMobile={isMobile}>
                           <WalkThroughModal

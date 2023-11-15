@@ -1,6 +1,6 @@
-import { balanceToBigNumber, bigNumberToBalance, enableNetwork, logError } from "@common/Common";
+import { balanceToBigNumber, bigNumberToBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { chainFromId } from "@services/chains/chain.service";
+import { chainFromId, chainHasCredaToken } from "@services/chains/chain.service";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import { ContractConfig } from "src/contract/ContractConfig";
@@ -142,7 +142,7 @@ export function useSushiPrice(amount: number, path: string[]): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !contract || !enableNetwork(chainId)) {
+        if (!account || !contract || !chainHasCredaToken(chainId)) {
           return;
         }
         const res: any = await contract.getAmountsOut(balanceToBigNumber(amount), path)

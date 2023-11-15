@@ -1,5 +1,5 @@
 import { ImageCommon } from '@assets/common/ImageCommon';
-import { ApprovalState, ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError } from "@common/Common";
+import { ApprovalState, ERC20_ABI, bigNumberToBalance, formatBalance, logError } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import axios, { AxiosResponse } from "axios";
 import { BigNumber, Contract, ethers } from "ethers";
@@ -10,7 +10,7 @@ import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import { ContractConfig } from "src/contract/ContractConfig";
 import { PermanentCache } from './caches/permanent-cache';
 import { ChainIds } from './chains/chain-configs';
-import { chainFromId } from './chains/chain.service';
+import { chainFromId, chainHasCredaToken, chainSupportsCNFT } from './chains/chain.service';
 import { useContract } from "./contracts.service";
 
 export type CreditData = {
@@ -164,7 +164,7 @@ export function useCreditInfo(): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !enableNetwork(chainId)) {
+        if (!account || !chainSupportsCNFT(chainId)) {
           return;
         }
 
@@ -314,7 +314,7 @@ export function useCNFTInfo(): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !CNFTContract || !enableNetwork(chainId)) {
+        if (!account || !CNFTContract || !chainSupportsCNFT(chainId)) {
           return;
         }
         let lv: number = await CNFTContract.getOwnerNFTLevel(account)
@@ -367,7 +367,7 @@ export function useCnetWorkInfo(id: number): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !enableNetwork(chainId) || !contract) {
+        if (!account || !chainSupportsCNFT(chainId) || !contract) {
           return;
         }
         let isJoin: boolean = await contract.ActiveStatus(account)
@@ -408,9 +408,10 @@ export function useApproveCredit(): number {
   const network = chainFromId(chainId);
   const [approve, setApprove] = useState(ApprovalState.PENDING);
   const credaContract = useContract(ContractConfig.CredaPool[network]?.address, ContractConfig.CredaPool.abi);
+
   useEffect(() => {
     const getResult = () => {
-      if (!account || !credaContract || !enableNetwork(chainId)) {
+      if (!account || !credaContract || !chainHasCredaToken(chainId)) {
         return;
       }
       credaContract?.initialAccount(account)
@@ -424,7 +425,8 @@ export function useApproveCredit(): number {
     }
     const interval = setInterval(getResult, GlobalConfiguration.refreshInterval);
     return () => clearInterval(interval);
-  }, [chainId, account, credaContract])
+  }, [chainId, account, credaContract]);
+
   return approve;
 }
 
