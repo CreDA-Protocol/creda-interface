@@ -1,14 +1,14 @@
-import { ERC20_ABI, bigNumberToBalance, enableNetwork, formatBalance, logError, mathPriceTo8, walletInfo } from "@common/Common";
+import { ERC20_ABI, bigNumberToBalance, formatBalance, logError, mathPriceTo8, walletInfo } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
 import { BigNumber, ethers } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
 import { ContractConfig, EarnConfig } from "src/contract/ContractConfig";
+import { ChainIds } from "./chains/chain-configs";
+import { chainFromId, chainHasCredaToken } from "./chains/chain.service";
 import { useContract } from "./contracts.service";
 import { getCoinPrice } from "./glidefinance.service";
 import { getPriceByApi } from "./pricing.service";
-import { ChainIds } from "./chains/chain-configs";
-import { chainFromId } from "./chains/chain.service";
 
 /**
  * 获取softlaunch信息
@@ -38,7 +38,7 @@ export function useMiningPoolInfo(symbol: string, pid: number): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !enableNetwork(chainId) || !InitialMintContract || !tokenContract || !credaContract) {
+        if (!account || !chainHasCredaToken(chainId) || !InitialMintContract || !tokenContract || !credaContract) {
           return;
         }
         const decimals: number = await tokenContract.decimals()
@@ -111,7 +111,7 @@ export function useHardPoolInfo(symbol: string, pid: number): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !enableNetwork(chainId) || !InitialMintContract || !tokenContract || !credaContract || !ctokenContract) {
+        if (!account || !chainHasCredaToken(chainId) || !InitialMintContract || !tokenContract || !credaContract || !ctokenContract) {
           return;
         }
         const decimals: number = await tokenContract.decimals()

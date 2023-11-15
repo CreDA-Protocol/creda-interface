@@ -1,6 +1,6 @@
-import { bigNumberToBalance, enableNetwork, logError, mathPriceTo8 } from "@common/Common";
+import { bigNumberToBalance, logError, mathPriceTo8 } from "@common/Common";
 import { GlobalConfiguration } from "@common/config";
-import { chainFromId } from "@services/chains/chain.service";
+import { chainFromId, chainHasCredaToken } from "@services/chains/chain.service";
 import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { NetworkTypeContext, WalletAddressContext } from "src/contexts";
@@ -27,7 +27,7 @@ export function useCredaInfo(): any {
   useEffect(() => {
     const getResult = async () => {
       try {
-        if (!account || !CredaContract || !enableNetwork(chainId)) {
+        if (!account || !CredaContract || !chainHasCredaToken(chainId)) {
           return;
         }
         let balance: BigNumber = await CredaContract.balanceOf(account)
@@ -73,7 +73,7 @@ export function useUnLockInfo(): any {
 
   useEffect(() => {
     const getResult = async () => {
-      if (!account || !enableNetwork(chainId) || !INFTContract || !INFTUnlockContract || !INFTLpContract) {
+      if (!account || !chainHasCredaToken(chainId) || !INFTContract || !INFTUnlockContract || !INFTLpContract) {
         return;
       }
       const balance: BigNumber = await INFTContract?.balanceOf(account);

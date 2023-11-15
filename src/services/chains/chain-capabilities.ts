@@ -1,9 +1,11 @@
 import { ChainName } from "./chain.service";
 
 export type ChainCapability = {
-  canFetchWalletTokens: boolean; // We can fetch the list of user's tokens (wallet tab of portfolio) using the third party portfolio api
-  hasBankFeature: boolean; // Whether to show the bank screen or not
-  hasVaultFeature: boolean; // Whether to show the "vault" screen or not
+  canFetchWalletTokens?: boolean; // We can fetch the list of user's tokens (wallet tab of portfolio) using the third party portfolio api
+  hasBankFeature?: boolean; // Whether to show the bank screen or not
+  hasVaultFeature?: boolean; // Whether to show the "vault" screen or not
+  supportsCNFT?: boolean; // Whether the CreditNFT contract is deployed and supported on this chain
+  hasCREDAToken?: boolean; // Whether a CREDA ERC20 token exists on this chain.
 }
 
 /**
@@ -13,63 +15,44 @@ export const chainCapabilities: {
   [chainId in ChainName]: ChainCapability;
 } = {
   ethereum: {
-    canFetchWalletTokens: true,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    canFetchWalletTokens: true
   },
   arbitrum: {
     canFetchWalletTokens: true,
     hasBankFeature: true,
-    hasVaultFeature: true
+    hasVaultFeature: true,
+    supportsCNFT: true,
+    hasCREDAToken: true
   },
   esc: {
     canFetchWalletTokens: true,
     hasBankFeature: true,
-    hasVaultFeature: true
+    hasVaultFeature: true,
+    supportsCNFT: true,
+    hasCREDAToken: true
   },
   elatest: {
-    canFetchWalletTokens: false,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    supportsCNFT: true
   },
   heco: {
-    canFetchWalletTokens: true,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    canFetchWalletTokens: true
   },
-  hecotest: {
-    canFetchWalletTokens: false,
-    hasBankFeature: false,
-    hasVaultFeature: false
-  },
+  hecotest: {},
   bsc: {
-    canFetchWalletTokens: true,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    canFetchWalletTokens: true
   },
-  local: {
-    canFetchWalletTokens: false,
-    hasBankFeature: false,
-    hasVaultFeature: false
-  },
+  local: {},
   polygon: {
-    canFetchWalletTokens: true,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    canFetchWalletTokens: true
   },
-  ropsten: {
-    canFetchWalletTokens: false,
-    hasBankFeature: false,
-    hasVaultFeature: false
-  },
+  ropsten: {},
   celo: {
     canFetchWalletTokens: true,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    supportsCNFT: true,
+    hasCREDAToken: false
   },
   celotest: {
-    canFetchWalletTokens: false,
-    hasBankFeature: false,
-    hasVaultFeature: false
+    supportsCNFT: true,
+    hasCREDAToken: false
   }
 };

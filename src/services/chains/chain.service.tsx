@@ -39,6 +39,14 @@ export function vaultIsEnabledOnChain(chainId: ChainId): boolean {
   return getChainCapability(chainId)?.hasVaultFeature || false;
 }
 
+export function chainSupportsCNFT(chainId: ChainId): boolean {
+  return getChainCapability(chainId)?.supportsCNFT || false;
+}
+
+export function chainHasCredaToken(chainId: ChainId): boolean {
+  return getChainCapability(chainId)?.hasCREDAToken || false;
+}
+
 export function chainFromId(chainId: number): ChainName {
   const chain = Object.entries(ChainIds).find(([key, val]) => val === chainId)?.[0] as ChainName;
   if (!chain) {
