@@ -10,6 +10,7 @@ import Discord_new from '../svg/Discord_new.svg';
 import ExclamtionDark from '../svg/Exclamation_dark.svg';
 import ExclamtionLight from '../svg/Exclamtion_light.svg';
 import Reddit_new from '../svg/Reddit_new.svg';
+import Alert from '../svg/alert-outline.svg';
 import DiscordIcon from '../svg/discord_footer_icon.svg';
 import GithubIcon from '../svg/github_ic.svg';
 import RedditIcon from '../svg/reddit_footer_icon.svg';
@@ -247,6 +248,7 @@ import warnning_icon from './warnning_icon.png';
 import youjiantou from './youjiantou.png';
 
 export const ImageCommon = {
+  Alert,
   Bridge_black,
   Bridge_white,
   About_black,
