@@ -57,6 +57,7 @@
 
 .ant-dropdown-menu, .ant-dropdown-menu-item {
   border-radius: 5px;
+  max-width: 400px;
 }
 
 /*modal*/

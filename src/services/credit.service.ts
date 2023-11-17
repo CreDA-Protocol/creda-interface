@@ -23,6 +23,7 @@ export type CreditData = {
 
 export type CreditDataLocal = CreditData & {
   disableScore?: number
+  scoreNotGenerated?: boolean //no credit score has been generated for new address
 }
 
 /**
@@ -69,7 +70,6 @@ async function getCreditInfoByApi(address: string): Promise<CreditOracleResponse
     let res: AxiosResponse<CreditOracleResponse<CreditData>> = await axios.get(url);
     return res.data;
   } catch (e) {
-    // Get exception if no credit score has been generated for new address.
     console.warn("getCreditInfoByApi error:", e);
   }
 
@@ -85,14 +85,22 @@ async function getCreditScoreByApi(address: string): Promise<CreditDataLocal> {
     let disableScore = 0;
     if (data.code === 200) {
       disableScore = getDisableScore(data.data.score);
+      creditData.disableScore = disableScore;
     } else if (data.code === 500) {
-      // Use the default score if no credit score has been generated for new address.
-      disableScore = 50;
+      // No credit score has been generated for new address.
+      creditData = {
+        score: null,
+        address: null,
+        proof: null,
+        proofs:[],
+        leaf: null,
+        disableScore: 50,
+        scoreNotGenerated: true
+      }
     } else {
       console.warn("getCreditScoreByApi failed:", data);
+      // server or network error, return null
     }
-
-    creditData.disableScore = disableScore;
   } catch (e) {
     console.warn("getCreditScoreByApi error:", e);
   }
@@ -259,7 +267,7 @@ export function useAPICreditScore(): APICreditScoreInfo {
           return;
         }
         let creditInfo = await getCreditScoreByApi(account);
-        if (!creditInfo) return;
+
         setInfo({
           loading: false,
           data: creditInfo,

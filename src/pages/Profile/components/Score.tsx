@@ -1,3 +1,4 @@
+import { ImageCommon } from "@assets/common/ImageCommon";
 import { GasInfo, formatBalance, tipError } from "@common/Common";
 import { ColumnFixed } from "@components/Column";
 import { WhiteButton } from "@components/Common";
@@ -8,6 +9,7 @@ import { ChainIcons } from "@services/chains/chain-configs";
 import { chainFromId, chainSupportsCNFT } from '@services/chains/chain.service';
 import { useContract } from '@services/contracts.service';
 import { useAPICreditScore, useAPIMerkleRootInfo, useContractCreditScore } from "@services/credit.service";
+import { Dropdown } from "antd";
 import moment from "moment";
 import { FC, useContext } from "react";
 import { isMobile } from "react-device-detect";
@@ -34,17 +36,24 @@ export const Score: FC<{
 
   console.log("Latest merkle root date:", apiMerkleRootInfo?.timestamp?.toLocaleString());
 
+  const items = [{
+    label: 'Thank you for joining CreDA. Here is a base credit score as a new user, but your credit score is computed with time. Please come back tomorrow to check your real credit score.',
+    key: '1',
+  }];
+  const menuProps = {
+    items,
+  };
+
   async function syncCredit() {
+    if (!credaInfoFromApi || !credaInfoFromApi.data || !credaInfoFromApi.data.score) {
+      return;
+    }
+
     loading.show(LoadingType.confirm, `Sync`)
     // TODO: we should use getAndUpdateCredit.
     // but for now, we use CredaContract on esc.
     if (DataContract) {
       try {
-        if (!credaInfoFromApi || !credaInfoFromApi.data) {
-          loading.show(LoadingType.success, null)
-          return;
-        }
-
         DataContract?.updateCredit(account, credaInfoFromApi.data.score, credaInfoFromApi.data.proofs, GasInfo)
           .then(async (response: TransactionResponse) => {
             addTransaction(response, {
@@ -93,12 +102,24 @@ export const Score: FC<{
         <ThemeTextEqure fontSize={26} fontWeight={"bold"} style={{ lineHeight: '28px' }}>
           {credaInfoFromApi.data.disableScore}
         </ThemeTextEqure>
-        <ColumnFixed style={{ marginLeft: "10px" }}>
-          <ThemeTextEqure fontSize={14} fontWeight={'400'} style={{ lineHeight: '12px', paddingTop: 4 }}>Latest</ThemeTextEqure>
-          {apiMerkleRootInfo?.timestamp &&
-            <ThemeTextEqure fontSize={10} fontWeight={'400'}>{apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD")}</ThemeTextEqure>
-          }
-        </ColumnFixed>
+        {
+          credaInfoFromApi.data.scoreNotGenerated ?
+            <ColumnFixed style={{ marginLeft: "10px" }}>
+              <Dropdown
+                menu={menuProps}
+                trigger={["hover", "click"]}
+              >
+                <img style={{ width: '25px' }} src={ImageCommon.Alert} alt="score" />
+              </Dropdown>
+            </ColumnFixed>
+            :
+            <ColumnFixed style={{ marginLeft: "10px" }}>
+              <ThemeTextEqure fontSize={14} fontWeight={'400'} style={{ lineHeight: '12px', paddingTop: 4 }}>Latest</ThemeTextEqure>
+              {apiMerkleRootInfo?.timestamp &&
+                <ThemeTextEqure fontSize={10} fontWeight={'400'}>{apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD")}</ThemeTextEqure>
+              }
+            </ColumnFixed>
+        }
       </RowFixed>
     }
 
@@ -110,7 +131,7 @@ export const Score: FC<{
       <ColumnFixed style={{ marginLeft: "10px" }}>
         <ThemeTextEqure fontSize={14} fontWeight={'400'} style={{ lineHeight: '12px', paddingTop: 4 }}>On Chain</ThemeTextEqure>
         <ThemeTextEqure fontSize={10} fontWeight={'400'}>
-          {scoreInfo.timestamp > 0 ? moment.unix(scoreInfo.timestamp).format("YYYY.MM.DD") : "Unknown"}
+          {scoreInfo.timestamp > 0 ? moment.unix(scoreInfo.timestamp).format("YYYY.MM.DD") : "N/A"}
         </ThemeTextEqure>
       </ColumnFixed>
     </RowFixed>
