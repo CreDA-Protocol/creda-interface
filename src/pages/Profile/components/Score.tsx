@@ -100,26 +100,22 @@ export const Score: FC<{
     {credaInfoFromApi.data &&
       <RowFixed style={{ alignSelf: 'center' }}>
         <ThemeTextEqure fontSize={26} fontWeight={"bold"} style={{ lineHeight: '28px' }}>
+          {credaInfoFromApi.data.scoreNotGenerated &&
+            <Dropdown
+              menu={menuProps}
+              trigger={["hover", "click"]}
+            >
+              <img style={{ width: '25px', marginTop: '-5px' }} src={ImageCommon.Alert} alt="score" />
+            </Dropdown>
+          }
           {credaInfoFromApi.data.disableScore}
         </ThemeTextEqure>
-        {
-          credaInfoFromApi.data.scoreNotGenerated ?
-            <ColumnFixed style={{ marginLeft: "10px" }}>
-              <Dropdown
-                menu={menuProps}
-                trigger={["hover", "click"]}
-              >
-                <img style={{ width: '25px' }} src={ImageCommon.Alert} alt="score" />
-              </Dropdown>
-            </ColumnFixed>
-            :
-            <ColumnFixed style={{ marginLeft: "10px" }}>
-              <ThemeTextEqure fontSize={14} fontWeight={'400'} style={{ lineHeight: '12px', paddingTop: 4 }}>Latest</ThemeTextEqure>
-              {apiMerkleRootInfo?.timestamp &&
-                <ThemeTextEqure fontSize={10} fontWeight={'400'}>{apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD")}</ThemeTextEqure>
-              }
-            </ColumnFixed>
-        }
+        <ColumnFixed style={{ marginLeft: "10px" }}>
+          <ThemeTextEqure fontSize={14} fontWeight={'400'} style={{ lineHeight: '12px', paddingTop: 4 }}>Latest</ThemeTextEqure>
+          {apiMerkleRootInfo?.timestamp &&
+            <ThemeTextEqure fontSize={10} fontWeight={'400'}>{apiMerkleRootInfo?.timestamp.format("YYYY.MM.DD")}</ThemeTextEqure>
+          }
+        </ColumnFixed>
       </RowFixed>
     }
 
