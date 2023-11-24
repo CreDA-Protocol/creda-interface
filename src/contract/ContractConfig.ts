@@ -674,7 +674,7 @@ export const ContractConfig: ContractsConfig = {
       address: "0x36aFfC79ABBd2F8Aaf32800A1333c524aF3bCE79",
     },
     celo: {
-      address: "0x878063db2d3d54e4F18e7bC448FA56A0e111C054",
+      address: "0xBc736a54dD3FE55db6C752c5F495A331f2855377",
     }
   },
   // 游戏
